@@ -1,8 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
 
-import { ArrowUpRight, Phone, Mail, MapPin, ArrowRight, CheckCircle2, Sparkles, Truck, MessagesSquare, ShieldCheck } from "lucide-react";
+import {
+  ArrowUpRight, Phone, Mail, MapPin, ArrowRight,
+  CheckCircle2, Sparkles, Truck, MessagesSquare, ShieldCheck,
+  ChevronUp, Star,
+} from "lucide-react";
 import heroImg from "@/assets/hero-mechanical.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import { CATEGORIES, SECTORS, COMPANY } from "@/data/catalog";
@@ -28,6 +32,42 @@ const BENTO_LAYOUT: Record<string, string> = {
   other: "sm:col-span-2",
 };
 
+function useCountUp(target: number, duration = 1500) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 16);
+    return () => clearInterval(timer);
+  }, [inView, target, duration]);
+  return { count, ref };
+}
+
+function StatItem({ target, suffix, label }: { target: number; suffix: string; label: string }) {
+  const { count, ref } = useCountUp(target);
+  return (
+    <div ref={ref} className="relative">
+      <div className="font-display text-2xl font-black tracking-tight text-ink sm:text-3xl">
+        {count}{suffix}
+      </div>
+      <div className="mt-1 text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+        {label}
+      </div>
+    </div>
+  );
+}
+
 function Home() {
   const featured = CATEGORIES.slice(0, 8);
   return (
@@ -40,16 +80,70 @@ function Home() {
         <ProductsBento featured={featured} />
         <Industries />
         <WhyUs />
+        <Testimonials />
         <Process />
         <CTABand />
         <ContactPreview />
       </main>
       <Footer />
+      <FloatingActions />
     </div>
   );
 }
 
-/* --------------------------------- HERO --------------------------------- */
+/* ─── Floating WhatsApp + Scroll-to-top ─── */
+function FloatingActions() {
+  const [showTop, setShowTop] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <div className="fixed bottom-6 right-4 z-50 flex flex-col items-end gap-3 sm:right-6">
+      {/* Scroll to top */}
+      <AnimatePresence>
+        {showTop && (
+          <motion.button
+            key="scroll-top"
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.7 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="grid h-10 w-10 place-items-center rounded-full border border-hairline bg-background shadow-lift text-ink/70 transition hover:text-ink hover:-translate-y-0.5"
+            aria-label="Scroll to top"
+          >
+            <ChevronUp className="h-4 w-4" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* WhatsApp */}
+      <a
+        href="https://wa.me/917806936475"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="group relative flex items-center gap-2 overflow-hidden rounded-full shadow-lift transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_40px_-12px_rgba(37,211,102,0.4)]"
+        style={{ background: "#25D366" }}
+      >
+        {/* Expanded label on hover */}
+        <span className="max-w-0 overflow-hidden pl-0 text-[13px] font-semibold text-white transition-all duration-300 group-hover:max-w-[140px] group-hover:pl-4 whitespace-nowrap">
+          Chat with us
+        </span>
+        <span className="grid h-12 w-12 shrink-0 place-items-center">
+          <svg className="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+        </span>
+      </a>
+    </div>
+  );
+}
+
+/* ─────────────────────────── HERO ─────────────────────────── */
 function Hero() {
   return (
     <section className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
@@ -128,21 +222,11 @@ function Hero() {
               </Link>
             </motion.div>
 
+            {/* Animated stats */}
             <div className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-hairline pt-6">
-              {[
-                { k: "12+", v: "Product categories" },
-                { k: "8", v: "Sectors served" },
-                { k: "100+", v: "SKU lines stocked" },
-              ].map((s) => (
-                <div key={s.v}>
-                  <div className="font-display text-2xl font-black tracking-tight text-ink sm:text-3xl">
-                    {s.k}
-                  </div>
-                  <div className="mt-1 text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
-                    {s.v}
-                  </div>
-                </div>
-              ))}
+              <StatItem target={12} suffix="+" label="Product categories" />
+              <StatItem target={8} suffix="" label="Sectors served" />
+              <StatItem target={100} suffix="+" label="SKU lines stocked" />
             </div>
           </div>
 
@@ -228,18 +312,18 @@ function Hero() {
   );
 }
 
-/* ------------------------------- TRUST STRIP ------------------------------ */
+/* ─── TRUST STRIP ─── */
 function TrustStrip() {
   const items = [
     "SKF", "FAG", "NTN", "INA", "Schneider Electric",
-    "PTFE", "Werner Finley", "FFKM", "EPDM", "HNBR", "Tata Electronis",
+    "PTFE", "Werner Finley", "FFKM", "EPDM", "HNBR", "Tata Electronics",
     "Enterprise Partner", "RMZ Oil & Gas", "SS 316", "NYLATRON",
   ];
   return (
     <section className="mt-20 border-y border-hairline bg-surface py-6 sm:mt-28">
       <div className="mx-auto flex max-w-7xl items-center gap-6 overflow-hidden px-5 sm:px-8">
         <span className="hidden shrink-0 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:block">
-          Brands & materials we stock
+          Brands &amp; materials we stock
         </span>
         <div className="relative flex-1 overflow-hidden">
           <div className="marquee-track flex w-max gap-10">
@@ -268,7 +352,7 @@ function TrustStrip() {
   );
 }
 
-/* ------------------------------ ABOUT PREVIEW ----------------------------- */
+/* ─── ABOUT PREVIEW ─── */
 function AboutPreview() {
   return (
     <section className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
@@ -307,9 +391,7 @@ function AboutPreview() {
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
               Our motto
             </span>
-            <p
-              className="mt-4 font-display text-2xl font-bold leading-tight text-white sm:text-3xl"
-            >
+            <p className="mt-4 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">
               &ldquo;{COMPANY.motto}&rdquo;
             </p>
             <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -336,7 +418,7 @@ function AboutPreview() {
   );
 }
 
-/* ----------------------------- PRODUCT BENTO ----------------------------- */
+/* ─── PRODUCTS BENTO ─── */
 function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
   return (
     <section className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
@@ -410,7 +492,7 @@ function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
   );
 }
 
-/* -------------------------------- INDUSTRIES ------------------------------ */
+/* ─── INDUSTRIES ─── */
 function Industries() {
   return (
     <section className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
@@ -437,7 +519,7 @@ function Industries() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
-              className="group relative overflow-hidden rounded-2xl border border-hairline bg-surface p-4 transition hover:border-ink/25"
+              className="group relative overflow-hidden rounded-2xl border border-hairline bg-surface p-4 transition hover:border-ink/25 hover:shadow-soft"
             >
               <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brass">
                 Sector 0{i + 1}
@@ -456,28 +538,36 @@ function Industries() {
   );
 }
 
-/* ---------------------------------- WHY US -------------------------------- */
+/* ─── WHY US — redesigned with large accent numbers ─── */
 function WhyUs() {
   const pillars = [
     {
+      num: "01",
       icon: ShieldCheck,
       title: "Quality first",
-      body: "Genuine bearings, certified elastomers and traceable stainless steel — no compromises.",
+      body: "Genuine bearings, certified elastomers and traceable stainless steel — no compromises on materials or sourcing.",
+      accent: "oklch(0.5 0.15 245)",
     },
     {
+      num: "02",
       icon: Truck,
       title: "Timely delivery",
-      body: "Regional stock and disciplined logistics keep your line running when parts run out.",
+      body: "Regional stock and disciplined logistics keep your production line running when critical parts run out.",
+      accent: "oklch(0.74 0.14 75)",
     },
     {
+      num: "03",
       icon: MessagesSquare,
       title: "Fast response",
-      body: "Improved response time on every technical query and quote request.",
+      body: "Improved response time on every technical query, quote request and follow-up — no long wait times.",
+      accent: "oklch(0.5 0.15 245)",
     },
     {
+      num: "04",
       icon: CheckCircle2,
       title: "Feedback loop",
-      body: "We collect customer feedback to sharpen accuracy, order after order.",
+      body: "We collect customer feedback to continuously sharpen matching accuracy and order reliability.",
+      accent: "oklch(0.74 0.14 75)",
     },
   ];
   return (
@@ -498,20 +588,29 @@ function WhyUs() {
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.45, delay: i * 0.05 }}
-            className="relative overflow-hidden rounded-2xl border border-hairline bg-surface p-6"
+            transition={{ duration: 0.45, delay: i * 0.07 }}
+            className="group relative overflow-hidden rounded-2xl border border-hairline bg-surface p-6 transition-shadow duration-300 hover:shadow-lift"
           >
+            {/* Large background number */}
             <span
               aria-hidden
-              className="grid h-11 w-11 place-items-center rounded-xl text-primary-foreground shadow-soft"
+              className="pointer-events-none absolute -right-3 -top-4 font-display text-[5.5rem] font-black leading-none tracking-tighter select-none transition-transform duration-500 group-hover:scale-110"
+              style={{ color: p.accent, opacity: 0.07 }}
+            >
+              {p.num}
+            </span>
+
+            <span
+              aria-hidden
+              className="relative grid h-11 w-11 place-items-center rounded-xl text-primary-foreground shadow-soft"
               style={{ background: "var(--gradient-brand)" }}
             >
               <p.icon className="h-5 w-5" />
             </span>
-            <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-ink">
+            <h3 className="relative mt-5 font-display text-lg font-bold tracking-tight text-ink">
               {p.title}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
               {p.body}
             </p>
           </motion.div>
@@ -521,63 +620,150 @@ function WhyUs() {
   );
 }
 
-/* --------------------------------- PROCESS -------------------------------- */
+/* ─── TESTIMONIALS ─── */
+const TESTIMONIALS = [
+  {
+    quote: "AARRKKAA consistently delivers the right mechanical seals on time. Their matching accuracy and fast response have kept our production lines running without interruption.",
+    name: "Production Manager",
+    role: "Food Processing Plant, Tamil Nadu",
+  },
+  {
+    quote: "We rely on AARRKKAA for all our pump spares and stainless steel fittings. Their team responds quickly to urgent requests and their components are always genuine.",
+    name: "Maintenance Engineer",
+    role: "Pharmaceutical Facility, Karnataka",
+  },
+  {
+    quote: "Sourcing PTFE and elastomeric components used to take weeks. With AARRKKAA, we get accurate quotes and fast dispatch from their regional stock. Outstanding service.",
+    name: "Procurement Head",
+    role: "Chemical Process Industry, Andhra Pradesh",
+  },
+];
+
+function Testimonials() {
+  return (
+    <section className="relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+      {/* Background accent */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-8 top-1/2 -translate-y-1/2 h-64 rounded-[3rem] opacity-5"
+        style={{ background: "var(--gradient-brand)", filter: "blur(48px)" }}
+      />
+
+      <div className="relative">
+        <Eyebrow>What our customers say</Eyebrow>
+        <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
+          Trusted by process plants
+          <br />
+          <span className="italic text-brass">across South India.</span>
+        </h2>
+
+        <div className="mt-10 grid gap-5 sm:grid-cols-3">
+          {TESTIMONIALS.map((t, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="flex flex-col justify-between rounded-2xl border border-hairline bg-surface p-6 transition-shadow duration-300 hover:shadow-lift"
+            >
+              {/* Stars */}
+              <div className="flex gap-0.5 mb-4">
+                {Array.from({ length: 5 }).map((_, j) => (
+                  <Star key={j} className="h-4 w-4 fill-brass text-brass" />
+                ))}
+              </div>
+              <p className="flex-1 text-sm leading-relaxed text-ink/80 italic">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              <div className="mt-5 border-t border-hairline pt-4">
+                <div className="text-sm font-bold text-ink">{t.name}</div>
+                <div className="mt-0.5 text-[12px] text-muted-foreground">{t.role}</div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── PROCESS — redesigned with gradient step indicators ─── */
 function Process() {
   const steps = [
     {
       k: "01",
       t: "Enquire",
       d: "Send a spec, a drawing, or even a photograph of the worn part. We identify it accurately.",
+      icon: MessagesSquare,
     },
     {
       k: "02",
       t: "Match",
       d: "We recommend the correct grade, material or brand — from our stocked programme or sourced direct.",
+      icon: ShieldCheck,
     },
     {
       k: "03",
       t: "Deliver",
-      d: "Assist & Deliver — dispatched from our Hosur HQ or regional branch, on the timeline you need.",
+      d: "Dispatched from our Hosur HQ or regional branch, on the timeline you need. No delays.",
+      icon: Truck,
     },
   ];
   return (
     <section className="relative mx-auto mt-24 max-w-7xl overflow-hidden px-5 sm:mt-32 sm:px-8">
-      <div className="rounded-[2rem] border border-hairline bg-surface p-6 sm:p-10 lg:p-14">
+      <div
+        className="rounded-[2rem] p-6 sm:p-10 lg:p-14"
+        style={{ background: "var(--gradient-footer)" }}
+      >
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <Eyebrow>How we work</Eyebrow>
-            <h2 className="mt-3 font-display text-3xl font-black leading-[1.02] tracking-tight text-ink sm:text-4xl">
+            <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/50">
+              <span className="h-1.5 w-1.5 rounded-full bg-brass" />
+              How we work
+            </div>
+            <h2 className="mt-3 font-display text-3xl font-black leading-[1.02] tracking-tight text-white sm:text-4xl">
               Assist &amp; deliver — in three steps.
             </h2>
           </div>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-white/40">
             From first query to dispatched crate.
           </span>
         </div>
 
-        <ol className="mt-10 grid gap-6 md:grid-cols-3">
+        <ol className="mt-10 grid gap-px md:grid-cols-3">
           {steps.map((s, i) => (
-            <li key={s.k} className="relative">
-              <div className="flex items-center gap-3">
-                <span className="font-display text-4xl font-black italic leading-none text-brass">
-                  {s.k}
+            <motion.li
+              key={s.k}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.45, delay: i * 0.1 }}
+              className="relative flex flex-col rounded-2xl border border-white/8 bg-white/4 p-6 backdrop-blur-sm md:rounded-none md:border-0 md:border-r md:last:border-r-0 md:bg-transparent"
+            >
+              {/* Large step number */}
+              <span
+                className="font-display text-5xl font-black italic leading-none"
+                style={{ backgroundImage: "var(--gradient-brass)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
+              >
+                {s.k}
+              </span>
+              <div className="mt-3 flex items-center gap-2">
+                <span
+                  aria-hidden
+                  className="grid h-8 w-8 place-items-center rounded-lg"
+                  style={{ background: "rgba(255,255,255,0.1)" }}
+                >
+                  <s.icon className="h-4 w-4 text-white/70" />
                 </span>
-                <span className="h-px flex-1 bg-hairline" />
-                {i < steps.length - 1 && (
-                  <ArrowRight
-                    aria-hidden
-                    className="hidden h-4 w-4 shrink-0 -translate-x-1 text-hairline md:block"
-                  />
-                )}
+                <h3 className="font-display text-xl font-bold tracking-tight text-white">
+                  {s.t}
+                </h3>
               </div>
-              <h3 className="mt-4 font-display text-xl font-bold tracking-tight text-ink">
-                {s.t}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-sm leading-relaxed text-white/55 md:pr-8">
                 {s.d}
               </p>
-            </li>
-
+            </motion.li>
           ))}
         </ol>
       </div>
@@ -585,7 +771,7 @@ function Process() {
   );
 }
 
-/* --------------------------------- CTA BAND ------------------------------- */
+/* ─── CTA BAND ─── */
 function CTABand() {
   return (
     <section className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
@@ -631,6 +817,24 @@ function CTABand() {
               <Phone className="h-5 w-5 text-brass" />
             </a>
             <a
+              href="https://wa.me/917806936475"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-strong flex items-center justify-between rounded-2xl px-5 py-4"
+            >
+              <div>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  WhatsApp
+                </div>
+                <div className="font-display text-lg font-bold text-ink">
+                  Chat instantly
+                </div>
+              </div>
+              <svg className="h-5 w-5 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+            </a>
+            <a
               href="mailto:aarrkkaainternational@gmail.com"
               className="glass-strong flex items-center justify-between rounded-2xl px-5 py-4"
             >
@@ -651,183 +855,109 @@ function CTABand() {
   );
 }
 
-/* ------------------------------ CONTACT PREVIEW --------------------------- */
+/* ─── CONTACT PREVIEW — polished cards, no amateur SVG art ─── */
 function ContactPreview() {
-  const cards = [
-    {
-      icon: MapPin,
-      title: "Head office",
-      // Mobile: full row. Desktop bento: large tile (2 cols wide, 2 rows tall).
-      span: "col-span-2 lg:col-span-2 lg:row-span-2",
-      artSize: "h-40 w-40 sm:h-56 sm:w-56 lg:h-72 lg:w-72",
-      body: (
-        <>
-          {COMPANY.address.line1}<br />
-          {COMPANY.address.line2}<br />
-          {COMPANY.address.city}, {COMPANY.address.state}<br />
-          {COMPANY.address.pincode}
-        </>
-      ),
-    },
-    {
-      icon: Phone,
-      title: "Phones",
-      span: "col-span-1 lg:col-span-1 lg:row-span-1",
-      artSize: "h-28 w-28 sm:h-40 sm:w-40",
-      body: (
-        <>
-          {COMPANY.phones.map((p) => (
-            <div key={p}>
-              <a className="hover:text-ink" href={`tel:${p.replace(/\s/g, "")}`}>{p}</a>
-            </div>
-          ))}
-        </>
-      ),
-    },
-    {
-      icon: Mail,
-      title: "Email",
-      span: "col-span-1 lg:col-span-1 lg:row-span-1",
-      artSize: "h-28 w-28 sm:h-40 sm:w-40",
-      body: (
-        <>
-          {COMPANY.emails.map((e) => (
-            <div key={e} className="break-all">
-              <a className="hover:text-ink" href={`mailto:${e}`}>{e}</a>
-            </div>
-          ))}
-        </>
-      ),
-    },
-  ];
-
   return (
     <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-8">
-      <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 lg:grid-rows-2 lg:auto-rows-fr">
-        {cards.map((c, i) => (
-          <ContactBentoCard key={c.title} {...c} index={i} />
-        ))}
+      <Eyebrow>Find us</Eyebrow>
+      <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
+        Get in touch.
+      </h2>
+
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Head office — full-width on mobile, spans 2 cols on lg */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5 }}
+          className="lg:col-span-2 relative overflow-hidden rounded-2xl border border-hairline bg-surface p-6 sm:p-8 transition-shadow duration-300 hover:shadow-lift"
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-8 -top-8 h-48 w-48 rounded-full opacity-40"
+            style={{ background: "var(--gradient-brand)", filter: "blur(48px)" }}
+          />
+          <div className="relative">
+            <span
+              aria-hidden
+              className="grid h-10 w-10 place-items-center rounded-xl text-primary-foreground"
+              style={{ background: "var(--gradient-brand)" }}
+            >
+              <MapPin className="h-5 w-5" />
+            </span>
+            <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Head office</div>
+            <div className="mt-2 font-display text-2xl font-black tracking-tight text-ink">Hosur, Tamil Nadu</div>
+            <p className="mt-2 text-sm leading-relaxed text-ink/70">
+              {COMPANY.address.line1}, {COMPANY.address.line2},<br />
+              {COMPANY.address.city}, {COMPANY.address.state} — {COMPANY.address.pincode}
+            </p>
+            <div className="mt-4 text-[12px] text-muted-foreground">
+              Branches across Tamil Nadu · Karnataka · Andhra Pradesh · Telangana · Kerala
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Phones */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex flex-col gap-4"
+        >
+          <div className="flex-1 rounded-2xl border border-hairline bg-surface p-6 transition-shadow duration-300 hover:shadow-lift">
+            <span
+              aria-hidden
+              className="grid h-10 w-10 place-items-center rounded-xl"
+              style={{ background: "var(--gradient-brass)" }}
+            >
+              <Phone className="h-5 w-5 text-white" />
+            </span>
+            <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Phone</div>
+            <div className="mt-2 space-y-1">
+              {COMPANY.phones.map((p) => (
+                <a key={p} href={`tel:${p.replace(/\s/g, "")}`} className="block font-display text-lg font-bold text-ink hover:text-brass transition-colors">
+                  {p}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex-1 rounded-2xl border border-hairline bg-surface p-6 transition-shadow duration-300 hover:shadow-lift">
+            <span
+              aria-hidden
+              className="grid h-10 w-10 place-items-center rounded-xl"
+              style={{ background: "var(--gradient-brand)" }}
+            >
+              <Mail className="h-5 w-5 text-white" />
+            </span>
+            <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Email</div>
+            <div className="mt-2 space-y-1">
+              {COMPANY.emails.map((e) => (
+                <a key={e} href={`mailto:${e}`} className="block break-all text-sm font-semibold text-ink hover:text-brass transition-colors">
+                  {e}
+                </a>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Link to full contact page */}
+      <div className="mt-6 text-center">
+        <Link
+          to="/contact"
+          className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-6 py-3 text-sm font-semibold text-ink backdrop-blur transition hover:bg-white"
+        >
+          Full contact details & enquiry form <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
     </section>
   );
 }
 
-function ContactBentoCard({
-  icon: Icon,
-  title,
-  span,
-  artSize,
-  body,
-  index,
-}: {
-  icon: typeof MapPin;
-  title: string;
-  span: string;
-  artSize: string;
-  body: React.ReactNode;
-  index: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  // Subtle scroll parallax: art drifts across its own viewport window.
-  const y = useTransform(scrollYProgress, [0, 1], [18, -18]);
-  const x = useTransform(scrollYProgress, [0, 1], [index % 2 === 0 ? -6 : 6, index % 2 === 0 ? 6 : -6]);
-
-  return (
-    <div
-      ref={ref}
-      className={`${span} group relative overflow-hidden rounded-2xl border border-hairline bg-surface p-4 sm:p-6 transition-shadow duration-500 hover:shadow-lift`}
-    >
-      <motion.div
-        style={{ y, x }}
-        className="pointer-events-none absolute -right-4 -bottom-4 sm:-right-6 sm:-bottom-6 transition-transform duration-700 ease-out group-hover:-translate-y-2 group-hover:scale-[1.06]"
-      >
-        <ContactCardArt kind={title} sizeClass={artSize} />
-      </motion.div>
-      <div className="relative">
-        <span
-          aria-hidden
-          className="grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-xl text-brass-foreground transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:rotate-[-4deg]"
-          style={{ background: "var(--gradient-brass)" }}
-        >
-          <Icon className="h-4 w-4" />
-        </span>
-        <div className="mt-3 sm:mt-4 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-          {title}
-        </div>
-        <div className="mt-1.5 sm:mt-2 text-[13px] sm:text-sm leading-relaxed text-ink/85">{body}</div>
-      </div>
-    </div>
-  );
-}
-
-
-/* ------------------------- CONTACT CARD ART ------------------------------- */
-function ContactCardArt({ kind, sizeClass = "h-28 w-28 sm:h-40 sm:w-40" }: { kind: string; sizeClass?: string }) {
-  const base = `pointer-events-none ${sizeClass} text-brass/25`;
-  if (kind === "Head office") {
-    return (
-      <svg viewBox="0 0 160 160" fill="none" className={base} aria-hidden>
-        <g stroke="currentColor" strokeWidth="1.2" className="art-drift" style={{ transformOrigin: "80px 80px" }}>
-          {Array.from({ length: 9 }).map((_, i) => (
-            <line key={`v${i}`} x1={20 + i * 15} y1="20" x2={20 + i * 15} y2="140" strokeDasharray="2 4" opacity="0.5" />
-          ))}
-          {Array.from({ length: 9 }).map((_, i) => (
-            <line key={`h${i}`} x1="20" y1={20 + i * 15} x2="140" y2={20 + i * 15} strokeDasharray="2 4" opacity="0.5" />
-          ))}
-        </g>
-        <g stroke="currentColor" strokeWidth="1.6" fill="none" className="art-float" style={{ transformOrigin: "80px 90px" }}>
-          <path d="M40 110 L40 70 L80 45 L120 70 L120 110 Z" />
-          <path d="M55 110 L55 85 L75 85 L75 110" />
-          <rect x="88" y="82" width="20" height="16" />
-          <path d="M40 70 L80 45 L120 70" />
-        </g>
-        <circle cx="80" cy="45" r="3" fill="currentColor" className="art-float" />
-      </svg>
-    );
-  }
-  if (kind === "Phones") {
-    return (
-      <svg viewBox="0 0 160 160" fill="none" className={base} aria-hidden>
-        <g stroke="currentColor" strokeWidth="1.4" fill="none" className="art-float" style={{ transformOrigin: "85px 90px" }}>
-          <path d="M70 60 Q60 60 60 70 L60 110 Q60 120 70 120 L100 120 Q110 120 110 110 L110 70 Q110 60 100 60 Z" />
-          <line x1="60" y1="72" x2="110" y2="72" />
-          <line x1="60" y1="108" x2="110" y2="108" />
-          <circle cx="85" cy="114" r="2" fill="currentColor" />
-        </g>
-        <g stroke="currentColor" strokeWidth="1.4" fill="none" className="art-float-slow" style={{ transformOrigin: "85px 90px" }}>
-          <path d="M120 55 Q135 70 135 90 Q135 110 120 125" strokeLinecap="round" />
-          <path d="M126 62 Q138 75 138 90 Q138 105 126 118" strokeLinecap="round" opacity="0.6" />
-          <path d="M50 55 Q35 70 35 90 Q35 110 50 125" strokeLinecap="round" />
-          <path d="M44 62 Q32 75 32 90 Q32 105 44 118" strokeLinecap="round" opacity="0.6" />
-        </g>
-      </svg>
-    );
-  }
-  if (kind === "Email") {
-    return (
-      <svg viewBox="0 0 160 160" fill="none" className={base} aria-hidden>
-        <g stroke="currentColor" strokeWidth="1.4" fill="none" className="art-float" style={{ transformOrigin: "80px 85px" }}>
-          <rect x="35" y="55" width="90" height="60" rx="4" />
-          <path d="M35 60 L80 95 L125 60" />
-          <path d="M35 115 L70 85" opacity="0.5" />
-          <path d="M125 115 L90 85" opacity="0.5" />
-        </g>
-        <g stroke="currentColor" strokeWidth="1.4" fill="none" className="art-drift" style={{ transformOrigin: "130px 50px" }}>
-          <circle cx="130" cy="50" r="6" opacity="0.7" />
-          <circle cx="130" cy="50" r="10" opacity="0.35" />
-        </g>
-      </svg>
-    );
-  }
-  return null;
-}
-
-
-/* --------------------------------- UTIL ----------------------------------- */
+/* ─── UTIL ─── */
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
