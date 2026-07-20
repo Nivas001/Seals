@@ -713,20 +713,19 @@ function Process() {
   return (
     <section className="relative mx-auto mt-24 max-w-7xl overflow-hidden px-5 sm:mt-32 sm:px-8">
       <div
-        className="rounded-[2rem] p-6 sm:p-10 lg:p-14"
-        style={{ background: "var(--gradient-footer)" }}
+        className="rounded-[2rem] border border-hairline bg-surface p-6 sm:p-10 lg:p-14"
       >
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/50">
+            <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               <span className="h-1.5 w-1.5 rounded-full bg-brass" />
               How we work
             </div>
-            <h2 className="mt-3 font-display text-3xl font-black leading-[1.02] tracking-tight text-white sm:text-4xl">
+            <h2 className="mt-3 font-display text-3xl font-black leading-[1.02] tracking-tight text-ink sm:text-4xl">
               Assist &amp; deliver — in three steps.
             </h2>
           </div>
-          <span className="text-xs text-white/40">
+          <span className="text-xs text-muted-foreground">
             From first query to dispatched crate.
           </span>
         </div>
@@ -739,7 +738,7 @@ function Process() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.45, delay: i * 0.1 }}
-              className="relative flex flex-col rounded-2xl border border-white/8 bg-white/4 p-6 backdrop-blur-sm md:rounded-none md:border-0 md:border-r md:last:border-r-0 md:bg-transparent"
+              className="relative flex flex-col rounded-2xl border border-hairline bg-background p-6 md:rounded-none md:border-0 md:border-r md:last:border-r-0 md:bg-transparent md:border-hairline"
             >
               {/* Large step number */}
               <span
@@ -751,16 +750,15 @@ function Process() {
               <div className="mt-3 flex items-center gap-2">
                 <span
                   aria-hidden
-                  className="grid h-8 w-8 place-items-center rounded-lg"
-                  style={{ background: "rgba(255,255,255,0.1)" }}
+                  className="grid h-8 w-8 place-items-center rounded-lg border border-hairline bg-surface"
                 >
-                  <s.icon className="h-4 w-4 text-white/70" />
+                  <s.icon className="h-4 w-4 text-ink" />
                 </span>
-                <h3 className="font-display text-xl font-bold tracking-tight text-white">
+                <h3 className="font-display text-xl font-bold tracking-tight text-ink">
                   {s.t}
                 </h3>
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-white/55 md:pr-8">
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:pr-8">
                 {s.d}
               </p>
             </motion.li>

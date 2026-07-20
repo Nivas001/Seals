@@ -6,7 +6,7 @@ import { DownloadCatalog } from "@/components/site/DownloadCatalog";
 function LogoMark({ size = 32 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 36 36" fill="none" aria-hidden className="shrink-0">
-      <circle cx="18" cy="18" r="13" stroke="white" strokeWidth="1.4" strokeOpacity="0.4" />
+      <circle cx="18" cy="18" r="13" stroke="currentColor" className="text-ink" strokeWidth="1.4" strokeOpacity="0.4" />
       {Array.from({ length: 8 }).map((_, i) => {
         const angle = (i * 360) / 8;
         const rad = (angle * Math.PI) / 180;
@@ -14,56 +14,56 @@ function LogoMark({ size = 32 }: { size?: number }) {
         const y1 = 18 + Math.sin(rad) * 12;
         const x2 = 18 + Math.cos(rad) * 15.5;
         const y2 = 18 + Math.sin(rad) * 15.5;
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="white" strokeWidth="2.2" strokeLinecap="round" />;
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" className="text-ink" strokeWidth="2.2" strokeLinecap="round" />;
       })}
-      <circle cx="18" cy="18" r="6.5" stroke="white" strokeWidth="1.4" />
-      <circle cx="18" cy="18" r="2.5" fill="white" />
-      <line x1="18" y1="11.5" x2="18" y2="24.5" stroke="white" strokeWidth="1" strokeOpacity="0.45" />
-      <line x1="11.5" y1="18" x2="24.5" y2="18" stroke="white" strokeWidth="1" strokeOpacity="0.45" />
+      <circle cx="18" cy="18" r="6.5" stroke="currentColor" className="text-ink" strokeWidth="1.4" />
+      <circle cx="18" cy="18" r="2.5" fill="currentColor" className="text-ink" />
+      <line x1="18" y1="11.5" x2="18" y2="24.5" stroke="currentColor" className="text-ink" strokeWidth="1" strokeOpacity="0.45" />
+      <line x1="11.5" y1="18" x2="24.5" y2="18" stroke="currentColor" className="text-ink" strokeWidth="1" strokeOpacity="0.45" />
     </svg>
   );
 }
 
 export function Footer() {
   return (
-    <footer className="mt-24 relative overflow-hidden" style={{ background: "var(--gradient-footer)" }}>
+    <footer className="mt-24 relative overflow-hidden border-t border-hairline bg-surface">
       {/* Top accent border */}
       <div
         className="absolute inset-x-0 top-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, oklch(0.74 0.14 75 / 0.6) 30%, oklch(0.62 0.14 245 / 0.5) 70%, transparent)" }}
+        style={{ background: "linear-gradient(90deg, transparent, var(--border), transparent)" }}
       />
 
       {/* Subtle background texture */}
       <div
         aria-hidden
         className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full opacity-10"
-        style={{ background: "var(--gradient-brass)", filter: "blur(80px)" }}
+        style={{ background: "var(--surface)", filter: "blur(80px)" }}
       />
       <div
         aria-hidden
         className="pointer-events-none absolute -left-32 bottom-0 h-80 w-80 rounded-full opacity-8"
-        style={{ background: "var(--gradient-brand)", filter: "blur(80px)" }}
+        style={{ background: "var(--surface)", filter: "blur(80px)" }}
       />
 
       <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8">
         {/* Catalog download CTA */}
-        <div className="mb-14 flex flex-col items-start justify-between gap-5 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm sm:flex-row sm:items-center sm:p-8">
+        <div className="mb-14 flex flex-col items-start justify-between gap-5 rounded-3xl border border-hairline bg-background p-6 backdrop-blur-sm sm:flex-row sm:items-center sm:p-8">
           <div className="flex items-start gap-4">
             <span
               aria-hidden
               className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl"
-              style={{ background: "var(--gradient-brass)" }}
+              style={{ background: "var(--surface)" }}
             >
-              <FileDown className="h-5 w-5 text-white" strokeWidth={2.25} />
+              <FileDown className="h-5 w-5 text-ink" strokeWidth={2.25} />
             </span>
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
                 Product catalog · PDF
               </div>
-              <h4 className="mt-1 text-lg font-semibold tracking-tight text-white sm:text-xl">
+              <h4 className="mt-1 text-lg font-semibold tracking-tight text-ink sm:text-xl">
                 Take the full AARRKKAA lineup with you.
               </h4>
-              <p className="mt-1 max-w-md text-sm text-white/60">
+              <p className="mt-1 max-w-md text-sm text-muted-foreground">
                 Every category, sizing range and industry we serve — in one downloadable brochure.
               </p>
             </div>
@@ -78,21 +78,21 @@ export function Footer() {
             <div className="flex items-center gap-3">
               <span
                 aria-hidden
-                className="grid h-10 w-10 place-items-center rounded-full text-primary-foreground"
-                style={{ background: "var(--gradient-brand)" }}
+                className="grid h-10 w-10 place-items-center rounded-full text-ink"
+                style={{ background: "var(--surface)" }}
               >
                 <LogoMark size={22} />
               </span>
               <div className="leading-tight">
-                <div className="text-sm font-bold tracking-tight text-white">
+                <div className="text-sm font-bold tracking-tight text-ink">
                   AARRKKAA INTERNATIONAL
                 </div>
-                <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/50">
+                <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
                   {COMPANY.tagline}
                 </div>
               </div>
             </div>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/55">
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Supplier and distributor of pumps, mechanical seals, elastomers,
               stainless steel and precision components for food, pharma,
               chemical and process industries across South India.
@@ -113,7 +113,7 @@ export function Footer() {
 
           {/* Products */}
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               Products
             </h4>
             <ul className="mt-4 space-y-2.5 text-sm">
@@ -122,7 +122,7 @@ export function Footer() {
                   <Link
                     to="/products/$category"
                     params={{ category: c.slug }}
-                    className="text-white/65 transition-colors hover:text-white"
+                    className="text-ink/60 transition-colors hover:text-ink"
                   >
                     {c.name}
                   </Link>
@@ -133,33 +133,33 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               Company
             </h4>
             <ul className="mt-4 space-y-2.5 text-sm">
-              <li><Link to="/about" className="text-white/65 transition-colors hover:text-white">About us</Link></li>
-              <li><Link to="/industries" className="text-white/65 transition-colors hover:text-white">Industries served</Link></li>
-              <li><Link to="/products" className="text-white/65 transition-colors hover:text-white">Full catalog</Link></li>
-              <li><Link to="/contact" className="text-white/65 transition-colors hover:text-white">Contact</Link></li>
+              <li><Link to="/about" className="text-ink/60 transition-colors hover:text-ink">About us</Link></li>
+              <li><Link to="/industries" className="text-ink/60 transition-colors hover:text-ink">Industries served</Link></li>
+              <li><Link to="/products" className="text-ink/60 transition-colors hover:text-ink">Full catalog</Link></li>
+              <li><Link to="/contact" className="text-ink/60 transition-colors hover:text-ink">Contact</Link></li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               Reach us
             </h4>
-            <ul className="mt-4 space-y-3 text-sm text-white/65">
+            <ul className="mt-4 space-y-3 text-sm text-ink/60">
               {COMPANY.phones.map((p) => (
                 <li key={p} className="flex items-center gap-2">
                   <Phone className="h-3.5 w-3.5 shrink-0 text-brass" />
-                  <a href={`tel:${p.replace(/\s/g, "")}`} className="transition-colors hover:text-white">{p}</a>
+                  <a href={`tel:${p.replace(/\s/g, "")}`} className="transition-colors hover:text-ink">{p}</a>
                 </li>
               ))}
               {COMPANY.emails.map((e) => (
                 <li key={e} className="flex items-center gap-2">
                   <Mail className="h-3.5 w-3.5 shrink-0 text-brass" />
-                  <a href={`mailto:${e}`} className="break-all transition-colors hover:text-white">{e}</a>
+                  <a href={`mailto:${e}`} className="break-all transition-colors hover:text-ink">{e}</a>
                 </li>
               ))}
               <li className="flex items-start gap-2">
@@ -175,7 +175,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/35 sm:flex-row sm:items-center">
+        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-hairline pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} AARRKKAA International. All rights reserved.</p>
           <p>Head office in Hosur · Branches across South India</p>
         </div>
