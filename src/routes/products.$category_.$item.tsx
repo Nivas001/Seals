@@ -5,7 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { getItem } from "@/data/items";
 import { COMPANY } from "@/data/catalog";
 
-export const Route = createFileRoute("/products/$category/$item")({
+export const Route = createFileRoute("/products/$category_/$item")({
   loader: ({ params }) => {
     const detail = getItem(params.category, params.item);
     if (!detail) throw notFound();

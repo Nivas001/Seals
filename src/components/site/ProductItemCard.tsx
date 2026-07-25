@@ -42,11 +42,11 @@ export function ProductItemCard({
           )}
         </div>
 
-        {/* Item Title linking directly to new item page */}
+        {/* Item Title linking directly to new item page with Stretched Link covering the entire card */}
         <Link
           to="/products/$category/$item"
           params={{ category: category.slug, item: itemSlug }}
-          className="block group/title"
+          className="block group/title after:absolute after:inset-0 after:z-10"
         >
           <h3 className="font-sans text-base sm:text-lg font-bold tracking-tight text-ink group-hover/title:text-brass transition-colors flex items-center justify-between">
             <span className="truncate pr-2">{itemName}</span>
@@ -63,11 +63,11 @@ export function ProductItemCard({
 
         {/* Ultra-compact 2-column Key Spec Grid (Equal height & truncated) */}
         {previewSpecs.length > 0 && (
-          <div className="mt-3 grid grid-cols-2 gap-1.5 pt-2.5 border-t border-hairline/40">
+          <div className="mt-3 grid grid-cols-2 gap-1.5 pt-2.5 border-t border-hairline/40 relative z-20 pointer-events-none">
             {previewSpecs.map((spec) => (
               <div
                 key={spec.label}
-                className="rounded border border-hairline/60 bg-background/60 px-2 py-1 text-[11px] truncate"
+                className="rounded border border-hairline/60 bg-background/60 px-2 py-1 text-[11px] truncate pointer-events-auto"
                 title={`${spec.label}: ${spec.value}`}
               >
                 <span className="text-muted-foreground text-[10px] block truncate uppercase tracking-wider font-semibold">
@@ -83,7 +83,7 @@ export function ProductItemCard({
       </div>
 
       {/* Bottom Action Footer */}
-      <div className="mt-5 flex items-center justify-between gap-2 border-t border-hairline/60 pt-3.5">
+      <div className="mt-5 flex items-center justify-between gap-2 border-t border-hairline/60 pt-3.5 relative z-20">
         <Link
           to="/products/$category/$item"
           params={{ category: category.slug, item: itemSlug }}
