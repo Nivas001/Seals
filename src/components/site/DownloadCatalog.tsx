@@ -47,7 +47,7 @@ export function DownloadCatalog({
       setState("downloaded");
       toast.success("AARRKKAA Product Catalog downloaded!", {
         description: "10 major industrial pump & seal categories saved to your device.",
-        icon: <CheckCircle2 className="h-4 w-4 text-emerald-500" />,
+        icon: <CheckCircle2 className="h-4 w-4 text-brass" />,
         duration: 4000,
       });
     }, 1200);
@@ -78,13 +78,13 @@ export function DownloadCatalog({
 
   const activeStyles =
     state === "downloaded"
-      ? "!border-emerald-500/60 !bg-emerald-500/15 !text-emerald-700 dark:!text-emerald-300 !shadow-[0_0_20px_rgba(16,185,129,0.3)] scale-[1.02]"
+      ? "!border-brass/60 !shadow-[0_0_15px_rgba(217,119,6,0.15)] scale-[1.02]"
       : state === "downloading"
-      ? "!border-brass/60 !bg-brass/15 !text-ink !shadow-[0_0_15px_rgba(217,119,6,0.2)]"
+      ? "!border-brass/60 !shadow-[0_0_15px_rgba(217,119,6,0.15)]"
       : "";
 
   const inlineStyle =
-    variant === "navbar-pill" && state === "idle"
+    variant === "navbar-pill"
       ? {
           background:
             "linear-gradient(180deg, color-mix(in oklab, white 85%, transparent) 0%, color-mix(in oklab, white 55%, transparent) 100%)",
@@ -132,9 +132,9 @@ export function DownloadCatalog({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.15 }}
-            className="flex items-center gap-1.5 font-semibold text-brass"
+            className="flex items-center gap-1.5 font-semibold"
           >
-            <Loader2 className="h-3.5 w-3.5 animate-spin" strokeWidth={2.5} />
+            <Loader2 className="h-3.5 w-3.5 animate-spin text-brass" strokeWidth={2.5} />
             <span>{displayLabel}</span>
           </motion.span>
         )}
@@ -146,9 +146,9 @@ export function DownloadCatalog({
             animate={{ opacity: 1, scale: [1, 1.15, 1] }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ type: "spring", duration: 0.4 }}
-            className="flex items-center gap-1.5 font-bold text-emerald-600 dark:text-emerald-400"
+            className="flex items-center gap-1.5 font-bold"
           >
-            <CheckCircle2 className="h-4 w-4 animate-bounce" strokeWidth={2.5} />
+            <CheckCircle2 className="h-4 w-4 animate-bounce text-brass" strokeWidth={2.5} />
             <span>{displayLabel}</span>
           </motion.span>
         )}
