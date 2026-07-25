@@ -75,6 +75,45 @@ function AboutPage() {
         </section>
 
         <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
+            Our Clients &amp; Partners
+          </div>
+          <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
+            Trusted by industry leaders across South India
+          </h2>
+          <p className="mt-4 max-w-2xl text-base text-muted-foreground">
+            We are proud to supply and support premier organizations across pharmaceuticals, biotechnology, food processing, chemicals, energy, and precision engineering.
+          </p>
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+            {[
+              "Tata Electronics",
+              "Thermax Onsite Energy Solutions",
+              "Anthem Biosciences",
+              "Werner Finley",
+              "Astral Coatings",
+              "Ecovinal International",
+              "Yashaswi Fish Meal & Oil",
+              "Zenfold Sustainable Technology",
+              "H&V Advanced Materials",
+              "Eco Edge Solutions",
+              "Mukka Proteins",
+              "Megha Fruit Processing",
+              "RMZ Oilfield Engineering",
+              "Ingex Botanicals",
+              "Ovobel Foods",
+              "Essae Gears & Transmissions",
+            ].map((client) => (
+              <div
+                key={client}
+                className="flex items-center justify-center rounded-xl border border-hairline bg-surface p-4 text-center text-xs font-bold tracking-tight text-ink/85 transition hover:border-ink/25 hover:bg-white hover:shadow-2xs"
+              >
+                {client}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
           <h2 className="font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
             Where we are
           </h2>
