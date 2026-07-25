@@ -270,9 +270,9 @@ function Hero() {
                   </span>
                   <div className="leading-tight">
                     <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                      We provide bearings
+                      Process Equipment Spares
                     </div>
-                    <div className="text-sm font-bold text-ink">SKF · FAG · NTN · INA</div>
+                    <div className="text-sm font-bold text-ink">Pumps · Seals · Valves · Hoses</div>
                   </div>
                 </div>
               </motion.div>
