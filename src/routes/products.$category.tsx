@@ -126,7 +126,7 @@ function CategoryPage() {
               {c.items.length} products
             </span>
           </div>
-          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-start">
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
             {c.items.map((item: string, i: number) => (
               <li key={item} className="h-full">
                 <ProductItemCard category={c} itemName={item} index={i} />
