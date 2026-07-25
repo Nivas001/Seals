@@ -14,6 +14,8 @@ export function ProductItemCard({
 }) {
   const itemSlug = slugify(itemName);
   const detail = getItem(category.slug, itemSlug);
+  const productUrl = `/products/${encodeURIComponent(category.slug)}/${encodeURIComponent(itemSlug)}`;
+  const contactUrl = `/contact?category=${encodeURIComponent(category.name)}&product=${encodeURIComponent(itemName)}`;
 
   // Show top 3 non-redundant specs as preview pills
   const previewSpecs = detail
@@ -27,7 +29,14 @@ export function ProductItemCard({
     : [];
 
   return (
-    <div className="group relative flex flex-col justify-between rounded-2xl border border-hairline bg-surface p-5 sm:p-6 transition-all duration-300 hover:border-ink/25 hover:shadow-soft overflow-hidden">
+    <div
+      onClick={(e) => {
+        // Navigate to product detail page when clicking anywhere on the card (unless clicking a specific action button)
+        if ((e.target as HTMLElement).closest('[data-no-card-click="true"]')) return;
+        window.location.href = productUrl;
+      }}
+      className="group relative flex flex-col justify-between rounded-2xl border border-hairline bg-surface p-5 sm:p-6 transition-all duration-300 hover:border-ink/25 hover:shadow-soft overflow-hidden cursor-pointer"
+    >
       <div>
         {/* Top bar: Item number and specs count */}
         <div className="flex items-center justify-between gap-3 mb-3">
@@ -43,16 +52,19 @@ export function ProductItemCard({
         </div>
 
         {/* Item Title linking directly to new item page */}
-        <Link
-          to="/products/$category/$item"
-          params={{ category: category.slug, item: itemSlug }}
+        <a
+          href={productUrl}
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = productUrl;
+          }}
           className="block group/title"
         >
           <h3 className="font-sans text-lg font-bold tracking-tight text-ink group-hover/title:text-brass transition-colors flex items-center justify-between">
             <span>{itemName}</span>
             <ArrowRight className="h-4 w-4 text-ink/30 transition-all group-hover/title:translate-x-0.5 group-hover/title:text-brass shrink-0 ml-2" />
           </h3>
-        </Link>
+        </a>
 
         {/* Description */}
         {detail && (
@@ -79,23 +91,32 @@ export function ProductItemCard({
 
       {/* Bottom Action Bar: Clear link to product details page & Quote button */}
       <div className="mt-5 flex items-center justify-between gap-2 border-t border-hairline/60 pt-3.5">
-        <Link
-          to="/products/$category/$item"
-          params={{ category: category.slug, item: itemSlug }}
+        <a
+          href={productUrl}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            window.location.href = productUrl;
+          }}
           className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-background px-3.5 py-1.5 text-xs font-semibold text-ink transition-all hover:border-ink/25 hover:bg-surface active:scale-95 group/btn cursor-pointer shadow-2xs"
         >
           <span>View Specs &amp; Details</span>
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5 text-brass" />
-        </Link>
+        </a>
 
-        <Link
-          to="/contact"
-          search={{ category: category.name, product: itemName }}
+        <a
+          href={contactUrl}
+          data-no-card-click="true"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            window.location.href = contactUrl;
+          }}
           className="inline-flex items-center gap-1.5 rounded-full bg-brass px-4 py-1.5 text-[11px] font-bold text-ink shadow-2xs transition-all hover:bg-brass/90 hover:shadow active:scale-95 cursor-pointer"
         >
           <Sparkles className="h-3 w-3 text-ink" />
           <span>Get Quote</span>
-        </Link>
+        </a>
       </div>
     </div>
   );
