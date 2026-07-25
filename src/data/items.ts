@@ -1,4 +1,5 @@
 import { CATEGORIES, SECTORS, type ProductCategory } from "./catalog";
+import { ITEM_SPECIFIC_DATA } from "./itemDetails";
 
 export const slugify = (s: string) =>
   s
@@ -332,7 +333,10 @@ export function getItem(
   if (!name) return null;
 
   const defaults = CATEGORY_DEFAULTS[category.slug] ?? CATEGORY_DEFAULTS.other;
+  const specific = ITEM_SPECIFIC_DATA[name];
+
   const description =
+    specific?.description ??
     ITEM_DESCRIPTIONS[name] ??
     `${name} in the ${category.name.toLowerCase()} range from AARRKKAA International — ${category.description}`;
 
@@ -345,7 +349,7 @@ export function getItem(
     .map((s) => CATEGORIES.find((c) => c.slug === s))
     .filter((c): c is ProductCategory => Boolean(c));
 
-  const applications = defaults.applications
+  const baseApplications = defaults.applications
     .map((a) => SECTORS.find((s) => s.name === a)?.name ?? a)
     .filter(Boolean);
 
@@ -353,11 +357,11 @@ export function getItem(
     category,
     name,
     slug: itemSlug,
-    tagline: defaults.tagline(name),
+    tagline: specific?.tagline ?? defaults.tagline(name),
     description,
-    specs: defaults.specs(name, category),
-    benefits: defaults.benefits,
-    applications,
+    specs: specific?.specs ?? defaults.specs(name, category),
+    benefits: specific?.benefits ?? defaults.benefits,
+    applications: specific?.applications ?? baseApplications,
     siblings,
     relatedCategories,
   };
