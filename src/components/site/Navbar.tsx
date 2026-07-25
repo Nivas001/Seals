@@ -2,7 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Menu, X, Phone, Download } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CATALOG_PDF_URL, CATALOG_PDF_FILENAME } from "@/lib/catalog-download";
+import { DownloadCatalog } from "@/components/site/DownloadCatalog";
 
 
 const NAV = [
@@ -140,21 +140,7 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-2">
-            <a
-              href={CATALOG_PDF_URL}
-              download={CATALOG_PDF_FILENAME}
-              target="_blank"
-              rel="noopener"
-              className="glass-shimmer relative hidden items-center gap-1.5 overflow-hidden rounded-full border border-ink/10 px-3.5 py-2 text-[12px] font-semibold text-ink shadow-[0_1px_0_0_rgba(255,255,255,0.9)_inset] transition-colors duration-300 hover:border-ink/25 lg:inline-flex"
-              style={{
-                background:
-                  "linear-gradient(180deg, color-mix(in oklab, white 85%, transparent) 0%, color-mix(in oklab, white 55%, transparent) 100%)",
-              }}
-              aria-label="Download catalog PDF"
-            >
-              <Download className="h-3.5 w-3.5" strokeWidth={2.5} />
-              Catalog
-            </a>
+            <DownloadCatalog variant="navbar-pill" label="Catalog" className="hidden lg:inline-flex" />
             <a
               href="tel:+917806936475"
               className="glass-cta-dark glass-shimmer relative hidden items-center gap-1.5 overflow-hidden rounded-full px-4 py-2 text-[12px] font-semibold text-background transition-transform duration-300 hover:-translate-y-0.5 sm:inline-flex"
@@ -229,17 +215,7 @@ export function Navbar() {
                 })}
               </ul>
               <div className="space-y-3">
-                <a
-                  href={CATALOG_PDF_URL}
-                  download={CATALOG_PDF_FILENAME}
-                  target="_blank"
-                  rel="noopener"
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-center gap-2 rounded-full border border-ink/15 bg-background px-6 py-3.5 text-sm font-semibold text-ink"
-                >
-                  <Download className="h-4 w-4" />
-                  Download catalog (PDF)
-                </a>
+                <DownloadCatalog variant="mobile-menu" label="Download catalog (PDF)" onDownload={() => setOpen(false)} />
                 <a
                   href="tel:+917806936475"
                   className="glass-cta-dark flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-background"
