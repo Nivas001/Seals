@@ -4,6 +4,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { getItem } from "@/data/items";
 import { COMPANY } from "@/data/catalog";
+import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 
 export const Route = createFileRoute("/products/$category_/$item")({
   loader: ({ params }) => {
@@ -32,31 +33,8 @@ export const Route = createFileRoute("/products/$category_/$item")({
     };
   },
   component: ItemPage,
-  notFoundComponent: NotFoundItem,
+  notFoundComponent: CreativeNotFound,
 });
-
-function NotFoundItem() {
-  return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <main className="mx-auto max-w-3xl px-5 py-40 text-center">
-        <h1 className="font-display text-4xl font-black tracking-tight text-ink">
-          Product not found
-        </h1>
-        <p className="mt-3 text-muted-foreground">
-          The item you are looking for is not in this catalog.
-        </p>
-        <Link
-          to="/products"
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-background"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back to catalog
-        </Link>
-      </main>
-      <Footer />
-    </div>
-  );
-}
 
 function ItemPage() {
   const { detail } = Route.useLoaderData() as { detail: NonNullable<ReturnType<typeof getItem>> };

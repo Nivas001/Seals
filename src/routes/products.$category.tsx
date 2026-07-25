@@ -5,6 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { CATEGORIES, getCategory } from "@/data/catalog";
 import { slugify } from "@/data/items";
 import { ProductItemCard } from "@/components/site/ProductItemCard";
+import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 
 export const Route = createFileRoute("/products/$category")({
   loader: ({ params }) => {
@@ -27,24 +28,8 @@ export const Route = createFileRoute("/products/$category")({
     };
   },
   component: CategoryPage,
-  notFoundComponent: NotFound,
+  notFoundComponent: CreativeNotFound,
 });
-
-function NotFound() {
-  return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <main className="mx-auto max-w-3xl px-5 py-40 text-center">
-        <h1 className="font-display text-4xl font-black tracking-tight text-ink">Category not found</h1>
-        <p className="mt-3 text-muted-foreground">The catalog page you are looking for doesn&rsquo;t exist.</p>
-        <Link to="/products" className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-background">
-          <ArrowLeft className="h-4 w-4" /> Back to catalog
-        </Link>
-      </main>
-      <Footer />
-    </div>
-  );
-}
 
 function CategoryPage() {
   const { category: c } = Route.useLoaderData();

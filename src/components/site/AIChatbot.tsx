@@ -68,6 +68,11 @@ export function AIChatbot() {
   useEffect(() => {
     if (open) {
       scrollToBottom();
+      const pending = chatbotState.getPendingQuery();
+      if (pending) {
+        chatbotState.clearPendingQuery();
+        handleChipClick(pending);
+      }
     }
   }, [open, messages, isTyping]);
 
@@ -107,6 +112,29 @@ export function AIChatbot() {
     products?: ProductMatch[];
   } {
     const q = queryText.toLowerCase().trim();
+
+    // 0. 404 / Missing page / Error solving / Leak
+    if (
+      q.includes("404") ||
+      q.includes("not found") ||
+      q.includes("missing") ||
+      q.includes("error") ||
+      q.includes("broken link") ||
+      q.includes("what to do") ||
+      q.includes("solve") ||
+      q.includes("fix") ||
+      q.includes("page gone") ||
+      q.includes("leak") ||
+      q.includes("doesn't exist") ||
+      q.includes("cant find") ||
+      q.includes("cannot find")
+    ) {
+      return {
+        reply:
+          "🛠️ **404 / Missing Part Remediation Protocol:**\n\nIt looks like you encountered a **404 Page Not Found** or are searching for a specialized component that isn't listed in our standard online index! Here is exactly how to solve it:\n\n1️⃣ **Search Our Master Categories:** We supply thousands of precision items. Browse all 12 core divisions directly at `/products`.\n2️⃣ **Direct Part Identification:** Type or paste your OEM model number, seal shaft size, or fluid application right here in this chat, and I will identify the exact metallurgical equivalent!\n3️⃣ **Custom Engineering & Fabrication:** If the component is obsolete or requires custom machining, our engineering team manufactures mechanical seals, elastomers, and process pumps to order. Contact sales below:",
+        contactCard: true,
+      };
+    }
 
     // 1. Contact / Reach / Person / Phone / Email / WhatsApp / Address
     if (
