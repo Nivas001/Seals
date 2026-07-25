@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { CATEGORIES, COMPANY } from "@/data/catalog";
 import { slugify } from "@/data/items";
+import { useChatbotOpen, chatbotState } from "@/data/chatbotState";
 
 type ProductMatch = {
   name: string;
@@ -46,7 +47,8 @@ const QUICK_CHIPS = [
 ];
 
 export function AIChatbot() {
-  const [open, setOpen] = useState(false);
+  const open = useChatbotOpen();
+  const setOpen = chatbotState.setOpen;
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([
     {

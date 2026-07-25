@@ -13,6 +13,7 @@ import { CATEGORIES, SECTORS, COMPANY } from "@/data/catalog";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { GlowCard } from "@/components/ui/GlowCard";
+import { LineSidebar } from "@/components/ui/LineSidebar";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -71,9 +72,21 @@ function StatItem({ target, suffix, label }: { target: number; suffix: string; l
 
 function Home() {
   const featured = CATEGORIES.slice(0, 8);
+  const sidebarSections = [
+    { id: "hero", label: "Overview" },
+    { id: "about", label: "About Us" },
+    { id: "catalog", label: "Products" },
+    { id: "industries", label: "Industries" },
+    { id: "why-us", label: "Why AARRKKAA" },
+    { id: "testimonials", label: "Reviews" },
+    { id: "process", label: "How We Work" },
+    { id: "find-us", label: "Location" },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-ink">
       <Navbar />
+      <LineSidebar sections={sidebarSections} />
       <main>
         <Hero />
         <TrustStrip />
@@ -147,7 +160,7 @@ function FloatingActions() {
 /* ─────────────────────────── HERO ─────────────────────────── */
 function Hero() {
   return (
-    <section className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
+    <section id="hero" className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[560px] opacity-[0.35]">
         <div className="grid-lines absolute inset-0" />
         <div
@@ -370,7 +383,7 @@ function TrustStrip() {
 /* ─── ABOUT PREVIEW ─── */
 function AboutPreview() {
   return (
-    <section className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+    <section id="about" className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
         <div>
           <Eyebrow>About the company</Eyebrow>
@@ -436,7 +449,7 @@ function AboutPreview() {
 /* ─── PRODUCTS BENTO ─── */
 function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
   return (
-    <section className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+    <section id="catalog" className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
         <div>
           <Eyebrow>What we supply</Eyebrow>
@@ -510,7 +523,7 @@ function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
 /* ─── INDUSTRIES ─── */
 function Industries() {
   return (
-    <section className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+    <section id="industries" className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
         <div>
           <Eyebrow>Industries we serve</Eyebrow>
@@ -586,7 +599,7 @@ function WhyUs() {
     },
   ];
   return (
-    <section className="relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+    <section id="why-us" className="relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="grid-background pointer-events-none opacity-40" />
       <div className="relative z-10">
         <Eyebrow>Why AARRKKAA</Eyebrow>
@@ -661,7 +674,7 @@ const TESTIMONIALS = [
 
 function Testimonials() {
   return (
-    <section className="relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+    <section id="testimonials" className="relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       {/* Background accent */}
       <div
         aria-hidden
@@ -735,7 +748,7 @@ function Process() {
     },
   ];
   return (
-    <section className="relative mx-auto mt-24 max-w-7xl overflow-hidden px-5 sm:mt-32 sm:px-8">
+    <section id="process" className="relative mx-auto mt-24 max-w-7xl overflow-hidden px-5 sm:mt-32 sm:px-8">
       <div
         className="relative overflow-hidden rounded-[2rem] border border-hairline bg-surface p-6 sm:p-10 lg:p-14"
       >
@@ -881,7 +894,7 @@ function CTABand() {
 /* ─── CONTACT PREVIEW — polished cards, no amateur SVG art ─── */
 function ContactPreview() {
   return (
-    <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-8">
+    <section id="find-us" className="mx-auto mt-24 max-w-7xl px-5 sm:px-8">
       <Eyebrow>Find us</Eyebrow>
       <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
         Get in touch.
