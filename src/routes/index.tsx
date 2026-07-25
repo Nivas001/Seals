@@ -315,24 +315,38 @@ function Hero() {
 /* ─── TRUST STRIP ─── */
 function TrustStrip() {
   const items = [
-    "SKF", "FAG", "NTN", "INA", "Schneider Electric",
-    "PTFE", "Werner Finley", "FFKM", "EPDM", "HNBR", "Tata Electronics",
-    "Enterprise Partner", "RMZ Oil & Gas", "SS 316", "NYLATRON",
+    "Tata Electronics",
+    "Thermax Onsite Energy Solutions",
+    "Anthem Biosciences",
+    "Werner Finley",
+    "Astral Coatings",
+    "Ecovinal International",
+    "Yashaswi Fish Meal & Oil",
+    "Zenfold Sustainable Technology",
+    "H&V Advanced Materials",
+    "Eco Edge Solutions",
+    "Mukka Proteins",
+    "Megha Fruit Processing",
+    "RMZ Oilfield Engineering",
+    "Ingex Botanicals",
+    "Ovobel Foods",
+    "Essae Gears & Transmissions",
   ];
   return (
     <section className="mt-20 border-y border-hairline bg-surface py-6 sm:mt-28">
       <div className="mx-auto flex max-w-7xl items-center gap-6 overflow-hidden px-5 sm:px-8">
         <span className="hidden shrink-0 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:block">
-          Brands &amp; materials we stock
+          Trusted by industry leaders
         </span>
         <div className="relative flex-1 overflow-hidden">
           <div className="marquee-track flex w-max gap-10">
             {[...items, ...items].map((x, i) => (
               <span
                 key={i}
-                className="whitespace-nowrap text-[13px] font-semibold tracking-tight text-ink/60"
+                className="flex items-center gap-10 whitespace-nowrap text-[13px] font-bold tracking-tight text-ink/75"
               >
-                {x}
+                <span>{x}</span>
+                <span aria-hidden className="h-1 w-1 rounded-full bg-brass/60" />
               </span>
             ))}
           </div>
@@ -572,6 +586,7 @@ function WhyUs() {
   ];
   return (
     <section className="relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+      <div className="grid-background pointer-events-none opacity-40" />
       <Eyebrow>Why AARRKKAA</Eyebrow>
       <div className="mt-3 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <h2 className="max-w-xl font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
@@ -713,9 +728,10 @@ function Process() {
   return (
     <section className="relative mx-auto mt-24 max-w-7xl overflow-hidden px-5 sm:mt-32 sm:px-8">
       <div
-        className="rounded-[2rem] border border-hairline bg-surface p-6 sm:p-10 lg:p-14"
+        className="relative overflow-hidden rounded-[2rem] border border-hairline bg-surface p-6 sm:p-10 lg:p-14"
       >
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div className="grid-background-bottom pointer-events-none opacity-50" />
+        <div className="relative flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               <span className="h-1.5 w-1.5 rounded-full bg-brass" />
@@ -730,7 +746,7 @@ function Process() {
           </span>
         </div>
 
-        <ol className="mt-10 grid gap-px md:grid-cols-3">
+        <ol className="relative mt-10 grid gap-px md:grid-cols-3">
           {steps.map((s, i) => (
             <motion.li
               key={s.k}
@@ -871,6 +887,7 @@ function ContactPreview() {
           transition={{ duration: 0.5 }}
           className="lg:col-span-2 relative overflow-hidden rounded-2xl border border-hairline bg-surface p-6 sm:p-8 transition-shadow duration-300 hover:shadow-lift"
         >
+          <div className="grid-background pointer-events-none opacity-[0.15]" />
           <div
             aria-hidden
             className="pointer-events-none absolute -right-8 -top-8 h-48 w-48 rounded-full opacity-40"
