@@ -1,5 +1,6 @@
 import { CATEGORIES, SECTORS, type ProductCategory } from "./catalog";
 import { ITEM_SPECIFIC_DATA } from "./itemDetails";
+import { ITEM_IMAGES } from "./itemImages";
 
 export const slugify = (s: string) =>
   s
@@ -14,6 +15,7 @@ export type ItemDetail = {
   slug: string;
   tagline: string;
   description: string;
+  image: string;
   specs: { label: string; value: string }[];
   benefits: string[];
   applications: string[];
@@ -359,6 +361,7 @@ export function getItem(
     slug: itemSlug,
     tagline: specific?.tagline ?? defaults.tagline(name),
     description,
+    image: ITEM_IMAGES[name] ?? category.image,
     specs: specific?.specs ?? defaults.specs(name, category),
     benefits: specific?.benefits ?? defaults.benefits,
     applications: specific?.applications ?? baseApplications,

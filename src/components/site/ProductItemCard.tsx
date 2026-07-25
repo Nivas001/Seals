@@ -73,6 +73,26 @@ export function ProductItemCard({
           )}
         </div>
 
+        {/* Item Photo Container */}
+        {detail && detail.image && (
+          <div
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="mt-3.5 relative aspect-[16/9] overflow-hidden rounded-xl border border-hairline bg-background/80 cursor-pointer group/image shadow-2xs"
+          >
+            <img
+              src={detail.image}
+              alt={`${itemName} — ${category.name}`}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover/image:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover/image:opacity-100 flex items-end p-2.5">
+              <span className="text-[10px] font-semibold text-white uppercase tracking-wider bg-black/70 backdrop-blur-md px-2 py-0.5 rounded border border-white/20">
+                Click to expand specs
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Quick Preview Spec Badges (Pills) */}
         {previewSpecs.length > 0 && (
           <div className="mt-3.5 flex flex-wrap gap-1.5">
