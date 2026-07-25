@@ -142,8 +142,29 @@ export function ProductItemCard({
                   </div>
                 )}
 
+                {/* Instant Quote Request Banner in Expanded View */}
+                <div className="mt-4 rounded-xl border border-brass/40 bg-gradient-to-br from-brass/15 via-brass/5 to-transparent p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                  <div>
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-ink">
+                      <Sparkles className="h-3.5 w-3.5 text-brass" />
+                      <span>Need a quote for this {itemName}?</span>
+                    </div>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground leading-relaxed">
+                      Click below — we&rsquo;ll auto-fill category &amp; product details into the quote request form.
+                    </p>
+                  </div>
+                  <Link
+                    to="/contact"
+                    search={{ category: category.name, product: itemName }}
+                    className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-brass px-3.5 py-1.5 text-xs font-bold text-ink shadow-sm transition-all hover:bg-brass/90 hover:shadow active:scale-95 cursor-pointer"
+                  >
+                    <span>Request Quote Now</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+
                 {/* Inside Expanded Action Footer */}
-                <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-3.5">
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-3">
                   <a
                     href="tel:+917806936475"
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink transition-colors hover:text-brass"

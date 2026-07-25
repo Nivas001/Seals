@@ -16,7 +16,18 @@ import { Footer } from "@/components/site/Footer";
 import { COMPANY, CATEGORIES } from "@/data/catalog";
 import { toast } from "sonner";
 
+type ContactSearch = {
+  category?: string;
+  product?: string;
+  subject?: string;
+};
+
 export const Route = createFileRoute("/contact")({
+  validateSearch: (search: Record<string, unknown>): ContactSearch => ({
+    category: typeof search.category === "string" ? search.category : undefined,
+    product: typeof search.product === "string" ? search.product : undefined,
+    subject: typeof search.subject === "string" ? search.subject : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Contact — AARRKKAA International" },
@@ -216,6 +227,15 @@ const labelBase =
 function InquiryCard() {
   const [submitting, setSubmitting] = useState(false);
   const [fileName, setFileName] = useState<string>("");
+  const search = Route.useSearch();
+
+  const defaultCategory = search.category || "";
+  const defaultSubject = search.product
+    ? `Quote Request: ${search.product}`
+    : search.subject || "";
+  const defaultMessage = search.product
+    ? `I would like to request a quotation and technical specifications for:\n\n• Product: ${search.product}\n• Category: ${search.category || "General"}\n\n[Please specify quantity, duty conditions, or drawing numbers below]:\n`
+    : "";
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -261,7 +281,27 @@ function InquiryCard() {
 
   return (
     <CardShell eyebrow="Enquiry" title="Send us a request">
-      <form className="grid gap-4" onSubmit={onSubmit} noValidate>
+      {(search.product || search.category) && (
+        <div className="mb-6 rounded-xl border border-brass/40 bg-brass/10 p-4 text-xs text-ink flex items-start gap-3 shadow-2xs">
+          <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brass text-ink font-bold">✓</span>
+          <div>
+            <div className="font-bold text-ink">
+              {search.product ? "Product details auto-populated!" : "Category auto-populated!"}
+            </div>
+            <div className="mt-0.5 text-muted-foreground leading-relaxed">
+              We&rsquo;ve pre-selected <span className="font-semibold text-ink">{search.category || "your category"}</span>
+              {search.product && <> and pre-filled your enquiry for <span className="font-semibold text-ink">{search.product}</span></>}.
+              Just add your contact details below.
+            </div>
+          </div>
+        </div>
+      )}
+      <form
+        key={defaultSubject + defaultCategory}
+        className="grid gap-4"
+        onSubmit={onSubmit}
+        noValidate
+      >
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="min-w-0">
             <label htmlFor="name" className={labelBase}>
@@ -300,7 +340,7 @@ function InquiryCard() {
             <select
               id="category"
               name="category"
-              defaultValue=""
+              defaultValue={defaultCategory}
               className={`mt-2 ${inputBase} appearance-none`}
             >
               <option value="" disabled>
@@ -320,6 +360,7 @@ function InquiryCard() {
             <input
               id="subject"
               name="subject"
+              defaultValue={defaultSubject}
               maxLength={140}
               placeholder="Purpose of enquiry"
               className={`mt-2 ${inputBase}`}
@@ -334,6 +375,7 @@ function InquiryCard() {
           <textarea
             id="message"
             name="message"
+            defaultValue={defaultMessage}
             required
             rows={5}
             maxLength={2000}

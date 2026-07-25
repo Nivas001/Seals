@@ -104,6 +104,7 @@ function ItemPage() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   to="/contact"
+                  search={{ category: c.name, product: d.name }}
                   className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background hover:bg-ink/85"
                 >
                   Request a quote <ArrowRight className="h-4 w-4" />
