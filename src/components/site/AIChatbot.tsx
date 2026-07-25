@@ -52,7 +52,7 @@ export function AIChatbot() {
     {
       id: "welcome-1",
       sender: "bot",
-      text: `Hello! I am your AARRKKAA Technical Specialist. Our motto is: "${COMPANY.motto}"\n\nI can assist you with selecting process pumps, mechanical seals, elastomers, or connect you directly with our engineering sales team. How can I help you today?`,
+      text: `Hello! I am your AARRKKAA Equipment Advisor. Our motto is: "${COMPANY.motto}"\n\nI can assist you with selecting process pumps, mechanical seals, elastomers, or connect you directly with our engineering sales team. How can I help you today?`,
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     },
   ]);
@@ -366,26 +366,26 @@ export function AIChatbot() {
             className="mb-3 w-[calc(100vw-32px)] sm:w-[380px] md:w-[400px] h-[520px] max-h-[80vh] rounded-2xl border-2 border-brass/50 bg-surface/95 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] flex flex-col overflow-hidden text-ink"
           >
             {/* Header */}
-            <div className="flex items-center justify-between bg-ink px-4 py-3 text-background border-b border-brass/30">
+            <div className="flex items-center justify-between bg-gradient-to-r from-brass/25 via-brass/15 to-surface px-4 py-3 text-ink border-b border-brass/40">
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-brass text-ink font-bold shadow-2xs">
                   <Bot className="h-5 w-5 text-ink" />
                 </div>
                 <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 font-display text-sm font-bold tracking-tight text-background truncate">
-                    <span>AARRKKAA AI Specialist</span>
+                  <div className="flex items-center gap-1.5 font-display text-sm font-bold tracking-tight text-ink truncate">
+                    <span>AARRKKAA Equipment Advisor</span>
                     <Sparkles className="h-3.5 w-3.5 text-brass shrink-0 animate-pulse" />
                   </div>
-                  <div className="flex items-center gap-1.5 text-[10px] text-background/70 font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
-                    <span>Online • 100% Accurate Support</span>
+                  <div className="flex items-center gap-1.5 text-[10px] text-ink/75 font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
+                    <span>Integrated Process Support • Online</span>
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="grid h-8 w-8 place-items-center rounded-lg text-background/70 hover:bg-white/10 hover:text-background transition-colors"
-                aria-label="Close AI Specialist"
+                className="grid h-8 w-8 place-items-center rounded-lg text-ink/70 hover:bg-brass/20 hover:text-ink transition-colors"
+                aria-label="Close Equipment Advisor"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -401,7 +401,7 @@ export function AIChatbot() {
                   <div
                     className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 leading-relaxed shadow-2xs ${
                       msg.sender === "user"
-                        ? "bg-ink text-background rounded-br-2xs font-medium"
+                        ? "bg-gradient-to-br from-brass/30 via-brass/20 to-brass/10 border border-brass/40 text-ink rounded-br-2xs font-bold"
                         : "bg-background/90 border border-hairline text-ink rounded-bl-2xs font-normal"
                     }`}
                   >
@@ -548,7 +548,7 @@ export function AIChatbot() {
               <button
                 type="submit"
                 disabled={!input.trim() || isTyping}
-                className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-ink text-background shadow-2xs hover:bg-ink/85 disabled:opacity-40 transition-colors"
+                className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brass text-ink font-bold shadow-2xs hover:bg-brass/90 disabled:opacity-40 transition-colors"
                 aria-label="Send message"
               >
                 <Send className="h-4 w-4" />
@@ -563,14 +563,14 @@ export function AIChatbot() {
         onClick={() => setOpen((prev) => !prev)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="group relative flex items-center gap-2.5 rounded-full border-2 border-brass bg-ink px-4 py-3 text-background shadow-[0_10px_30px_-5px_rgba(217,119,6,0.4)] transition-all hover:bg-ink/90 hover:shadow-[0_15px_35px_-5px_rgba(217,119,6,0.6)]"
-        aria-label="Toggle AI Technical Specialist Chatbot"
+        className="group relative flex items-center gap-2.5 rounded-full border-2 border-brass/70 bg-surface/95 backdrop-blur-md px-4 py-3 text-ink shadow-[0_8px_25px_-5px_rgba(217,119,6,0.3)] transition-all hover:border-brass hover:bg-white hover:shadow-[0_12px_35px_-5px_rgba(217,119,6,0.5)]"
+        aria-label="Toggle Equipment Advisor Chatbot"
       >
         <span className="grid h-6 w-6 place-items-center rounded-full bg-brass text-ink font-bold shadow-2xs">
           {open ? <X className="h-3.5 w-3.5" /> : <Sparkles className="h-3.5 w-3.5 animate-pulse" />}
         </span>
-        <span className="text-xs font-bold tracking-wide uppercase text-background">
-          {open ? "Close Assistant" : "AI Specialist"}
+        <span className="text-xs font-bold tracking-wide uppercase text-ink">
+          {open ? "Close Advisor" : "Equipment Advisor"}
         </span>
         {!open && (
           <span className="absolute -top-1 -right-1 flex h-3 w-3">
