@@ -158,7 +158,7 @@ export const CATEGORIES: ProductCategory[] = [
     name: "Bearings",
     short: "Genuine SKF, FAG, NTN & INA bearings — ball and ceramic.",
     description:
-      "Authorised distribution of premium bearing brands including SKF, FAG, NTN and INA — ball, ceramic and specialty bearings for industrial rotating equipment.",
+      "Supply and distribution of premium bearing brands including SKF, FAG, NTN and INA — ball, ceramic and specialty bearings for industrial rotating equipment.",
     image: bearings,
     count: 2,
     brands: ["SKF", "FAG", "NTN", "INA"],

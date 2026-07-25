@@ -156,7 +156,7 @@ const CATEGORY_DEFAULTS: Record<
       { label: "Lubrication", value: "Pre-greased or oil-lubed" },
     ],
     benefits: [
-      "Authorised distribution — 100% genuine",
+      "Premium supply & distribution — 100% genuine",
       "Cross-reference help across brands",
       "Cold-chain safe storage",
       "Fast dispatch on common sizes",

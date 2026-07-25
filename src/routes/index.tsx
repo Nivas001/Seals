@@ -270,7 +270,7 @@ function Hero() {
                   </span>
                   <div className="leading-tight">
                     <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                      Authorised
+                      We provide bearings
                     </div>
                     <div className="text-sm font-bold text-ink">SKF · FAG · NTN · INA</div>
                   </div>
