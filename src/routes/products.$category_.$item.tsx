@@ -287,6 +287,7 @@ function ItemPage() {
               <div className="flex flex-wrap gap-3 sm:justify-end">
                 <Link
                   to="/contact"
+                  search={{ category: c.name, product: d.name }}
                   className="inline-flex items-center gap-2 rounded-full bg-brass px-5 py-3 text-sm font-semibold text-ink hover:bg-brass/90"
                 >
                   Send enquiry <ArrowRight className="h-4 w-4" />
