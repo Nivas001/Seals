@@ -112,6 +112,7 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 import { Toaster } from "@/components/ui/sonner";
+import { AIChatbot } from "@/components/site/AIChatbot";
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
@@ -120,6 +121,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <AIChatbot />
       <Toaster position="top-center" closeButton />
     </QueryClientProvider>
   );
