@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import {
   Phone,
@@ -10,10 +10,12 @@ import {
   Linkedin,
   Instagram,
   MessageCircle,
+  Sparkles,
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { COMPANY, CATEGORIES } from "@/data/catalog";
+import { getItem, slugify } from "@/data/items";
 import { toast } from "sonner";
 
 type ContactSearch = {
@@ -229,12 +231,25 @@ function InquiryCard() {
   const [fileName, setFileName] = useState<string>("");
   const search = Route.useSearch();
 
-  const defaultCategory = search.category || "";
+  // Look up detailed item specifications if a product is selected
+  let productDetail = null;
+  if (search.product) {
+    const pSlug = slugify(search.product);
+    for (const cat of CATEGORIES) {
+      const found = getItem(cat.slug, pSlug);
+      if (found) {
+        productDetail = found;
+        break;
+      }
+    }
+  }
+
+  const defaultCategory = search.category || (productDetail?.category.name ?? "");
   const defaultSubject = search.product
     ? `Quote Request: ${search.product}`
     : search.subject || "";
   const defaultMessage = search.product
-    ? `I would like to request a quotation and technical specifications for:\n\n• Product: ${search.product}\n• Category: ${search.category || "General"}\n\n[Please specify quantity, duty conditions, or drawing numbers below]:\n`
+    ? `I would like to request a quotation and technical specifications for:\n\n• Product: ${search.product}\n• Category: ${defaultCategory || "General"}\n${productDetail ? `• Description: ${productDetail.description}\n` : ""}\n[Please specify required quantity, duty conditions, operating pressure/temperature, or drawing numbers below]:\n`
     : "";
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -282,17 +297,51 @@ function InquiryCard() {
   return (
     <CardShell eyebrow="Enquiry" title="Send us a request">
       {(search.product || search.category) && (
-        <div className="mb-6 rounded-xl border border-brass/40 bg-brass/10 p-4 text-xs text-ink flex items-start gap-3 shadow-2xs">
-          <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brass text-ink font-bold">✓</span>
-          <div>
-            <div className="font-bold text-ink">
-              {search.product ? "Product details auto-populated!" : "Category auto-populated!"}
+        <div className="mb-6 rounded-2xl border-2 border-brass/40 bg-gradient-to-br from-brass/15 via-brass/5 to-surface p-5 shadow-soft">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start gap-3.5 min-w-0">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brass text-ink font-bold shadow-2xs">
+                <Sparkles className="h-5 w-5 text-ink" />
+              </div>
+              <div className="min-w-0">
+                <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-brass">
+                  Quotation Request Attached
+                </div>
+                <div className="mt-1 font-display text-lg font-bold text-ink flex flex-wrap items-center gap-2">
+                  <span>{search.product || search.category}</span>
+                  {(search.category || productDetail?.category.name) && (
+                    <span className="rounded-full border border-brass/30 bg-brass/15 px-2.5 py-0.5 text-xs font-semibold text-ink">
+                      {search.category || productDetail?.category.name}
+                    </span>
+                  )}
+                </div>
+                {productDetail && (
+                  <p className="mt-1.5 text-xs font-medium text-muted-foreground leading-relaxed">
+                    {productDetail.description}
+                  </p>
+                )}
+                {productDetail && productDetail.specs.length > 0 && (
+                  <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 border-t border-brass/20 pt-3">
+                    {productDetail.specs.slice(0, 4).map((spec) => (
+                      <div key={spec.label} className="bg-background/80 rounded-lg px-2.5 py-1.5 border border-hairline/60 text-[11px]">
+                        <span className="text-muted-foreground text-[10px] font-medium">{spec.label}: </span>
+                        <span className="font-bold text-ink">{spec.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div className="mt-3.5 text-xs text-ink/90 font-medium bg-surface/80 rounded-lg p-2.5 border border-hairline flex items-center gap-2">
+                  <span className="text-brass font-bold">✓</span>
+                  <span>Product specifications pre-loaded into enquiry form. Complete your contact details below for formal pricing &amp; CAD drawings.</span>
+                </div>
+              </div>
             </div>
-            <div className="mt-0.5 text-muted-foreground leading-relaxed">
-              We&rsquo;ve pre-selected <span className="font-semibold text-ink">{search.category || "your category"}</span>
-              {search.product && <> and pre-filled your enquiry for <span className="font-semibold text-ink">{search.product}</span></>}.
-              Just add your contact details below.
-            </div>
+            <Link
+              to="/catalog"
+              className="shrink-0 text-xs font-bold text-muted-foreground hover:text-brass underline decoration-dotted transition-colors"
+            >
+              Browse Catalog
+            </Link>
           </div>
         </div>
       )}

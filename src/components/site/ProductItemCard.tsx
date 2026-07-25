@@ -51,20 +51,27 @@ export function ProductItemCard({
         </div>
 
         {/* Item Title & Tagline/Description */}
-        <Link
-          to="/products/$category/$item"
-          params={{ category: category.slug, item: itemSlug }}
-          className="mt-2 block focus:outline-none"
+        <div
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="mt-2 block cursor-pointer focus:outline-none"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setIsExpanded(!isExpanded);
+            }
+          }}
         >
-          <h3 className="font-display text-lg font-bold tracking-tight text-ink group-hover:text-brass transition-colors">
-            {itemName}
+          <h3 className="font-display text-lg font-bold tracking-tight text-ink group-hover:text-brass transition-colors flex items-center justify-between">
+            <span>{itemName}</span>
           </h3>
           {detail && (
             <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground line-clamp-2">
               {detail.description}
             </p>
           )}
-        </Link>
+        </div>
 
         {/* Quick Preview Spec Badges (Pills) */}
         {previewSpecs.length > 0 && (
@@ -172,11 +179,11 @@ export function ProductItemCard({
                     <Phone className="h-3.5 w-3.5 text-brass" /> +91 78069 36475 (Engg. Support)
                   </a>
                   <Link
-                    to="/products/$category/$item"
-                    params={{ category: category.slug, item: itemSlug }}
-                    className="group/link inline-flex items-center gap-1 text-xs font-bold text-brass hover:underline"
+                    to="/contact"
+                    search={{ category: category.name, product: itemName }}
+                    className="group/link inline-flex items-center gap-1 text-xs font-bold text-brass hover:underline cursor-pointer"
                   >
-                    <span>Open complete spec sheet</span>
+                    <span>Request formal quotation &amp; drawing</span>
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-0.5" />
                   </Link>
                 </div>
@@ -206,11 +213,12 @@ export function ProductItemCard({
         </button>
 
         <Link
-          to="/products/$category/$item"
-          params={{ category: category.slug, item: itemSlug }}
-          className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-1.5 text-[11px] font-semibold text-background shadow-2xs transition-transform hover:bg-ink/85 active:scale-95"
+          to="/contact"
+          search={{ category: category.name, product: itemName }}
+          className="inline-flex items-center gap-1.5 rounded-full bg-brass px-4 py-1.5 text-[11px] font-bold text-ink shadow-2xs transition-all hover:bg-brass/90 hover:shadow active:scale-95 cursor-pointer"
         >
-          <span>Full page</span>
+          <Sparkles className="h-3 w-3 text-ink" />
+          <span>Get Quote</span>
           <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
