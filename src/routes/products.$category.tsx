@@ -4,6 +4,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { CATEGORIES, getCategory } from "@/data/catalog";
 import { slugify } from "@/data/items";
+import { ProductItemCard } from "@/components/site/ProductItemCard";
 
 export const Route = createFileRoute("/products/$category")({
   loader: ({ params }) => {
@@ -124,32 +125,10 @@ function CategoryPage() {
               {c.items.length} products
             </span>
           </div>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-start">
             {c.items.map((item: string, i: number) => (
-              <li key={item}>
-                <Link
-                  to="/products/$category/$item"
-                  params={{ category: c.slug, item: slugify(item) }}
-                  className="group flex items-center justify-between gap-3 rounded-2xl border border-hairline bg-surface p-5 transition hover:border-ink/25 hover:shadow-soft"
-                >
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brass">
-                      {String(i + 1).padStart(2, "0")}
-                    </div>
-                    <div className="mt-1 font-display text-base font-bold tracking-tight text-ink">
-                      {item}
-                    </div>
-                    <div className="mt-1 text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
-                      View specs →
-                    </div>
-                  </div>
-                  <span
-                    aria-hidden
-                    className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ink/[0.04] text-ink transition group-hover:bg-ink group-hover:text-background"
-                  >
-                    <ArrowRight className="h-4 w-4" />
-                  </span>
-                </Link>
+              <li key={item} className="h-full">
+                <ProductItemCard category={c} itemName={item} index={i} />
               </li>
             ))}
           </ul>
