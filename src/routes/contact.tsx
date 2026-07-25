@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { VerifiedSupplierBadge } from "@/components/site/VerifiedSupplierBadge";
 import { COMPANY, CATEGORIES } from "@/data/catalog";
 import { getItem, slugify } from "@/data/items";
 import { toast } from "sonner";
@@ -55,23 +56,28 @@ function ContactPage() {
       <Navbar />
       <main className="overflow-x-clip pt-28 sm:pt-32">
         <section className="mx-auto max-w-7xl px-4 sm:px-8">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-brass" /> Get in touch
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center justify-between">
+            <div className="lg:col-span-7 max-w-2xl">
+              <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                <span className="h-1.5 w-1.5 rounded-full bg-brass" /> Get in touch
+              </div>
+              <h1
+                className="mt-4 font-display font-black leading-[0.95] tracking-[-0.035em] text-ink text-balance"
+                style={{ fontSize: "clamp(2rem, 8vw, 4.75rem)" }}
+              >
+                Request a quote.
+                <br />
+                <span className="italic text-brass">We&rsquo;ll match the part.</span>
+              </h1>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
+                Share a spec sheet, drawing, model number or a photograph of the
+                worn component. Our sales team responds with the exact grade,
+                brand recommendation and dispatch timeline.
+              </p>
             </div>
-            <h1
-              className="mt-4 font-display font-black leading-[0.95] tracking-[-0.035em] text-ink text-balance"
-              style={{ fontSize: "clamp(2rem, 8vw, 4.75rem)" }}
-            >
-              Request a quote.
-              <br />
-              <span className="italic text-brass">We&rsquo;ll match the part.</span>
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-              Share a spec sheet, drawing, model number or a photograph of the
-              worn component. Our sales team responds with the exact grade,
-              brand recommendation and dispatch timeline.
-            </p>
+            <div className="lg:col-span-5 flex justify-center lg:justify-end">
+              <VerifiedSupplierBadge />
+            </div>
           </div>
 
           {/* Bento grid */}
