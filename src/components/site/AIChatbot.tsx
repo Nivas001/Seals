@@ -132,7 +132,7 @@ export function AIChatbot() {
     ) {
       return {
         reply:
-          "We offer multiple direct ways to connect with our technical sales engineers. Our team provides fast responses for custom sizing, pricing, and technical inquiries across South India:",
+          "We offer multiple direct ways to connect with our technical sales engineers. Our team provides fast responses for custom sizing, pricing, and technical inquiries worldwide with service available globally:",
         contactCard: true,
       };
     }
@@ -440,7 +440,7 @@ export function AIChatbot() {
                         </a>
                         <div className="flex items-start gap-2 rounded-xl bg-surface/60 p-2 text-[11px] text-muted-foreground border border-hairline/60">
                           <MapPin className="h-3.5 w-3.5 text-brass shrink-0 mt-0.5" />
-                          <span>Hosur, Tamil Nadu — Branches across South India</span>
+                          <span>Hosur, Tamil Nadu — Service available globally</span>
                         </div>
                         <Link
                           to="/contact"

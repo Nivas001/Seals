@@ -273,7 +273,7 @@ function IndustriesPage() {
             <FeatureTile
               icon={<Truck className="h-5 w-5" />}
               title="Ready to dispatch"
-              body="Fast-moving SKUs stocked in Hosur — same-day pick, next-day dispatch across South India."
+              body="Fast-moving SKUs stocked in Hosur — rapid pick and dispatch worldwide with service available globally."
               accent
             />
           </div>

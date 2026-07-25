@@ -72,7 +72,7 @@ export function Footer() {
         </div>
 
         {/* Main footer grid */}
-        <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+        <div className="grid gap-8 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.5fr]">
           {/* Brand column */}
           <div>
             <div className="flex items-center gap-3">
@@ -93,9 +93,9 @@ export function Footer() {
               </div>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Supplier and distributor of pumps, mechanical seals, elastomers,
+              supplier and distributor of pumps, mechanical seals, elastomers,
               stainless steel and precision components for food, pharma,
-              chemical and process industries across South India.
+              chemical and process industries worldwide with service available globally.
             </p>
             {/* WhatsApp link in footer */}
             <a
@@ -159,7 +159,7 @@ export function Footer() {
               {COMPANY.emails.map((e) => (
                 <li key={e} className="flex items-center gap-2">
                   <Mail className="h-3.5 w-3.5 shrink-0 text-brass" />
-                  <a href={`mailto:${e}`} className="break-all transition-colors hover:text-ink">{e}</a>
+                  <a href={`mailto:${e}`} className="transition-colors hover:text-ink">{e}</a>
                 </li>
               ))}
               <li className="flex items-start gap-2">
@@ -177,7 +177,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-hairline pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} AARRKKAA International. All rights reserved.</p>
-          <p>Head office in Hosur · Branches across South India</p>
+          <p>Head office in Hosur · Service available globally</p>
         </div>
       </div>
     </footer>

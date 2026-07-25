@@ -198,7 +198,7 @@ function Hero() {
             >
               AARRKKAA International supplies pumps, mechanical seals,
               stainless steel, elastomers and specialty components to food,
-              pharma, chemical and process plants across South India — matched
+              pharma, chemical and process plants worldwide with service available globally — matched
               accurately, shipped on time.
             </motion.p>
 
@@ -293,7 +293,7 @@ function Hero() {
                       Hosur, Tamil Nadu
                     </div>
                     <div className="mt-0.5 text-xs text-muted-foreground">
-                      Branches across South India
+                      Service available globally
                     </div>
                   </div>
                   <Link
@@ -384,8 +384,8 @@ function AboutPreview() {
             AARRKKAA International is a supplier and distributor of pumps,
             pump spares, stainless steel flanges, clamps, silicone products,
             gaskets, seals, hoses, non-sparking tools and precision springs.
-            Our head office is in Hosur, Tamil Nadu, with branches across
-            South India — enabling fast response and consistent delivery for
+            Our head office is in Hosur, Tamil Nadu, with service available
+            globally — enabling fast response and worldwide delivery for
             plants that can&rsquo;t afford downtime.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -674,7 +674,7 @@ function Testimonials() {
         <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
           Trusted by process plants
           <br />
-          <span className="italic text-brass">across South India.</span>
+          <span className="italic text-brass">and available globally.</span>
         </h2>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
@@ -917,7 +917,7 @@ function ContactPreview() {
               {COMPANY.address.city}, {COMPANY.address.state} — {COMPANY.address.pincode}
             </p>
             <div className="mt-4 text-[12px] text-muted-foreground">
-              Branches across Tamil Nadu · Karnataka · Andhra Pradesh · Telangana · Kerala
+              Service available globally · Rapid dispatch worldwide
             </div>
           </div>
         </motion.div>

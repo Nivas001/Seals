@@ -224,7 +224,7 @@ export function Navbar() {
                   +91 78069 36475
                 </a>
                 <p className="text-center text-xs text-muted-foreground">
-                  Hosur, Tamil Nadu · Serving South India
+                  Hosur, Tamil Nadu · Service available globally
                 </p>
               </div>
             </motion.div>

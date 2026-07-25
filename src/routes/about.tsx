@@ -8,9 +8,9 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About Us — AARRKKAA International" },
-      { name: "description", content: "AARRKKAA International is a Hosur-based supplier and distributor of pumps, mechanical seals, elastomers and precision components for process industries across South India." },
+      { name: "description", content: "AARRKKAA International is a Hosur-based supplier and distributor of pumps, mechanical seals, elastomers and precision components worldwide with service available globally." },
       { property: "og:title", content: "About AARRKKAA International" },
-      { property: "og:description", content: "Head office in Hosur, Tamil Nadu with branches across South India — delivering quality parts with a timely approach." },
+      { property: "og:description", content: "Head office in Hosur, Tamil Nadu with service available globally — delivering quality parts with a timely approach." },
     ],
   }),
   component: AboutPage,
@@ -40,8 +40,7 @@ function AboutPage() {
             gaskets, oil seals, bellows, diaphragms, hoses, O-rings, PTFE
             envelope gaskets, mechanical seals, rotary joints, non-sparking
             tools, nozzles and precision springs (Inconel &amp; SS) — with
-            head office in Hosur, Tamil Nadu and branches across the
-            southern region.
+            head office in Hosur, Tamil Nadu and service available globally.
           </p>
         </section>
 
@@ -79,7 +78,7 @@ function AboutPage() {
             Our Clients &amp; Partners
           </div>
           <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
-            Trusted by industry leaders across South India
+            Trusted by industry leaders worldwide
           </h2>
           <p className="mt-4 max-w-2xl text-base text-muted-foreground">
             We are proud to supply and support premier organizations across pharmaceuticals, biotechnology, food processing, chemicals, energy, and precision engineering.
@@ -133,14 +132,13 @@ function AboutPage() {
             </div>
             <div className="rounded-2xl border border-hairline bg-surface p-6">
               <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
-                Regional reach
+                Global reach
               </div>
               <div className="mt-3 font-display text-xl font-bold text-ink">
-                Branches across South India
+                Service available globally
               </div>
               <p className="mt-2 text-sm text-muted-foreground">
-                Tamil Nadu · Karnataka · Andhra Pradesh · Telangana · Kerala —
-                servicing food, pharma, chemical and process industries.
+                Headquarters in Hosur, Tamil Nadu — dispatching precision components and engineered seals worldwide.
               </p>
             </div>
           </div>

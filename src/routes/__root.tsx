@@ -78,7 +78,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "AARRKKAA International — Industrial Pumps, Seals & Precision Components" },
-      { name: "description", content: "Supplier & distributor of pumps, mechanical seals, elastomers, stainless steel, hoses and precision components for food, pharma, chemical and process industries across South India." },
+      { name: "description", content: "Supplier & distributor of pumps, mechanical seals, elastomers, stainless steel, hoses and precision components worldwide with service available globally." },
       { name: "author", content: "AARRKKAA International" },
       { property: "og:title", content: "AARRKKAA International — Integrated technology support" },
       { property: "og:description", content: "Pumps, mechanical seals, elastomers, stainless steel and precision components for process industries. Head office in Hosur, Tamil Nadu." },

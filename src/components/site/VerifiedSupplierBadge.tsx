@@ -162,7 +162,7 @@ export function VerifiedSupplierBadge() {
             <div>
               <span className="font-bold text-ink">Rapid Response Guarantee</span>
               <p className="text-[11px] text-muted-foreground mt-0.5">
-                Immediate sizing, metallurgical matching & South India dispatch.
+                Immediate sizing, metallurgical matching & worldwide dispatch.
               </p>
             </div>
           </div>
@@ -172,7 +172,7 @@ export function VerifiedSupplierBadge() {
             <div>
               <span className="font-bold text-ink">Headquarters</span>
               <p className="text-[11px] text-muted-foreground mt-0.5">
-                Hosur, Tamil Nadu — Regional network across South India.
+                Hosur, Tamil Nadu — Service available globally.
               </p>
             </div>
           </div>
