@@ -15,6 +15,7 @@ import {
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { VerifiedSupplierBadge } from "@/components/site/VerifiedSupplierBadge";
+import { GlowCard } from "@/components/ui/GlowCard";
 import { COMPANY, CATEGORIES } from "@/data/catalog";
 import { getItem, slugify } from "@/data/items";
 import { toast } from "sonner";
@@ -139,9 +140,7 @@ function CardShell({
   className?: string;
 }) {
   return (
-    <div
-      className={`relative overflow-hidden rounded-[1.5rem] border border-hairline bg-surface p-5 shadow-soft sm:rounded-[1.75rem] sm:p-8 ${className}`}
-    >
+    <GlowCard className={className}>
       <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass">
         {eyebrow}
       </div>
@@ -149,7 +148,7 @@ function CardShell({
         {title}
       </h2>
       <div className="mt-6">{children}</div>
-    </div>
+    </GlowCard>
   );
 }
 

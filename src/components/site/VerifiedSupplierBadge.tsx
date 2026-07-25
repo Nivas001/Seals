@@ -111,7 +111,7 @@ export function VerifiedSupplierBadge() {
             <BadgeLogo size={36} />
           </div>
           <div>
-            <div className="flex items-center gap-1.5 font-display text-sm font-black tracking-tight text-ink">
+            <div className="flex items-center gap-1.5 font-sans text-xs font-bold tracking-[0.08em] text-ink uppercase">
               <span>{COMPANY.name}</span>
             </div>
             <div className="text-[11px] font-bold tracking-wider uppercase text-brass mt-0.5">

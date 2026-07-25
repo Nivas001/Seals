@@ -12,6 +12,7 @@ import factoryImg from "@/assets/factory.jpg";
 import { CATEGORIES, SECTORS, COMPANY } from "@/data/catalog";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { GlowCard } from "@/components/ui/GlowCard";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -606,30 +607,32 @@ function WhyUs() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.45, delay: i * 0.07 }}
-            className="group relative overflow-hidden rounded-2xl border border-hairline bg-surface p-6 transition-shadow duration-300 hover:shadow-lift"
+            className="h-full"
           >
-            {/* Large background number */}
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -right-3 -top-4 font-display text-[5.5rem] font-black leading-none tracking-tighter select-none transition-transform duration-500 group-hover:scale-110"
-              style={{ color: p.accent, opacity: 0.07 }}
-            >
-              {p.num}
-            </span>
+            <GlowCard className="h-full">
+              {/* Large background number */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -right-3 -top-4 font-display text-[5.5rem] font-black leading-none tracking-tighter select-none transition-transform duration-500 group-hover:scale-110"
+                style={{ color: p.accent, opacity: 0.07 }}
+              >
+                {p.num}
+              </span>
 
-            <span
-              aria-hidden
-              className="relative grid h-11 w-11 place-items-center rounded-xl text-primary-foreground shadow-soft"
-              style={{ background: "var(--gradient-brand)" }}
-            >
-              <p.icon className="h-5 w-5" />
-            </span>
-            <h3 className="relative mt-5 font-display text-lg font-bold tracking-tight text-ink">
-              {p.title}
-            </h3>
-            <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
-              {p.body}
-            </p>
+              <span
+                aria-hidden
+                className="relative grid h-11 w-11 place-items-center rounded-xl text-primary-foreground shadow-soft"
+                style={{ background: "var(--gradient-brand)" }}
+              >
+                <p.icon className="h-5 w-5" />
+              </span>
+              <h3 className="relative mt-5 font-display text-lg font-bold tracking-tight text-ink">
+                {p.title}
+              </h3>
+              <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
+                {p.body}
+              </p>
+            </GlowCard>
           </motion.div>
         ))}
       </div>
@@ -682,21 +685,25 @@ function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="flex flex-col justify-between rounded-2xl border border-hairline bg-surface p-6 transition-shadow duration-300 hover:shadow-lift"
+              className="h-full"
             >
-              {/* Stars */}
-              <div className="flex gap-0.5 mb-4">
-                {Array.from({ length: 5 }).map((_, j) => (
-                  <Star key={j} className="h-4 w-4 fill-brass text-brass" />
-                ))}
-              </div>
-              <p className="flex-1 text-sm leading-relaxed text-ink/80 italic">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <div className="mt-5 border-t border-hairline pt-4">
-                <div className="text-sm font-bold text-ink">{t.name}</div>
-                <div className="mt-0.5 text-[12px] text-muted-foreground">{t.role}</div>
-              </div>
+              <GlowCard className="h-full flex flex-col justify-between">
+                <div>
+                  {/* Stars */}
+                  <div className="flex gap-0.5 mb-4">
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <Star key={j} className="h-4 w-4 fill-brass text-brass" />
+                    ))}
+                  </div>
+                  <p className="text-sm leading-relaxed text-ink/80 italic">
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                </div>
+                <div className="mt-5 border-t border-hairline pt-4">
+                  <div className="text-sm font-bold text-ink">{t.name}</div>
+                  <div className="mt-0.5 text-[12px] text-muted-foreground">{t.role}</div>
+                </div>
+              </GlowCard>
             </motion.div>
           ))}
         </div>
