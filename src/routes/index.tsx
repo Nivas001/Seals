@@ -587,16 +587,18 @@ function WhyUs() {
   return (
     <section className="relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="grid-background pointer-events-none opacity-40" />
-      <Eyebrow>Why AARRKKAA</Eyebrow>
-      <div className="mt-3 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-        <h2 className="max-w-xl font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
-          Committed to convenience,
-          <br />
-          accuracy and delivery.
-        </h2>
+      <div className="relative z-10">
+        <Eyebrow>Why AARRKKAA</Eyebrow>
+        <div className="mt-3 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <h2 className="max-w-xl font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
+            Committed to convenience,
+            <br />
+            accuracy and delivery.
+          </h2>
+        </div>
       </div>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="relative z-10 mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {pillars.map((p, i) => (
           <motion.div
             key={p.title}
@@ -731,7 +733,7 @@ function Process() {
         className="relative overflow-hidden rounded-[2rem] border border-hairline bg-surface p-6 sm:p-10 lg:p-14"
       >
         <div className="grid-background-bottom pointer-events-none opacity-50" />
-        <div className="relative flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div className="relative z-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               <span className="h-1.5 w-1.5 rounded-full bg-brass" />
@@ -746,7 +748,7 @@ function Process() {
           </span>
         </div>
 
-        <ol className="relative mt-10 grid gap-px md:grid-cols-3">
+        <ol className="relative z-10 mt-10 grid gap-px md:grid-cols-3">
           {steps.map((s, i) => (
             <motion.li
               key={s.k}
@@ -893,7 +895,7 @@ function ContactPreview() {
             className="pointer-events-none absolute -right-8 -top-8 h-48 w-48 rounded-full opacity-40"
             style={{ background: "var(--gradient-brand)", filter: "blur(48px)" }}
           />
-          <div className="relative">
+          <div className="relative z-10">
             <span
               aria-hidden
               className="grid h-10 w-10 place-items-center rounded-xl text-primary-foreground"
