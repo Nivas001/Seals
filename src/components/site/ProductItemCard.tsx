@@ -10,7 +10,6 @@ import {
   ShieldCheck,
   Cpu,
   Layers,
-  Zap,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getItem, slugify } from "@/data/items";
@@ -42,23 +41,23 @@ export function ProductItemCard({
 
   return (
     <div
-      className={`group relative flex flex-col justify-between rounded-2xl border transition-all duration-300 p-6 ${
+      className={`group relative flex flex-col justify-between rounded-[1.5rem] border transition-all duration-300 p-6 ${
         isExpanded
-          ? "border-brass/50 bg-gradient-to-br from-[#18181B] via-[#121214] to-[#0D0D0F] shadow-[0_12px_40px_rgb(0,0,0,0.7)] ring-1 ring-brass/20"
-          : "border-white/[0.08] bg-gradient-to-br from-[#141416] via-[#101012] to-[#0B0B0D] hover:border-brass/40 hover:shadow-[0_8px_30px_rgb(217,119,6,0.12)]"
-      } before:absolute before:left-0 before:top-6 before:bottom-6 before:w-1 before:rounded-r-full before:bg-brass/0 hover:before:bg-brass before:transition-all before:duration-300 overflow-hidden`}
+          ? "border-ink/25 bg-surface shadow-lift ring-1 ring-ink/5"
+          : "border-hairline bg-surface hover:border-ink/25 hover:shadow-soft"
+      } overflow-hidden`}
     >
       <div>
-        {/* Top bar: Item number and telemetry status */}
-        <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] pb-3.5 mb-4">
-          <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-brass/10 border border-brass/25 text-brass font-mono text-xs font-bold tracking-wider uppercase">
-            <span className="h-1.5 w-1.5 rounded-full bg-brass animate-pulse" />
-            ITEM // {String(index + 1).padStart(2, "0")}
+        {/* Top bar: Item number and spec count */}
+        <div className="flex items-center justify-between gap-3 border-b border-hairline/60 pb-3.5 mb-4">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brass/10 border border-brass/25 text-brass font-mono text-xs font-bold uppercase tracking-wider">
+            <span className="h-1.5 w-1.5 rounded-full bg-brass" />
+            Item · {String(index + 1).padStart(2, "0")}
           </span>
           {detail && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.06] text-zinc-400 font-mono text-[11px] font-medium tracking-wide">
-              <Cpu className="h-3 w-3 text-zinc-400" />
-              <span>{detail.specs.length} ENG SPECS</span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-background border border-hairline text-muted-foreground font-mono text-xs font-semibold uppercase tracking-wider">
+              <Cpu className="h-3 w-3 text-muted-foreground" />
+              <span>{detail.specs.length} specs available</span>
             </span>
           )}
         </div>
@@ -76,19 +75,19 @@ export function ProductItemCard({
             }
           }}
         >
-          <h3 className="font-display text-xl font-bold tracking-tight text-white group-hover:text-brass transition-colors flex items-center justify-between">
+          <h3 className="font-display text-xl font-bold tracking-tight text-ink group-hover:text-brass transition-colors flex items-center justify-between">
             <span>{itemName}</span>
-            <span className="text-xs font-mono font-normal text-zinc-500 group-hover:text-brass transition-colors flex items-center gap-1">
-              {isExpanded ? "COLLAPSE" : "EXPAND"}
+            <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground group-hover:text-ink transition-colors">
+              <span>{isExpanded ? "Close specs" : "View technical specs"}</span>
               {isExpanded ? (
-                <ChevronUp className="h-4 w-4" />
+                <ChevronUp className="h-4 w-4 text-brass" />
               ) : (
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 text-brass" />
               )}
             </span>
           </h3>
           {detail && (
-            <p className="mt-2 text-xs sm:text-sm leading-relaxed text-zinc-400 font-normal line-clamp-2 group-hover:text-zinc-300 transition-colors">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground font-normal line-clamp-2 group-hover:text-ink/80 transition-colors">
               {detail.description}
             </p>
           )}
@@ -100,16 +99,16 @@ export function ProductItemCard({
             {previewSpecs.map((spec) => (
               <span
                 key={spec.label}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-black/60 px-2.5 py-1 text-xs font-mono text-zinc-300 shadow-inner group-hover:border-white/20 transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-hairline bg-background/80 px-3 py-1 text-xs font-medium text-ink/80 shadow-2xs group-hover:border-ink/15 transition-all"
               >
-                <span className="text-zinc-500">{spec.label}:</span>
-                <span className="font-semibold text-zinc-100">{spec.value}</span>
+                <span className="text-muted-foreground">{spec.label}:</span>
+                <span className="font-semibold text-ink">{spec.value}</span>
               </span>
             ))}
           </div>
         )}
 
-        {/* Expanded View Section — High-End Schematic Telemetry Dashboard */}
+        {/* Expanded View Section — Harmonized Light Industrial Schematic */}
         <AnimatePresence>
           {isExpanded && detail && (
             <motion.div
@@ -119,24 +118,24 @@ export function ProductItemCard({
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="overflow-hidden"
             >
-              <div className="mt-6 border-t border-white/10 pt-6 space-y-6">
+              <div className="mt-6 border-t border-hairline pt-6 space-y-6">
                 {/* Technical Specifications Bento Grid */}
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-brass">
-                      <Cpu className="h-4 w-4 text-brass animate-pulse" /> Technical Profile // Verified Telemetry
+                      <Cpu className="h-4 w-4 text-brass" /> Technical Profile Specifications
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {detail.specs.map((spec) => (
                       <div
                         key={spec.label}
-                        className="relative overflow-hidden rounded-xl border border-white/[0.08] bg-black/50 p-3.5 hover:border-brass/30 transition-all group/spec"
+                        className="rounded-xl border border-hairline bg-background/80 p-3.5 hover:border-ink/20 transition-all shadow-2xs group/spec flex flex-col justify-between"
                       >
-                        <dt className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-400 group-hover/spec:text-zinc-300">
+                        <dt className="text-[11px] font-mono font-semibold uppercase tracking-wider text-muted-foreground group-hover/spec:text-ink">
                           {spec.label}
                         </dt>
-                        <dd className="mt-1 font-sans text-sm font-bold text-white tracking-tight">
+                        <dd className="mt-1 font-sans text-sm font-bold text-ink">
                           {spec.value}
                         </dd>
                       </div>
@@ -154,9 +153,9 @@ export function ProductItemCard({
                       {detail.benefits.map((benefit) => (
                         <li
                           key={benefit}
-                          className="flex items-start gap-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05] p-3 text-xs text-zinc-300 leading-relaxed hover:border-white/15 transition-colors"
+                          className="flex items-start gap-2.5 rounded-xl border border-hairline bg-background/50 p-3.5 text-xs sm:text-sm font-medium text-ink/90 leading-relaxed shadow-2xs hover:border-ink/15 transition-all"
                         >
-                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brass shadow-sm" />
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brass" />
                           <span>{benefit}</span>
                         </li>
                       ))}
@@ -167,14 +166,14 @@ export function ProductItemCard({
                 {/* Typical Applications */}
                 {detail.applications.length > 0 && (
                   <div>
-                    <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-zinc-400 mb-2.5">
-                      <Layers className="h-4 w-4 text-zinc-400" /> Typical Industry Duty
+                    <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground mb-2.5">
+                      <Layers className="h-4 w-4 text-muted-foreground" /> Typical Duty &amp; Applications
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {detail.applications.map((app) => (
                         <span
                           key={app}
-                          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-zinc-900 px-3 py-1 text-[11px] font-mono font-semibold tracking-wider uppercase text-zinc-300 hover:border-brass/50 hover:text-white transition-colors"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-background px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-ink shadow-2xs hover:border-brass/50 transition-colors"
                         >
                           <span className="h-1.5 w-1.5 rounded-full bg-brass" />
                           {app}
@@ -184,33 +183,32 @@ export function ProductItemCard({
                   </div>
                 )}
 
-                {/* High-Impact Express Quotation Request Dispatch Banner */}
-                <div className="relative overflow-hidden rounded-2xl border border-brass/50 bg-gradient-to-r from-brass/20 via-brass/10 to-transparent p-5 sm:p-6 shadow-[0_4px_25px_rgb(217,119,6,0.15)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                {/* Harmonized Instant Quote Request Banner */}
+                <div className="rounded-2xl border border-brass/40 bg-gradient-to-br from-brass/15 via-brass/5 to-surface p-5 sm:p-6 shadow-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="space-y-1">
-                    <h4 className="flex items-center gap-2 text-base font-display font-bold text-white">
-                      <Sparkles className="h-5 w-5 text-brass animate-spin-slow" />
-                      <span>Need an immediate quotation for this {itemName}?</span>
+                    <h4 className="flex items-center gap-2 font-display text-base font-bold text-ink">
+                      <Sparkles className="h-5 w-5 text-brass" />
+                      <span>Need an instant quotation for this {itemName}?</span>
                     </h4>
-                    <p className="text-xs text-zinc-300 leading-relaxed max-w-xl font-normal">
-                      Click below — we automatically attach all technical profile specifications and duty parameters into the priority RFQ form.
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl font-normal">
+                      Click below — we will automatically attach all technical specifications and duty parameters into your priority quotation request form.
                     </p>
                   </div>
                   <Link
                     to="/contact"
                     search={{ category: category.name, product: itemName }}
-                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brass to-[#F59E0B] px-6 py-3 text-xs sm:text-sm font-bold text-black shadow-lg shadow-brass/25 transition-all hover:scale-[1.02] hover:shadow-brass/40 active:scale-95 cursor-pointer font-sans tracking-wide"
+                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-ink px-6 py-3.5 text-xs sm:text-sm font-bold text-background shadow-md transition-all hover:bg-ink/90 hover:shadow-lg active:scale-95 cursor-pointer tracking-wide"
                   >
-                    <Zap className="h-4 w-4 fill-black text-black" />
-                    <span>Express Quote Request</span>
+                    <span>Request Quote Now</span>
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
 
                 {/* Inside Expanded Action Footer */}
-                <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-4 text-xs font-mono">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-t border-hairline pt-4 text-xs font-medium">
                   <a
                     href="tel:+917806936475"
-                    className="inline-flex items-center gap-1.5 font-semibold text-zinc-300 transition-colors hover:text-brass"
+                    className="inline-flex items-center gap-1.5 text-ink transition-colors hover:text-brass font-semibold"
                   >
                     <Phone className="h-3.5 w-3.5 text-brass" />
                     <span>+91 78069 36475 (Engineering Support Desk)</span>
@@ -220,7 +218,7 @@ export function ProductItemCard({
                     search={{ category: category.name, product: itemName }}
                     className="group/link inline-flex items-center gap-1 font-bold text-brass hover:underline cursor-pointer"
                   >
-                    <span>Request CAD drawing &amp; duty certification</span>
+                    <span>Request formal CAD drawing &amp; duty specs</span>
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-0.5" />
                   </Link>
                 </div>
@@ -231,7 +229,7 @@ export function ProductItemCard({
       </div>
 
       {/* Bottom Action Bar */}
-      <div className="mt-6 flex items-center justify-between gap-3 border-t border-white/[0.08] pt-4">
+      <div className="mt-6 flex items-center justify-between gap-3 border-t border-hairline pt-4">
         <button
           type="button"
           onClick={(e) => {
@@ -239,9 +237,9 @@ export function ProductItemCard({
             setIsExpanded(!isExpanded);
           }}
           aria-expanded={isExpanded}
-          className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-4 py-2 text-xs font-mono font-semibold text-zinc-300 transition-all hover:border-brass/40 hover:bg-white/[0.08] hover:text-white active:scale-95 cursor-pointer shadow-sm"
+          className="inline-flex items-center gap-2 rounded-xl border border-hairline bg-background px-4 py-2.5 text-xs font-semibold text-ink transition-all hover:border-ink/20 hover:bg-surface active:scale-95 cursor-pointer shadow-2xs"
         >
-          <span>{isExpanded ? "CLOSE SPECS" : "QUICK SPECS & DETAILS"}</span>
+          <span>{isExpanded ? "Close specs" : "Quick specs & details"}</span>
           {isExpanded ? (
             <ChevronUp className="h-3.5 w-3.5 text-brass" />
           ) : (
@@ -252,9 +250,9 @@ export function ProductItemCard({
         <Link
           to="/contact"
           search={{ category: category.name, product: itemName }}
-          className="inline-flex items-center gap-2 rounded-xl bg-brass px-5 py-2 text-xs font-bold text-black shadow-md shadow-brass/20 transition-all hover:bg-brass/90 hover:shadow-brass/30 active:scale-95 cursor-pointer tracking-wide"
+          className="inline-flex items-center gap-2 rounded-xl bg-brass px-5 py-2.5 text-xs font-bold text-ink shadow-sm transition-all hover:bg-brass/90 hover:shadow active:scale-95 cursor-pointer tracking-wide"
         >
-          <Sparkles className="h-3.5 w-3.5 text-black" />
+          <Sparkles className="h-3.5 w-3.5 text-ink" />
           <span>Get Quote</span>
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>
