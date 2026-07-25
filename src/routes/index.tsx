@@ -7,7 +7,7 @@ import {
   CheckCircle2, Sparkles, Truck, MessagesSquare, ShieldCheck,
   ChevronUp, Star,
 } from "lucide-react";
-import heroImg from "@/assets/hero-mechanical.jpg";
+import heroImg from "@/assets/hero-pump.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import { CATEGORIES, SECTORS, COMPANY } from "@/data/catalog";
 import { Navbar } from "@/components/site/Navbar";
@@ -240,7 +240,7 @@ function Hero() {
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-hairline bg-surface shadow-lift">
               <img
                 src={heroImg}
-                alt="Precision machined mechanical assembly with polished steel and brass components"
+                alt="Precision industrial centrifugal pump assembly with brushed stainless steel housing and polished brass fittings"
                 width={1600}
                 height={1400}
                 className="h-full w-full object-cover"
