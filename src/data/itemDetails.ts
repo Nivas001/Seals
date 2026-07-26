@@ -1,6 +1,7 @@
 export type ItemSpecificData = {
   tagline?: string;
   description?: string;
+  image?: string;
   specs?: { label: string; value: string }[];
   benefits?: string[];
   applications?: string[];
@@ -11,6 +12,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
   // 1. PUMPS (10 items)
   // ==========================================
   "Mono-block Pump": {
+    image: "/images/monoblock-pump.jpg",
     tagline: "Compact, single-shaft pump and motor assembly for space-constrained utility lines.",
     description:
       "High-efficiency monoblock centrifugal pump where the impeller is directly mounted on the extended motor shaft. Eliminates coupling misalignment and vibration while saving valuable plant floor space.",

@@ -19,6 +19,7 @@ export type ItemDetail = {
   applications: string[];
   siblings: { name: string; slug: string }[];
   relatedCategories: ProductCategory[];
+  image?: string;
 };
 
 // Category-level defaults used to compose item detail content.
@@ -364,6 +365,7 @@ export function getItem(
     applications: specific?.applications ?? baseApplications,
     siblings,
     relatedCategories,
+    image: specific?.image,
   };
 }
 

@@ -104,14 +104,14 @@ function ItemPage() {
 
             <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-hairline bg-surface shadow-lift">
               <img
-                src={c.image}
+                src={d.image || c.image}
                 alt={`${d.name} — ${c.name}`}
                 className="h-full w-full object-cover"
                 width={1200}
                 height={900}
               />
               <div className="pointer-events-none absolute inset-x-4 bottom-4 rounded-2xl border border-white/40 bg-white/70 px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink/70 backdrop-blur">
-                Representative image · {c.name}
+                {d.image ? `Product photo · ${d.name}` : `Representative image · ${c.name}`}
               </div>
             </div>
           </div>
