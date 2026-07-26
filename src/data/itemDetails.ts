@@ -237,6 +237,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
   // 2. MECHANICAL SEALS (14 items)
   // ==========================================
   "Single Spring": {
+    image: "/images/single-spring.jpg",
     tagline: "Unbalanced/balanced pusher seal with a single coil spring for general utility.",
     description:
       "Robust pusher-type mechanical seal featuring a large-diameter single coil spring. Highly resistant to clogging in dirty fluids and wastewater, offering simple installation and long service life across pumps and agitators.",
@@ -258,6 +259,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Food", "Breweries", "Oil & Gas"],
   },
   "Conical Spring": {
+    image: "/images/conical-spring.jpg",
     tagline: "Directional single conical spring seal that self-tightens with shaft rotation.",
     description:
       "Compact mechanical seal employing a tapered conical spring that grips the shaft or sleeve, transmitting torque without set screws or drive pins. Complies with DIN 24960 (EN 12756) installation dimensions.",
@@ -279,6 +281,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Food", "Beverages"],
   },
   "Wave Spring": {
+    image: "/images/wave-spring.jpg",
     tagline: "Compact mechanical seal utilizing a sinus wave spring for short stuffing boxes.",
     description:
       "Engineered mechanical seal utilizing a sinus wave spring instead of traditional helical coils. Reduces the required axial installation length by up to 50%, making it ideal for compact pumps, compressors, and rotary lobe pumps.",
@@ -300,6 +303,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Food", "Pharma", "Chemical", "Beverages"],
   },
   "Multi Spring": {
+    image: "/images/multi-spring.jpg",
     tagline: "Multi-spring balanced/unbalanced seal providing uniform face loading.",
     description:
       "The industry standard for chemical process pumps. Uses a series of small peripheral springs around the seal face to distribute mechanical face load with uniform mathematical precision, ensuring even wear and reliable sealing.",
@@ -321,6 +325,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Pharma", "Oil & Gas", "Dye Manufacturing"],
   },
   "Rubber Bellow": {
+    image: "/images/rubber-bellow.jpg",
     tagline: "Elastomer bellows seal where the rubber bellows acts as secondary seal and drive.",
     description:
       "Highly versatile non-pusher mechanical seal featuring an elastomeric bellows that eliminates sliding O-rings on the shaft. The bellows grips the shaft tightly, accommodating shaft runout and preventing fretting corrosion.",
@@ -342,6 +347,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Food", "Breweries", "Chemical", "Beverages"],
   },
   "Teflon Bellow": {
+    image: "/images/teflon-bellow.jpg",
     tagline: "Externally mounted PTFE bellows seal engineered for extremely corrosive acids.",
     description:
       "Specialized chemical seal constructed with a machined virgin PTFE bellows and external clamping assembly. Designed for highly aggressive mineral acids, halogens, and solvents where metallic springs cannot contact the liquid.",
