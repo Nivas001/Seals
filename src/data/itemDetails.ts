@@ -78,6 +78,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Pharma", "Food", "Beverages", "Breweries"],
   },
   "Horizontal Axial Flow Pump": {
+    image: "/images/axial-flow-pump.jpg",
     tagline: "High-capacity, low-head elbow pump for evaporator and crystallizer circulation.",
     description:
       "Engineered axial flow propeller pump designed for recirculating massive volumes of liquid at low differential heads. Ideal for chemical evaporators, brine concentration, and industrial drainage.",
@@ -99,6 +100,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Dye Manufacturing", "Food"],
   },
   "Centrifugal Pump": {
+    image: "/images/centrifugal-pump.jpg",
     tagline: "Standard ISO 2858 / DIN 24256 back-pull-out process pump for versatile duty.",
     description:
       "The industrial workhorse for fluid transfer across chemical, food, and utility plants. Fully compliant with ISO 2858 dimensional standards, featuring a back-pull-out design that allows rotating element inspection without disturbing pipework.",
@@ -120,6 +122,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Food", "Pharma", "Breweries", "Oil & Gas"],
   },
   "Fire Fighting Pump": {
+    image: "/images/fire-fighting-pump.jpg",
     tagline: "Dedicated emergency fire suppression pump package to TAC / NFPA standards.",
     description:
       "High-reliability fire suppression pump set including main electric pump, standby diesel engine pump, and jockey pump. Designed to instantly deliver high-pressure water to plant hydrant and sprinkler networks during emergencies.",
