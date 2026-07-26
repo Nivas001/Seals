@@ -239,6 +239,21 @@ const CATEGORY_DEFAULTS: Record<
     applications: ["Oil & Gas", "Chemical", "Plastics", "Pharma"],
     related: ["stainless-steel", "mechanical-seals"],
   },
+  "motors-and-gearboxes": {
+    tagline: (n) => `${n} — dependable power transmission and motion control.`,
+    specs: (n) => [
+      { label: "Product", value: n },
+      { label: "Options", value: "Standard IE2/IE3 & custom gear reduction variants" },
+      { label: "Compliance", value: "IEC standard mounting & CE/ISO compliance" },
+    ],
+    benefits: [
+      "High energy efficiency and reliability for continuous process plants",
+      "Precision dynamically balanced rotors and low-noise gear teeth",
+      "Modular mounting flange options for rapid plant integration",
+    ],
+    applications: ["Chemical", "Food", "Pharma", "Breweries"],
+    related: ["pumps", "couplings", "mechanical-seals"],
+  },
   other: {
     tagline: (n) => `${n} — dependable industrial specialty supplies.`,
     specs: (n) => [
@@ -341,10 +356,13 @@ export function getItem(
     ITEM_DESCRIPTIONS[name] ??
     `${name} in the ${category.name.toLowerCase()} range from AARRKKAA International — ${category.description}`;
 
-  const siblings = category.items
-    .filter((i) => i !== name)
-    .slice(0, 6)
-    .map((i) => ({ name: i, slug: slugify(i) }));
+  const siblings =
+    category.slug === "motors-and-gearboxes"
+      ? []
+      : category.items
+          .filter((i) => i !== name)
+          .slice(0, 6)
+          .map((i) => ({ name: i, slug: slugify(i) }));
 
   const relatedCategories = defaults.related
     .map((s) => CATEGORIES.find((c) => c.slug === s))

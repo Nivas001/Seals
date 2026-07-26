@@ -180,39 +180,41 @@ function ItemPage() {
               </div>
             </div>
 
-            <div className="rounded-[1.5rem] border border-hairline bg-surface p-6 lg:col-span-2">
-              <div className="flex items-end justify-between gap-4">
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
-                    In the same range
+            {c.slug !== "motors-and-gearboxes" && d.siblings.length > 0 && (
+              <div className="rounded-[1.5rem] border border-hairline bg-surface p-6 lg:col-span-2">
+                <div className="flex items-end justify-between gap-4">
+                  <div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
+                      In the same range
+                    </div>
+                    <h3 className="mt-1 font-display text-xl font-black tracking-tight text-ink">
+                      Other {c.name.toLowerCase()}
+                    </h3>
                   </div>
-                  <h3 className="mt-1 font-display text-xl font-black tracking-tight text-ink">
-                    Other {c.name.toLowerCase()}
-                  </h3>
+                  <Link
+                    to="/products/$category"
+                    params={{ category: c.slug }}
+                    className="text-xs font-semibold uppercase tracking-[0.14em] text-ink/70 hover:text-ink"
+                  >
+                    View all →
+                  </Link>
                 </div>
-                <Link
-                  to="/products/$category"
-                  params={{ category: c.slug }}
-                  className="text-xs font-semibold uppercase tracking-[0.14em] text-ink/70 hover:text-ink"
-                >
-                  View all →
-                </Link>
+                <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                  {d.siblings.map((s) => (
+                    <li key={s.slug}>
+                      <Link
+                        to="/products/$category/$item"
+                        params={{ category: c.slug, item: s.slug }}
+                        className="group flex items-center justify-between gap-3 rounded-xl border border-hairline bg-white p-3 transition hover:border-ink/25"
+                      >
+                        <span className="text-sm font-semibold text-ink">{s.name}</span>
+                        <ArrowRight className="h-4 w-4 text-ink/50 transition group-hover:translate-x-0.5 group-hover:text-ink" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="mt-4 grid gap-2 sm:grid-cols-2">
-                {d.siblings.map((s) => (
-                  <li key={s.slug}>
-                    <Link
-                      to="/products/$category/$item"
-                      params={{ category: c.slug, item: s.slug }}
-                      className="group flex items-center justify-between gap-3 rounded-xl border border-hairline bg-white p-3 transition hover:border-ink/25"
-                    >
-                      <span className="text-sm font-semibold text-ink">{s.name}</span>
-                      <ArrowRight className="h-4 w-4 text-ink/50 transition group-hover:translate-x-0.5 group-hover:text-ink" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            )}
           </div>
         </section>
 

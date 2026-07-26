@@ -21,6 +21,7 @@ import valves from "@/assets/cat-valves.jpg";
 import nozzles from "@/assets/cat-nozzles.jpg";
 import couplings from "@/assets/cat-couplings.jpg";
 import silicone from "@/assets/cat-silicone.jpg";
+import motors from "@/assets/cat-motors.jpg";
 
 export const CATEGORIES: ProductCategory[] = [
   {
@@ -214,6 +215,16 @@ export const CATEGORIES: ProductCategory[] = [
       "Volute Spring",
       "Wire Forms Spring",
     ],
+  },
+  {
+    slug: "motors-and-gearboxes",
+    name: "Motors & Gearboxes",
+    short: "High-efficiency AC motors & industrial right-angle gear reducers.",
+    description:
+      "Reliable mechanical power transmission systems covering IE2/IE3 industrial AC electric motors and heavy-duty right-angle helical speed reducer gearboxes.",
+    image: motors,
+    count: 2,
+    items: ["Motor", "Gearboxes"],
   },
   {
     slug: "other",

@@ -1765,7 +1765,53 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
   },
 
   // ==========================================
-  // 12. OTHER PRODUCTS (3 items)
+  // 12. MOTORS & GEARBOXES (2 items)
+  // ==========================================
+  "Motor": {
+    image: "/images/motor.jpg",
+    tagline: "Industrial IE2/IE3 high-efficiency three-phase AC induction motors.",
+    description:
+      "A motor is a device that converts electrical energy into mechanical energy, resulting in motion. Motors are fundamental components in a wide range of applications, from everyday appliances to industrial machinery. Engineered for continuous S1 duty in chemical plants, pump stations, and utility lines.",
+    specs: [
+      { label: "Efficiency class", value: "IE2 / IE3 premium energy efficiency per IEC 60034-30" },
+      { label: "Power rating", value: "0.25 kW up to 315 kW three-phase induction" },
+      { label: "Speed / Poles", value: "2, 4, 6, and 8 pole (3000, 1500, 1000, 750 RPM at 50 Hz)" },
+      { label: "Mounting", value: "B3 foot mount, B5 flange, B14 face, or B35 combined foot/flange" },
+      { label: "Enclosure", value: "IP55 / IP56 cast iron or aluminum casing with TEFC cooling" },
+      { label: "Insulation", value: "Class F insulation with Class B temperature rise (155 °C)" },
+    ],
+    benefits: [
+      "High energy efficiency significantly reduces plant electrical power consumption and carbon footprint",
+      "Robust cast iron enclosure withstands harsh chemical, dust, and washdown environments",
+      "Precision dynamically balanced rotors ensure ultra-low vibration and extended bearing lifetime",
+      "Inverter-grade insulation system enables direct operation with Variable Frequency Drives (VFD)",
+    ],
+    applications: ["Chemical", "Food", "Pharma", "Oil & Gas"],
+  },
+  "Gearboxes": {
+    image: "/images/gearboxes.jpg",
+    tagline: "Heavy-duty helical worm and right-angle speed reducer gearboxes.",
+    description:
+      "Gearboxes, also known as transmissions or gear reducers, are mechanical devices that transmit power from a rotating source (like an engine or motor) to another component, often changing the torque and speed in the process. Designed for high torque density and quiet running in agitators, conveyors, and process pumps.",
+    specs: [
+      { label: "Gear type", value: "Right-angle helical worm, inline helical, or bevel helical reducer" },
+      { label: "Reduction ratio", value: "5:1 up to 100:1 single stage (up to 5000:1 multi-stage)" },
+      { label: "Output torque", value: "Up to 15,000 Nm rated continuous torque capacity" },
+      { label: "Input interface", value: "IEC standard B5 / B14 motor adapter flange or solid input shaft" },
+      { label: "Housing", value: "Heavy-duty cast iron or aluminum alloy with navy blue industrial epoxy coat" },
+      { label: "Lubrication", value: "Synthetic or mineral gear oil bath with sight glass and brass breather" },
+    ],
+    benefits: [
+      "Multiplies motor torque while reducing rotational speed for precision agitator and conveyor drives",
+      "Precision ground helical gears ensure ultra-quiet operation (< 65 dB) and high mechanical efficiency",
+      "Modular IEC flange design allows instant coupling to standard industrial AC induction motors",
+      "Heavy-duty roller bearings support high radial and axial overhung shaft loads without deflection",
+    ],
+    applications: ["Chemical", "Food", "Pharma", "Breweries"],
+  },
+
+  // ==========================================
+  // 13. OTHER PRODUCTS (3 items)
   // ==========================================
   "Nylatron Rod": {
     tagline: "Cast and extruded polyamide (PA6 / PA66) rods filled with MoS2 for low friction.",
