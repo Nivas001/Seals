@@ -3,34 +3,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ShieldCheck, Award, CheckCircle2, MapPin, Cpu, Sparkles, Zap } from "lucide-react";
 import { COMPANY } from "@/data/catalog";
 
-/* Golden Gear Logo Mark for the badge */
-function BadgeLogo({ size = 48 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 36 36"
-      fill="none"
-      aria-hidden
-      className="shrink-0 drop-shadow-sm"
-    >
-      <circle cx="18" cy="18" r="13" stroke="#D97706" strokeWidth="1.6" strokeOpacity="0.8" />
-      {Array.from({ length: 8 }).map((_, i) => {
-        const angle = (i * 360) / 8;
-        const rad = (angle * Math.PI) / 180;
-        const x1 = 18 + Math.cos(rad) * 11.5;
-        const y1 = 18 + Math.sin(rad) * 11.5;
-        const x2 = 18 + Math.cos(rad) * 15.5;
-        const y2 = 18 + Math.sin(rad) * 15.5;
-        return (
-          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#D97706" strokeWidth="2.4" strokeLinecap="round" />
-        );
-      })}
-      <circle cx="18" cy="18" r="6.5" stroke="#D97706" strokeWidth="1.6" />
-      <circle cx="18" cy="18" r="2.8" fill="#D97706" />
-    </svg>
-  );
-}
+import { ArkaLogoMark } from "@/components/ui/ArkaLogo";
 
 export function VerifiedSupplierBadge() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -107,8 +80,8 @@ export function VerifiedSupplierBadge() {
 
         {/* Card Header Banner */}
         <div className="relative z-10 flex items-center gap-3.5 border-b border-brass/30 pb-5">
-          <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brass/15 border border-brass/40 shadow-inner">
-            <BadgeLogo size={36} />
+          <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-ink border-2 border-brass/60 shadow-md p-1.5">
+            <ArkaLogoMark size={50} />
           </div>
           <div>
             <div className="flex items-center gap-1.5 font-sans text-xs font-bold tracking-[0.08em] text-ink uppercase">
