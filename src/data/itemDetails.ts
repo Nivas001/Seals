@@ -34,6 +34,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Food", "Breweries", "Oil & Gas"],
   },
   "Lime Slurry Pump": {
+    image: "/images/lime-slurry-pump.jpg",
     tagline: "Heavy-duty abrasion-resistant pump engineered for high-solids lime slurries.",
     description:
       "Specialized centrifugal slurry pump designed to handle erosive and scaling lime slurries in flue gas desulfurization (FGD), effluent treatment plants, and chemical synthesis. Features thick wear liners and low operating speeds.",
@@ -55,6 +56,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Dye Manufacturing", "Oil & Gas"],
   },
   "Dosing Pump": {
+    image: "/images/dosing-pump.jpg",
     tagline: "Precision metering pump for accurate chemical injection and pH control.",
     description:
       "Positive displacement chemical dosing pump offering repeatable flow accuracy within ±1%. Available in motor-driven diaphragm, solenoid, and plunger configurations for dosing acids, alkalis, coagulants, and additives.",
