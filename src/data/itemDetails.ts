@@ -144,6 +144,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Oil & Gas", "Pharma", "Food"],
   },
   "Vertical Axial Flow Pump": {
+    image: "/images/vertical-axial-flow-pump.jpg",
     tagline: "Space-saving vertical propeller pump for deep sumps, intake and flood control.",
     description:
       "Vertical suspended-bowl axial flow pump designed to lift large volumes of water or process media from underground sumps, rivers, and intake basins. Requires minimal surface floor space while keeping the motor safely above flood level.",
@@ -165,6 +166,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Oil & Gas", "Dye Manufacturing"],
   },
   "Pump with Priming Chamber": {
+    image: "/images/pump-with-priming-chamber.jpg",
     tagline: "Self-priming centrifugal pump package with integrated vacuum priming chamber.",
     description:
       "End-suction centrifugal pump fitted with an external priming tank or vacuum assist chamber. Enables reliable suction lift from underground tanks or pits without the need for manual foot valves or continuous priming water.",
@@ -186,6 +188,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Pharma", "Breweries", "Dye Manufacturing"],
   },
   "SS Milk Pump with Stand": {
+    image: "/images/ss-milk-pump-with-stand.jpg",
     tagline: "Hygienic SS316L centrifugal pump on stainless steel trolley for dairy & pharma.",
     description:
       "Ultra-hygienic sanitary centrifugal pump constructed entirely from electropolished SS316L stainless steel. Mounted on a vibration-dampened SS stand or mobile trolley with tri-clover sanitary connections for rapid CIP/SIP cleaning.",
@@ -207,6 +210,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Food", "Beverages", "Pharma", "Breweries"],
   },
   "Horizontal Split Case Pump": {
+    image: "/images/horizontal-split-case-pump.jpg",
     tagline: "Axially split double-suction pump for high-flow cooling water and utility duties.",
     description:
       "Heavy-duty horizontal split case centrifugal pump featuring an axially split casing and double-suction impeller. Enables complete rotor removal for inspection and maintenance simply by lifting the upper casing half, without disturbing piping or motor alignment.",
