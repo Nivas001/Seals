@@ -48,27 +48,27 @@ export function CreativeNotFound() {
             </div>
 
             {/* Industrial Brass Socket Cap */}
-            <div className="w-14 sm:w-16 h-10 sm:h-12 bg-gradient-to-b from-ink via-ink/90 to-ink rounded-t-lg border-2 border-brass/60 shadow-lg flex flex-col items-center justify-around py-1 -mt-1">
+            <div className="relative z-20 w-14 sm:w-16 h-10 sm:h-12 bg-gradient-to-b from-ink via-ink/90 to-ink rounded-lg border-2 border-brass/60 shadow-lg flex flex-col items-center justify-around py-1 -mt-1">
               <div className="w-full h-0.5 bg-brass/40" />
               <div className="w-full h-0.5 bg-brass/40" />
             </div>
 
             {/* Broken Lightbulb with Black Tint & No Text */}
-            <div className="relative flex items-center justify-center -mt-2">
+            <div className="relative flex items-center justify-center -mt-8 sm:-mt-10">
               {/* Black Tint / Burnt Dark Shadow Around Bulb */}
               <div className="absolute -inset-16 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.25)_45%,transparent_75%)] pointer-events-none rounded-full blur-md" />
 
               {/* Subtle flickering short circuit arc */}
               <div className="absolute -inset-10 bg-[radial-gradient(circle_at_center,rgba(217,119,6,0.12)_0%,transparent_70%)] animate-pulse pointer-events-none" />
 
-              {/* Broken Bulb Icon */}
-              <LightbulbOff className="w-36 sm:w-48 md:w-56 h-36 sm:h-48 md:h-56 text-ink/35 stroke-[1.1] drop-shadow-[0_12px_30px_rgba(0,0,0,0.6)] relative z-10" />
+              {/* Broken Bulb Icon rotated 180deg so screw base attaches into top socket */}
+              <LightbulbOff className="w-36 sm:w-48 md:w-56 h-36 sm:h-48 md:h-56 text-ink/35 stroke-[1.1] drop-shadow-[0_12px_30px_rgba(0,0,0,0.6)] relative z-10 rotate-180" />
 
               {/* Electric Spark inside shattered filament (No Text!) */}
               <motion.div
                 animate={{ opacity: [1, 0.2, 0.8, 0.1, 1], scale: [1, 1.1, 0.95, 1.15, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
-                className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
               >
                 <ZapOff className="w-10 sm:w-12 h-10 sm:h-12 text-amber-500 drop-shadow-[0_0_15px_rgba(245,158,11,0.9)]" />
               </motion.div>
