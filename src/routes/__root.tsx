@@ -70,9 +70,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image", content: "/og-image.jpg" },
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
-      { rel: "shortcut icon", href: "/favicon.ico" },
+      { rel: "stylesheet", href: appCss, type: "text/css" },
+      { rel: "icon", href: "/favicon.png?v=20260726a", type: "image/png" },
+      { rel: "shortcut icon", href: "/favicon.ico?v=20260726a", type: "image/x-icon" },
+      { rel: "apple-touch-icon", href: "/favicon.png?v=20260726a" },
     ],
   }),
   shellComponent: RootShell,
@@ -83,11 +84,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="antialiased">
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="min-h-screen bg-background text-foreground selection:bg-accent/20 selection:text-ink">
         {children}
         <Scripts />
       </body>
