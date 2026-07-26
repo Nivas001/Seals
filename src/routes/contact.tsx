@@ -19,6 +19,7 @@ import { GlowCard } from "@/components/ui/GlowCard";
 import { COMPANY, CATEGORIES } from "@/data/catalog";
 import { getItem, slugify } from "@/data/items";
 import { toast } from "sonner";
+import { chatbotState } from "@/data/chatbotState";
 
 type ContactSearch = {
   category?: string;
@@ -219,6 +220,18 @@ function CorporateCard() {
         </InfoRow>
         <InfoRow icon={Clock} label="Response time">
           Within 24 hours on business days.
+        </InfoRow>
+        <InfoRow icon={Sparkles} label="24/7 AI Support">
+          <div className="flex flex-col gap-1.5">
+            <span className="text-muted-foreground">Get instant answers &amp; technical guidance anytime.</span>
+            <button
+              onClick={() => chatbotState.setOpen(true)}
+              className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brass hover:underline w-fit cursor-pointer pt-0.5"
+            >
+              <span>Launch Ask ARKA</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            </button>
+          </div>
         </InfoRow>
       </div>
     </CardShell>
