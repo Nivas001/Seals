@@ -2,27 +2,19 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
   Search,
-  Bot,
   Home,
   Wrench,
   ShieldAlert,
-  Sparkles,
   PhoneCall,
 } from "lucide-react";
-import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { GlowCard } from "@/components/ui/GlowCard";
-import { chatbotState } from "@/data/chatbotState";
-import { COMPANY } from "@/data/catalog";
 
 export function CreativeNotFound() {
-  const handleAskAdvisor = () => {
-    chatbotState.askQuestion("How do I solve this 404 error and find my missing part?");
-  };
-
   return (
     <div className="min-h-screen bg-background text-ink flex flex-col justify-between selection:bg-brass/20 selection:text-ink">
-      <Navbar />
+      {/* Automatically hide Equipment Advisor floating widget when on any 404 page */}
+      <style>{`#ai-chatbot-widget { display: none !important; }`}</style>
 
       <main className="relative flex-1 flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Blueprint & Grid background effects */}
@@ -112,18 +104,17 @@ export function CreativeNotFound() {
               </div>
 
               <p className="text-xs sm:text-sm text-ink/80 leading-normal mb-5 font-mono">
-                <strong className="text-ink">Remediation Protocol:</strong> Do not abandon your engineering project! Our AI Equipment Advisor is standing by to identify equivalent metallurgical grades, CAD drawings, or custom fabrication options immediately.
+                <strong className="text-ink">Remediation Protocol:</strong> The specification or component URL you requested has been moved or requires custom engineering assembly. Our technical catalog remains fully accessible below.
               </p>
 
-              {/* Primary AI Advisor Trigger Button */}
-              <button
-                onClick={handleAskAdvisor}
+              {/* Primary Catalog Trigger Button */}
+              <Link
+                to="/products"
                 className="group relative w-full flex items-center justify-center gap-3 py-3.5 px-6 rounded-xl bg-ink text-background font-semibold text-sm shadow-lift transition-all duration-300 hover:bg-brass hover:text-ink hover:shadow-[0_10px_25px_-5px_rgba(217,119,6,0.4)] focus:outline-none"
               >
-                <Bot className="w-5 h-5 text-amber-400 group-hover:text-ink transition-colors animate-bounce" />
-                <span>Ask AI Advisor How To Solve This 404</span>
-                <Sparkles className="w-4 h-4 text-amber-400 group-hover:text-ink transition-colors ml-1" />
-              </button>
+                <Search className="w-5 h-5 text-amber-400 group-hover:text-ink transition-colors" />
+                <span>Browse Master Engineering Catalog</span>
+              </Link>
             </GlowCard>
           </motion.div>
 
@@ -134,14 +125,6 @@ export function CreativeNotFound() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
           >
-            <Link
-              to="/products"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface border border-hairline hover:border-ink/40 font-semibold text-xs sm:text-sm text-ink shadow-2xs hover:bg-white transition-all duration-200"
-            >
-              <Search className="w-4 h-4 text-brass" />
-              <span>Browse All 12 Categories</span>
-            </Link>
-
             <Link
               to="/"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface border border-hairline hover:border-ink/40 font-semibold text-xs sm:text-sm text-ink shadow-2xs hover:bg-white transition-all duration-200"

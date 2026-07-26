@@ -384,7 +384,7 @@ export function AIChatbot() {
   }
 
   return (
-    <div className="fixed bottom-6 left-4 sm:left-6 z-50 flex flex-col items-start font-sans">
+    <div id="ai-chatbot-widget" className="fixed bottom-6 left-4 sm:left-6 z-50 flex flex-col items-start font-sans">
       <AnimatePresence>
         {open && (
           <motion.div
