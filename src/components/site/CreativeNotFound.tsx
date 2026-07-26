@@ -8,7 +8,6 @@ import {
   PhoneCall,
   LightbulbOff,
   ZapOff,
-  Unplug,
 } from "lucide-react";
 import { Footer } from "@/components/site/Footer";
 import { GlowCard } from "@/components/ui/GlowCard";
@@ -19,7 +18,7 @@ export function CreativeNotFound() {
       {/* Automatically hide Equipment Advisor floating widget when on any 404 page */}
       <style>{`#ai-chatbot-widget { display: none !important; }`}</style>
 
-      <main className="relative flex-1 flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <main className="relative flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Blueprint & Grid background effects */}
         <div className="pointer-events-none absolute inset-0 opacity-40">
           <div className="grid-lines absolute inset-0" />
@@ -33,72 +32,62 @@ export function CreativeNotFound() {
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto w-full lg:grid lg:grid-cols-12 lg:gap-12 lg:items-center">
-          {/* Left Column: Broken Bulb & Power Failure Station */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-5 flex flex-col items-center justify-center mb-10 lg:mb-0"
-          >
-            <div className="relative w-full max-w-sm sm:max-w-md aspect-square rounded-3xl bg-gradient-to-b from-surface/95 to-ink/5 border-2 border-dashed border-ink/25 p-6 sm:p-8 flex flex-col items-center justify-between overflow-hidden shadow-inner backdrop-blur-md">
-              {/* Top Station Header */}
-              <div className="flex items-center justify-between w-full border-b border-hairline/80 pb-3 text-left">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-destructive animate-ping" />
-                  <span className="font-mono text-xs font-bold uppercase tracking-wider text-ink">
-                    STATION #04 // POWER CUT
+          {/* Left Column: Straight Hanging Broken Bulb (No Box, Real Hanging Physics) */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-start py-6 lg:py-0">
+            {/* Swaying Pendulum Animation from Ceiling */}
+            <motion.div
+              animate={{ rotate: [-2.5, 2.5, -2.5] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              style={{ transformOrigin: "top center" }}
+              className="relative flex flex-col items-center select-none"
+            >
+              {/* Ceiling Mount Base */}
+              <div className="w-12 sm:w-16 h-3 bg-ink/80 rounded-b-md shadow-md border-b border-hairline/20" />
+
+              {/* Straight Hanging Wire */}
+              <div className="w-1 sm:w-1.5 bg-gradient-to-b from-ink/90 via-ink/70 to-ink/90 h-40 sm:h-56 md:h-64 shadow-sm relative">
+                {/* Subtle wire highlight */}
+                <div className="absolute inset-y-0 left-0 w-0.5 bg-white/20" />
+              </div>
+
+              {/* Industrial Brass Socket Cap */}
+              <div className="relative z-10 w-12 sm:w-16 h-10 sm:h-12 bg-gradient-to-b from-ink via-ink/90 to-ink rounded-t-lg border-2 border-brass/60 shadow-lg flex flex-col items-center justify-around py-1 -mt-1">
+                <div className="w-full h-0.5 bg-brass/40" />
+                <div className="w-full h-0.5 bg-brass/40" />
+                <div className="w-full h-0.5 bg-brass/40" />
+              </div>
+
+              {/* The Broken Bulb Assembly */}
+              <div className="relative flex items-center justify-center -mt-2">
+                {/* Radial Flickering Arc Glow */}
+                <div className="absolute -inset-12 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.15)_0%,transparent_70%)] animate-pulse pointer-events-none" />
+
+                {/* Main Bulb Icon */}
+                <LightbulbOff className="w-36 sm:w-48 md:w-56 h-36 sm:h-48 md:h-56 text-ink/35 stroke-[1.1] drop-shadow-md" />
+
+                {/* Electric Sparks inside the shattered filament */}
+                <motion.div
+                  animate={{ opacity: [1, 0.2, 0.9, 0.1, 1], scale: [1, 1.15, 0.9, 1.2, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+                >
+                  <ZapOff className="w-10 sm:w-12 h-10 sm:h-12 text-amber-500 drop-shadow-[0_0_12px_rgba(245,158,11,0.9)]" />
+                </motion.div>
+
+                {/* Simulated Glass Crack Lines / Severed Filament Badge */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0.6, 1, 0.5, 0.9] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute bottom-6 bg-destructive/10 border border-destructive/30 px-3 py-1 rounded-full backdrop-blur-xs shadow-xs"
+                >
+                  <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-destructive">
+                    ⚡ Filament Blown
                   </span>
-                </div>
-                <span className="font-mono text-[10px] bg-destructive/10 text-destructive px-2 py-0.5 rounded font-bold">
-                  BLOWN
-                </span>
-              </div>
-
-              {/* Center Illustration: Broken Bulb & Short Circuit */}
-              <div className="relative my-6 flex items-center justify-center">
-                {/* Radial Flickering Glow */}
-                <div className="absolute -inset-10 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.12)_0%,transparent_70%)] animate-pulse pointer-events-none" />
-
-                {/* Broken Lightbulb */}
-                <motion.div
-                  animate={{ opacity: [1, 0.3, 0.8, 0.15, 1] }}
-                  transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative z-10"
-                >
-                  <LightbulbOff className="w-32 sm:w-40 h-32 sm:h-40 text-ink/35 stroke-[1.2] drop-shadow-sm" />
                 </motion.div>
-
-                {/* Short Circuit Sparks & Unplugged Wire */}
-                <motion.div
-                  animate={{ scale: [1, 1.2, 0.9, 1.15, 1], opacity: [0.7, 1, 0.4, 1, 0.8] }}
-                  transition={{ duration: 1.8, repeat: Infinity }}
-                  className="absolute -top-2 -right-2 z-20"
-                >
-                  <ZapOff className="w-9 h-9 text-amber-500 drop-shadow-[0_0_10px_rgba(245,158,11,0.85)]" />
-                </motion.div>
-
-                <div className="absolute -bottom-3 -left-3 z-20">
-                  <Unplug className="w-10 h-10 text-destructive/80 rotate-45" />
-                </div>
               </div>
-
-              {/* Bottom LED Telemetry Readout */}
-              <div className="w-full border-t border-hairline/80 pt-3 flex items-center justify-between font-mono text-[11px] text-muted-foreground uppercase tracking-wider">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-destructive" />
-                  <span>FILAMENT: 0%</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                  <span>LINE: VOID</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-ink/30" />
-                  <span>GRID: 0.0V</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
           {/* Right Column: 404 Wrench & Remediation Actions */}
           <div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start">
