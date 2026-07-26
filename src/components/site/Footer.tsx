@@ -3,26 +3,7 @@ import { Mail, Phone, MapPin, FileDown, ArrowUpRight } from "lucide-react";
 import { COMPANY, CATEGORIES } from "@/data/catalog";
 import { DownloadCatalog } from "@/components/site/DownloadCatalog";
 
-function LogoMark({ size = 32 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 36 36" fill="none" aria-hidden className="shrink-0">
-      <circle cx="18" cy="18" r="13" stroke="currentColor" className="text-ink" strokeWidth="1.4" strokeOpacity="0.4" />
-      {Array.from({ length: 8 }).map((_, i) => {
-        const angle = (i * 360) / 8;
-        const rad = (angle * Math.PI) / 180;
-        const x1 = 18 + Math.cos(rad) * 12;
-        const y1 = 18 + Math.sin(rad) * 12;
-        const x2 = 18 + Math.cos(rad) * 15.5;
-        const y2 = 18 + Math.sin(rad) * 15.5;
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" className="text-ink" strokeWidth="2.2" strokeLinecap="round" />;
-      })}
-      <circle cx="18" cy="18" r="6.5" stroke="currentColor" className="text-ink" strokeWidth="1.4" />
-      <circle cx="18" cy="18" r="2.5" fill="currentColor" className="text-ink" />
-      <line x1="18" y1="11.5" x2="18" y2="24.5" stroke="currentColor" className="text-ink" strokeWidth="1" strokeOpacity="0.45" />
-      <line x1="11.5" y1="18" x2="24.5" y2="18" stroke="currentColor" className="text-ink" strokeWidth="1" strokeOpacity="0.45" />
-    </svg>
-  );
-}
+import { ArkaLogo } from "@/components/ui/ArkaLogo";
 
 export function Footer() {
   return (
@@ -75,22 +56,8 @@ export function Footer() {
         <div className="grid gap-8 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.5fr]">
           {/* Brand column */}
           <div>
-            <div className="flex items-center gap-3">
-              <span
-                aria-hidden
-                className="grid h-10 w-10 place-items-center rounded-full text-ink"
-                style={{ background: "var(--surface)" }}
-              >
-                <LogoMark size={22} />
-              </span>
-              <div className="leading-tight">
-                <div className="text-sm font-bold tracking-tight text-ink">
-                  AARRKKAA INTERNATIONAL
-                </div>
-                <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                  {COMPANY.tagline}
-                </div>
-              </div>
+            <div className="flex items-center">
+              <ArkaLogo size={46} variant="full" />
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
               supplier and distributor of pumps, mechanical seals, elastomers,

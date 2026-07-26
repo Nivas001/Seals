@@ -13,41 +13,7 @@ const NAV = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
-/* Premium gear-seal SVG logo mark */
-function LogoMark({ size = 36 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 36 36"
-      fill="none"
-      aria-hidden
-      className="shrink-0"
-    >
-      {/* Outer gear ring */}
-      <circle cx="18" cy="18" r="13" stroke="white" strokeWidth="1.4" strokeOpacity="0.5" />
-      {/* Gear teeth */}
-      {Array.from({ length: 8 }).map((_, i) => {
-        const angle = (i * 360) / 8;
-        const rad = (angle * Math.PI) / 180;
-        const x1 = 18 + Math.cos(rad) * 12;
-        const y1 = 18 + Math.sin(rad) * 12;
-        const x2 = 18 + Math.cos(rad) * 15.5;
-        const y2 = 18 + Math.sin(rad) * 15.5;
-        return (
-          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="white" strokeWidth="2.2" strokeLinecap="round" />
-        );
-      })}
-      {/* Inner hub circle */}
-      <circle cx="18" cy="18" r="6.5" stroke="white" strokeWidth="1.4" />
-      {/* Centre dot */}
-      <circle cx="18" cy="18" r="2.5" fill="white" />
-      {/* Cross spokes */}
-      <line x1="18" y1="11.5" x2="18" y2="24.5" stroke="white" strokeWidth="1" strokeOpacity="0.55" />
-      <line x1="11.5" y1="18" x2="24.5" y2="18" stroke="white" strokeWidth="1" strokeOpacity="0.55" />
-    </svg>
-  );
-}
+import { ArkaLogo } from "@/components/ui/ArkaLogo";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -87,30 +53,10 @@ export function Navbar() {
         >
           <Link
             to="/"
-            className="group flex items-center gap-2.5 rounded-full pl-1 pr-2 py-1"
+            className="group flex items-center rounded-full pl-1 pr-2 py-1 transition-transform duration-300 hover:scale-[1.01]"
             aria-label="AARRKKAA International — home"
           >
-            <span
-              aria-hidden
-              className="relative grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full text-primary-foreground transition-transform duration-500 ease-out group-hover:scale-105"
-              style={{ background: "var(--gradient-brand)" }}
-            >
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-full"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 55%)",
-                }}
-              />
-              <LogoMark size={22} />
-            </span>
-            <span className="hidden text-[14px] font-semibold tracking-tight text-ink sm:block">
-              AARRKKAA
-              <span className="ml-1 font-normal text-muted-foreground">
-                International
-              </span>
-            </span>
+            <ArkaLogo size={42} variant="full" />
           </Link>
 
           <ul className="hidden items-center gap-0.5 md:flex">

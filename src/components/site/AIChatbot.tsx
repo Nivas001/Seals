@@ -18,6 +18,7 @@ import {
   CornerDownLeft,
 } from "lucide-react";
 import { CATEGORIES, COMPANY } from "@/data/catalog";
+import { ArkaLogoMark } from "@/components/ui/ArkaLogo";
 import { slugify } from "@/data/items";
 import { useChatbotOpen, chatbotState } from "@/data/chatbotState";
 
@@ -398,8 +399,8 @@ export function AIChatbot() {
             {/* Header */}
             <div className="flex items-center justify-between bg-gradient-to-r from-brass/25 via-brass/15 to-surface px-4 py-3 text-ink border-b border-brass/40">
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-brass text-ink font-bold shadow-2xs">
-                  <Bot className="h-5 w-5 text-ink" />
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface border border-hairline shadow-xs p-0.5">
+                  <ArkaLogoMark size={28} />
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5 font-display text-sm font-bold tracking-tight text-ink truncate">
