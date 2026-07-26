@@ -222,6 +222,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
       { label: "Bearings", value: "Grease or oil-lubricated heavy-duty ball/roller bearings" },
       { label: "Efficiency", value: "Up to 88% peak hydraulic efficiency" },
       { label: "Sealing", value: "Cartridge mechanical seals or stuffing box gland packing" },
+      { label: "Seal Flush / Balance Line", value: "External stainless steel tubing/rod loop with top valve for continuous chamber cooling and pressure balancing" },
     ],
     benefits: [
       "In-line piping remains untouched during major rotor maintenance",
