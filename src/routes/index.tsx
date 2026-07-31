@@ -710,7 +710,7 @@ function Testimonials() {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="mt-10 flex snap-x snap-mandatory overflow-x-auto pb-4 gap-4 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0 sm:pb-0"
+          className="mt-10 flex snap-x snap-mandatory scroll-pl-5 sm:scroll-pl-0 overflow-x-auto pb-4 gap-4 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0 sm:pb-0"
         >
           {TESTIMONIALS.map((t, i) => (
             <motion.div
