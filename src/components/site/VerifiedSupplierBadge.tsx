@@ -80,7 +80,7 @@ export function VerifiedSupplierBadge() {
 
         {/* Card Header Banner */}
         <div className="relative z-10 flex items-center gap-3.5 border-b border-brass/30 pb-5">
-          <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-ink border-2 border-brass/60 shadow-md p-1.5">
+          <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-white border-2 border-brass/60 shadow-md p-1.5">
             <ArkaLogoMark size={50} />
           </div>
           <div>
