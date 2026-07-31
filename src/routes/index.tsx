@@ -824,7 +824,7 @@ function Process() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.45, delay: i * 0.1 }}
-              className="snap-start shrink-0 w-[80%] md:w-auto h-full relative flex flex-col rounded-2xl border border-hairline bg-background p-6 md:rounded-none md:border-0 md:border-r md:last:border-r-0 md:bg-transparent md:border-hairline"
+              className="snap-start shrink-0 w-[80%] md:w-auto relative flex flex-col rounded-2xl border border-hairline bg-background p-6 md:rounded-none md:border-0 md:border-r md:last:border-r-0 md:bg-transparent md:border-hairline"
             >
               {/* Large step number */}
               <span
