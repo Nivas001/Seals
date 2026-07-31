@@ -71,7 +71,7 @@ export function DownloadCatalog({
     pill:
       "rounded-full bg-brass/15 px-4 py-2 text-[12px] font-semibold text-ink border border-brass/30 hover:bg-brass/25 shadow-xs hover:-translate-y-0.5 active:translate-y-0",
     "navbar-pill":
-      "glass-shimmer relative items-center gap-1.5 overflow-hidden rounded-full border border-ink/10 px-3.5 py-2 text-[12px] font-semibold text-ink shadow-[0_1px_0_0_rgba(255,255,255,0.9)_inset] transition-all duration-300 hover:border-ink/25 hover:-translate-y-0.5 active:translate-y-0 inline-flex",
+      "glass-shimmer relative items-center gap-1.5 overflow-hidden rounded-full border border-ink/10 px-3.5 py-2 text-[12px] font-semibold text-ink shadow-[0_1px_0_0_rgba(255,255,255,0.9)_inset] transition-all duration-300 hover:border-ink/25 hover:-translate-y-0.5 active:translate-y-0",
     "mobile-menu":
       "flex w-full items-center justify-center gap-2 rounded-full border border-ink/15 bg-background px-6 py-3.5 text-sm font-semibold text-ink hover:bg-surface shadow-xs active:scale-[0.99]",
   };
