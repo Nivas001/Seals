@@ -25,7 +25,7 @@ function AboutPage() {
   return (
     <div className="min-h-screen bg-background text-ink">
       <Navbar />
-      <main className="pt-32 sm:pt-40">
+      <main className="overflow-x-clip pt-32 sm:pt-40">
         <section className="mx-auto max-w-6xl px-5 sm:px-8">
           <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             <span className="h-1.5 w-1.5 rounded-full bg-brass" /> About us
