@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { COMPANY } from "@/data/catalog";
@@ -109,6 +109,43 @@ function AboutPage() {
                 {client}
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
+          <div className="group relative overflow-hidden rounded-[2rem] bg-ink text-background p-8 sm:p-12 shadow-2xl">
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-brass via-transparent to-transparent transition-opacity duration-500 group-hover:opacity-40" />
+            
+            <div className="relative z-10 grid gap-8 sm:grid-cols-2 items-center">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass mb-3">
+                  Global Commerce
+                </div>
+                <h2 className="font-display text-3xl font-black tracking-tight sm:text-4xl">
+                  Seamless Payments
+                </h2>
+                <p className="mt-4 text-sm sm:text-base text-background/80 leading-relaxed max-w-md">
+                  We accept a wide range of secure international and domestic payment methods, including Wire Transfers, Credit Cards, and UPI, to ensure your procurement process is as smooth as possible.
+                </p>
+                <div className="mt-8">
+                  <Link 
+                    to="/about/payments"
+                    className="inline-flex items-center gap-2 rounded-full bg-brass text-ink px-6 py-3 text-xs font-bold uppercase tracking-widest transition-transform duration-300 hover:scale-105"
+                  >
+                    View Payment Options &rarr;
+                  </Link>
+                </div>
+              </div>
+              
+              <div className="hidden sm:flex justify-end pr-8">
+                {/* Decorative overlapping circles to represent payments/coins/global */}
+                <div className="relative h-32 w-32">
+                  <div className="absolute right-0 top-0 h-24 w-24 rounded-full border border-brass/50 mix-blend-screen transition-transform duration-700 group-hover:-translate-x-4 group-hover:translate-y-4" />
+                  <div className="absolute bottom-0 left-0 h-20 w-20 rounded-full border border-background/20 bg-background/5 backdrop-blur-md transition-transform duration-700 group-hover:translate-x-6 group-hover:-translate-y-2" />
+                  <div className="absolute top-1/2 left-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-tr from-brass to-[#d4af37] shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-transform duration-500 group-hover:scale-110" />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
