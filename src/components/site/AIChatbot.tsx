@@ -589,12 +589,12 @@ export function AIChatbot() {
         )}
       </AnimatePresence>
 
-      {/* Floating Toggle Button */}
+      {/* Floating Toggle Button (Hidden on Mobile) */}
       <motion.button
         onClick={() => setOpen((prev) => !prev)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="group relative flex items-center gap-2.5 rounded-full border-2 border-brass/70 bg-surface/95 backdrop-blur-md px-4 py-3 text-ink shadow-[0_8px_25px_-5px_rgba(217,119,6,0.3)] transition-all hover:border-brass hover:bg-white hover:shadow-[0_12px_35px_-5px_rgba(217,119,6,0.5)]"
+        className="group relative hidden md:flex items-center gap-2.5 rounded-full border-2 border-brass/70 bg-surface/95 backdrop-blur-md px-4 py-3 text-ink shadow-[0_8px_25px_-5px_rgba(217,119,6,0.3)] transition-all hover:border-brass hover:bg-white hover:shadow-[0_12px_35px_-5px_rgba(217,119,6,0.5)]"
         aria-label="Toggle AI Guide Chatbot"
       >
         <span className="grid h-6 w-6 place-items-center rounded-full bg-brass text-ink font-bold shadow-2xs">

@@ -1,8 +1,9 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Menu, X, Phone, Download } from "lucide-react";
+import { Menu, X, Phone, Download, Sparkles } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { DownloadCatalog } from "@/components/site/DownloadCatalog";
+import { chatbotState } from "@/data/chatbotState";
 
 
 const NAV = [
@@ -162,6 +163,16 @@ export function Navbar() {
               </ul>
               <div className="space-y-3">
                 <DownloadCatalog variant="mobile-menu" label="Download catalog (PDF)" onDownload={() => setOpen(false)} />
+                <button
+                  onClick={() => {
+                    setOpen(false);
+                    chatbotState.setOpen(true);
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-brass/70 bg-surface/95 px-6 py-3.5 text-sm font-bold text-ink shadow-md"
+                >
+                  <Sparkles className="h-4 w-4 text-brass animate-pulse" />
+                  Launch AI Guide
+                </button>
                 <a
                   href="tel:+917806936475"
                   className="glass-cta-dark flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-background"
