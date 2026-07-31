@@ -679,6 +679,17 @@ const TESTIMONIALS = [
 ];
 
 function Testimonials() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    const itemWidth = scrollRef.current.children[0]?.clientWidth || 300;
+    const index = Math.round(scrollLeft / (itemWidth + 16)); // 16px gap
+    setActiveIndex(Math.min(Math.max(index, 0), TESTIMONIALS.length - 1));
+  };
+
   return (
     <section id="testimonials" className="relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       {/* Background accent */}
@@ -696,7 +707,11 @@ function Testimonials() {
           <span className="italic text-brass">and available globally.</span>
         </h2>
 
-        <div className="mt-10 flex snap-x snap-mandatory overflow-x-auto pb-4 gap-5 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0 sm:pb-0">
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="mt-10 flex snap-x snap-mandatory overflow-x-auto pb-4 gap-4 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0 sm:pb-0"
+        >
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={i}
@@ -704,7 +719,7 @@ function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="snap-center shrink-0 w-[85%] sm:w-auto h-full"
+              className="snap-start shrink-0 w-[80%] sm:w-auto h-full"
             >
               <GlowCard className="h-full flex flex-col justify-between">
                 <div>
@@ -724,6 +739,18 @@ function Testimonials() {
                 </div>
               </GlowCard>
             </motion.div>
+          ))}
+        </div>
+
+        {/* Mobile Indicator Dots */}
+        <div className="mt-4 flex items-center justify-center gap-2 sm:hidden">
+          {TESTIMONIALS.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === activeIndex ? "w-4 bg-brass" : "w-1.5 bg-ink/20"
+              }`}
+            />
           ))}
         </div>
       </div>
