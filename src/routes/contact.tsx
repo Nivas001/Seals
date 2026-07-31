@@ -166,10 +166,9 @@ function InfoRow({
   return (
     <div className="flex items-start gap-4 py-3">
       <span
-        className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-brass-foreground"
-        style={{ background: "var(--gradient-brass)" }}
+        className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brass/10 backdrop-blur-md border border-brass/20 text-brass shadow-sm"
       >
-        <Icon className="h-5 w-5" />
+        <Icon className="h-5 w-5" strokeWidth={1.5} />
       </span>
       <div className="min-w-0">
         <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -312,8 +311,8 @@ function InquiryCard() {
         <div className="mb-6 rounded-2xl border border-brass/40 bg-gradient-to-br from-brass/15 via-brass/5 to-surface p-4 sm:p-5 shadow-2xs">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 sm:gap-3.5 min-w-0">
-              <div className="grid h-9 w-9 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl bg-brass text-ink font-bold shadow-2xs">
-                <Sparkles className="h-4.5 w-4.5 sm:h-5 sm:w-5 text-ink" />
+              <div className="grid h-9 w-9 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl bg-brass/10 backdrop-blur-md border border-brass/20 shadow-sm text-brass font-bold">
+                <Sparkles className="h-4.5 w-4.5 sm:h-5 sm:w-5" strokeWidth={1.5} />
               </div>
               <div className="min-w-0">
                 <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em] text-brass">
@@ -482,10 +481,9 @@ function FollowCard() {
               className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-brass/15 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
             />
             <span
-              className="relative grid h-7 w-7 sm:h-9 sm:w-9 place-items-center rounded-lg text-brass-foreground shadow-sm transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-[-6deg]"
-              style={{ background: "var(--gradient-brass)" }}
+              className="relative grid h-7 w-7 sm:h-9 sm:w-9 place-items-center rounded-lg bg-brass/10 backdrop-blur-md border border-brass/20 text-brass shadow-sm transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-[-6deg]"
             >
-              <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:scale-110" />
+              <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:scale-110" strokeWidth={1.5} />
             </span>
             <span className="relative transition-colors duration-300 group-hover:text-brass text-center leading-none">
               {label}
