@@ -501,6 +501,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Pharma", "Chemical", "Dye Manufacturing", "Food"],
   },
   "Rotary Union": {
+    image: "/images/rotary-union.jpg",
     tagline: "Precision rotating joint for transferring steam, thermal oil, or coolant into rotating rolls.",
     description:
       "High-precision rotating mechanical union designed to introduce or remove heating steam, hot oil, cooling water, or hydraulic fluid into rotating dryer rolls, calenders, and mixer drums without leakage.",
@@ -522,6 +523,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Plastics", "Chemical", "Dye Manufacturing", "Food"],
   },
   "Rotary Joint": {
+    image: "/images/rotary-joint.jpg",
     tagline: "High-speed, multi-passage rotary joint for CNC automation and hydraulic clamping.",
     description:
       "Compact, multi-passage rotary joint engineered for high-speed machine tool spindles, indexing tables, and automated manufacturing cells. Transfers coolant, hydraulic clamping oil, and pneumatic air simultaneously.",
