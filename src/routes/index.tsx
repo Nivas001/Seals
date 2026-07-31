@@ -537,6 +537,12 @@ function Industries() {
             Our components meet the hygienic, chemical and mechanical demands
             of some of India&rsquo;s most process-critical industries.
           </p>
+          <Link
+            to="/industries"
+            className="mt-6 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-2.5 text-sm font-semibold text-ink backdrop-blur transition hover:bg-white sm:hidden"
+          >
+            View all industries <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
 
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -547,7 +553,7 @@ function Industries() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
-              className="group relative overflow-hidden rounded-2xl border border-hairline bg-surface p-4 transition hover:border-ink/25 hover:shadow-soft"
+              className={`group relative overflow-hidden rounded-2xl border border-hairline bg-surface p-4 transition hover:border-ink/25 hover:shadow-soft ${i >= 4 ? "hidden sm:block" : ""}`}
             >
               <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brass">
                 Sector 0{i + 1}
