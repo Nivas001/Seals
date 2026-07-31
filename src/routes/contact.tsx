@@ -16,6 +16,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { VerifiedSupplierBadge } from "@/components/site/VerifiedSupplierBadge";
 import { GlowCard } from "@/components/ui/GlowCard";
+import { Input } from "@/components/base/input/input";
 import { COMPANY, CATEGORIES } from "@/data/catalog";
 import { getItem, slugify } from "@/data/items";
 import { toast } from "sonner";
@@ -527,20 +528,25 @@ function NewsletterCard() {
         Get technical articles, catalog updates and enterprise offers delivered
         directly to your inbox.
       </p>
-      <form onSubmit={onSubscribe} className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <input
-          type="email"
-          required
-          maxLength={255}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email…"
-          className="min-w-0 w-full rounded-full border border-ink/15 bg-background px-5 py-3 text-sm text-ink placeholder:text-muted-foreground outline-none transition focus:border-brass/70 focus:ring-2 focus:ring-brass/30"
-        />
+      <form onSubmit={onSubscribe} className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-start">
+        <div className="flex-1 min-w-0">
+          <Input
+            isRequired
+            icon={Mail}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            label="Email"
+            hint="We will not share your email with anyone."
+            placeholder="olivia@untitledui.com"
+            tooltip="Receive product updates and offers."
+            maxLength={255}
+          />
+        </div>
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-background transition hover:bg-ink/85 disabled:opacity-60"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-background transition hover:bg-ink/85 disabled:opacity-60 sm:mt-7"
         >
           {busy ? "…" : "Subscribe"}
         </button>
