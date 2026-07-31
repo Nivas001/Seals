@@ -618,7 +618,7 @@ function WhyUs() {
         </div>
       </div>
 
-      <div className="relative z-10 mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="relative z-10 mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-4">
         {pillars.map((p, i) => (
           <motion.div
             key={p.title}
@@ -632,7 +632,7 @@ function WhyUs() {
               {/* Large background number */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute -right-3 -top-4 font-display text-[5.5rem] font-black leading-none tracking-tighter select-none transition-transform duration-500 group-hover:scale-110"
+                className="pointer-events-none absolute -right-2 -top-3 font-display text-[4rem] font-black leading-none tracking-tighter select-none transition-transform duration-500 group-hover:scale-110 sm:-right-3 sm:-top-4 sm:text-[5.5rem]"
                 style={{ color: p.accent, opacity: 0.07 }}
               >
                 {p.num}
@@ -640,15 +640,15 @@ function WhyUs() {
 
               <span
                 aria-hidden
-                className="relative grid h-11 w-11 place-items-center rounded-xl text-primary-foreground shadow-soft"
+                className="relative grid h-9 w-9 place-items-center rounded-xl text-primary-foreground shadow-soft sm:h-11 sm:w-11"
                 style={{ background: "var(--gradient-brand)" }}
               >
-                <p.icon className="h-5 w-5" />
+                <p.icon className="h-4 w-4 sm:h-5 sm:w-5" />
               </span>
-              <h3 className="relative mt-5 font-display text-lg font-bold tracking-tight text-ink">
+              <h3 className="relative mt-4 font-display text-[15px] font-bold leading-tight tracking-tight text-ink sm:mt-5 sm:text-lg">
                 {p.title}
               </h3>
-              <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
+              <p className="relative mt-1.5 text-xs leading-relaxed text-muted-foreground sm:mt-2 sm:text-sm">
                 {p.body}
               </p>
             </GlowCard>

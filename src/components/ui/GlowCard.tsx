@@ -55,7 +55,7 @@ export function GlowCard({
       />
 
       {/* 3. Card Body Shell */}
-      <div className="relative z-10 h-full w-full rounded-[calc(1.75rem-2px)] bg-surface p-6 sm:p-8 transition-colors duration-300 group-hover:bg-surface/95">
+      <div className="relative z-10 h-full w-full rounded-[calc(1.75rem-2px)] bg-surface p-5 sm:p-8 transition-colors duration-300 group-hover:bg-surface/95">
         {children}
       </div>
     </div>
