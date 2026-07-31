@@ -3,6 +3,8 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { COMPANY } from "@/data/catalog";
 import factoryImg from "@/assets/factory.jpg";
+import { GlowCard } from "@/components/ui/GlowCard";
+import { Clock, MousePointerClick, HeartHandshake } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -51,64 +53,114 @@ function AboutPage() {
         </section>
 
         <section className="mx-auto mt-16 grid max-w-6xl gap-10 px-5 sm:mt-24 sm:px-8 lg:grid-cols-3">
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 flex flex-col justify-center">
             <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
               Our motto
             </div>
-            <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink">
+            <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
               &ldquo;{COMPANY.motto}&rdquo;
             </h2>
           </div>
-          <div className="grid gap-4 lg:col-span-2 sm:grid-cols-3">
-            {[
-              { k: "Response", d: "Improve response time on every customer query." },
-              { k: "Convenience", d: "Convenient ordering with accurate matching, first time." },
-              { k: "Feedback", d: "Continuous feedback creates a strong long-term bond." },
-            ].map((x) => (
-              <div key={x.k} className="rounded-2xl border border-hairline bg-surface p-6">
-                <div className="font-display text-lg font-bold text-ink">{x.k}</div>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{x.d}</p>
-              </div>
-            ))}
+          <div className="lg:col-span-2 relative">
+            <div className="flex snap-x snap-mandatory overflow-x-auto pb-4 gap-4 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0">
+              {[
+                { k: "Response", d: "Improve response time on every customer query.", icon: Clock },
+                { k: "Convenience", d: "Convenient ordering with accurate matching, first time.", icon: MousePointerClick },
+                { k: "Feedback", d: "Continuous feedback creates a strong long-term bond.", icon: HeartHandshake },
+              ].map((x) => (
+                <div key={x.k} className="snap-center shrink-0 w-[85%] sm:w-auto h-full">
+                  <GlowCard className="h-full group">
+                    <span
+                      aria-hidden
+                      className="relative grid h-10 w-10 place-items-center rounded-xl text-primary-foreground shadow-soft transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+                      style={{ background: "var(--gradient-brand)" }}
+                    >
+                      <x.icon className="h-5 w-5" />
+                    </span>
+                    <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-ink">{x.k}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{x.d}</p>
+                  </GlowCard>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
-            Our Clients &amp; Partners
+        <section className="mx-auto mt-16 max-w-7xl overflow-hidden px-5 sm:mt-24 sm:px-8">
+          <div className="text-center">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
+              Our Clients &amp; Partners
+            </div>
+            <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
+              Trusted by industry leaders worldwide
+            </h2>
+            <p className="mt-4 mx-auto max-w-2xl text-base text-muted-foreground">
+              We are proud to supply and support premier organizations across pharmaceuticals, biotechnology, food processing, chemicals, energy, and precision engineering.
+            </p>
           </div>
-          <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
-            Trusted by industry leaders worldwide
-          </h2>
-          <p className="mt-4 max-w-2xl text-base text-muted-foreground">
-            We are proud to supply and support premier organizations across pharmaceuticals, biotechnology, food processing, chemicals, energy, and precision engineering.
-          </p>
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-            {[
-              "Tata Electronics",
-              "Thermax Onsite Energy Solutions",
-              "Anthem Biosciences",
-              "Werner Finley",
-              "Astral Coatings",
-              "Ecovinal International",
-              "Yashaswi Fish Meal & Oil",
-              "Zenfold Sustainable Technology",
-              "H&V Advanced Materials",
-              "Eco Edge Solutions",
-              "Mukka Proteins",
-              "Megha Fruit Processing",
-              "RMZ Oilfield Engineering",
-              "Ingex Botanicals",
-              "Ovobel Foods",
-              "Essae Gears & Transmissions",
-            ].map((client) => (
-              <div
-                key={client}
-                className="flex items-center justify-center rounded-xl border border-hairline bg-surface p-4 text-center text-xs font-bold tracking-tight text-ink/85 transition hover:border-ink/25 hover:bg-white hover:shadow-2xs"
-              >
-                {client}
-              </div>
-            ))}
+          <div className="mt-12 relative flex flex-col gap-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="marquee-track flex w-max gap-4 hover:[animation-play-state:paused]">
+              {[
+                ...[
+                  "Tata Electronics",
+                  "Thermax Onsite Energy Solutions",
+                  "Anthem Biosciences",
+                  "Werner Finley",
+                  "Astral Coatings",
+                  "Ecovinal International",
+                  "Yashaswi Fish Meal & Oil",
+                  "Zenfold Sustainable Technology",
+                ],
+                ...[
+                  "Tata Electronics",
+                  "Thermax Onsite Energy Solutions",
+                  "Anthem Biosciences",
+                  "Werner Finley",
+                  "Astral Coatings",
+                  "Ecovinal International",
+                  "Yashaswi Fish Meal & Oil",
+                  "Zenfold Sustainable Technology",
+                ],
+              ].map((client, i) => (
+                <div
+                  key={`${client}-${i}`}
+                  className="glass-shimmer flex items-center justify-center rounded-full border border-hairline bg-surface/50 px-6 py-3 text-sm font-semibold tracking-tight text-ink/85 transition-all duration-300 hover:-translate-y-1 hover:border-ink/20 hover:bg-white hover:text-ink hover:shadow-soft cursor-pointer whitespace-nowrap"
+                >
+                  {client}
+                </div>
+              ))}
+            </div>
+            <div className="marquee-track-reverse flex w-max gap-4 hover:[animation-play-state:paused]">
+              {[
+                ...[
+                  "H&V Advanced Materials",
+                  "Eco Edge Solutions",
+                  "Mukka Proteins",
+                  "Megha Fruit Processing",
+                  "RMZ Oilfield Engineering",
+                  "Ingex Botanicals",
+                  "Ovobel Foods",
+                  "Essae Gears & Transmissions",
+                ],
+                ...[
+                  "H&V Advanced Materials",
+                  "Eco Edge Solutions",
+                  "Mukka Proteins",
+                  "Megha Fruit Processing",
+                  "RMZ Oilfield Engineering",
+                  "Ingex Botanicals",
+                  "Ovobel Foods",
+                  "Essae Gears & Transmissions",
+                ],
+              ].map((client, i) => (
+                <div
+                  key={`${client}-${i}`}
+                  className="glass-shimmer flex items-center justify-center rounded-full border border-hairline bg-surface/50 px-6 py-3 text-sm font-semibold tracking-tight text-ink/85 transition-all duration-300 hover:-translate-y-1 hover:border-ink/20 hover:bg-white hover:text-ink hover:shadow-soft cursor-pointer whitespace-nowrap"
+                >
+                  {client}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
