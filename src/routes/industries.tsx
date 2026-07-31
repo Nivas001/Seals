@@ -373,17 +373,17 @@ function IndustriesPage() {
 
         {/* CTA */}
         <section className="mx-auto mt-20 max-w-7xl px-4 pb-20 sm:mt-28 sm:px-8 sm:pb-28">
-          <div className="relative overflow-hidden rounded-3xl border border-hairline bg-ink p-8 text-background sm:p-12">
-            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brass/25 blur-3xl" />
+          <div className="group relative overflow-hidden rounded-3xl border border-hairline bg-ink p-8 text-background transition-colors duration-500 lg:hover:bg-white lg:hover:text-ink lg:hover:border-ink/20 sm:p-12 lg:hover:shadow-xl">
+            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brass/25 blur-3xl transition-opacity duration-500 lg:group-hover:opacity-40" />
             <div className="relative grid gap-6 sm:grid-cols-[1.4fr_1fr] sm:items-center">
               <div className="min-w-0">
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-background/85">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-background/85 transition-colors duration-500 lg:group-hover:bg-ink/5 lg:group-hover:text-ink/80">
                   <Factory className="h-3.5 w-3.5" /> Talk to an application engineer
                 </div>
-                <h3 className="mt-4 font-display text-2xl font-black leading-tight sm:text-4xl">
+                <h3 className="mt-4 font-display text-2xl font-black leading-tight sm:text-4xl transition-colors duration-500">
                   Not sure which part fits your line?
                 </h3>
-                <p className="mt-3 max-w-lg text-sm text-background/75 sm:text-base">
+                <p className="mt-3 max-w-lg text-sm text-background/75 transition-colors duration-500 lg:group-hover:text-ink/75 sm:text-base">
                   Share your duty conditions and we'll come back with the right
                   specification, brand options and delivery timeline.
                 </p>
@@ -391,13 +391,13 @@ function IndustriesPage() {
               <div className="flex flex-col gap-3 sm:items-end">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-brass px-6 py-3 text-sm font-semibold text-ink transition hover:bg-brass/90"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-brass px-6 py-3 text-sm font-semibold text-ink transition-all duration-500 lg:group-hover:bg-ink lg:group-hover:text-white"
                 >
                   Request a quote <ArrowUpRight className="h-4 w-4" />
                 </Link>
                 <a
                   href={`tel:${COMPANY.phones[0].replace(/\s+/g, "")}`}
-                  className="text-sm font-medium text-background/85 underline-offset-4 hover:underline"
+                  className="text-sm font-medium text-background/85 underline-offset-4 transition-colors duration-500 hover:underline lg:group-hover:text-ink/80"
                 >
                   or call {COMPANY.phones[0]}
                 </a>
