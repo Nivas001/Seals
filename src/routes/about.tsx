@@ -7,23 +7,7 @@ import { GlowCard } from "@/components/ui/GlowCard";
 import { Clock, MousePointerClick, HeartHandshake, Star } from "lucide-react";
 import { motion } from "framer-motion";
 
-const TESTIMONIALS = [
-  {
-    quote: "AARRKKAA consistently delivers the right mechanical seals on time. Their matching accuracy and fast response have kept our production lines running without interruption.",
-    name: "Production Manager",
-    role: "Food Processing Plant, Tamil Nadu",
-  },
-  {
-    quote: "We rely on AARRKKAA for all our pump spares and stainless steel fittings. Their team responds quickly to urgent requests and their components are always genuine.",
-    name: "Maintenance Engineer",
-    role: "Pharmaceutical Facility, Karnataka",
-  },
-  {
-    quote: "Sourcing PTFE and elastomeric components used to take weeks. With AARRKKAA, we get accurate quotes and fast dispatch from their regional stock. Outstanding service.",
-    name: "Procurement Head",
-    role: "Chemical Process Industry, Andhra Pradesh",
-  },
-];
+
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -183,53 +167,7 @@ function AboutPage() {
           </div>
         </section>
 
-        <section className="relative mx-auto mt-16 max-w-7xl px-5 sm:mt-24 sm:px-8">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-8 top-1/2 -translate-y-1/2 h-64 rounded-[3rem] opacity-5"
-            style={{ background: "var(--gradient-brand)", filter: "blur(48px)" }}
-          />
-          <div className="relative">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass text-center">
-              What our customers say
-            </div>
-            <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl text-center">
-              Trusted by process plants
-              <br />
-              <span className="italic text-brass">and available globally.</span>
-            </h2>
 
-            <div className="mt-10 flex snap-x snap-mandatory overflow-x-auto pb-4 gap-5 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0 sm:pb-0">
-              {TESTIMONIALS.map((t, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="snap-center shrink-0 w-[85%] sm:w-auto h-full"
-                >
-                  <GlowCard className="h-full flex flex-col justify-between">
-                    <div>
-                      <div className="flex gap-0.5 mb-4">
-                        {Array.from({ length: 5 }).map((_, j) => (
-                          <Star key={j} className="h-4 w-4 fill-brass text-brass" />
-                        ))}
-                      </div>
-                      <p className="text-sm leading-relaxed text-ink/80 italic">
-                        &ldquo;{t.quote}&rdquo;
-                      </p>
-                    </div>
-                    <div className="mt-5 border-t border-hairline pt-4">
-                      <div className="text-sm font-bold text-ink">{t.name}</div>
-                      <div className="mt-0.5 text-[12px] text-muted-foreground">{t.role}</div>
-                    </div>
-                  </GlowCard>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
           <div className="group relative overflow-hidden rounded-[2rem] bg-ink text-background p-8 sm:p-12 shadow-2xl">
