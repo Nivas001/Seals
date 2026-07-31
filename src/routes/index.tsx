@@ -461,7 +461,7 @@ function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
         </div>
         <Link
           to="/products"
-          className="inline-flex items-center gap-2 self-start rounded-full border border-ink/15 bg-white/60 px-4 py-2 text-sm font-semibold text-ink backdrop-blur hover:bg-white sm:self-end"
+          className="hidden sm:inline-flex items-center gap-2 self-start rounded-full border border-ink/15 bg-white/60 px-4 py-2 text-sm font-semibold text-ink backdrop-blur hover:bg-white sm:self-end"
         >
           View all categories <ArrowRight className="h-4 w-4" />
         </Link>
@@ -516,6 +516,15 @@ function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
           </motion.div>
         ))}
       </div>
+
+      <div className="mt-8 flex justify-center sm:hidden">
+        <Link
+          to="/products"
+          className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-2.5 text-sm font-semibold text-ink backdrop-blur hover:bg-white"
+        >
+          View all categories <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
     </section>
   );
 }
@@ -537,12 +546,6 @@ function Industries() {
             Our components meet the hygienic, chemical and mechanical demands
             of some of India&rsquo;s most process-critical industries.
           </p>
-          <Link
-            to="/industries"
-            className="mt-6 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-2.5 text-sm font-semibold text-ink backdrop-blur transition hover:bg-white sm:hidden"
-          >
-            View all industries <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
 
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -567,6 +570,15 @@ function Industries() {
             </motion.li>
           ))}
         </ul>
+
+        <div className="mt-2 flex justify-center sm:hidden">
+          <Link
+            to="/industries"
+            className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-2.5 text-sm font-semibold text-ink backdrop-blur transition hover:bg-white"
+          >
+            View all industries <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
     </section>
   );
@@ -719,9 +731,9 @@ function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="snap-start shrink-0 w-[80%] sm:w-auto h-full"
+              className="snap-start shrink-0 w-[80%] sm:w-auto flex"
             >
-              <GlowCard className="h-full flex flex-col justify-between">
+              <GlowCard className="flex w-full flex-col justify-between">
                 <div>
                   {/* Stars */}
                   <div className="flex gap-0.5 mb-4">
