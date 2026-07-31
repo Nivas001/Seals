@@ -173,7 +173,7 @@ export function Navbar() {
                   className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-brass/70 bg-surface/95 px-6 py-3.5 text-sm font-bold text-ink shadow-md"
                 >
                   <Sparkles className="h-4 w-4 text-brass animate-pulse" />
-                  Launch AI Guide
+                  Launch Ask ARKA
                 </button>
                 <a
                   href="tel:+917806936475"

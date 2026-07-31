@@ -55,7 +55,7 @@ export function AIChatbot() {
     {
       id: "welcome-1",
       sender: "bot",
-      text: `Hello! I am your AARRKKAA AI Guide. Our motto is: "${COMPANY.motto}"\n\nI can assist you with selecting process pumps, mechanical seals, elastomers, or connect you directly with our engineering sales team. How can I help you today?`,
+      text: `Hello! I am Ask ARKA. Our motto is: "${COMPANY.motto}"\n\nI can assist you with selecting process pumps, mechanical seals, elastomers, or connect you directly with our engineering sales team. How can I help you today?`,
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     },
   ]);
@@ -404,7 +404,7 @@ export function AIChatbot() {
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5 font-display text-sm font-bold tracking-tight text-ink truncate">
-                    <span>AARRKKAA AI Guide</span>
+                    <span>Ask ARKA</span>
                     <Sparkles className="h-3.5 w-3.5 text-brass shrink-0 animate-pulse" />
                   </div>
                   <div className="flex items-center gap-1.5 text-[10px] text-ink/75 font-medium">
@@ -416,7 +416,7 @@ export function AIChatbot() {
               <button
                 onClick={() => setOpen(false)}
                 className="grid h-8 w-8 place-items-center rounded-lg text-ink/70 hover:bg-brass/20 hover:text-ink transition-colors"
-                aria-label="Close AI Guide"
+                aria-label="Close Ask ARKA"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -595,13 +595,13 @@ export function AIChatbot() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className="group relative hidden md:flex items-center gap-2.5 rounded-full border-2 border-brass/70 bg-surface/95 backdrop-blur-md px-4 py-3 text-ink shadow-[0_8px_25px_-5px_rgba(217,119,6,0.3)] transition-all hover:border-brass hover:bg-white hover:shadow-[0_12px_35px_-5px_rgba(217,119,6,0.5)]"
-        aria-label="Toggle AI Guide Chatbot"
+        aria-label="Toggle Ask ARKA Chatbot"
       >
         <span className="grid h-6 w-6 place-items-center rounded-full bg-brass text-ink font-bold shadow-2xs">
           {open ? <X className="h-3.5 w-3.5" /> : <Sparkles className="h-3.5 w-3.5 animate-pulse" />}
         </span>
         <span className="text-xs font-bold tracking-wide uppercase text-ink">
-          {open ? "Close" : "AI Guide"}
+          {open ? "Close" : "Ask ARKA"}
         </span>
         {!open && (
           <span className="absolute -top-1 -right-1 flex h-3 w-3">
