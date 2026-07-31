@@ -369,6 +369,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Dye Manufacturing", "Pharma"],
   },
   "Metal Bellow": {
+    image: "/images/metal-bellow-seal.jpg",
     tagline: "Edge-welded metal bellows seal for high-temperature heat transfer oils and hydrocarbons.",
     description:
       "High-performance mechanical seal featuring an edge-welded metal bellows that acts as both spring element and secondary sealing barrier. Eliminates elastomer O-ring temperature limits, excelling in hot oil, refinery, and cryogenic service.",
@@ -390,6 +391,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Oil & Gas", "Chemical", "Plastics"],
   },
   "Cartridge Seals": {
+    image: "/images/cartridge-seals.jpg",
     tagline: "Pre-assembled single cartridge seal with sleeve and gland plate for zero-error fitting.",
     description:
       "Self-contained mechanical seal cartridge pre-assembled on a shaft sleeve with gland plate and centering clips. Eliminates measuring, scribing, and impeller gap setting errors during plant maintenance shutdowns.",
@@ -411,6 +413,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Pharma", "Food", "Oil & Gas"],
   },
   "Double Cartridge Seal": {
+    image: "/images/double-cartridge-seal.jpg",
     tagline: "Dual cartridge seal assembly arranged in tandem or back-to-back with barrier fluid.",
     description:
       "Advanced dual cartridge mechanical seal containing two pairs of sealing faces with an internal barrier fluid chamber. Designed for zero emissions on toxic, carcinogenic, abrasive, or crystallizing process fluids.",
@@ -432,6 +435,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Chemical", "Oil & Gas", "Pharma", "Dye Manufacturing"],
   },
   "Grundfos": {
+    image: "/images/grundfos-seal.jpg",
     tagline: "Dedicated OEM replacement mechanical seal kits designed for Grundfos pump ranges.",
     description:
       "Precision-engineered direct replacement mechanical seal assemblies for Grundfos CR, CRN, CH, and TP multistage inline pumps. 100% dimensionally identical to OEM part numbers for plug-and-play maintenance.",
@@ -453,6 +457,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Food", "Beverages", "Chemical", "Pharma"],
   },
   "Grundfos — Star Type": {
+    image: "/images/grundfos-star-type.jpg",
     tagline: "Star-drive splined seal assembly for newer generation Grundfos CR pumps.",
     description:
       "Specialized splined 'star-drive' mechanical seal cartridge designed for new generation Grundfos CR and CRN multistage pumps. The hex/star drive mechanism provides positive torque transfer directly from the shaft sleeve.",
@@ -474,6 +479,7 @@ export const ITEM_SPECIFIC_DATA: Record<string, ItemSpecificData> = {
     applications: ["Food", "Pharma", "Chemical", "Breweries"],
   },
   "Agitator Reactor Seal": {
+    image: "/images/agitator-reactor-seal.jpg",
     tagline: "Top/side entering double seal assembly for chemical reactors and fermenters.",
     description:
       "Heavy-duty top and side entering double mechanical seal engineered for chemical reaction vessels, fermenters, and mixing autoclaves. Accommodates severe shaft runout, angular deflection, and thermal expansion.",
