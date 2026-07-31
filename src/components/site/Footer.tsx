@@ -26,7 +26,7 @@ export function Footer() {
         style={{ background: "var(--surface)", filter: "blur(80px)" }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8">
+      <div className="relative mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-16">
         {/* Catalog download CTA */}
         <div className="mb-14 hidden flex-col items-start justify-between gap-5 rounded-3xl border border-hairline bg-background p-6 backdrop-blur-sm sm:flex sm:flex-row sm:items-center sm:p-8">
           <div className="flex items-start gap-4">
@@ -53,7 +53,7 @@ export function Footer() {
         </div>
 
         {/* Main footer grid */}
-        <div className="grid gap-8 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.5fr]">
+        <div className="hidden gap-8 sm:grid lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.5fr]">
           {/* Brand column */}
           <div>
             <div className="flex items-center">
@@ -142,9 +142,9 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-hairline pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
+        <div className="flex flex-col items-center justify-center gap-3 text-xs text-muted-foreground sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:border-t sm:border-hairline sm:pt-6">
           <p>© {new Date().getFullYear()} AARRKKAA International. All rights reserved.</p>
-          <p>Head office in Hosur · Service available globally</p>
+          <p className="hidden sm:block">Head office in Hosur · Service available globally</p>
         </div>
       </div>
     </footer>
