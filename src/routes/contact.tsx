@@ -538,7 +538,7 @@ function NewsletterCard() {
             onChange={(e) => setEmail(e.target.value)}
             label="Email"
             hint="We will not share your email with anyone."
-            placeholder="olivia@untitledui.com"
+            placeholder="you@company.com"
             tooltip="Receive product updates and offers."
             maxLength={255}
           />
