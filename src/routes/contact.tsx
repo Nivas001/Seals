@@ -463,7 +463,7 @@ function FollowCard() {
         Stay updated with our latest product launches, industry insights and
         corporate news from the shop floor.
       </p>
-      <div className="mt-6 flex snap-x snap-mandatory overflow-x-auto pb-4 gap-3 sm:flex-wrap sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0">
+      <div className="mt-6 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3">
         {[
           { href: "https://www.linkedin.com/", label: "LinkedIn", Icon: Linkedin },
           { href: "https://www.instagram.com/", label: "Instagram", Icon: Instagram },
@@ -475,19 +475,19 @@ function FollowCard() {
             target="_blank"
             rel="noreferrer"
             aria-label={label}
-            className="snap-center shrink-0 group relative inline-flex items-center gap-2 sm:gap-3 overflow-hidden rounded-2xl border border-hairline bg-background px-4 py-3 sm:px-5 text-xs sm:text-sm font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/50 hover:shadow-lg hover:shadow-brass/10"
+            className="group relative flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3 overflow-hidden rounded-xl sm:rounded-2xl border border-hairline bg-background p-2.5 sm:px-5 sm:py-3 text-[9px] sm:text-sm font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/50 hover:shadow-lg hover:shadow-brass/10"
           >
             <span
               aria-hidden
               className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-brass/15 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
             />
             <span
-              className="relative grid h-9 w-9 place-items-center rounded-lg text-brass-foreground shadow-sm transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-[-6deg]"
+              className="relative grid h-7 w-7 sm:h-9 sm:w-9 place-items-center rounded-lg text-brass-foreground shadow-sm transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-[-6deg]"
               style={{ background: "var(--gradient-brass)" }}
             >
-              <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
+              <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:scale-110" />
             </span>
-            <span className="relative transition-colors duration-300 group-hover:text-brass">
+            <span className="relative transition-colors duration-300 group-hover:text-brass text-center leading-none">
               {label}
             </span>
           </a>
