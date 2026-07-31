@@ -80,8 +80,7 @@ export function Navbar() {
 
           {/* Mobile: current page label */}
           <div className="flex flex-1 items-center justify-center md:hidden">
-            <span className="glass-pill-active inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[13px] font-semibold tracking-tight text-ink">
-              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-brass" />
+            <span className="glass-pill-active inline-flex items-center rounded-full px-3 py-1 text-[13px] font-semibold tracking-tight text-ink">
               {currentLabel}
             </span>
           </div>
