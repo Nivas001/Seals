@@ -4,7 +4,7 @@ import { Footer } from "@/components/site/Footer";
 import { COMPANY } from "@/data/catalog";
 import factoryImg from "@/assets/factory.jpg";
 import { GlowCard } from "@/components/ui/GlowCard";
-import { Clock, MousePointerClick, HeartHandshake, Star } from "lucide-react";
+import { Clock, MousePointerClick, HeartHandshake, Star, MapPin, Globe2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 
@@ -71,16 +71,18 @@ function AboutPage() {
                 { k: "Convenience", d: "Convenient ordering with accurate matching, first time.", icon: MousePointerClick },
                 { k: "Feedback", d: "Continuous feedback creates a strong long-term bond.", icon: HeartHandshake },
               ].map((x) => (
-                <div key={x.k} className="snap-center shrink-0 w-[85%] sm:w-auto h-full">
-                  <GlowCard className="h-full group">
-                    <span
-                      aria-hidden
-                      className="relative grid h-10 w-10 place-items-center rounded-xl text-primary-foreground shadow-soft transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
-                      style={{ background: "var(--gradient-brand)" }}
-                    >
-                      <x.icon className="h-5 w-5" />
-                    </span>
-                    <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-ink">{x.k}</h3>
+                <div key={x.k} className="snap-center shrink-0 w-[85%] sm:w-auto flex">
+                  <GlowCard className="flex w-full flex-col justify-between group">
+                    <div>
+                      <span
+                        aria-hidden
+                        className="relative grid h-10 w-10 place-items-center rounded-xl text-primary-foreground shadow-soft transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+                        style={{ background: "var(--gradient-brand)" }}
+                      >
+                        <x.icon className="h-5 w-5" />
+                      </span>
+                      <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-ink">{x.k}</h3>
+                    </div>
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{x.d}</p>
                   </GlowCard>
                 </div>
@@ -210,28 +212,39 @@ function AboutPage() {
           <h2 className="font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
             Where we are
           </h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2">
-            <div className="rounded-2xl border border-hairline bg-surface p-6">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
-                Head office
+          <div className="mt-6 grid gap-3 sm:gap-6 sm:grid-cols-2">
+            <div className="rounded-2xl border border-hairline bg-surface p-4 sm:p-6">
+              <div className="flex w-full items-start justify-between">
+                <div>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brass sm:text-[11px]">
+                    Head office
+                  </div>
+                  <div className="mt-1 font-display text-lg font-bold text-ink sm:mt-3 sm:text-xl">
+                    Hosur, Tamil Nadu
+                  </div>
+                </div>
+                <MapPin className="h-5 w-5 shrink-0 text-brass sm:hidden" />
               </div>
-              <div className="mt-3 font-display text-xl font-bold text-ink">
-                Hosur, Tamil Nadu
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">
                 {COMPANY.address.line1}, {COMPANY.address.line2},<br />
                 {COMPANY.address.city}, {COMPANY.address.district},<br />
                 {COMPANY.address.state} — {COMPANY.address.pincode}
               </p>
             </div>
-            <div className="rounded-2xl border border-hairline bg-surface p-6">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
-                Global reach
+            
+            <div className="rounded-2xl border border-hairline bg-surface p-4 sm:p-6">
+              <div className="flex w-full items-start justify-between">
+                <div>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brass sm:text-[11px]">
+                    Global reach
+                  </div>
+                  <div className="mt-1 font-display text-lg font-bold text-ink sm:mt-3 sm:text-xl">
+                    Service available globally
+                  </div>
+                </div>
+                <Globe2 className="h-5 w-5 shrink-0 text-brass sm:hidden" />
               </div>
-              <div className="mt-3 font-display text-xl font-bold text-ink">
-                Service available globally
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">
                 Headquarters in Hosur, Tamil Nadu — dispatching precision components and engineered seals worldwide.
               </p>
             </div>
