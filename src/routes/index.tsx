@@ -696,7 +696,7 @@ function Testimonials() {
           <span className="italic text-brass">and available globally.</span>
         </h2>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-3">
+        <div className="mt-10 flex snap-x snap-mandatory overflow-x-auto pb-4 gap-5 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0 sm:pb-0">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={i}
@@ -704,7 +704,7 @@ function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="h-full"
+              className="snap-center shrink-0 w-[85%] sm:w-auto h-full"
             >
               <GlowCard className="h-full flex flex-col justify-between">
                 <div>
