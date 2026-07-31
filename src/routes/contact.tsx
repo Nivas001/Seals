@@ -78,7 +78,7 @@ function ContactPage() {
                 brand recommendation and dispatch timeline.
               </p>
             </div>
-            <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <div className="hidden sm:flex lg:col-span-5 justify-center lg:justify-end">
               <VerifiedSupplierBadge />
             </div>
           </div>
