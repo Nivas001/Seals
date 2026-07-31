@@ -85,10 +85,10 @@ function ContactPage() {
 
           {/* Bento grid */}
           <div className="mt-12 grid gap-5 lg:grid-cols-2">
-            <div className="order-2 lg:order-1"><CorporateCard /></div>
-            <div className="order-1 lg:order-2"><InquiryCard /></div>
-            <div className="order-3 lg:order-3"><FollowCard /></div>
-            <div className="order-4 lg:order-4"><NewsletterCard /></div>
+            <CorporateCard className="order-2 lg:order-1 h-full" />
+            <InquiryCard className="order-1 lg:order-2 h-full" />
+            <FollowCard className="order-3 h-full" />
+            <NewsletterCard className="order-4 h-full" />
           </div>
         </section>
 
@@ -180,9 +180,9 @@ function InfoRow({
   );
 }
 
-function CorporateCard() {
+function CorporateCard({ className }: { className?: string }) {
   return (
-    <CardShell eyebrow="Corporate" title={COMPANY.name}>
+    <CardShell eyebrow="Corporate" title={COMPANY.name} className={className}>
       <p className="-mt-3 text-sm text-muted-foreground">
         {COMPANY.tagline} · Assist &amp; Deliver
       </p>
@@ -244,7 +244,7 @@ const inputBase =
 const labelBase =
   "text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground";
 
-function InquiryCard() {
+function InquiryCard({ className }: { className?: string }) {
   const [submitting, setSubmitting] = useState(false);
   const [fileName, setFileName] = useState<string>("");
   const search = Route.useSearch();
@@ -306,7 +306,7 @@ function InquiryCard() {
   }
 
   return (
-    <CardShell eyebrow="Enquiry" title="Send us a request">
+    <CardShell eyebrow="Enquiry" title="Send us a request" className={className}>
       {(search.product || search.category) && (
         <div className="mb-6 rounded-2xl border border-brass/40 bg-gradient-to-br from-brass/15 via-brass/5 to-surface p-4 sm:p-5 shadow-2xs">
           <div className="flex items-center justify-between gap-4">
@@ -455,9 +455,9 @@ function InquiryCard() {
   );
 }
 
-function FollowCard() {
+function FollowCard({ className }: { className?: string }) {
   return (
-    <CardShell eyebrow="Connect" title="Follow our journey">
+    <CardShell eyebrow="Connect" title="Follow our journey" className={className}>
       <p className="-mt-3 text-sm text-muted-foreground">
         Stay updated with our latest product launches, industry insights and
         corporate news from the shop floor.
@@ -495,7 +495,7 @@ function FollowCard() {
   );
 }
 
-function NewsletterCard() {
+function NewsletterCard({ className = "" }: { className?: string }) {
   const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -515,7 +515,7 @@ function NewsletterCard() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-[1.5rem] border border-hairline bg-surface p-5 text-ink shadow-soft sm:rounded-[1.75rem] sm:p-8">
+    <div className={`relative flex flex-col h-full overflow-hidden rounded-[1.5rem] border border-hairline bg-surface p-5 text-ink shadow-soft sm:rounded-[1.75rem] sm:p-8 ${className}`}>
       <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass">
         Newsletter
       </div>
