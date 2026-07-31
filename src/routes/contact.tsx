@@ -228,7 +228,7 @@ function CorporateCard({ className }: { className?: string }) {
               onClick={() => chatbotState.setOpen(true)}
               className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brass hover:underline w-fit cursor-pointer pt-0.5"
             >
-              <span>Launch Ask ARKA</span>
+              <span>Launch ASK ARKA</span>
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
             </button>
           </div>
