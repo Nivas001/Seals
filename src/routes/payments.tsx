@@ -36,7 +36,7 @@ function PaymentsPage() {
               <div className="relative transform transition-all duration-700 hover:-translate-y-2 hover:rotate-1 z-10 w-full flex justify-center">
                 <CreditCard
                   type="brand-dark"
-                  company="AARRKKAA"
+                  company="ARKA Elite"
                   cardNumber="•••• •••• •••• 1234"
                   cardHolder="JOHN DOE"
                   cardExpiration="06/28"
@@ -51,6 +51,7 @@ function PaymentsPage() {
                   cardNumber="•••• •••• •••• 8765"
                   cardHolder="INDUSTRIAL BUYER"
                   cardExpiration="03/29"
+                  showMastercard={true}
                 />
               </div>
             </div>

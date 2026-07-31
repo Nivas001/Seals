@@ -9,6 +9,7 @@ interface CreditCardProps {
   cardNumber: string;
   cardHolder: string;
   cardExpiration: string;
+  showMastercard?: boolean;
   className?: string;
 }
 
@@ -18,6 +19,7 @@ export default function CreditCard({
   cardNumber,
   cardHolder,
   cardExpiration,
+  showMastercard = false,
   className,
 }: CreditCardProps) {
   // Define styles based on the type
@@ -85,12 +87,26 @@ export default function CreditCard({
         <div className="font-mono text-xl tracking-[0.15em] opacity-90 sm:text-2xl">
           {cardNumber}
         </div>
-        <div className="flex items-center justify-between opacity-70">
-          <div className="text-xs font-medium tracking-widest uppercase">
-            {cardHolder}
+        <div className="flex items-end justify-between opacity-70">
+          <div className="flex flex-col">
+            <div className="text-[10px] font-medium tracking-widest uppercase opacity-60 mb-0.5">Cardholder</div>
+            <div className="text-xs font-semibold tracking-widest uppercase">
+              {cardHolder}
+            </div>
           </div>
-          <div className="text-xs font-medium tracking-widest">
-            {cardExpiration}
+          <div className="flex flex-col items-end">
+            <div className="text-[10px] font-medium tracking-widest uppercase opacity-60 mb-0.5">Expires</div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-semibold tracking-widest">
+                {cardExpiration}
+              </span>
+              {showMastercard && (
+                <div className="flex items-center -mr-1">
+                  <div className="h-6 w-6 rounded-full bg-[#EB001B] mix-blend-multiply opacity-90" />
+                  <div className="h-6 w-6 rounded-full bg-[#F79E1B] mix-blend-multiply -ml-2.5 opacity-90" />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
