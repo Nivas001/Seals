@@ -1,17 +1,17 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Menu, X, Phone, Download, Sparkles } from "lucide-react";
+import { Menu, X, Phone, Download, Sparkles, Home, Package, Building2, Info, Mail } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { DownloadCatalog } from "@/components/site/DownloadCatalog";
 import { chatbotState } from "@/data/chatbotState";
 
 
 const NAV = [
-  { to: "/", label: "Home" },
-  { to: "/products", label: "Products" },
-  { to: "/industries", label: "Industries" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", label: "Home", icon: Home },
+  { to: "/products", label: "Products", icon: Package },
+  { to: "/industries", label: "Industries", icon: Building2 },
+  { to: "/about", label: "About", icon: Info },
+  { to: "/contact", label: "Contact", icon: Mail },
 ] as const;
 
 import { ArkaLogo } from "@/components/ui/ArkaLogo";
@@ -145,7 +145,7 @@ export function Navbar() {
                       <Link
                         to={item.to}
                         onClick={() => setOpen(false)}
-                        className={`relative block border-b border-hairline/70 py-4 pl-4 text-3xl font-semibold tracking-tight text-ink ${
+                        className={`relative flex items-center gap-4 border-b border-hairline/70 py-4 pl-4 text-3xl font-semibold tracking-tight text-ink ${
                           isActive ? "" : "text-ink/85"
                         }`}
                       >
@@ -155,6 +155,7 @@ export function Navbar() {
                             className="absolute left-0 top-1/2 h-8 w-[3px] -translate-y-1/2 rounded-full bg-brass"
                           />
                         )}
+                        <item.icon className={`h-7 w-7 ${isActive ? "text-brass" : "text-ink/60"}`} strokeWidth={2.5} />
                         {item.label}
                       </Link>
                     </motion.li>
