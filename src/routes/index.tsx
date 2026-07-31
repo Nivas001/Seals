@@ -780,6 +780,17 @@ function Process() {
       icon: Truck,
     },
   ];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    const itemWidth = scrollRef.current.children[0]?.clientWidth || 300;
+    const index = Math.round(scrollLeft / (itemWidth + 16));
+    setActiveIndex(Math.min(Math.max(index, 0), steps.length - 1));
+  };
+
   return (
     <section id="process" className="relative mx-auto mt-24 max-w-7xl overflow-hidden px-5 sm:mt-32 sm:px-8">
       <div
@@ -801,7 +812,11 @@ function Process() {
           </span>
         </div>
 
-        <ol className="relative z-10 mt-10 grid gap-px md:grid-cols-3">
+        <ol
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="relative z-10 mt-10 flex snap-x snap-mandatory scroll-pl-5 overflow-x-auto pb-4 gap-4 md:grid md:gap-px md:grid-cols-3 md:overflow-visible md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 md:mx-0 md:px-0"
+        >
           {steps.map((s, i) => (
             <motion.li
               key={s.k}
@@ -809,7 +824,7 @@ function Process() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.45, delay: i * 0.1 }}
-              className="relative flex flex-col rounded-2xl border border-hairline bg-background p-6 md:rounded-none md:border-0 md:border-r md:last:border-r-0 md:bg-transparent md:border-hairline"
+              className="snap-start shrink-0 w-[80%] md:w-auto h-full relative flex flex-col rounded-2xl border border-hairline bg-background p-6 md:rounded-none md:border-0 md:border-r md:last:border-r-0 md:bg-transparent md:border-hairline"
             >
               {/* Large step number */}
               <span
@@ -835,6 +850,18 @@ function Process() {
             </motion.li>
           ))}
         </ol>
+
+        {/* Mobile Indicator Dots */}
+        <div className="mt-4 flex items-center justify-center gap-2 md:hidden">
+          {steps.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === activeIndex ? "w-4 bg-brass" : "w-1.5 bg-ink/20"
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
