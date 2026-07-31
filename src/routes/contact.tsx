@@ -85,10 +85,10 @@ function ContactPage() {
 
           {/* Bento grid */}
           <div className="mt-12 grid gap-5 lg:grid-cols-2">
-            <CorporateCard />
-            <InquiryCard />
-            <FollowCard />
-            <NewsletterCard />
+            <div className="order-2 lg:order-1"><CorporateCard /></div>
+            <div className="order-1 lg:order-2"><InquiryCard /></div>
+            <div className="order-3 lg:order-3"><FollowCard /></div>
+            <div className="order-4 lg:order-4"><NewsletterCard /></div>
           </div>
         </section>
 
@@ -240,7 +240,7 @@ function CorporateCard() {
 }
 
 const inputBase =
-  "w-full rounded-xl border border-hairline bg-background px-4 py-3 text-sm text-ink placeholder:text-muted-foreground/70 shadow-inner outline-none transition focus:border-ink/40 focus:ring-2 focus:ring-brass/30";
+  "w-full rounded-xl border border-hairline bg-background px-3 py-2.5 text-sm sm:px-4 sm:py-3 text-ink placeholder:text-muted-foreground/70 shadow-inner outline-none transition focus:border-ink/40 focus:ring-2 focus:ring-brass/30";
 
 const labelBase =
   "text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground";
@@ -340,11 +340,11 @@ function InquiryCard() {
       )}
       <form
         key={defaultSubject + defaultCategory}
-        className="grid gap-4"
+        className="grid gap-3 sm:gap-4"
         onSubmit={onSubmit}
         noValidate
       >
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
           <div className="min-w-0">
             <label htmlFor="name" className={labelBase}>
               Name
@@ -374,7 +374,7 @@ function InquiryCard() {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
           <div className="min-w-0">
             <label htmlFor="category" className={labelBase}>
               Product category
@@ -419,7 +419,7 @@ function InquiryCard() {
             name="message"
             defaultValue={defaultMessage}
             required
-            rows={5}
+            rows={4}
             maxLength={2000}
             placeholder="Share your duty conditions, drawing numbers or part specs…"
             className={`mt-2 ${inputBase} resize-y`}
@@ -463,7 +463,7 @@ function FollowCard() {
         Stay updated with our latest product launches, industry insights and
         corporate news from the shop floor.
       </p>
-      <div className="mt-6 flex flex-wrap gap-3">
+      <div className="mt-6 flex snap-x snap-mandatory overflow-x-auto pb-4 gap-3 sm:flex-wrap sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0">
         {[
           { href: "https://www.linkedin.com/", label: "LinkedIn", Icon: Linkedin },
           { href: "https://www.instagram.com/", label: "Instagram", Icon: Instagram },
@@ -475,7 +475,7 @@ function FollowCard() {
             target="_blank"
             rel="noreferrer"
             aria-label={label}
-            className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-hairline bg-background px-5 py-3 text-sm font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/50 hover:shadow-lg hover:shadow-brass/10"
+            className="snap-center shrink-0 group relative inline-flex items-center gap-2 sm:gap-3 overflow-hidden rounded-2xl border border-hairline bg-background px-4 py-3 sm:px-5 text-xs sm:text-sm font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/50 hover:shadow-lg hover:shadow-brass/10"
           >
             <span
               aria-hidden
