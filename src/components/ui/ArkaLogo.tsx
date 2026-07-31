@@ -11,16 +11,12 @@ export function ArkaLogo({
   className = "",
   variant = "full",
 }: ArkaLogoProps) {
-  // The new logo is a stacked design with text included.
-  // We scale it slightly larger since the height includes the text.
-  const adjustedSize = variant === "full" ? size * 1.4 : size;
-
   return (
     <div className={`flex items-center justify-center ${className}`}>
       <img 
         src="/logo.png" 
         alt="AARRKKAA International"
-        style={{ height: adjustedSize }}
+        style={{ height: size }}
         className="object-contain drop-shadow-sm transition-transform duration-300"
       />
     </div>
