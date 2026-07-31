@@ -26,3 +26,7 @@ export function ArkaLogo({
     </div>
   );
 }
+
+export function ArkaLogoMark(props: ArkaLogoProps) {
+  return <ArkaLogo {...props} variant="mark" />;
+}

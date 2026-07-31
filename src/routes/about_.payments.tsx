@@ -4,7 +4,7 @@ import { Footer } from "@/components/site/Footer";
 import CreditCard from "@/components/shared-assets/credit-card/credit-card";
 import { ShieldCheck, Globe, Smartphone, Landmark } from "lucide-react";
 
-export const Route = createFileRoute("/about/payments")({
+export const Route = createFileRoute("/about_/payments")({
   component: PaymentsPage,
 });
 

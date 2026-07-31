@@ -15,6 +15,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsCategoryRouteImport } from './routes/products.$category'
+import { Route as AboutPaymentsRouteImport } from './routes/about_.payments'
 import { Route as ProductsCategoryItemRouteImport } from './routes/products.$category_.$item'
 
 const IndustriesRoute = IndustriesRouteImport.update({
@@ -47,6 +48,11 @@ const ProductsCategoryRoute = ProductsCategoryRouteImport.update({
   path: '/products/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutPaymentsRoute = AboutPaymentsRouteImport.update({
+  id: '/about_/payments',
+  path: '/about/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsCategoryItemRoute = ProductsCategoryItemRouteImport.update({
   id: '/products/$category_/$item',
   path: '/products/$category/$item',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
+  '/about/payments': typeof AboutPaymentsRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/products/': typeof ProductsIndexRoute
   '/products/$category/$item': typeof ProductsCategoryItemRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
+  '/about/payments': typeof AboutPaymentsRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/products': typeof ProductsIndexRoute
   '/products/$category/$item': typeof ProductsCategoryItemRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
+  '/about_/payments': typeof AboutPaymentsRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/products/': typeof ProductsIndexRoute
   '/products/$category_/$item': typeof ProductsCategoryItemRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/industries'
+    | '/about/payments'
     | '/products/$category'
     | '/products/'
     | '/products/$category/$item'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/industries'
+    | '/about/payments'
     | '/products/$category'
     | '/products'
     | '/products/$category/$item'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/industries'
+    | '/about_/payments'
     | '/products/$category'
     | '/products/'
     | '/products/$category_/$item'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   IndustriesRoute: typeof IndustriesRoute
+  AboutPaymentsRoute: typeof AboutPaymentsRoute
   ProductsCategoryRoute: typeof ProductsCategoryRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   ProductsCategoryItemRoute: typeof ProductsCategoryItemRoute
@@ -165,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about_/payments': {
+      id: '/about_/payments'
+      path: '/about/payments'
+      fullPath: '/about/payments'
+      preLoaderRoute: typeof AboutPaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/$category_/$item': {
       id: '/products/$category_/$item'
       path: '/products/$category/$item'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   IndustriesRoute: IndustriesRoute,
+  AboutPaymentsRoute: AboutPaymentsRoute,
   ProductsCategoryRoute: ProductsCategoryRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   ProductsCategoryItemRoute: ProductsCategoryItemRoute,
