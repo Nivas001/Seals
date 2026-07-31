@@ -467,7 +467,7 @@ function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
         </Link>
       </div>
 
-      <div className="mt-10 grid auto-rows-[180px] grid-cols-1 gap-4 sm:auto-rows-[220px] sm:grid-cols-6 lg:auto-rows-[240px]">
+      <div className="mt-10 grid auto-rows-[160px] grid-cols-2 gap-3 sm:auto-rows-[220px] sm:grid-cols-6 lg:auto-rows-[240px] sm:gap-4">
         {featured.map((cat, i) => (
           <motion.div
             key={cat.slug}
@@ -475,7 +475,7 @@ function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: i * 0.04 }}
-            className={`bento-tile bento-tile-hover ${BENTO_LAYOUT[cat.slug] ?? "sm:col-span-2"}`}
+            className={`bento-tile bento-tile-hover ${i >= 4 ? "hidden sm:block" : ""} ${BENTO_LAYOUT[cat.slug] ?? "sm:col-span-2"}`}
           >
             <Link
               to="/products/$category"
@@ -505,10 +505,10 @@ function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
                 </span>
               </div>
               <div className="relative">
-                <h3 className="font-display text-xl font-black tracking-tight text-white sm:text-2xl">
+                <h3 className="font-display text-lg font-black tracking-tight text-white sm:text-2xl">
                   {cat.name}
                 </h3>
-                <p className="mt-1 max-w-xs text-[13px] leading-snug text-white/85">
+                <p className="mt-1 hidden max-w-xs text-[13px] leading-snug text-white/85 sm:block">
                   {cat.short}
                 </p>
               </div>
