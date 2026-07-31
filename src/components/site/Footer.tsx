@@ -28,7 +28,7 @@ export function Footer() {
 
       <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8">
         {/* Catalog download CTA */}
-        <div className="mb-14 flex flex-col items-start justify-between gap-5 rounded-3xl border border-hairline bg-background p-6 backdrop-blur-sm sm:flex-row sm:items-center sm:p-8">
+        <div className="mb-14 hidden flex-col items-start justify-between gap-5 rounded-3xl border border-hairline bg-background p-6 backdrop-blur-sm sm:flex sm:flex-row sm:items-center sm:p-8">
           <div className="flex items-start gap-4">
             <span
               aria-hidden
@@ -79,7 +79,7 @@ export function Footer() {
           </div>
 
           {/* Products */}
-          <div>
+          <div className="hidden sm:block">
             <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               Products
             </h4>
@@ -99,7 +99,7 @@ export function Footer() {
           </div>
 
           {/* Company */}
-          <div>
+          <div className="hidden sm:block">
             <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               Company
             </h4>
