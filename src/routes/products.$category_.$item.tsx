@@ -30,6 +30,22 @@ export const Route = createFileRoute("/products/$category_/$item")({
         { property: "og:title", content: title },
         { property: "og:description", content: d.description },
       ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: d.name,
+            description: d.description,
+            image: `https://www.aarrkkaa.com${d.image || c.image}`,
+            brand: {
+              "@type": "Brand",
+              name: "AARRKKAA International"
+            }
+          })
+        }
+      ]
     };
   },
   component: ItemPage,

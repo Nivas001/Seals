@@ -87,6 +87,33 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" className="antialiased">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "AARRKKAA International",
+              "url": "https://www.aarrkkaa.com",
+              "logo": "https://www.aarrkkaa.com/logo.png",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+91-78069-36475",
+                "contactType": "sales",
+                "areaServed": "Worldwide"
+              },
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "#3/334, 11C, Surya Nagar, 5th Cross, Arasanatti",
+                "addressLocality": "Hosur",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "635 126",
+                "addressCountry": "IN"
+              },
+              "description": "Supplier & distributor of pumps, mechanical seals, elastomers, stainless steel, hoses and precision components worldwide."
+            })
+          }}
+        />
       </head>
       <body className="min-h-screen bg-background text-foreground selection:bg-accent/20 selection:text-ink">
         {children}
