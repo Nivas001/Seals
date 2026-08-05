@@ -6,11 +6,16 @@ import { getItem } from "@/data/items";
 import { COMPANY } from "@/data/catalog";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 
+import { UnobtainiumPumpEasterEgg } from "@/components/site/easter-eggs/UnobtainiumPump";
+
 export const Route = createFileRoute("/products/$category_/$item")({
   loader: ({ params }) => {
+    if (params.category === "pumps" && params.item === "quantum-slurry-hyper-pump") {
+      return { isEasterEgg: true, detail: null };
+    }
     const detail = getItem(params.category, params.item);
     if (!detail) throw notFound();
-    return { detail };
+    return { isEasterEgg: false, detail };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -21,7 +26,15 @@ export const Route = createFileRoute("/products/$category_/$item")({
         ],
       };
     }
-    const d = loaderData.detail;
+    if (loaderData.isEasterEgg) {
+      return {
+        meta: [
+          { title: "Quantum Slurry Hyper-Pump | AARRKKAA International" },
+          { name: "robots", content: "noindex" }
+        ]
+      };
+    }
+    const d = loaderData.detail!;
     const title = `${d.name} — ${d.category.name} | AARRKKAA International`;
     return {
       meta: [
@@ -38,7 +51,7 @@ export const Route = createFileRoute("/products/$category_/$item")({
             "@type": "Product",
             name: d.name,
             description: d.description,
-            image: `https://www.aarrkkaa.com${d.image || c.image}`,
+            image: `https://www.aarrkkaa.com${d.image || d.category.image}`,
             brand: {
               "@type": "Brand",
               name: "AARRKKAA International"
@@ -53,7 +66,12 @@ export const Route = createFileRoute("/products/$category_/$item")({
 });
 
 function ItemPage() {
-  const { detail } = Route.useLoaderData() as { detail: NonNullable<ReturnType<typeof getItem>> };
+  const data = Route.useLoaderData();
+  if (data.isEasterEgg) {
+    return <UnobtainiumPumpEasterEgg />;
+  }
+
+  const detail = data.detail!;
   const d = detail;
   const c = d.category;
 
