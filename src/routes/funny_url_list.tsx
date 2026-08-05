@@ -24,6 +24,13 @@ const EASTER_EGGS = [
     { name: "DO NOT PUSH", path: "/do-not-push", desc: "A giant red button. Seriously, do not push it." },
     { name: "Project D.U.C.K.", path: "/stress-test", desc: "Advanced aerodynamic 3D modeling." },
     { name: "The Pump Matrix", path: "/matrix", desc: "Digital rain, but make it industrial." },
+  ]},
+  { group: "Interactive Games", items: [
+    { name: "Whack-a-Leak", path: "/whack-a-leak", desc: "Stop the pipes from flooding the facility!" },
+    { name: "Flappy Pump", path: "/flappy-pump", desc: "Pumps aren't meant to fly, but here we are." },
+    { name: "Forklift Sim", path: "/forklift-sim", desc: "Warehouse organization with broken physics." },
+    { name: "Rogue AI", path: "/rogue-ai", desc: "Customer support bot having an existential crisis." },
+    { name: "Seal Defender", path: "/seal-defender", desc: "Defend the factory from defective seals in space." },
   ]}
 ];
 
