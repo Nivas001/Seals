@@ -125,15 +125,18 @@ function RootShell({ children }: { children: ReactNode }) {
 
 import { Toaster } from "@/components/ui/sonner";
 import { AIChatbot } from "@/components/site/AIChatbot";
+import { useLocation } from "@tanstack/react-router";
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
+  const isHomepage = location.pathname === "/";
 
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
-      <AIChatbot />
+      {isHomepage && <AIChatbot />}
       <Toaster position="top-center" closeButton />
     </QueryClientProvider>
   );
