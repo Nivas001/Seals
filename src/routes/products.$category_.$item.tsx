@@ -7,15 +7,23 @@ import { COMPANY } from "@/data/catalog";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 
 import { UnobtainiumPumpEasterEgg } from "@/components/site/easter-eggs/UnobtainiumPump";
+import { AntiGravityBearingEasterEgg } from "@/components/site/easter-eggs/AntiGravityBearing";
+import { FlubberEasterEgg } from "@/components/site/easter-eggs/Flubber";
 
 export const Route = createFileRoute("/products/$category_/$item")({
   loader: ({ params }) => {
     if (params.category === "pumps" && params.item === "quantum-slurry-hyper-pump") {
-      return { isEasterEgg: true, detail: null };
+      return { isEasterEgg: true, type: "unobtainium", detail: null };
+    }
+    if (params.category === "bearings" && params.item === "anti-gravity-bearing") {
+      return { isEasterEgg: true, type: "antigravity", detail: null };
+    }
+    if (params.category === "elastomers" && params.item === "flubber") {
+      return { isEasterEgg: true, type: "flubber", detail: null };
     }
     const detail = getItem(params.category, params.item);
     if (!detail) throw notFound();
-    return { isEasterEgg: false, detail };
+    return { isEasterEgg: false, detail, type: null };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -27,9 +35,14 @@ export const Route = createFileRoute("/products/$category_/$item")({
       };
     }
     if (loaderData.isEasterEgg) {
+      const titles: Record<string, string> = {
+        unobtainium: "Quantum Slurry Hyper-Pump | AARRKKAA International",
+        antigravity: "Anti-Gravity Bearing | AARRKKAA International",
+        flubber: "Industrial Flubber | AARRKKAA International",
+      };
       return {
         meta: [
-          { title: "Quantum Slurry Hyper-Pump | AARRKKAA International" },
+          { title: titles[loaderData.type as string] },
           { name: "robots", content: "noindex" }
         ]
       };
@@ -68,7 +81,9 @@ export const Route = createFileRoute("/products/$category_/$item")({
 function ItemPage() {
   const data = Route.useLoaderData();
   if (data.isEasterEgg) {
-    return <UnobtainiumPumpEasterEgg />;
+    if (data.type === "unobtainium") return <UnobtainiumPumpEasterEgg />;
+    if (data.type === "antigravity") return <AntiGravityBearingEasterEgg />;
+    if (data.type === "flubber") return <FlubberEasterEgg />;
   }
 
   const detail = data.detail!;
