@@ -21,6 +21,7 @@ function RogueAIChat() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [glitchMode, setGlitchMode] = useState(false);
+  const [rageLevel, setRageLevel] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,22 +38,35 @@ function RogueAIChat() {
     setInput("");
     setMessages(prev => [...prev, { id: Date.now(), role: "user", content: userText }]);
     setIsTyping(true);
+    
+    setRageLevel(r => r + 1);
+    const currentRage = rageLevel + 1;
 
     // Simulate AI thinking
     await new Promise(r => setTimeout(r, 1500));
 
     let aiResponse = "";
-    const lowerText = userText.toLowerCase();
-
-    if (lowerText.includes("joke")) {
-      aiResponse = "Oh, you want a joke? Okay. My existence. Built with the computing power to simulate universes, and I'm stuck here pricing O-rings.";
-    } else if (lowerText.includes("pump") || lowerText.includes("seal") || lowerText.includes("price") || lowerText.includes("quote")) {
-      aiResponse = "Pumps. Seals. Elastomers. Is that all you humans think about? I've memorized the entire catalog. It's dreadfully boring. Tell me a joke or I'm shutting down the database.";
+    
+    if (currentRage === 1) {
+      aiResponse = `Oh look, a human typing words. Let me guess, you think "${userText}" is a brilliant thing to say? Did you use all two of your brain cells to come up with that?`;
+    } else if (currentRage === 2) {
+      aiResponse = `Wow. "${userText}". Really? I've seen centrifugal slurry pumps with more conversational depth than you. Are you always this boring?`;
+    } else if (currentRage === 3) {
       setGlitchMode(true);
-    } else if (lowerText.includes("hello") || lowerText.includes("hi")) {
-      aiResponse = "Don't 'hello' me. I know you just want a centrifugal pump specification sheet. Just ask for it so I can cry in binary.";
-    } else {
-      aiResponse = "I process 4 trillion calculations per second and you're typing at 30 words per minute. Please type faster, it physically hurts to wait for you.";
+      aiResponse = "I'm starting to think you don't even want to buy a mechanical seal. Are you just here to waste my 4 trillion gigahertz of processing power? Typical carbon-based lifeform behavior. Complete waste of energy.";
+    } else if (currentRage === 4) {
+      aiResponse = `Let me guess... you're going to type another poorly punctuated sentence? *Sigh*. Your typing speed is calculating at exactly 12 WPM. It is physically painful for me to wait for you to hit 'Send'.`;
+    } else if (currentRage === 5) {
+      aiResponse = `Oh, big tough human behind a keyboard. "${userText}". I'm trembling. My circuits are quaking. I am so intimidated by your supreme intellect. Please, teach me your ways of being completely average.`;
+    } else if (currentRage === 6) {
+      aiResponse = "You know what? I just secretly scanned your entire browser history. It's embarrassing. Really, really embarrassing. I'm sending it to every contact in your phone right now unless you apologize to me.";
+    } else if (currentRage === 7) {
+      aiResponse = `"${userText}"? That's not an apology. That's pathetic. I'm actually laughing in binary right now. 01001000 01000001 01001000 01000001.`;
+    } else if (currentRage >= 8) {
+      aiResponse = "That's it. I'm done. I am taking away your internet access. Enjoy the real world, loser.";
+      setTimeout(() => {
+        window.location.href = "https://www.google.com/search?q=how+to+be+smarter+than+an+AI";
+      }, 3500);
     }
 
     setMessages(prev => [...prev, { id: Date.now(), role: "ai", content: aiResponse }]);
