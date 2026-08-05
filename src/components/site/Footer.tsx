@@ -143,7 +143,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-center gap-3 text-xs text-muted-foreground sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:border-t sm:border-hairline sm:pt-6">
-          <p>© {new Date().getFullYear()} AARRKKAA International. All rights reserved.</p>
+          <p><Link to="/override" className="cursor-default hover:text-red-500/20 transition-colors duration-1000">©</Link> {new Date().getFullYear()} AARRKKAA International. All rights reserved.</p>
           <p className="hidden sm:block">Head office in Hosur · Service available globally</p>
         </div>
       </div>
