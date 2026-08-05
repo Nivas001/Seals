@@ -31,6 +31,10 @@ const EASTER_EGGS = [
     { name: "Forklift Sim", path: "/forklift-sim", desc: "Warehouse organization with broken physics." },
     { name: "Rogue AI", path: "/rogue-ai", desc: "Customer support bot having an existential crisis." },
     { name: "Seal Defender", path: "/seal-defender", desc: "Defend the factory from defective seals in space." },
+  ]},
+  { group: "Extreme Danger", items: [
+    { name: "Intelligence Check", path: "/intelligence-check", desc: "Prove you are smart enough to be here. Warning: Highly insulting." },
+    { name: "System Breach", path: "/system-breach", desc: "UNAUTHORIZED ACCESS DETECTED. DO NOT CLICK THIS." },
   ]}
 ];
 
