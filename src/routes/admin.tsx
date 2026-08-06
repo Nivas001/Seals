@@ -215,36 +215,45 @@ function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: 
         ) : (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             {activeTab === "inquiries" && (
-              <div className="grid gap-4">
-                {data?.inquiries.map((inq) => (
-                  <div key={inq.id} className="rounded-2xl border border-hairline bg-surface p-5 sm:p-6 shadow-soft">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-hairline">
-                      <div>
-                        <div className="text-sm font-bold text-ink">{inq.subject}</div>
-                        <div className="mt-1 text-xs text-muted-foreground flex items-center gap-2">
-                          <span className="font-semibold">{inq.name}</span>
-                          <span>&bull;</span>
+              <div className="overflow-x-auto rounded-2xl border border-hairline bg-surface shadow-soft">
+                <table className="w-full text-left text-sm whitespace-nowrap">
+                  <thead className="border-b border-hairline bg-ink/5">
+                    <tr>
+                      <th className="px-6 py-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Date</th>
+                      <th className="px-6 py-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Name</th>
+                      <th className="px-6 py-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Email</th>
+                      <th className="px-6 py-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Category</th>
+                      <th className="px-6 py-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Subject</th>
+                      <th className="px-6 py-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Message</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-hairline">
+                    {data?.inquiries.map((inq) => (
+                      <tr key={inq.id} className="transition-colors hover:bg-ink/[0.02]">
+                        <td className="px-6 py-4 text-muted-foreground">{new Date(inq.createdAt).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 font-medium text-ink">{inq.name}</td>
+                        <td className="px-6 py-4">
                           <a href={`mailto:${inq.email}`} className="text-brass hover:underline">{inq.email}</a>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        {inq.category && (
-                          <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-ink/5 rounded-full text-ink">
-                            {inq.category}
-                          </span>
-                        )}
-                        <span className="text-[10px] font-medium text-muted-foreground flex items-center gap-1">
-                          <Clock className="h-3 w-3" /> {new Date(inq.createdAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                    <p className="text-sm text-ink/80 whitespace-pre-wrap leading-relaxed">
-                      {inq.message}
-                    </p>
-                  </div>
-                ))}
+                        </td>
+                        <td className="px-6 py-4">
+                          {inq.category ? (
+                            <span className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider bg-ink/5 rounded-full text-ink">
+                              {inq.category}
+                            </span>
+                          ) : "-"}
+                        </td>
+                        <td className="px-6 py-4 font-medium">{inq.subject}</td>
+                        <td className="px-6 py-4">
+                          <div className="max-w-[200px] sm:max-w-xs truncate text-muted-foreground cursor-help" title={inq.message}>
+                            {inq.message}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
                 {data?.inquiries.length === 0 && (
-                  <div className="py-20 text-center border border-dashed border-hairline rounded-2xl">
+                  <div className="py-20 text-center">
                     <MessageCircle className="h-8 w-8 mx-auto text-muted-foreground/50 mb-3" />
                     <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest">No inquiries yet</p>
                   </div>
