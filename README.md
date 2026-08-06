@@ -1,132 +1,133 @@
-# AARRKKAA International — Official Digital Portal (Phase 1)
+# AARRKKAA International — Web Application
 
-![AARRKKAA Hero Image](src/assets/hero-mechanical.jpg)
+Welcome to the official web application repository for **AARRKKAA International**, a global supplier and distributor of precision components and engineered seals.
 
-**AARRKKAA International** is a premier global supplier and distributor of high-performance industrial equipment, specializing in precision mechanical seals, industrial process pumps, hygienic food-grade systems, elastomers, valves, and stainless steel fittings.
-
-This repository hosts the state-of-the-art web application and digital engineering catalog for AARRKKAA International, engineered from the ground up for extreme speed, luxury industrial aesthetics, and intelligent customer engagement.
+This project was built from the ground up using a modern, high-performance, and scalable technology stack.
 
 ---
 
-## 🚀 Live Enterprise Portal
-**🌐 [aarrkkaa-seals.vercel.app](https://aarrkkaa-seals.vercel.app)**  
-*(Service available globally · Powered by Vercel Edge & Nitro)*
+## 🚀 Tech Stack
+
+- **Framework**: [TanStack Start](https://tanstack.com/start) (React 19 + Vite + Full-stack SSR)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) + Radix UI Primitives
+- **Animations**: Framer Motion + Canvas Confetti
+- **Database**: [Supabase](https://supabase.com/) (PostgreSQL)
+- **ORM**: [Prisma](https://www.prisma.io/)
+- **Authentication**: Supabase Auth (JWT based)
+- **Email Delivery**: [Resend](https://resend.com/)
+- **Form Validation**: React Hook Form + Zod
+- **Deployment**: Vercel
 
 ---
 
-## 🏁 Phase 1 Accomplishments & Key Innovations
+## ✨ Key Features & Functionality
 
-In **Phase 1**, we transformed a standard industrial portal into a cutting-edge, highly interactive, and intelligent engineering platform. Below is a detailed breakdown of all systems, UI innovations, and features delivered:
+### 1. Modern Frontend Architecture
+- Fully responsive, premium dark/light themed UI using Tailwind CSS v4.
+- Highly interactive animations using `framer-motion` (fade-ins, scroll animations, glowing cards).
+- Component-driven architecture using accessible Radix UI primitives.
+- Client-side routing with `@tanstack/react-router` for lightning-fast page transitions.
 
-### 1. 🎨 "Paper & Brass" Luxury Industrial Design System
-* **Curated Palette:** Moved away from harsh, isolated black boxes and generic templates. Built a sophisticated aesthetic utilizing a warm **Paper** background (`#FAF9F5`), deep charcoal **Ink** (`#1C1B18`), and vibrant **Golden Brass** (`#D97706`) accents.
-* **Harmonious Visuals:** Refined component backgrounds and borders across all pages so that interactive elements blend smoothly and guide user attention without visual fatigue.
-* **Swiss/Apple Minimalist Typography:** Combined `@fontsource-variable/inter` with clean monospace CAD styling for technical metadata, specifications, and navigation badges.
-* **Global Enterprise Tone:** Updated branding across all touchpoints from regional positioning to a world-class global footprint (*"Service available globally"*).
+### 2. Contact Form & Email Delivery
+- The `/contact` page features a secure, Zod-validated inquiry form.
+- Upon submission, inquiries are securely stored in the Supabase PostgreSQL database via Prisma ORM.
+- **Resend API** integration instantly dispatches a beautifully formatted, responsive HTML email to the sales team (`admin@aarrkkaa.com` or custom routing).
+- Includes support for dynamic email templates using the `Inter` web font.
 
----
+### 3. Newsletter Subscription
+- Global footer includes a newsletter sign-up form.
+- Submissions are validated and safely stored in the `Subscriber` database table.
 
-### 2. 🤖 AI Equipment Advisor & Intelligent Chatbot Ecosystem
-* **Non-Intrusive Floating Assistant:** Engineered an interactive AI Chatbot docked in the bottom-left corner of the viewport (counterbalancing traditional right-side chat widgets).
-* **100% Accurate Engineering Domain:** System-prompted and structured to answer complex technical queries regarding seal metallurgical grades, slurry pump tolerances, and hygienic dairy certifications.
-* **Instant Omnichannel Routing:** Automatically recognizes when a customer needs human engineering support and provides instant, clickable telephone links, direct WhatsApp quotation triggers, and aligned email contact actions.
-* **Reactive Global State Management:** Powered by a custom React `useSyncExternalStore` architecture (`chatbotState.ts`). When the AI Chatbot opens, page sidebars and peripheral navigation elements dynamically fade out to eliminate visual clutter, restoring smoothly upon exit.
+### 4. Secure Admin Dashboard
+- **Route**: `/admin`
+- Protected by **Supabase Authentication**. Only authorized users can log in using their email and password.
+- **Command Center**: Once logged in, administrators can view live metrics of Total Inquiries and Newsletter Subscribers.
+- **Inquiry Management**: The admin table lists all inquiries with the ability to toggle their status between `Active` (Amber) and `Completed` (Emerald).
+- Features optimistic UI updates for instant feedback when toggling statuses.
 
----
-
-### 3. ✨ High-Precision Interactive UI Components
-Inspired by modern UI design patterns (such as React Bits) and tailored specifically for industrial engineering:
-* **Border Glow Cards (`GlowCard`):** Implemented dynamic cursor-tracking golden brass border luminescence across key interactive sections:
-  * **Why AARRKKAA:** 4 core value proposition cards.
-  * **Client Testimonials:** Industrial reviews and reliability ratings.
-  * **Find Us (Bento Grid):** 3 architectural location and contact cards.
-* **Minimalist Line Sidebar (`LineSidebar`):**
-  * An ultra-elegant, Swiss-style scroll-spy navigation track floating along the right viewport edge.
-  * Features a whisper-thin `1px` background hairline with delicate `1.5px` ticks. As you scroll through page sections, the active indicator illuminates as a clean `2px` golden brass bar paired with a smoothly gliding typography label.
-* **Interactive Lanyard Brand Display (`Lanyard`):**
-  * A physics-inspired interactive badge display integrated into the Contact page, occupying empty space with a dynamic presentation of the AARRKKAA INTERNATIONAL logo and brand identity.
+### 5. Seamless Vercel Deployment
+- Optimized for serverless edge/Node.js deployments on Vercel.
+- Integrated a `postinstall` script (`prisma generate`) in `package.json` to ensure the Prisma Client is correctly compiled during the Vercel build process.
+- Lockfile conflicts resolved by strictly adhering to the `bun.lock` (Bun package manager) for faster, deterministic builds.
 
 ---
 
-### 4. ⚡ 12-Category & 100+ SKU Digital Product Catalog
-* **Complete Technical Coverage:** Engineered dynamic SSR routes (`/products/$category` and `/products/$category/$item`) showcasing:
-  * **Mechanical Seals:** Cartridge, bellows, rotary union, and heavy-duty agitator seals.
-  * **Process Pumps:** Centrifugal, monoblock, slurry, dosing, gear, vacuum, submersible, and hygienic milk pumps.
-  * **Valves & Stainless Steel Fittings:** Ball, butterfly, gate, and check valves alongside industrial pipework.
-  * **Precision Bearings:** Heavy-duty ball and roller bearing assemblies.
-* **Verified Industrial Photography:** Integrated 20+ verified, premium Unsplash imagery assets capturing metallic textures, clean machined surfaces, and precision tolerances.
-* **Seamless Quotation Flow:** Transformed isolated product call-to-actions ("Need this product on your line?") into intelligent routing links that direct customers to the quotation desk with their exact product SKU pre-populated!
+## 🛠️ Environment Setup
 
----
+To run this project locally or deploy it to a production environment, the following environment variables are strictly required. 
 
-### 5. 🛠️ Creative "Blueprint CAD" 404 Page & AI Remediation Protocol
-* **Precision Blueprint Aesthetic:** Replaced standard error pages with `CreativeNotFound.tsx`, designed like a high-tech mechanical CAD drawing featuring grid lines and an animated 3D precision wrench (`4 [🔧] 4`).
-* **One-Click AI Problem Solving:** Features a primary call-to-action: **`⚡ Ask AI Advisor How To Solve This 404`**.
-* **Automated Remediation Protocol:** Clicking the button automatically opens the AI Chatbot in the bottom left and triggers a diagnostic workflow where the AI:
-  1. Searches the master index across all 12 categories.
-  2. Offers to cross-reference OEM part numbers and metallurgical grades from user drawings.
-  3. Connects the user directly with custom fabrication engineers for obsolete or specialized seal replacements.
+These should be added to a local `.env` file or injected into your hosting provider (e.g., Vercel / Lovable dashboard):
 
----
+```env
+# -------------------------------------------------------------
+# 1. RESEND (Email Delivery)
+# -------------------------------------------------------------
+# Your API Key from resend.com
+RESEND_API_KEY="re_your_api_key_here"
 
-## 🛠️ Technology Stack & Architecture
+# The destination email address where inquiries should be sent
+RESEND_TO_EMAIL="admin@aarrkkaa.com"
 
-This platform is built on a high-performance, edge-ready architecture ensuring lightning-fast Server-Side Rendering (SSR), optimal SEO indexing, and type-safe routing.
+# The verified sender domain (or onboarding@resend.dev for testing)
+RESEND_FROM_EMAIL="contact@aarrkkaa.com"
 
-* **Framework:** [TanStack Start](https://tanstack.com/start/latest) (Full-stack SSR framework)
-* **UI Library:** [React 19](https://react.dev/)
-* **Styling & Design System:** [Tailwind CSS v4](https://tailwindcss.com/) + Vanilla CSS design tokens
-* **Animation Engine:** [Framer Motion](https://www.framer.com/motion/)
-* **Type-Safe Routing:** [TanStack Router](https://tanstack.com/router/latest)
-* **Server & Deployment Engine:** [Nitro](https://nitro.unjs.io/) configured for Vercel Edge Functions
-* **Icons:** [Lucide React](https://lucide.dev/)
 
----
+# -------------------------------------------------------------
+# 2. PRISMA DATABASE CONNECTIONS
+# -------------------------------------------------------------
+# Connect to Postgres via the shared transaction-mode pooler (IPv4-only)
+DATABASE_URL="postgresql://postgres.[YOUR-ID]:[YOUR-PASSWORD]@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
 
-## 📦 Local Development & Setup
+# Connect to Postgres via the shared session-mode pooler (used for migrations)
+DIRECT_URL="postgresql://postgres.[YOUR-ID]:[YOUR-PASSWORD]@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres"
 
-To run or contribute to this repository locally:
 
-### 1. Prerequisites
-Ensure you have [Bun](https://bun.sh/) (recommended) or [Node.js](https://nodejs.org/) installed.
+# -------------------------------------------------------------
+# 3. SUPABASE (Authentication & Client)
+# -------------------------------------------------------------
+# Your Supabase project URL
+VITE_SUPABASE_URL="https://[YOUR-ID].supabase.co"
 
-### 2. Clone Repository
-```bash
-git clone https://github.com/Nivas001/Seals.git
-cd Seals
+# Your Supabase public anonymous key
+VITE_SUPABASE_ANON_KEY="sb_publishable_..."
 ```
 
-### 3. Install Dependencies
-```bash
+---
+
+## 📦 Local Development Commands
+
+This project uses [Bun](https://bun.sh/) as the primary package manager. 
+
+**1. Install dependencies:**
+\`\`\`bash
 bun install
-# or npm install
-```
+\`\`\`
 
-### 4. Start Development Server
-```bash
+**2. Generate Prisma Client:**
+\`\`\`bash
+bunx prisma generate
+\`\`\`
+
+**3. Push Database Schema (if running a new database):**
+\`\`\`bash
+bunx prisma db push
+\`\`\`
+
+**4. Start Local Development Server:**
+\`\`\`bash
 bun run dev
-# or npm run dev
-```
-Open your browser and navigate to `http://localhost:3000`. The server supports hot-module replacement (HMR) and instant SSR reloads.
+\`\`\`
 
 ---
 
-## 🏗️ Production Build & Verification
+## 🗄️ Database Schema
 
-To verify the build or generate production static/SSR bundles:
-```bash
-bun run build
-# or npm run build
-```
-The production bundle is compiled via Nitro into `.vercel/output`, ready for instant zero-config deployment on Vercel.
+The database utilizes Prisma to define the schema. The primary models are:
 
----
+- **Inquiry**: Stores `id`, `name`, `email`, `category`, `subject`, `message`, `status` (Active/Completed), and `createdAt`.
+- **Subscriber**: Stores `id`, `email`, and `createdAt`.
 
-## 📸 Architectural Preview
-
-![Factory Operations](src/assets/factory.jpg)
-*Precision industrial components engineered for continuous operation.*
-
----
-**AARRKKAA INTERNATIONAL** · *Excellence in Motion · Service Available Globally*  
-*Phase 1 Complete · Deployed on Vercel*
+## 🔒 Security Measures
+- **Environment Variables**: Sensitive keys (Database passwords, Resend API keys) are exclusively accessed server-side via `process.env`.
+- **TanStack Server Functions**: All database mutations (`getAdminData`, `toggleInquiryStatus`, `sendContactEmail`) are securely executed on the server, completely hidden from the client browser.
+- **JWT Authentication**: The Admin dashboard utilizes Supabase SSR strategies to parse and validate JWT tokens server-side before serving sensitive inquiry data.
