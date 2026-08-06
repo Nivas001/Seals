@@ -24,6 +24,7 @@ import { Route as ForkliftSimRouteImport } from './routes/forklift-sim'
 import { Route as FlappyPumpRouteImport } from './routes/flappy-pump'
 import { Route as DoNotPushRouteImport } from './routes/do-not-push'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as R418RouteImport } from './routes/418'
 import { Route as IndexRouteImport } from './routes/index'
@@ -107,6 +108,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/418': typeof R418Route
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/do-not-push': typeof DoNotPushRoute
   '/flappy-pump': typeof FlappyPumpRoute
@@ -171,6 +178,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/418': typeof R418Route
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/do-not-push': typeof DoNotPushRoute
   '/flappy-pump': typeof FlappyPumpRoute
@@ -196,6 +204,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/418': typeof R418Route
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/do-not-push': typeof DoNotPushRoute
   '/flappy-pump': typeof FlappyPumpRoute
@@ -222,6 +231,7 @@ export interface FileRouteTypes {
     | '/'
     | '/418'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/do-not-push'
     | '/flappy-pump'
@@ -246,6 +256,7 @@ export interface FileRouteTypes {
     | '/'
     | '/418'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/do-not-push'
     | '/flappy-pump'
@@ -270,6 +281,7 @@ export interface FileRouteTypes {
     | '/'
     | '/418'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/do-not-push'
     | '/flappy-pump'
@@ -295,6 +307,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R418Route: typeof R418Route
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
   ContactRoute: typeof ContactRoute
   DoNotPushRoute: typeof DoNotPushRoute
   FlappyPumpRoute: typeof FlappyPumpRoute
@@ -423,6 +436,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -479,6 +499,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R418Route: R418Route,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
   ContactRoute: ContactRoute,
   DoNotPushRoute: DoNotPushRoute,
   FlappyPumpRoute: FlappyPumpRoute,
