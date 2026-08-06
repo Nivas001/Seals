@@ -21,6 +21,7 @@ export const getCategoryWithProducts = createServerFn({ method: "GET" })
       include: {
         products: {
           orderBy: { createdAt: 'asc' },
+          include: { specs: true },
         },
       },
     });

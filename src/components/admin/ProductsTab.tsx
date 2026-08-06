@@ -18,6 +18,16 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
   };
   const [formData, setFormData] = useState(defaultProduct);
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData({ ...formData, image: reader.result as string });
+    };
+    reader.readAsDataURL(file);
+  };
+
   const startEdit = (p: any) => {
     setEditingId(p.id);
     setIsAdding(false);
@@ -123,7 +133,13 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
               <Textarea className="w-full bg-surface border-hairline focus:border-brass text-ink min-h-[80px]" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} required />
             </div>
             
-            <Input label="Image URL (Optional)" value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} />
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Product Image (Optional)</label>
+              <div className="flex items-center gap-3">
+                {formData.image && <img src={formData.image} alt="Preview" className="w-12 h-12 object-cover rounded bg-zinc-100 border border-hairline" />}
+                <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full text-xs text-ink file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brass/10 file:text-brass hover:file:bg-brass/20 cursor-pointer" />
+              </div>
+            </div>
 
             {/* Dynamic Arrays */}
             <div className="space-y-4 pt-4 border-t border-hairline">

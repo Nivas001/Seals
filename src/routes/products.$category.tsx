@@ -5,6 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { getCategoryWithProducts, getCategories, getContactInfo } from "@/lib/catalog";
 import { ProductItemCard } from "@/components/site/ProductItemCard";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
+import { CreativePoster } from "@/components/ui/CreativePoster";
 
 export const Route = createFileRoute("/products/$category")({
   loader: async ({ params }) => {
@@ -89,7 +90,11 @@ function CategoryPage() {
             </div>
 
             <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-hairline bg-surface shadow-lift">
-              <img src={c.image} alt={c.name} className="h-full w-full object-cover" width={1200} height={900} />
+              {c.image ? (
+                <img src={c.image} alt={c.name} className="h-full w-full object-cover" width={1200} height={900} />
+              ) : (
+                <CreativePoster title={c.name} />
+              )}
             </div>
           </div>
         </section>
@@ -127,7 +132,11 @@ function CategoryPage() {
                 className="group overflow-hidden rounded-2xl border border-hairline bg-surface"
               >
                 <div className="relative aspect-[5/3] overflow-hidden">
-                  <img src={o.image} alt={o.name} loading="lazy" className="h-full w-full object-cover transition group-hover:scale-105" />
+                  {o.image ? (
+                    <img src={o.image} alt={o.name} loading="lazy" className="h-full w-full object-cover transition group-hover:scale-105" />
+                  ) : (
+                    <CreativePoster title={o.name} />
+                  )}
                 </div>
                 <div className="p-4">
                   <div className="font-display text-base font-bold tracking-tight text-ink">

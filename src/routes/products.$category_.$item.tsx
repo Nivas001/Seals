@@ -4,6 +4,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { getProductDetails, getCategories, getContactInfo } from "@/lib/catalog";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
+import { CreativePoster } from "@/components/ui/CreativePoster";
 
 import { UnobtainiumPumpEasterEgg } from "@/components/site/easter-eggs/UnobtainiumPump";
 import { AntiGravityBearingEasterEgg } from "@/components/site/easter-eggs/AntiGravityBearing";
@@ -168,13 +169,17 @@ function ItemPage() {
             </div>
 
             <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-hairline bg-surface shadow-lift">
-              <img
-                src={d.image || c.image}
-                alt={`${d.name} — ${c.name}`}
-                className="h-full w-full object-cover"
-                width={1200}
-                height={900}
-              />
+              {d.image || c.image ? (
+                <img
+                  src={d.image || c.image}
+                  alt={`${d.name} — ${c.name}`}
+                  className="h-full w-full object-cover"
+                  width={1200}
+                  height={900}
+                />
+              ) : (
+                <CreativePoster title={d.name} />
+              )}
               <div className="pointer-events-none absolute inset-x-4 bottom-4 rounded-2xl border border-white/40 bg-white/70 px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink/70 backdrop-blur">
                 {d.image ? `Product photo · ${d.name}` : `Representative image · ${c.name}`}
               </div>
@@ -297,12 +302,16 @@ function ItemPage() {
                 className="group overflow-hidden rounded-2xl border border-hairline bg-surface"
               >
                 <div className="relative aspect-[5/3] overflow-hidden">
-                  <img
-                    src={o.image}
-                    alt={o.name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition group-hover:scale-105"
-                  />
+                  {o.image ? (
+                    <img
+                      src={o.image}
+                      alt={o.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition group-hover:scale-105"
+                    />
+                  ) : (
+                    <CreativePoster title={o.name} />
+                  )}
                 </div>
                 <div className="p-4">
                   <div className="font-display text-base font-bold tracking-tight text-ink">

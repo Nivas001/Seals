@@ -17,6 +17,16 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
   };
   const [formData, setFormData] = useState(defaultCategory);
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData({ ...formData, image: reader.result as string });
+    };
+    reader.readAsDataURL(file);
+  };
+
   const startEdit = (cat: any) => {
     setEditingId(cat.id);
     setIsAdding(false);
@@ -132,7 +142,13 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <Input label="Image Path or URL" value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} isRequired />
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category Image</label>
+                <div className="flex items-center gap-3">
+                  {formData.image && <img src={formData.image} alt="Preview" className="w-10 h-10 object-cover rounded bg-zinc-100 border border-hairline" />}
+                  <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full text-xs text-ink file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brass/10 file:text-brass hover:file:bg-brass/20 cursor-pointer" />
+                </div>
+              </div>
               <Input label="Priority (lower = first)" type="number" value={formData.priority.toString()} onChange={e => setFormData({...formData, priority: parseInt(e.target.value) || 0})} isRequired />
             </div>
             <div className="flex gap-4 pt-4">

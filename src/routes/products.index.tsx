@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { getCategories } from "@/lib/catalog";
+import { CreativePoster } from "@/components/ui/CreativePoster";
 
 export const Route = createFileRoute("/products/")({
   head: () => ({
@@ -75,12 +76,16 @@ function ProductsPage() {
                   className="group block overflow-hidden rounded-2xl border border-hairline bg-surface transition hover:shadow-lift"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
-                    <img
-                      src={cat.image}
-                      alt={cat.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                    />
+                    {cat.image ? (
+                      <img
+                        src={cat.image}
+                        alt={cat.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <CreativePoster title={cat.name} />
+                    )}
                   </div>
                   <div className="flex items-start justify-between gap-3 p-5">
                     <div className="min-w-0">

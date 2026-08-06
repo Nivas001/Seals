@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { CreativePoster } from "@/components/ui/CreativePoster";
 
 export function ProductItemCard({
   category,
