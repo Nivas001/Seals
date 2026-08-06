@@ -250,6 +250,14 @@ function AboutPage() {
             </div>
           </div>
         </section>
+        <section className="mx-auto mt-16 flex justify-center pb-16 pt-8 max-w-6xl px-5 sm:px-8">
+          <Link
+            to="/admin"
+            className="inline-flex items-center gap-2 rounded-full border border-ink/20 bg-transparent px-6 py-3 text-sm font-semibold tracking-tight text-ink transition-all hover:bg-ink/5"
+          >
+            Admin Dashboard &rarr;
+          </Link>
+        </section>
       </main>
       <Footer />
     </div>
