@@ -18,14 +18,21 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
   };
   const [formData, setFormData] = useState(defaultProduct);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormData({ ...formData, image: reader.result as string });
-    };
-    reader.readAsDataURL(file);
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("Image must be less than 2MB");
+        return;
+      }
+      try {
+        const { compressImage } = await import("@/lib/image-utils");
+        const base64 = await compressImage(file);
+        setFormData({ ...formData, image: base64 });
+      } catch (error) {
+        toast.error("Failed to process image");
+      }
+    }
   };
 
   const startEdit = (p: any) => {
