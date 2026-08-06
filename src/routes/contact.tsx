@@ -21,6 +21,7 @@ import { COMPANY, CATEGORIES } from "@/data/catalog";
 import { getItem, slugify } from "@/data/items";
 import { toast } from "sonner";
 import { chatbotState } from "@/data/chatbotState";
+import { sendContactEmail } from "@/lib/email";
 
 type ContactSearch = {
   category?: string;
@@ -270,7 +271,19 @@ function InquiryCard({ className }: { className?: string }) {
     ? `I would like to request a quotation for:\n\n• Product: ${search.product}\n• Category: ${defaultCategory || "General"}\n\n[Please specify required quantity, duty conditions, or operating parameters below]:\n`
     : "";
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  const getBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64Str = (reader.result as string).split(",")[1];
+        resolve(base64Str);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
@@ -293,16 +306,63 @@ function InquiryCard({ className }: { className?: string }) {
 
     setSubmitting(true);
     const subject = String((data.get("subject") ?? defaultSubject) || "Enquiry");
-    const body = `Name: ${name}\nEmail: ${email}\nCategory: ${String(
-      data.get("category") ?? "",
-    )}\n\nMessage:\n${message}\n\n— Sent via AARRKKAA International portal`;
+    const category = String(data.get("category") ?? "");
 
-    const url = `mailto:${COMPANY.email}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-    window.location.href = url;
-    toast.success("Opening your email client…");
-    setTimeout(() => setSubmitting(false), 800);
+    // Process file attachment if exists
+    let attachmentData = undefined;
+    const fileInput = form.querySelector('input[type="file"]') as HTMLInputElement | null;
+    const file = fileInput?.files?.[0];
+
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("File size exceeds the 10MB limit.");
+        setSubmitting(false);
+        return;
+      }
+      try {
+        const base64Content = await getBase64(file);
+        attachmentData = {
+          filename: file.name,
+          content: base64Content,
+        };
+      } catch (err) {
+        console.error("Error reading file:", err);
+        toast.error("Failed to read file attachment. Please try again.");
+        setSubmitting(false);
+        return;
+      }
+    }
+
+    try {
+      const response = await sendContactEmail({
+        name,
+        email,
+        category,
+        subject,
+        message,
+        attachment: attachmentData,
+      });
+
+      if (response.success) {
+        toast.success(
+          response.mock
+            ? "Inquiry logged in dev console (Mock Mode)"
+            : "Inquiry submitted successfully!",
+        );
+        if (response.mock) {
+          toast.info("Check server terminal to view the logged email body.");
+        }
+        form.reset();
+        setFileName("");
+      } else {
+        toast.error(response.error || "Failed to send email. Please try again.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (

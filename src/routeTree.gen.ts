@@ -9,18 +9,97 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WhackALeakRouteImport } from './routes/whack-a-leak'
+import { Route as SystemBreachRouteImport } from './routes/system-breach'
+import { Route as StressTestRouteImport } from './routes/stress-test'
+import { Route as SealDefenderRouteImport } from './routes/seal-defender'
+import { Route as RogueAiRouteImport } from './routes/rogue-ai'
+import { Route as OverrideRouteImport } from './routes/override'
+import { Route as MatrixRouteImport } from './routes/matrix'
+import { Route as IntelligenceCheckRouteImport } from './routes/intelligence-check'
 import { Route as IndustriesRouteImport } from './routes/industries'
+import { Route as GitBlameRouteImport } from './routes/git-blame'
+import { Route as Funny_url_listRouteImport } from './routes/funny_url_list'
+import { Route as ForkliftSimRouteImport } from './routes/forklift-sim'
+import { Route as FlappyPumpRouteImport } from './routes/flappy-pump'
+import { Route as DoNotPushRouteImport } from './routes/do-not-push'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as R418RouteImport } from './routes/418'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsCategoryRouteImport } from './routes/products.$category'
 import { Route as AboutPaymentsRouteImport } from './routes/about_.payments'
 import { Route as ProductsCategoryItemRouteImport } from './routes/products.$category_.$item'
 
+const WhackALeakRoute = WhackALeakRouteImport.update({
+  id: '/whack-a-leak',
+  path: '/whack-a-leak',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SystemBreachRoute = SystemBreachRouteImport.update({
+  id: '/system-breach',
+  path: '/system-breach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StressTestRoute = StressTestRouteImport.update({
+  id: '/stress-test',
+  path: '/stress-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SealDefenderRoute = SealDefenderRouteImport.update({
+  id: '/seal-defender',
+  path: '/seal-defender',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RogueAiRoute = RogueAiRouteImport.update({
+  id: '/rogue-ai',
+  path: '/rogue-ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OverrideRoute = OverrideRouteImport.update({
+  id: '/override',
+  path: '/override',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MatrixRoute = MatrixRouteImport.update({
+  id: '/matrix',
+  path: '/matrix',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntelligenceCheckRoute = IntelligenceCheckRouteImport.update({
+  id: '/intelligence-check',
+  path: '/intelligence-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndustriesRoute = IndustriesRouteImport.update({
   id: '/industries',
   path: '/industries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GitBlameRoute = GitBlameRouteImport.update({
+  id: '/git-blame',
+  path: '/git-blame',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Funny_url_listRoute = Funny_url_listRouteImport.update({
+  id: '/funny_url_list',
+  path: '/funny_url_list',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForkliftSimRoute = ForkliftSimRouteImport.update({
+  id: '/forklift-sim',
+  path: '/forklift-sim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlappyPumpRoute = FlappyPumpRouteImport.update({
+  id: '/flappy-pump',
+  path: '/flappy-pump',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DoNotPushRoute = DoNotPushRouteImport.update({
+  id: '/do-not-push',
+  path: '/do-not-push',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -31,6 +110,11 @@ const ContactRoute = ContactRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const R418Route = R418RouteImport.update({
+  id: '/418',
+  path: '/418',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -61,9 +145,23 @@ const ProductsCategoryItemRoute = ProductsCategoryItemRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/418': typeof R418Route
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/do-not-push': typeof DoNotPushRoute
+  '/flappy-pump': typeof FlappyPumpRoute
+  '/forklift-sim': typeof ForkliftSimRoute
+  '/funny_url_list': typeof Funny_url_listRoute
+  '/git-blame': typeof GitBlameRoute
   '/industries': typeof IndustriesRoute
+  '/intelligence-check': typeof IntelligenceCheckRoute
+  '/matrix': typeof MatrixRoute
+  '/override': typeof OverrideRoute
+  '/rogue-ai': typeof RogueAiRoute
+  '/seal-defender': typeof SealDefenderRoute
+  '/stress-test': typeof StressTestRoute
+  '/system-breach': typeof SystemBreachRoute
+  '/whack-a-leak': typeof WhackALeakRoute
   '/about/payments': typeof AboutPaymentsRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/products/': typeof ProductsIndexRoute
@@ -71,9 +169,23 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/418': typeof R418Route
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/do-not-push': typeof DoNotPushRoute
+  '/flappy-pump': typeof FlappyPumpRoute
+  '/forklift-sim': typeof ForkliftSimRoute
+  '/funny_url_list': typeof Funny_url_listRoute
+  '/git-blame': typeof GitBlameRoute
   '/industries': typeof IndustriesRoute
+  '/intelligence-check': typeof IntelligenceCheckRoute
+  '/matrix': typeof MatrixRoute
+  '/override': typeof OverrideRoute
+  '/rogue-ai': typeof RogueAiRoute
+  '/seal-defender': typeof SealDefenderRoute
+  '/stress-test': typeof StressTestRoute
+  '/system-breach': typeof SystemBreachRoute
+  '/whack-a-leak': typeof WhackALeakRoute
   '/about/payments': typeof AboutPaymentsRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/products': typeof ProductsIndexRoute
@@ -82,9 +194,23 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/418': typeof R418Route
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/do-not-push': typeof DoNotPushRoute
+  '/flappy-pump': typeof FlappyPumpRoute
+  '/forklift-sim': typeof ForkliftSimRoute
+  '/funny_url_list': typeof Funny_url_listRoute
+  '/git-blame': typeof GitBlameRoute
   '/industries': typeof IndustriesRoute
+  '/intelligence-check': typeof IntelligenceCheckRoute
+  '/matrix': typeof MatrixRoute
+  '/override': typeof OverrideRoute
+  '/rogue-ai': typeof RogueAiRoute
+  '/seal-defender': typeof SealDefenderRoute
+  '/stress-test': typeof StressTestRoute
+  '/system-breach': typeof SystemBreachRoute
+  '/whack-a-leak': typeof WhackALeakRoute
   '/about_/payments': typeof AboutPaymentsRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/products/': typeof ProductsIndexRoute
@@ -94,9 +220,23 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/418'
     | '/about'
     | '/contact'
+    | '/do-not-push'
+    | '/flappy-pump'
+    | '/forklift-sim'
+    | '/funny_url_list'
+    | '/git-blame'
     | '/industries'
+    | '/intelligence-check'
+    | '/matrix'
+    | '/override'
+    | '/rogue-ai'
+    | '/seal-defender'
+    | '/stress-test'
+    | '/system-breach'
+    | '/whack-a-leak'
     | '/about/payments'
     | '/products/$category'
     | '/products/'
@@ -104,9 +244,23 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/418'
     | '/about'
     | '/contact'
+    | '/do-not-push'
+    | '/flappy-pump'
+    | '/forklift-sim'
+    | '/funny_url_list'
+    | '/git-blame'
     | '/industries'
+    | '/intelligence-check'
+    | '/matrix'
+    | '/override'
+    | '/rogue-ai'
+    | '/seal-defender'
+    | '/stress-test'
+    | '/system-breach'
+    | '/whack-a-leak'
     | '/about/payments'
     | '/products/$category'
     | '/products'
@@ -114,9 +268,23 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/418'
     | '/about'
     | '/contact'
+    | '/do-not-push'
+    | '/flappy-pump'
+    | '/forklift-sim'
+    | '/funny_url_list'
+    | '/git-blame'
     | '/industries'
+    | '/intelligence-check'
+    | '/matrix'
+    | '/override'
+    | '/rogue-ai'
+    | '/seal-defender'
+    | '/stress-test'
+    | '/system-breach'
+    | '/whack-a-leak'
     | '/about_/payments'
     | '/products/$category'
     | '/products/'
@@ -125,9 +293,23 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  R418Route: typeof R418Route
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  DoNotPushRoute: typeof DoNotPushRoute
+  FlappyPumpRoute: typeof FlappyPumpRoute
+  ForkliftSimRoute: typeof ForkliftSimRoute
+  Funny_url_listRoute: typeof Funny_url_listRoute
+  GitBlameRoute: typeof GitBlameRoute
   IndustriesRoute: typeof IndustriesRoute
+  IntelligenceCheckRoute: typeof IntelligenceCheckRoute
+  MatrixRoute: typeof MatrixRoute
+  OverrideRoute: typeof OverrideRoute
+  RogueAiRoute: typeof RogueAiRoute
+  SealDefenderRoute: typeof SealDefenderRoute
+  StressTestRoute: typeof StressTestRoute
+  SystemBreachRoute: typeof SystemBreachRoute
+  WhackALeakRoute: typeof WhackALeakRoute
   AboutPaymentsRoute: typeof AboutPaymentsRoute
   ProductsCategoryRoute: typeof ProductsCategoryRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
@@ -136,11 +318,102 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/whack-a-leak': {
+      id: '/whack-a-leak'
+      path: '/whack-a-leak'
+      fullPath: '/whack-a-leak'
+      preLoaderRoute: typeof WhackALeakRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/system-breach': {
+      id: '/system-breach'
+      path: '/system-breach'
+      fullPath: '/system-breach'
+      preLoaderRoute: typeof SystemBreachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stress-test': {
+      id: '/stress-test'
+      path: '/stress-test'
+      fullPath: '/stress-test'
+      preLoaderRoute: typeof StressTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seal-defender': {
+      id: '/seal-defender'
+      path: '/seal-defender'
+      fullPath: '/seal-defender'
+      preLoaderRoute: typeof SealDefenderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rogue-ai': {
+      id: '/rogue-ai'
+      path: '/rogue-ai'
+      fullPath: '/rogue-ai'
+      preLoaderRoute: typeof RogueAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/override': {
+      id: '/override'
+      path: '/override'
+      fullPath: '/override'
+      preLoaderRoute: typeof OverrideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/matrix': {
+      id: '/matrix'
+      path: '/matrix'
+      fullPath: '/matrix'
+      preLoaderRoute: typeof MatrixRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intelligence-check': {
+      id: '/intelligence-check'
+      path: '/intelligence-check'
+      fullPath: '/intelligence-check'
+      preLoaderRoute: typeof IntelligenceCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/industries': {
       id: '/industries'
       path: '/industries'
       fullPath: '/industries'
       preLoaderRoute: typeof IndustriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/git-blame': {
+      id: '/git-blame'
+      path: '/git-blame'
+      fullPath: '/git-blame'
+      preLoaderRoute: typeof GitBlameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/funny_url_list': {
+      id: '/funny_url_list'
+      path: '/funny_url_list'
+      fullPath: '/funny_url_list'
+      preLoaderRoute: typeof Funny_url_listRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forklift-sim': {
+      id: '/forklift-sim'
+      path: '/forklift-sim'
+      fullPath: '/forklift-sim'
+      preLoaderRoute: typeof ForkliftSimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flappy-pump': {
+      id: '/flappy-pump'
+      path: '/flappy-pump'
+      fullPath: '/flappy-pump'
+      preLoaderRoute: typeof FlappyPumpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/do-not-push': {
+      id: '/do-not-push'
+      path: '/do-not-push'
+      fullPath: '/do-not-push'
+      preLoaderRoute: typeof DoNotPushRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -155,6 +428,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/418': {
+      id: '/418'
+      path: '/418'
+      fullPath: '/418'
+      preLoaderRoute: typeof R418RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -197,9 +477,23 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  R418Route: R418Route,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  DoNotPushRoute: DoNotPushRoute,
+  FlappyPumpRoute: FlappyPumpRoute,
+  ForkliftSimRoute: ForkliftSimRoute,
+  Funny_url_listRoute: Funny_url_listRoute,
+  GitBlameRoute: GitBlameRoute,
   IndustriesRoute: IndustriesRoute,
+  IntelligenceCheckRoute: IntelligenceCheckRoute,
+  MatrixRoute: MatrixRoute,
+  OverrideRoute: OverrideRoute,
+  RogueAiRoute: RogueAiRoute,
+  SealDefenderRoute: SealDefenderRoute,
+  StressTestRoute: StressTestRoute,
+  SystemBreachRoute: SystemBreachRoute,
+  WhackALeakRoute: WhackALeakRoute,
   AboutPaymentsRoute: AboutPaymentsRoute,
   ProductsCategoryRoute: ProductsCategoryRoute,
   ProductsIndexRoute: ProductsIndexRoute,
