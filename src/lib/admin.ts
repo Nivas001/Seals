@@ -28,3 +28,31 @@ export const getAdminData = createServerFn({ method: "POST" })
 
     return { inquiries, subscribers };
   });
+
+const toggleStatusSchema = z.object({
+  token: z.string(),
+  id: z.string(),
+  status: z.string(),
+});
+
+export const toggleInquiryStatus = createServerFn({ method: "POST" })
+  .validator(toggleStatusSchema.parse)
+  .handler(async ({ data }) => {
+    const { token, id, status } = data;
+    
+    // Verify Authentication
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    
+    if (error || !user) {
+      throw new Error("Unauthorized");
+    }
+
+    // Update in Database
+    const updated = await db.inquiry.update({
+      where: { id },
+      data: { status }
+    });
+
+    return updated;
+  });

@@ -15,6 +15,7 @@ model Inquiry {
   category  String?
   subject   String
   message   String
+  status    String   @default("Active")
   createdAt DateTime @default(now())
 }
 

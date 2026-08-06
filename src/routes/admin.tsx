@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
-import { getAdminData } from "@/lib/admin";
+import { getAdminData, toggleInquiryStatus } from "@/lib/admin";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Button } from "@/components/ui/button";
@@ -142,6 +142,31 @@ function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: 
     }
   }
 
+  async function handleToggleStatus(id: string, currentStatus: string) {
+    if (!session?.access_token) return;
+    
+    const newStatus = currentStatus === "Completed" ? "Active" : "Completed";
+    const previousData = data;
+    
+    // Optimistic UI update
+    setData((prev: any) => ({
+      ...prev,
+      inquiries: prev.inquiries.map((inq: any) => 
+        inq.id === id ? { ...inq, status: newStatus } : inq
+      )
+    }));
+
+    try {
+      await toggleInquiryStatus({
+        data: { token: session.access_token, id, status: newStatus }
+      });
+      toast.success(`Inquiry marked as ${newStatus}`);
+    } catch (error) {
+      toast.error("Failed to update status");
+      setData(previousData); // Revert on failure
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background text-ink">
       <Navbar />
@@ -225,6 +250,7 @@ function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: 
                       <th className="px-6 py-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Category</th>
                       <th className="px-6 py-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Subject</th>
                       <th className="px-6 py-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Message</th>
+                      <th className="px-6 py-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground text-right">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-hairline">
@@ -247,6 +273,22 @@ function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: 
                           <div className="max-w-[200px] sm:max-w-xs truncate text-muted-foreground cursor-help" title={inq.message}>
                             {inq.message}
                           </div>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <button
+                            onClick={() => handleToggleStatus(inq.id, inq.status || "Active")}
+                            className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md transition-colors ${
+                              (inq.status || "Active") === "Completed"
+                                ? "text-emerald-600 bg-emerald-500/10 hover:bg-emerald-500/20"
+                                : "text-amber-600 bg-amber-500/10 hover:bg-amber-500/20"
+                            }`}
+                          >
+                            {(inq.status || "Active") === "Completed" ? (
+                              <><CheckCircle2 className="h-3 w-3" /> Completed</>
+                            ) : (
+                              <><Clock className="h-3 w-3" /> Active</>
+                            )}
+                          </button>
                         </td>
                       </tr>
                     ))}
