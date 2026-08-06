@@ -24,8 +24,14 @@ export const getAdminData = createServerFn({ method: "POST" })
     const [inquiries, subscribers, categories, products, contactInfo] = await Promise.all([
       db.inquiry.findMany({ orderBy: { createdAt: 'desc' } }),
       db.subscriber.findMany({ orderBy: { createdAt: 'desc' } }),
-      db.category.findMany({ orderBy: { priority: 'asc' } }),
-      db.product.findMany({ include: { category: true, specs: true, benefits: true, applications: true }, orderBy: { createdAt: 'desc' } }),
+      db.category.findMany({ 
+        select: { id: true, slug: true, name: true, short: true, description: true, priority: true, createdAt: true, updatedAt: true },
+        orderBy: { priority: 'asc' } 
+      }),
+      db.product.findMany({ 
+        select: { id: true, categoryId: true, name: true, slug: true, tagline: true, description: true, createdAt: true, updatedAt: true, category: true, specs: true, benefits: true, applications: true },
+        orderBy: { createdAt: 'desc' } 
+      }),
       db.contactInfo.findUnique({ where: { id: 'singleton' } })
     ]);
 
@@ -71,7 +77,7 @@ const categorySchema = z.object({
   name: z.string(),
   short: z.string(),
   description: z.string(),
-  image: z.string(),
+  image: z.string().optional(),
   priority: z.number(),
 });
 
@@ -84,9 +90,10 @@ export const upsertCategory = createServerFn({ method: "POST" })
     if (error || !user) throw new Error("Unauthorized");
 
     if (id) {
-      return await db.category.update({ where: { id }, data: rest });
+      if (rest.image === undefined) delete rest.image;
+      return await db.category.update({ where: { id }, data: rest as any });
     }
-    return await db.category.create({ data: rest });
+    return await db.category.create({ data: { ...rest, image: rest.image || "" } as any });
   });
 
 export const deleteCategory = createServerFn({ method: "POST" })
@@ -143,10 +150,12 @@ export const upsertProduct = createServerFn({ method: "POST" })
       await db.productBenefit.deleteMany({ where: { productId: id } });
       await db.productApplication.deleteMany({ where: { productId: id } });
 
+      if (rest.image === undefined) delete rest.image;
+
       return await db.product.update({
         where: { id },
         data: {
-          ...rest,
+          ...(rest as any),
           specs: { create: specs.map(s => ({ label: s.label, value: s.value })) },
           benefits: { create: benefits.map(b => ({ text: b.text })) },
           applications: { create: applications.map(a => ({ text: a.text })) },
@@ -156,7 +165,7 @@ export const upsertProduct = createServerFn({ method: "POST" })
 
     return await db.product.create({
       data: {
-        ...rest,
+        ...(rest as any),
         specs: { create: specs.map(s => ({ label: s.label, value: s.value })) },
         benefits: { create: benefits.map(b => ({ text: b.text })) },
         applications: { create: applications.map(a => ({ text: a.text })) },
