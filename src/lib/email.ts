@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { db } from "./db";
 
 const contactSchema = z.object({
   name: z.string().min(1).max(100),
@@ -130,6 +131,22 @@ export const sendContactEmail = createServerFn({ method: "POST" })
       }
 
       const responseData = await response.json();
+
+      // Save to database
+      try {
+        await db.inquiry.create({
+          data: {
+            name,
+            email,
+            category: category || null,
+            subject,
+            message,
+          }
+        });
+      } catch (dbError) {
+        console.error("Failed to save inquiry to database:", dbError);
+      }
+
       return {
         success: true,
         mock: false,

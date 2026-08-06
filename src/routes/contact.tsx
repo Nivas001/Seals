@@ -22,6 +22,7 @@ import { getItem, slugify } from "@/data/items";
 import { toast } from "sonner";
 import { chatbotState } from "@/data/chatbotState";
 import { sendContactEmail } from "@/lib/email";
+import { subscribeToNewsletter } from "@/lib/newsletter";
 
 type ContactSearch = {
   category?: string;
@@ -335,12 +336,14 @@ function InquiryCard({ className }: { className?: string }) {
 
     try {
       const response = await sendContactEmail({
-        name,
-        email,
-        category,
-        subject,
-        message,
-        attachment: attachmentData,
+        data: {
+          name,
+          email,
+          category,
+          subject,
+          message,
+          attachment: attachmentData,
+        }
       });
 
       if (response.success) {
@@ -559,7 +562,7 @@ function NewsletterCard({ className = "" }: { className?: string }) {
   const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
 
-  function onSubscribe(e: FormEvent<HTMLFormElement>) {
+  async function onSubscribe(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const trimmed = email.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed) || trimmed.length > 255) {
@@ -567,11 +570,19 @@ function NewsletterCard({ className = "" }: { className?: string }) {
       return;
     }
     setBusy(true);
-    setTimeout(() => {
-      toast.success("Subscribed — thanks for following AARRKKAA.");
-      setEmail("");
+    try {
+      const response = await subscribeToNewsletter({ data: { email: trimmed } });
+      if (response.success) {
+        toast.success("Subscribed — thanks for following AARRKKAA.");
+        setEmail("");
+      } else {
+        toast.error(response.error || "Failed to subscribe. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
       setBusy(false);
-    }, 500);
+    }
   }
 
   return (
