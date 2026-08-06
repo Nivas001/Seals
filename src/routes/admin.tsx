@@ -4,8 +4,8 @@ import { createClient } from "@/lib/supabase";
 import { getAdminData } from "@/lib/admin";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { Button } from "@/components/base/button/button";
-import { Input } from "@/components/base/input/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { toast } from "sonner";
 import { Mail, MessageCircle, Clock, Trash2, LogOut, CheckCircle2 } from "lucide-react";
@@ -50,7 +50,7 @@ function AdminPage() {
     return <AdminLogin onLogin={() => setLoading(true)} />;
   }
 
-  return <AdminDashboard onLogout={() => supabase.auth.signOut()} />;
+  return <AdminDashboard onLogout={() => supabase.auth.signOut()} session={session} />;
 }
 
 function AdminLogin({ onLogin }: { onLogin: () => void }) {
@@ -120,18 +120,20 @@ function AdminLogin({ onLogin }: { onLogin: () => void }) {
   );
 }
 
-function AdminDashboard({ onLogout }: { onLogout: () => void }) {
+function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: any }) {
   const [activeTab, setActiveTab] = useState<"inquiries" | "subscribers">("inquiries");
   const [data, setData] = useState<{ inquiries: any[]; subscribers: any[] } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (session?.access_token) {
+      fetchData(session.access_token);
+    }
+  }, [session]);
 
-  async function fetchData() {
+  async function fetchData(token: string) {
     try {
-      const result = await getAdminData();
+      const result = await getAdminData({ data: { token } });
       setData(result);
     } catch (error) {
       toast.error("Failed to load data. Are you logged in?");

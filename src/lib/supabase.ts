@@ -1,43 +1,22 @@
-import { createBrowserClient, createServerClient } from "@supabase/ssr";
-import { getCookie, setCookie } from "vinxi/http";
+import { createBrowserClient } from "@supabase/ssr";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 // Helper for client components
 export function createClient() {
-  return createBrowserClient(
-    import.meta.env.VITE_SUPABASE_URL!,
-    import.meta.env.VITE_SUPABASE_ANON_KEY!
-  );
+  const url = import.meta.env.VITE_SUPABASE_URL || (typeof process !== "undefined" ? process.env.VITE_SUPABASE_URL : "");
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY || (typeof process !== "undefined" ? process.env.VITE_SUPABASE_ANON_KEY : "");
+  
+  if (!url || !key) {
+    console.warn("Missing Supabase Env Keys");
+  }
+
+  return createBrowserClient(url || "missing-url", key || "missing-key");
 }
 
-// Helper for TanStack server functions
+// Helper for TanStack server functions (using standard supabase-js)
 export function createServerSupabase() {
-  return createServerClient(
-    process.env.VITE_SUPABASE_URL!,
-    process.env.VITE_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          const cookieStr = getCookie("sb-auth-token") || "";
-          // Parse a simple JSON string if needed, or just handle raw values
-          try {
-            return JSON.parse(decodeURIComponent(cookieStr));
-          } catch {
-            return [];
-          }
-        },
-        setAll(cookiesToSet) {
-          try {
-            setCookie("sb-auth-token", encodeURIComponent(JSON.stringify(cookiesToSet)), {
-              path: "/",
-              httpOnly: true,
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "lax",
-            });
-          } catch {
-            // Ignore error in server function context if headers already sent
-          }
-        },
-      },
-    }
-  );
+  const url = import.meta.env.VITE_SUPABASE_URL || (typeof process !== "undefined" ? process.env.VITE_SUPABASE_URL : "");
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY || (typeof process !== "undefined" ? process.env.VITE_SUPABASE_ANON_KEY : "");
+
+  return createSupabaseClient(url || "missing-url", key || "missing-key");
 }

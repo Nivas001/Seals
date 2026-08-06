@@ -1,14 +1,22 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { db } from "./db";
 import { createServerSupabase } from "./supabase";
 
-export const getAdminData = createServerFn({ method: "GET" })
-  .handler(async () => {
-    // 1. Verify Authentication
-    const supabase = createServerSupabase();
-    const { data: { session }, error } = await supabase.auth.getSession();
+const adminDataSchema = z.object({
+  token: z.string(),
+});
+
+export const getAdminData = createServerFn({ method: "POST" })
+  .validator(adminDataSchema.parse)
+  .handler(async ({ data }) => {
+    const { token } = data;
     
-    if (error || !session) {
+    // 1. Verify Authentication using the provided JWT token
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    
+    if (error || !user) {
       throw new Error("Unauthorized");
     }
 
