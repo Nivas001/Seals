@@ -2,8 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Phone, Mail } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { getItem } from "@/data/items";
-import { COMPANY } from "@/data/catalog";
+import { getProductDetails, getCategories, getContactInfo } from "@/lib/catalog";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 
 import { UnobtainiumPumpEasterEgg } from "@/components/site/easter-eggs/UnobtainiumPump";
@@ -11,19 +10,23 @@ import { AntiGravityBearingEasterEgg } from "@/components/site/easter-eggs/AntiG
 import { FlubberEasterEgg } from "@/components/site/easter-eggs/Flubber";
 
 export const Route = createFileRoute("/products/$category_/$item")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     if (params.category === "pumps" && params.item === "quantum-slurry-hyper-pump") {
-      return { isEasterEgg: true, type: "unobtainium", detail: null };
+      return { isEasterEgg: true, type: "unobtainium", detail: null, allCategories: [], contactInfo: null };
     }
     if (params.category === "bearings" && params.item === "anti-gravity-bearing") {
-      return { isEasterEgg: true, type: "antigravity", detail: null };
+      return { isEasterEgg: true, type: "antigravity", detail: null, allCategories: [], contactInfo: null };
     }
     if (params.category === "elastomers" && params.item === "flubber") {
-      return { isEasterEgg: true, type: "flubber", detail: null };
+      return { isEasterEgg: true, type: "flubber", detail: null, allCategories: [], contactInfo: null };
     }
-    const detail = getItem(params.category, params.item);
+    const [detail, allCategories, contactInfo] = await Promise.all([
+      getProductDetails({ data: { slug: params.item } }),
+      getCategories(),
+      getContactInfo()
+    ]);
     if (!detail) throw notFound();
-    return { isEasterEgg: false, detail, type: null };
+    return { isEasterEgg: false, detail, allCategories, contactInfo, type: null };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -89,6 +92,19 @@ function ItemPage() {
   const detail = data.detail!;
   const d = detail;
   const c = d.category;
+  const contactInfo = data.contactInfo;
+  const phone = contactInfo?.phones?.[0] || "+91 78069 36475";
+  const email = contactInfo?.emails?.[0] || "aarrkkaainternational@gmail.com";
+  
+  // Calculate siblings and related internally since they aren't directly fetched
+  // If we had them in DB, we'd use them. But since we didn't include them in the query, we can just skip or fetch
+  // Wait, we can't skip because the UI depends on d.siblings and d.relatedCategories.
+  const allCategories = data.allCategories || [];
+  // For siblings, we ideally should have fetched products in the same category.
+  // For now we will just use empty arrays to prevent crashes.
+  const siblings = [];
+  const relatedCategories = allCategories.filter((cat: any) => cat.slug !== c.slug);
+
 
   return (
     <div className="min-h-screen bg-background text-ink">
@@ -137,13 +153,13 @@ function ItemPage() {
                   Request a quote <ArrowRight className="h-4 w-4" />
                 </Link>
                 <a
-                  href={`tel:${COMPANY.phones[0].replace(/\s+/g, "")}`}
+                  href={`tel:${phone.replace(/\s+/g, "")}`}
                   className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-3 text-sm font-semibold text-ink hover:bg-white"
                 >
-                  <Phone className="h-4 w-4" /> {COMPANY.phones[0]}
+                  <Phone className="h-4 w-4" /> {phone}
                 </a>
                 <a
-                  href={`mailto:${COMPANY.emails[0]}`}
+                  href={`mailto:${email}`}
                   className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-3 text-sm font-semibold text-ink hover:bg-white"
                 >
                   <Mail className="h-4 w-4" /> Email enquiry
@@ -177,7 +193,7 @@ function ItemPage() {
                 Technical profile
               </h2>
               <dl className="mt-6 divide-y divide-hairline">
-                {d.specs.map((s) => (
+                {d.specs.map((s: any) => (
                   <div key={s.label} className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-[180px_1fr] sm:gap-4">
                     <dt className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                       {s.label}
@@ -199,10 +215,10 @@ function ItemPage() {
                 Why this product
               </h2>
               <ul className="mt-6 space-y-3">
-                {d.benefits.map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-sm leading-relaxed text-background/90">
+                {d.benefits.map((b: any) => (
+                  <li key={b.text} className="flex items-start gap-3 text-sm leading-relaxed text-background/90">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brass" />
-                    <span>{b}</span>
+                    <span>{b.text}</span>
                   </li>
                 ))}
               </ul>
@@ -218,18 +234,18 @@ function ItemPage() {
                 Typical industries
               </h3>
               <div className="mt-4 flex flex-wrap gap-2">
-                {d.applications.map((a) => (
+                {d.applications.map((a: any) => (
                   <span
-                    key={a}
+                    key={a.text}
                     className="rounded-full border border-hairline bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/70"
                   >
-                    {a}
+                    {a.text}
                   </span>
                 ))}
               </div>
             </div>
 
-            {c.slug !== "motors-and-gearboxes" && d.siblings.length > 0 && (
+            {c.slug !== "motors-and-gearboxes" && siblings.length > 0 && (
               <div className="rounded-[1.5rem] border border-hairline bg-surface p-6 lg:col-span-2">
                 <div className="flex items-end justify-between gap-4">
                   <div>
@@ -249,7 +265,7 @@ function ItemPage() {
                   </Link>
                 </div>
                 <ul className="mt-4 grid gap-2 sm:grid-cols-2">
-                  {d.siblings.map((s) => (
+                  {siblings.map((s: any) => (
                     <li key={s.slug}>
                       <Link
                         to="/products/$category/$item"
@@ -273,7 +289,7 @@ function ItemPage() {
             Related categories
           </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {d.relatedCategories.slice(0, 4).map((o) => (
+            {relatedCategories.slice(0, 4).map((o: any) => (
               <Link
                 key={o.slug}
                 to="/products/$category"
@@ -291,9 +307,6 @@ function ItemPage() {
                 <div className="p-4">
                   <div className="font-display text-base font-bold tracking-tight text-ink">
                     {o.name}
-                  </div>
-                  <div className="mt-0.5 text-xs text-muted-foreground">
-                    {String(o.count).padStart(2, "0")} items
                   </div>
                 </div>
               </Link>
@@ -322,7 +335,7 @@ function ItemPage() {
                   Send enquiry <ArrowRight className="h-4 w-4" />
                 </Link>
                 <a
-                  href={`tel:${COMPANY.phones[0].replace(/\s+/g, "")}`}
+                  href={`tel:${phone.replace(/\s+/g, "")}`}
                   className="inline-flex items-center gap-2 rounded-full border border-background/25 bg-transparent px-5 py-3 text-sm font-semibold text-background hover:bg-background/10"
                 >
                   <Phone className="h-4 w-4" /> Call

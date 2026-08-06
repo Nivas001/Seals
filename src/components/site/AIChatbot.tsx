@@ -17,7 +17,8 @@ import {
   ArrowRight,
   CornerDownLeft,
 } from "lucide-react";
-import { CATEGORIES, COMPANY } from "@/data/catalog";
+import { getCategories, getContactInfo } from "@/lib/catalog";
+import { useQuery } from "@tanstack/react-query";
 import { ArkaLogoMark } from "@/components/ui/ArkaLogo";
 import { slugify } from "@/data/items";
 import { useChatbotOpen, chatbotState } from "@/data/chatbotState";
@@ -51,11 +52,25 @@ export function AIChatbot() {
   const open = useChatbotOpen();
   const setOpen = chatbotState.setOpen;
   const [input, setInput] = useState("");
+  const { data: categories = [] } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => getCategories(),
+  });
+  
+  const { data: contactInfo } = useQuery({
+    queryKey: ["contactInfo"],
+    queryFn: () => getContactInfo(),
+  });
+
+  const phones = contactInfo?.phones?.length ? contactInfo.phones : ["+91 78069 36475"];
+  const emails = contactInfo?.emails?.length ? contactInfo.emails : ["aarrkkaainternational@gmail.com"];
+  const motto = contactInfo?.motto || "Integrated technology support";
+
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome-1",
       sender: "bot",
-      text: `Hello! I am ASK ARKA. Our motto is: "${COMPANY.motto}"\n\nI can assist you with selecting process pumps, mechanical seals, elastomers, or connect you directly with our engineering sales team. How can I help you today?`,
+      text: `Hello! I am ASK ARKA. Our motto is: "${motto}"\n\nI can assist you with selecting process pumps, mechanical seals, elastomers, or connect you directly with our engineering sales team. How can I help you today?`,
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     },
   ]);
@@ -80,9 +95,9 @@ export function AIChatbot() {
   // Helper to find products from catalog
   function findProducts(keywords: string[], limit = 3): ProductMatch[] {
     const matches: ProductMatch[] = [];
-    for (const cat of CATEGORIES) {
-      for (const item of cat.items) {
-        const itemLower = item.toLowerCase();
+    for (const cat of categories as any[]) {
+      for (const item of cat.products || []) {
+        const itemLower = item.name.toLowerCase();
         const catLower = cat.name.toLowerCase();
         const descLower = cat.description.toLowerCase();
         const isHit = keywords.some(
@@ -93,11 +108,11 @@ export function AIChatbot() {
         );
         if (isHit) {
           matches.push({
-            name: item,
+            name: item.name,
             categoryName: cat.name,
             categorySlug: cat.slug,
-            itemSlug: slugify(item),
-            description: `Engineered ${item} for industrial duty in ${cat.name.toLowerCase()}.`,
+            itemSlug: item.slug,
+            description: `Engineered ${item.name} for industrial duty in ${cat.name.toLowerCase()}.`,
           });
           if (matches.length >= limit) return matches;
         }
@@ -305,7 +320,7 @@ export function AIChatbot() {
       q.includes("help")
     ) {
       return {
-        reply: `Hello! Welcome to AARRKKAA International. Our core motto is: "${COMPANY.motto}"\n\nI can help you size pumps, select mechanical seal materials, check chemical compatibility, or connect you with sales. What can I assist you with today?`,
+        reply: `Hello! Welcome to AARRKKAA International. Our core motto is: "${motto}"\n\nI can help you size pumps, select mechanical seal materials, check chemical compatibility, or connect you with sales. What can I assist you with today?`,
       };
     }
 
@@ -446,11 +461,11 @@ export function AIChatbot() {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                           <a
-                            href={`tel:${COMPANY.phones[0].replace(/\s+/g, "")}`}
+                            href={`tel:${phones[0].replace(/\s+/g, "")}`}
                             className="flex items-center gap-2 rounded-xl border border-hairline bg-surface p-2 text-xs font-bold text-ink hover:border-brass hover:bg-brass/10 transition-colors"
                           >
                             <Phone className="h-3.5 w-3.5 text-brass shrink-0" />
-                            <span className="truncate">{COMPANY.phones[0]}</span>
+                            <span className="truncate">{phones[0]}</span>
                           </a>
                           <a
                             href="https://wa.me/917806936475"
@@ -463,11 +478,11 @@ export function AIChatbot() {
                           </a>
                         </div>
                         <a
-                          href={`mailto:${COMPANY.emails[0]}`}
+                          href={`mailto:${emails[0]}`}
                           className="flex items-center gap-2 rounded-xl border border-hairline bg-surface p-2 text-xs font-medium text-ink hover:border-brass hover:bg-brass/10 transition-colors"
                         >
                           <Mail className="h-3.5 w-3.5 text-brass shrink-0" />
-                          <span className="truncate">{COMPANY.emails[0]}</span>
+                          <span className="truncate">{emails[0]}</span>
                         </a>
                         <div className="flex items-start gap-2 rounded-xl bg-surface/60 p-2 text-[11px] text-muted-foreground border border-hairline/60">
                           <MapPin className="h-3.5 w-3.5 text-brass shrink-0 mt-0.5" />

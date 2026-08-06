@@ -1,27 +1,25 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { getItem, slugify } from "@/data/items";
-import type { ProductCategory } from "@/data/catalog";
 
 export function ProductItemCard({
   category,
-  itemName,
+  product,
   index,
 }: {
-  category: ProductCategory;
-  itemName: string;
+  category: any;
+  product: any;
   index: number;
 }) {
-  const itemSlug = slugify(itemName);
-  const detail = getItem(category.slug, itemSlug);
+  const itemSlug = product.slug;
+  const detail = product;
 
   // Filter out redundant labels and get top 2 specs for equal-height mini grid
-  const previewSpecs = detail
+  const previewSpecs = detail?.specs
     ? detail.specs
         .filter(
-          (s) =>
+          (s: any) =>
             !["Type", "Product", "Configuration", "Component", "Product Type"].includes(s.label) &&
-            s.value.toLowerCase() !== itemName.toLowerCase()
+            s.value.toLowerCase() !== product.name.toLowerCase()
         )
         .slice(0, 2)
     : [];
@@ -49,7 +47,7 @@ export function ProductItemCard({
           className="block group/title after:absolute after:inset-0 after:z-10"
         >
           <h3 className="font-sans text-base sm:text-lg font-bold tracking-tight text-ink group-hover/title:text-brass transition-colors flex items-center justify-between">
-            <span className="truncate pr-2">{itemName}</span>
+            <span className="truncate pr-2">{product.name}</span>
             <ArrowRight className="h-4 w-4 text-ink/30 transition-all group-hover/title:translate-x-0.5 group-hover/title:text-brass shrink-0" />
           </h3>
         </Link>
@@ -95,7 +93,7 @@ export function ProductItemCard({
 
         <Link
           to="/contact"
-          search={{ category: category.name, product: itemName }}
+          search={{ category: category.name, product: product.name }}
           className="inline-flex items-center gap-1.5 rounded-full bg-brass px-3.5 py-1.5 text-[11px] font-bold text-ink shadow-2xs transition-all hover:bg-brass/90 hover:shadow active:scale-95"
         >
           <Sparkles className="h-3 w-3 text-ink shrink-0" />

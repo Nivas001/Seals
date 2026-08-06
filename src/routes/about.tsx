@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { COMPANY } from "@/data/catalog";
+import { getContactInfo } from "@/lib/catalog";
 import factoryImg from "@/assets/factory.jpg";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { Clock, MousePointerClick, HeartHandshake, Star, MapPin, Globe2 } from "lucide-react";
@@ -18,10 +18,17 @@ export const Route = createFileRoute("/about")({
       { property: "og:description", content: "Head office in Hosur, Tamil Nadu with service available globally — delivering quality parts with a timely approach." },
     ],
   }),
+  loader: async () => {
+    return await getContactInfo();
+  },
   component: AboutPage,
 });
 
 function AboutPage() {
+  const contactInfo = Route.useLoaderData();
+  const address = contactInfo?.address || { line1: "#3/334, 11C, Surya Nagar", line2: "5th Cross, Arasanatti", city: "Hosur", district: "Krishnagiri Dist.", state: "Tamil Nadu", pincode: "635 126" };
+  const motto = contactInfo?.motto || "To provide quality products and support to our valuable customers with a timely approach.";
+
   return (
     <div className="min-h-screen bg-background text-ink">
       <Navbar />
@@ -61,7 +68,7 @@ function AboutPage() {
               Our motto
             </div>
             <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
-              &ldquo;{COMPANY.motto}&rdquo;
+              &ldquo;{motto}&rdquo;
             </h2>
           </div>
           <div className="lg:col-span-2 relative">
@@ -226,9 +233,9 @@ function AboutPage() {
                 <MapPin className="h-5 w-5 shrink-0 text-brass sm:hidden" />
               </div>
               <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">
-                {COMPANY.address.line1}, {COMPANY.address.line2},<br />
-                {COMPANY.address.city}, {COMPANY.address.district},<br />
-                {COMPANY.address.state} — {COMPANY.address.pincode}
+                {address.line1}, {address.line2},<br />
+                {address.city}, {address.district},<br />
+                {address.state} — {address.pincode}
               </p>
             </div>
             

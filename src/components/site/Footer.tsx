@@ -1,11 +1,26 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, Phone, MapPin, FileDown, ArrowUpRight } from "lucide-react";
-import { COMPANY, CATEGORIES } from "@/data/catalog";
+import { useQuery } from "@tanstack/react-query";
+import { getCategories, getContactInfo } from "@/lib/catalog";
 import { DownloadCatalog } from "@/components/site/DownloadCatalog";
 
 import { ArkaLogo } from "@/components/ui/ArkaLogo";
 
 export function Footer() {
+  const { data: categories = [] } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => getCategories(),
+  });
+  
+  const { data: contactInfo } = useQuery({
+    queryKey: ["contactInfo"],
+    queryFn: () => getContactInfo(),
+  });
+
+  const phones = contactInfo?.phones?.length ? contactInfo.phones : ["+91 78069 36475"];
+  const emails = contactInfo?.emails?.length ? contactInfo.emails : ["aarrkkaainternational@gmail.com"];
+  const address = contactInfo?.address || { line1: "#3/334, 11C, Surya Nagar", line2: "5th Cross, Arasanatti", city: "Hosur", district: "Krishnagiri Dist.", state: "Tamil Nadu", pincode: "635 126" };
+
   return (
     <footer className="mt-24 relative overflow-hidden border-t border-hairline bg-surface">
       {/* Top accent border */}
@@ -84,7 +99,7 @@ export function Footer() {
               Products
             </h4>
             <ul className="mt-4 space-y-2.5 text-sm">
-              {CATEGORIES.slice(0, 6).map((c) => (
+              {categories.slice(0, 6).map((c: any) => (
                 <li key={c.slug}>
                   <Link
                     to="/products/$category"
@@ -117,13 +132,13 @@ export function Footer() {
               Reach us
             </h4>
             <ul className="mt-4 space-y-3 text-sm text-ink/60">
-              {COMPANY.phones.map((p) => (
+              {phones.map((p: string) => (
                 <li key={p} className="flex items-center gap-2">
                   <Phone className="h-3.5 w-3.5 shrink-0 text-brass" />
                   <a href={`tel:${p.replace(/\s/g, "")}`} className="transition-colors hover:text-ink">{p}</a>
                 </li>
               ))}
-              {COMPANY.emails.map((e) => (
+              {emails.map((e: string) => (
                 <li key={e} className="flex items-center gap-2">
                   <Mail className="h-3.5 w-3.5 shrink-0 text-brass" />
                   <a href={`mailto:${e}`} className="transition-colors hover:text-ink">{e}</a>
@@ -132,9 +147,9 @@ export function Footer() {
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brass" />
                 <span>
-                  {COMPANY.address.line1}, {COMPANY.address.line2},{" "}
-                  {COMPANY.address.city}, {COMPANY.address.state} —{" "}
-                  {COMPANY.address.pincode}
+                  {address.line1}, {address.line2},{" "}
+                  {address.city}, {address.state} —{" "}
+                  {address.pincode}
                 </span>
               </li>
             </ul>

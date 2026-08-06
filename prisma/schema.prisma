@@ -24,3 +24,64 @@ model Subscriber {
   email     String   @unique
   createdAt DateTime @default(now())
 }
+
+model Category {
+  id          String    @id @default(uuid())
+  slug        String    @unique
+  name        String
+  short       String
+  description String
+  image       String
+  priority    Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model Product {
+  id           String               @id @default(uuid())
+  categoryId   String
+  category     Category             @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name         String
+  slug         String               @unique
+  tagline      String
+  description  String
+  image        String?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  specs        ProductSpec[]
+  benefits     ProductBenefit[]
+  applications ProductApplication[]
+}
+
+model ProductSpec {
+  id        String  @id @default(uuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label     String
+  value     String
+}
+
+model ProductBenefit {
+  id        String  @id @default(uuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  text      String
+}
+
+model ProductApplication {
+  id        String  @id @default(uuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  text      String
+}
+
+model ContactInfo {
+  id        String   @id @default("singleton")
+  tagline   String
+  motto     String
+  phones    String[]
+  emails    String[]
+  address   Json
+  updatedAt DateTime @updatedAt
+}

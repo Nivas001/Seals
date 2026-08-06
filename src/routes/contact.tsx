@@ -17,12 +17,11 @@ import { Footer } from "@/components/site/Footer";
 import { VerifiedSupplierBadge } from "@/components/site/VerifiedSupplierBadge";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { Input } from "@/components/base/input/input";
-import { COMPANY, CATEGORIES } from "@/data/catalog";
-import { getItem, slugify } from "@/data/items";
 import { toast } from "sonner";
 import { chatbotState } from "@/data/chatbotState";
 import { sendContactEmail } from "@/lib/email";
 import { subscribeToNewsletter } from "@/lib/newsletter";
+import { getCategories, getContactInfo } from "@/lib/catalog";
 
 type ContactSearch = {
   category?: string;
@@ -52,10 +51,19 @@ export const Route = createFileRoute("/contact")({
       },
     ],
   }),
+  loader: async () => {
+    const [categories, contactInfo] = await Promise.all([
+      getCategories(),
+      getContactInfo()
+    ]);
+    return { categories, contactInfo };
+  },
   component: ContactPage,
 });
 
 function ContactPage() {
+  const { contactInfo } = Route.useLoaderData();
+
   return (
     <div className="min-h-screen bg-background text-ink">
       <Navbar />
@@ -87,7 +95,7 @@ function ContactPage() {
 
           {/* Bento grid */}
           <div className="mt-12 grid gap-5 lg:grid-cols-2">
-            <CorporateCard className="order-2 lg:order-1 h-full" />
+            <CorporateCard className="order-2 lg:order-1 h-full" contactInfo={contactInfo} />
             <InquiryCard className="order-1 lg:order-2 h-full" />
             <FollowCard className="order-3 h-full" />
             <NewsletterCard className="order-4 h-full" />
@@ -182,16 +190,23 @@ function InfoRow({
   );
 }
 
-function CorporateCard({ className }: { className?: string }) {
+function CorporateCard({ className, contactInfo }: { className?: string; contactInfo?: any }) {
+  const defaultPhones = ["+91 78069 36475", "+91 91086 24470"];
+  const defaultEmails = ["aarrkkaainternational@gmail.com", "salesaarrkkaa@gmail.com"];
+  const phones = contactInfo?.phones?.length ? contactInfo.phones : defaultPhones;
+  const emails = contactInfo?.emails?.length ? contactInfo.emails : defaultEmails;
+  const tagline = contactInfo?.tagline || "Integrated technology support";
+  const address = contactInfo?.address || { line1: "#3/334, 11C, Surya Nagar", line2: "5th Cross, Arasanatti", city: "Hosur", district: "Krishnagiri Dist.", state: "Tamil Nadu", pincode: "635 126" };
+
   return (
-    <CardShell eyebrow="Corporate" title={COMPANY.name} className={className}>
+    <CardShell eyebrow="Corporate" title="AARRKKAA INTERNATIONAL" className={className}>
       <p className="-mt-3 text-sm text-muted-foreground">
-        {COMPANY.tagline} · Assist &amp; Deliver
+        {tagline} · Assist &amp; Deliver
       </p>
       <div className="mt-4 divide-y divide-hairline">
         <InfoRow icon={Phone} label="Call">
           <div className="flex flex-col">
-            {COMPANY.phones.map((p) => (
+            {phones.map((p: string) => (
               <a
                 key={p}
                 href={`tel:${p.replace(/\s/g, "")}`}
@@ -204,7 +219,7 @@ function CorporateCard({ className }: { className?: string }) {
         </InfoRow>
         <InfoRow icon={Mail} label="Email">
           <div className="flex flex-col">
-            {COMPANY.emails.map((e) => (
+            {emails.map((e: string) => (
               <a
                 key={e}
                 href={`mailto:${e}`}
@@ -216,9 +231,9 @@ function CorporateCard({ className }: { className?: string }) {
           </div>
         </InfoRow>
         <InfoRow icon={MapPin} label="Head office">
-          {COMPANY.address.line1}, {COMPANY.address.line2},<br />
-          {COMPANY.address.city}, {COMPANY.address.district},<br />
-          {COMPANY.address.state} — {COMPANY.address.pincode}
+          {address.line1}, {address.line2},<br />
+          {address.city}, {address.district},<br />
+          {address.state} — {address.pincode}
         </InfoRow>
         <InfoRow icon={Clock} label="Response time">
           Within 24 hours on business days.
@@ -251,18 +266,10 @@ function InquiryCard({ className }: { className?: string }) {
   const [fileName, setFileName] = useState<string>("");
   const search = Route.useSearch();
 
+  const { categories } = Route.useLoaderData();
+  
   // Look up detailed item specifications if a product is selected
   let productDetail = null;
-  if (search.product) {
-    const pSlug = slugify(search.product);
-    for (const cat of CATEGORIES) {
-      const found = getItem(cat.slug, pSlug);
-      if (found) {
-        productDetail = found;
-        break;
-      }
-    }
-  }
 
   const defaultCategory = search.category || (productDetail?.category.name ?? "");
   const defaultSubject = search.product
@@ -450,7 +457,7 @@ function InquiryCard({ className }: { className?: string }) {
               <option value="" disabled>
                 Select a category
               </option>
-              {CATEGORIES.map((c) => (
+              {categories.map((c) => (
                 <option key={c.slug} value={c.name}>
                   {c.name}
                 </option>

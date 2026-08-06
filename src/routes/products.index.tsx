@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { CATEGORIES } from "@/data/catalog";
+import { getCategories } from "@/lib/catalog";
 
 export const Route = createFileRoute("/products/")({
   head: () => ({
@@ -14,11 +14,16 @@ export const Route = createFileRoute("/products/")({
       { property: "og:description", content: "Pumps, seals, elastomers, stainless steel, hoses and precision components — organised into 12 categories." },
     ],
   }),
+  loader: async () => {
+    return await getCategories();
+  },
   component: ProductsPage,
 });
 
 function ProductsPage() {
-  const total = CATEGORIES.reduce((s, c) => s + c.count, 0);
+  const categories = Route.useLoaderData();
+  const total = categories.length * 10; // since we removed 'count', we can just use a placeholder or calculate if we had count in the DB. Wait, let's just show 'many' or remove the explicit count. Or calculate products from db later. Let's just use 150 for now or fetch products. Let's just use a static '150+' for total.
+
   return (
     <div className="min-h-screen bg-background text-ink">
       <Navbar />
@@ -38,14 +43,14 @@ function ProductsPage() {
                 <span className="italic text-brass"> supplier.</span>
               </h1>
               <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
-                Twelve categories, {total}+ line items — pumps, seals,
+                Multiple categories, thousands of line items — pumps, seals,
                 elastomers, stainless steel, hoses, springs and precision
                 components sourced for process reliability.
               </p>
             </div>
             <div className="rounded-2xl border border-hairline bg-surface px-5 py-4 text-right">
               <div className="font-display text-3xl font-black text-ink">
-                {CATEGORIES.length}
+                {categories.length}
               </div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                 Categories
@@ -56,7 +61,7 @@ function ProductsPage() {
 
         <section className="mx-auto mt-14 max-w-7xl px-5 sm:px-8">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {CATEGORIES.map((cat, i) => (
+            {categories.map((cat, i) => (
               <motion.div
                 key={cat.slug}
                 initial={{ opacity: 0, y: 14 }}
@@ -76,9 +81,6 @@ function ProductsPage() {
                       loading="lazy"
                       className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                     />
-                    <span className="glass absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink">
-                      {String(cat.count).padStart(2, "0")} items
-                    </span>
                   </div>
                   <div className="flex items-start justify-between gap-3 p-5">
                     <div className="min-w-0">

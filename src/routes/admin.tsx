@@ -9,7 +9,9 @@ import { Input } from "@/components/ui/input";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { toast } from "sonner";
 import { Mail, MessageCircle, Clock, Trash2, LogOut, CheckCircle2 } from "lucide-react";
-
+import { CategoriesTab } from "@/components/admin/CategoriesTab";
+import { ProductsTab } from "@/components/admin/ProductsTab";
+import { ContactTab } from "@/components/admin/ContactTab";
 export const Route = createFileRoute("/admin")({
   component: AdminPage,
   head: () => ({
@@ -128,8 +130,8 @@ function AdminLogin({ onLogin }: { onLogin: () => void }) {
 }
 
 function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: any }) {
-  const [activeTab, setActiveTab] = useState<"inquiries" | "subscribers">("inquiries");
-  const [data, setData] = useState<{ inquiries: any[]; subscribers: any[] } | null>(null);
+  const [activeTab, setActiveTab] = useState<"inquiries" | "subscribers" | "categories" | "products" | "contact">("inquiries");
+  const [data, setData] = useState<{ inquiries: any[]; subscribers: any[]; categories: any[]; products: any[]; contactInfo: any } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -227,23 +229,18 @@ function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: 
         )}
 
         {/* Tabs */}
-        <div className="flex items-center gap-4 border-b border-hairline mb-8">
-          <button
-            onClick={() => setActiveTab("inquiries")}
-            className={`pb-4 text-sm font-semibold uppercase tracking-wider transition-colors border-b-2 ${
-              activeTab === "inquiries" ? "border-brass text-ink" : "border-transparent text-muted-foreground hover:text-ink"
-            }`}
-          >
-            Inquiries
-          </button>
-          <button
-            onClick={() => setActiveTab("subscribers")}
-            className={`pb-4 text-sm font-semibold uppercase tracking-wider transition-colors border-b-2 ${
-              activeTab === "subscribers" ? "border-brass text-ink" : "border-transparent text-muted-foreground hover:text-ink"
-            }`}
-          >
-            Subscribers
-          </button>
+        <div className="flex flex-wrap items-center gap-4 border-b border-hairline mb-8 overflow-x-auto">
+          {["inquiries", "subscribers", "categories", "products", "contact"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab as any)}
+              className={`pb-4 text-sm font-semibold uppercase tracking-wider transition-colors border-b-2 whitespace-nowrap ${
+                activeTab === tab ? "border-brass text-ink" : "border-transparent text-muted-foreground hover:text-ink"
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
 
         {/* Content */}
@@ -348,6 +345,18 @@ function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: 
                   </div>
                 )}
               </div>
+            )}
+
+            {activeTab === "categories" && (
+              <CategoriesTab categories={data.categories} token={session.access_token} onUpdate={() => fetchData(session.access_token)} />
+            )}
+
+            {activeTab === "products" && (
+              <ProductsTab products={data.products} categories={data.categories} token={session.access_token} onUpdate={() => fetchData(session.access_token)} />
+            )}
+
+            {activeTab === "contact" && (
+              <ContactTab initialData={data.contactInfo} token={session.access_token} onUpdate={() => fetchData(session.access_token)} />
             )}
           </div>
         )}

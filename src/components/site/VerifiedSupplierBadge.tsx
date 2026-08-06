@@ -1,7 +1,6 @@
 import { useState, useRef, type MouseEvent } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ShieldCheck, Award, CheckCircle2, MapPin, Cpu, Sparkles, Zap } from "lucide-react";
-import { COMPANY } from "@/data/catalog";
 
 import { ArkaLogoMark } from "@/components/ui/ArkaLogo";
 
@@ -85,7 +84,7 @@ export function VerifiedSupplierBadge() {
           </div>
           <div>
             <div className="flex items-center gap-1.5 font-sans text-xs font-bold tracking-[0.08em] text-ink uppercase">
-              <span>{COMPANY.name}</span>
+              <span>AARRKKAA INTERNATIONAL</span>
             </div>
             <div className="text-[11px] font-bold tracking-wider uppercase text-brass mt-0.5">
               Verified Industrial Partner
