@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 import { getAdminData, toggleInquiryStatus } from "@/lib/admin";
@@ -78,9 +78,16 @@ function AdminLogin({ onLogin }: { onLogin: () => void }) {
   }
 
   return (
-    <div className="min-h-screen bg-background text-ink flex flex-col">
-      <Navbar />
-      <main className="flex-1 flex items-center justify-center p-4 pt-32">
+    <div className="min-h-screen bg-background text-ink flex flex-col relative">
+      <div className="absolute top-6 left-4 sm:top-8 sm:left-8 z-50">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-3 rounded-full border border-hairline bg-surface/50 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.15em] text-ink backdrop-blur-md transition-all hover:bg-surface hover:shadow-soft"
+        >
+          &larr; Back to Home
+        </Link>
+      </div>
+      <main className="flex-1 flex items-center justify-center p-4">
         <GlowCard className="w-full max-w-md">
           <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass text-center">
             Restricted Area
@@ -168,8 +175,15 @@ function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: 
   }
 
   return (
-    <div className="min-h-screen bg-background text-ink">
-      <Navbar />
+    <div className="min-h-screen bg-background text-ink relative">
+      <div className="absolute top-6 left-4 sm:top-8 sm:left-8 z-50">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-3 rounded-full border border-hairline bg-surface/50 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.15em] text-ink backdrop-blur-md transition-all hover:bg-surface hover:shadow-soft"
+        >
+          &larr; Back to Home
+        </Link>
+      </div>
       <main className="pt-28 sm:pt-32 pb-24 px-4 sm:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
           <div>
