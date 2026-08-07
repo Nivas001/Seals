@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getDashboardStats } from "@/lib/admin";
 import { useAdminSession } from "@/components/admin/AdminContext";
 import { MessageCircle, Mail, FolderOpen, Package, Clock, CheckCircle2, ArrowRight } from "lucide-react";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 export const Route = createFileRoute("/admin/_layout/dashboard")({
   component: DashboardPage,
@@ -63,6 +64,56 @@ function DashboardPage() {
           ))}
         </div>
       )}
+
+      {/* Analytics Chart */}
+      <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+        <div className="mb-6">
+          <h3 className="text-sm font-bold text-white">Inquiry Trends (Last 30 Days)</h3>
+          <p className="text-xs text-zinc-500">Track customer interest over time</p>
+        </div>
+        <div className="h-64 w-full">
+          {loading ? (
+            <div className="w-full h-full animate-pulse bg-zinc-800/50 rounded-xl" />
+          ) : stats?.chartData?.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={stats.chartData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+                <XAxis 
+                  dataKey="name" 
+                  stroke="#52525b" 
+                  fontSize={10} 
+                  tickLine={false} 
+                  axisLine={false}
+                  minTickGap={20}
+                />
+                <YAxis 
+                  stroke="#52525b" 
+                  fontSize={10} 
+                  tickLine={false} 
+                  axisLine={false} 
+                  allowDecimals={false}
+                />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#09090b', borderColor: '#27272a', borderRadius: '8px', fontSize: '12px' }}
+                  itemStyle={{ color: '#dcb16e' }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="Inquiries" 
+                  stroke="#dcb16e" 
+                  strokeWidth={3}
+                  dot={{ r: 0 }}
+                  activeDot={{ r: 6, fill: '#dcb16e', stroke: '#09090b', strokeWidth: 2 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex h-full items-center justify-center text-xs text-zinc-600 font-medium">
+              Not enough data for chart
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Recent inquiries */}
       <div className="rounded-2xl border border-zinc-800 bg-zinc-900 overflow-hidden">

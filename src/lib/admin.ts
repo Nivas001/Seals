@@ -386,6 +386,25 @@ export const getDashboardStats = createServerFn({ method: "POST" })
       db.product.count({ where: { isDeleted: false } }),
       db.inquiry.findMany({ take: 5, orderBy: { createdAt: 'desc' } }),
     ]);
-    return { inquiryCount, subscriberCount, categoryCount, productCount, recentInquiries };
+
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const recentInquiriesAll = await db.inquiry.findMany({
+      where: { createdAt: { gte: thirtyDaysAgo } },
+      select: { createdAt: true }
+    });
+
+    const chartData = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateString = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      chartData.push({
+        name: dateString,
+        Inquiries: recentInquiriesAll.filter(inq => new Date(inq.createdAt).toDateString() === d.toDateString()).length
+      });
+    }
+
+    return { inquiryCount, subscriberCount, categoryCount, productCount, recentInquiries, chartData };
   });
 
