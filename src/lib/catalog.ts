@@ -5,7 +5,11 @@ import { db } from "./db";
 export const getCategories = createServerFn({ method: "GET" })
   .handler(async () => {
     return await db.category.findMany({
-      orderBy: { priority: 'asc' },
+      where: { 
+        isDeleted: false,
+        isHidden: false 
+      },
+      orderBy: { priority: "asc" },
     });
   });
 
@@ -24,10 +28,15 @@ export const getCategoryWithProducts = createServerFn({ method: "GET" })
   .validator(categorySlugSchema.parse)
   .handler(async ({ data }) => {
     return await db.category.findUnique({
-      where: { slug: data.slug },
+      where: { 
+        slug: data.slug,
+        isDeleted: false, 
+        isHidden: false 
+      },
       include: {
         products: {
-          orderBy: { createdAt: 'asc' },
+          where: { isDeleted: false, isHidden: false },
+          orderBy: { priority: 'asc' },
           include: { specs: true },
         },
       },
@@ -42,7 +51,11 @@ export const getProductDetails = createServerFn({ method: "GET" })
   .validator(productSlugSchema.parse)
   .handler(async ({ data }) => {
     return await db.product.findUnique({
-      where: { slug: data.slug },
+      where: { 
+        slug: data.slug,
+        isDeleted: false, 
+        isHidden: false
+      },
       include: {
         category: true,
         specs: true,
@@ -62,9 +75,11 @@ export const getContactInfo = createServerFn({ method: "GET" })
 export const getAllCategoriesWithProducts = createServerFn({ method: "GET" })
   .handler(async () => {
     return await db.category.findMany({
+      where: { isDeleted: false, isHidden: false },
       orderBy: { priority: "asc" },
       include: {
         products: {
+          where: { isDeleted: false, isHidden: false },
           orderBy: { priority: "asc" },
           select: {
             id: true,

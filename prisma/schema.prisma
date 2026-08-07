@@ -35,6 +35,8 @@ model Category {
   priority    Int       @default(0)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  isDeleted   Boolean   @default(false)
+  isHidden    Boolean   @default(false)
   products    Product[]
 }
 
@@ -50,6 +52,8 @@ model Product {
   priority     Int                  @default(0)
   createdAt    DateTime             @default(now())
   updatedAt    DateTime             @updatedAt
+  isDeleted    Boolean              @default(false)
+  isHidden     Boolean              @default(false)
   specs        ProductSpec[]
   benefits     ProductBenefit[]
   applications ProductApplication[]

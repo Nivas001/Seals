@@ -105,7 +105,18 @@ export const deleteCategory = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
-    return await db.category.delete({ where: { id } });
+    return await db.category.update({ where: { id }, data: { isDeleted: true } });
+  });
+
+export const restoreCategory = createServerFn({ method: "POST" })
+  .validator(z.object({ token: z.string(), id: z.string() }).parse)
+  .handler(async ({ data }) => {
+    const { token, id } = data;
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) throw new Error("Unauthorized");
+
+    return await db.category.update({ where: { id }, data: { isDeleted: false } });
   });
 
 export const updateCategoryPriorities = createServerFn({ method: "POST" })
@@ -256,7 +267,18 @@ export const deleteProduct = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
-    return await db.product.delete({ where: { id } });
+    return await db.product.update({ where: { id }, data: { isDeleted: true } });
+  });
+
+export const restoreProduct = createServerFn({ method: "POST" })
+  .validator(z.object({ token: z.string(), id: z.string() }).parse)
+  .handler(async ({ data }) => {
+    const { token, id } = data;
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) throw new Error("Unauthorized");
+
+    return await db.product.update({ where: { id }, data: { isDeleted: false } });
   });
 
 // ----------------------------------------------------
@@ -318,8 +340,8 @@ export const getAdminProducts = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(data.token);
     if (error || !user) throw new Error("Unauthorized");
     const [categories, products] = await Promise.all([
-      db.category.findMany({ select: { id: true, slug: true, name: true, short: true, description: true, image: true, priority: true, createdAt: true, updatedAt: true }, orderBy: { priority: 'asc' } }),
-      db.product.findMany({ select: { id: true, categoryId: true, name: true, slug: true, tagline: true, description: true, image: true, priority: true, createdAt: true, updatedAt: true, category: true, specs: true, benefits: true, applications: true }, orderBy: { priority: 'asc' } }),
+      db.category.findMany({ select: { id: true, slug: true, name: true, short: true, description: true, image: true, priority: true, isDeleted: true, isHidden: true, createdAt: true, updatedAt: true }, orderBy: { priority: 'asc' } }),
+      db.product.findMany({ select: { id: true, categoryId: true, name: true, slug: true, tagline: true, description: true, image: true, priority: true, isDeleted: true, isHidden: true, createdAt: true, updatedAt: true, category: true, specs: true, benefits: true, applications: true }, orderBy: { priority: 'asc' } }),
     ]);
     return { categories, products };
   });
@@ -330,7 +352,7 @@ export const getAdminCategories = createServerFn({ method: "POST" })
     const supabase = createServerSupabase();
     const { data: { user }, error } = await supabase.auth.getUser(data.token);
     if (error || !user) throw new Error("Unauthorized");
-    return await db.category.findMany({ select: { id: true, slug: true, name: true, short: true, description: true, image: true, priority: true, createdAt: true, updatedAt: true }, orderBy: { priority: 'asc' } });
+    return await db.category.findMany({ select: { id: true, slug: true, name: true, short: true, description: true, image: true, priority: true, isDeleted: true, isHidden: true, createdAt: true, updatedAt: true }, orderBy: { priority: 'asc' } });
   });
 
 export const getAdminHero = createServerFn({ method: "POST" })
@@ -360,8 +382,8 @@ export const getDashboardStats = createServerFn({ method: "POST" })
     const [inquiryCount, subscriberCount, categoryCount, productCount, recentInquiries] = await Promise.all([
       db.inquiry.count(),
       db.subscriber.count(),
-      db.category.count(),
-      db.product.count(),
+      db.category.count({ where: { isDeleted: false } }),
+      db.product.count({ where: { isDeleted: false } }),
       db.inquiry.findMany({ take: 5, orderBy: { createdAt: 'desc' } }),
     ]);
     return { inquiryCount, subscriberCount, categoryCount, productCount, recentInquiries };

@@ -1,12 +1,14 @@
-import { useState, useMemo } from "react";
 import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { toast } from "sonner";
-import { upsertProduct, deleteProduct, updateProductPriorities } from "@/lib/admin";
-import { Trash2, Edit2, Plus, ChevronUp, ChevronDown, Search, X, GripHorizontal } from "lucide-react";
+import { upsertProduct, deleteProduct, updateProductPriorities, restoreProduct } from "@/lib/admin";
+import { Trash2, Edit2, Plus, ChevronUp, ChevronDown, Search, X, GripHorizontal, EyeOff, ArchiveRestore, AlertTriangle } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -21,31 +23,46 @@ function SortableProductCard({ p, onEdit, onDelete, busy }: any) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} className={`group flex flex-col bg-surface border rounded-2xl overflow-hidden transition-all ${isDragging ? 'shadow-xl border-brass scale-105' : 'border-hairline shadow-sm hover:shadow-md hover:border-brass/30'}`}>
+    <div ref={setNodeRef} style={style} className={`group flex flex-col bg-surface border rounded-2xl overflow-hidden transition-all ${isDragging ? 'shadow-xl border-brass scale-105' : 'border-hairline shadow-sm hover:shadow-md hover:border-brass/30'} ${p.isHidden ? 'opacity-60' : ''}`}>
       <div className="aspect-[4/3] bg-zinc-50 relative">
         {p.image ? (
           <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 font-bold uppercase tracking-widest text-xs">No Image</div>
         )}
-        <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/50 to-transparent flex items-start justify-between p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <div {...attributes} {...listeners} className="p-2 cursor-grab active:cursor-grabbing text-white/80 hover:text-white bg-black/20 rounded backdrop-blur-sm touch-none">
-            <GripHorizontal className="w-5 h-5" />
+        {p.isHidden && (
+          <div className="absolute top-2 left-2 z-10 bg-zinc-800 text-zinc-300 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
+            <EyeOff className="w-3 h-3" /> Hidden
           </div>
+        )}
+        <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/50 to-transparent flex items-start justify-between p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          {onEdit ? (
+            <div {...attributes} {...listeners} className="p-2 cursor-grab active:cursor-grabbing text-white/80 hover:text-white bg-black/20 rounded backdrop-blur-sm touch-none">
+              <GripHorizontal className="w-5 h-5" />
+            </div>
+          ) : <div />}
           <div className="flex gap-1">
-            <Button type="button" variant="secondary" size="icon" className="w-8 h-8 bg-white/90 hover:bg-white text-ink shadow-sm" onClick={() => onEdit(p)} disabled={busy}>
-              <Edit2 className="w-4 h-4" />
-            </Button>
-            <Button type="button" variant="destructive" size="icon" className="w-8 h-8 shadow-sm" onClick={() => onDelete(p.id, p.name)} disabled={busy}>
-              <Trash2 className="w-4 h-4" />
-            </Button>
+            {onEdit ? (
+              <>
+                <Button type="button" variant="secondary" size="icon" className="w-8 h-8 bg-white/90 hover:bg-white text-ink shadow-sm" onClick={() => onEdit(p)} disabled={busy}>
+                  <Edit2 className="w-4 h-4" />
+                </Button>
+                <Button type="button" variant="destructive" size="icon" className="w-8 h-8 shadow-sm" onClick={() => onDelete(p)} disabled={busy}>
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </>
+            ) : (
+              <Button type="button" variant="outline" size="sm" className="h-8 bg-black/50 border-zinc-700 text-white hover:bg-brass hover:border-brass shadow-sm backdrop-blur-sm" onClick={() => onDelete(p)} disabled={busy}>
+                <ArchiveRestore className="w-4 h-4 mr-2" /> Restore
+              </Button>
+            )}
           </div>
         </div>
       </div>
       
       <div className="p-4 flex-1 flex flex-col">
         <h5 className="font-bold text-ink mb-1 line-clamp-1">{p.name}</h5>
-        <p className="text-xs text-muted-foreground line-clamp-2 mb-4 flex-1">{p.tagline || p.description}</p>
+        <p className="text-xs text-muted-foreground line-clamp-2 flex-1">{p.tagline || p.description}</p>
       </div>
     </div>
   );
@@ -58,21 +75,28 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
   const [searchQuery, setSearchQuery] = useState("");
   const [activeProducts, setActiveProducts] = useState(products);
 
-  import("react").then((React) => {
-    React.useEffect(() => {
-      setActiveProducts(products);
-    }, [products]);
-  });
+  useEffect(() => {
+    setActiveProducts(products);
+  }, [products]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
+  
+  const [viewMode, setViewMode] = useState<"active" | "trash">("active");
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<any>(null);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+
+  const activeFiltered = activeProducts.filter(p => !p.isDeleted);
+  const trashFiltered = activeProducts.filter(p => p.isDeleted);
+
   const [scrollPos, setScrollPos] = useState(0);
 
   const defaultProduct = {
-    categoryId: categories[0]?.id || "", name: "", slug: "", tagline: "", description: "", image: "",
-    priority: 0,
+    categoryId: categories[0]?.id || "", 
+    name: "", slug: "", tagline: "", description: "", image: "", priority: 1, isHidden: false,
     specs: [{ label: "", value: "" }], benefits: [{ text: "" }], applications: [{ text: "" }]
   };
   const [formData, setFormData] = useState(defaultProduct);
@@ -105,7 +129,8 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
       tagline: p.tagline,
       description: p.description,
       image: p.image || "",
-      priority: p.priority || 0,
+      priority: p.priority || 1,
+      isHidden: p.isHidden || false,
       specs: p.specs.length ? p.specs.map((s: any) => ({ label: s.label, value: s.value })) : [],
       benefits: p.benefits.length ? p.benefits.map((b: any) => ({ text: b.text })) : [],
       applications: p.applications.length ? p.applications.map((a: any) => ({ text: a.text })) : [],
@@ -151,12 +176,21 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
     }
   };
 
-  const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete ${name}?`)) return;
+  const confirmDelete = (p: any) => {
+    setProductToDelete(p);
+    setDeleteConfirmText("");
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!productToDelete) return;
+    if (deleteConfirmText !== productToDelete.name) return;
+    
     setBusy(true);
     try {
-      await deleteProduct({ data: { token, id } });
-      toast.success("Product deleted.");
+      await deleteProduct({ data: { token, id: productToDelete.id } });
+      toast.success("Product moved to trash.");
+      setDeleteConfirmOpen(false);
       onUpdate();
     } catch (e: any) {
       toast.error(e.message || "Failed to delete product");
@@ -165,28 +199,14 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
     }
   };
 
-  const changePriority = async (p: any, delta: number) => {
+  const handleRestore = async (p: any) => {
     setBusy(true);
     try {
-      await upsertProduct({
-        data: {
-          token,
-          id: p.id,
-          categoryId: p.categoryId,
-          name: p.name,
-          slug: p.slug,
-          tagline: p.tagline,
-          description: p.description,
-          image: p.image || undefined,
-          priority: (p.priority || 0) + delta,
-          specs: p.specs.map((s: any) => ({ label: s.label, value: s.value })),
-          benefits: p.benefits.map((b: any) => ({ text: b.text })),
-          applications: p.applications.map((a: any) => ({ text: a.text })),
-        }
-      });
+      await restoreProduct({ data: { token, id: p.id } });
+      toast.success("Product restored.");
       onUpdate();
     } catch (e: any) {
-      toast.error("Failed to update priority");
+      toast.error("Failed to restore product");
     } finally {
       setBusy(false);
     }
@@ -194,12 +214,12 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
 
   // Group products by category
   const groupedProducts = useMemo(() => {
-    const q = searchQuery.toLowerCase();
     const map = new Map<string, any[]>();
+    const q = searchQuery.toLowerCase();
     
     categories.forEach(c => map.set(c.id, []));
     
-    const filtered = activeProducts.filter(p => 
+    const filtered = activeFiltered.filter(p => 
       p.name.toLowerCase().includes(q) || 
       p.slug.toLowerCase().includes(q)
     );
@@ -210,13 +230,12 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
       }
     });
 
-    // Sort products by priority (lower number = higher up)
     map.forEach(list => {
       list.sort((a, b) => (a.priority || 0) - (b.priority || 0));
     });
 
     return map;
-  }, [activeProducts, categories, searchQuery]);
+  }, [activeFiltered, categories, searchQuery]);
 
   const handleDragEnd = async (event: DragEndEvent, categoryId: string) => {
     const { active, over } = event;
@@ -227,13 +246,11 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
       
       const newCatProducts = arrayMove(catProducts, oldIndex, newIndex);
       
-      // Calculate new priorities specifically for this category
       const updates = newCatProducts.map((p: any, index: number) => ({
         id: p.id,
         priority: index + 1
       }));
 
-      // Optimistically update the main array
       const nextProducts = [...activeProducts];
       updates.forEach(u => {
         const idx = nextProducts.findIndex(p => p.id === u.id);
@@ -247,7 +264,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
         onUpdate();
       } catch (e) {
         toast.error("Failed to save product order");
-        setActiveProducts(products); // revert
+        setActiveProducts(products); 
       } finally {
         setBusy(false);
       }
@@ -256,10 +273,79 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
 
   return (
     <div className="space-y-8">
+      <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <DialogContent className="bg-zinc-950 border-zinc-800 text-zinc-100">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-red-400">
+              <AlertTriangle className="w-5 h-5" />
+              Delete Product
+            </DialogTitle>
+            <DialogDescription className="text-zinc-400 pt-2">
+              Are you sure you want to delete <strong>{productToDelete?.name}</strong>? 
+              This will move the product to the Trash.
+              <br /><br />
+              Please type <strong className="text-white select-none">{productToDelete?.name}</strong> to confirm.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <Input 
+              value={deleteConfirmText}
+              onChange={(e) => setDeleteConfirmText(e.target.value)}
+              placeholder={productToDelete?.name}
+              className="bg-zinc-900 border-zinc-700 text-zinc-100"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)} className="border-zinc-700 text-zinc-300 hover:bg-zinc-800">
+              Cancel
+            </Button>
+            <Button 
+              variant="destructive" 
+              onClick={handleDelete}
+              disabled={busy || deleteConfirmText !== productToDelete?.name}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Move to Trash
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {!isAdding && !editingId && (
-        <div className="flex justify-between items-center">
-          <h3 className="text-xl font-display font-black text-ink">Products</h3>
-          <Button onClick={() => startAdd()} className="bg-brass text-background rounded-full hover:bg-brass/90">
+        <div className="flex justify-between items-center gap-4 flex-wrap">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input 
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="pl-9 pr-4 py-2 w-64 rounded-full border border-hairline bg-surface text-sm focus:outline-none focus:border-brass focus:ring-1 focus:ring-brass transition-all"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-ink">
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+            
+            <div className="flex bg-surface border border-hairline rounded-lg p-1">
+              <button 
+                onClick={() => setViewMode("active")}
+                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${viewMode === "active" ? "bg-brass text-white shadow-sm" : "text-muted-foreground hover:text-ink"}`}
+              >
+                Active
+              </button>
+              <button 
+                onClick={() => setViewMode("trash")}
+                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${viewMode === "trash" ? "bg-zinc-800 text-white shadow-sm" : "text-muted-foreground hover:text-ink"}`}
+              >
+                Trash ({trashFiltered.length})
+              </button>
+            </div>
+          </div>
+          <Button onClick={() => startAdd()} className="bg-brass text-background hover:bg-brass/90 rounded-full text-xs uppercase tracking-wider font-bold shrink-0">
             <Plus className="w-4 h-4 mr-2" /> Add Product
           </Button>
         </div>
@@ -287,7 +373,20 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
                   {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
-              <Input type="number" label="Priority Order (Lower = First)" value={formData.priority.toString()} onChange={e => setFormData({...formData, priority: parseInt(e.target.value) || 0})} isRequired />
+              <Input label="Priority (lower = first)" type="number" value={formData.priority.toString()} onChange={e => setFormData({...formData, priority: parseInt(e.target.value) || 0})} isRequired />
+            </div>
+
+            <div className="pt-2 border-t border-hairline mt-4">
+              <div className="flex items-center justify-between p-4 bg-zinc-50 border border-hairline rounded-xl">
+                <div className="space-y-0.5">
+                  <Label className="text-sm font-bold text-ink">Hide Product</Label>
+                  <p className="text-xs text-muted-foreground">When hidden, this product will not appear on the live website.</p>
+                </div>
+                <Switch 
+                  checked={formData.isHidden} 
+                  onCheckedChange={(checked) => setFormData({...formData, isHidden: checked})} 
+                />
+              </div>
             </div>
 
             <Input label="Tagline" value={formData.tagline} onChange={e => setFormData({...formData, tagline: e.target.value})} />
@@ -406,7 +505,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
                               key={p.id} 
                               p={p} 
                               onEdit={startEdit} 
-                              onDelete={handleDelete} 
+                              onDelete={confirmDelete} 
                               busy={busy} 
                             />
                           ))}
@@ -418,6 +517,27 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
               );
             })}
           </div>
+        </div>
+      )}
+
+      {!isAdding && !editingId && viewMode === "trash" && (
+        <div className="space-y-4">
+          {trashFiltered.length === 0 ? (
+            <div className="text-center py-12 border border-dashed border-hairline rounded-xl bg-surface/50 text-muted-foreground text-sm font-medium">
+              The trash is empty.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {trashFiltered.map((p) => (
+                <SortableProductCard 
+                  key={p.id} 
+                  p={p} 
+                  onDelete={handleRestore} 
+                  busy={busy} 
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
