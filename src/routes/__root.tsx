@@ -134,10 +134,31 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <RoutePendingIndicator />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       {isHomepage && <AIChatbot />}
       <Toaster position="top-center" closeButton />
     </QueryClientProvider>
+  );
+}
+
+import { useRouterState } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+
+function RoutePendingIndicator() {
+  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
+
+  if (!isLoading) return null;
+
+  return (
+    <div className="fixed inset-x-0 top-0 z-[100] h-1 overflow-hidden bg-primary/20">
+      <motion.div
+        className="h-full w-full bg-primary"
+        initial={{ x: "-100%" }}
+        animate={{ x: "100%" }}
+        transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+      />
+    </div>
   );
 }
