@@ -14,7 +14,6 @@ export function ProductItemCard({
   const itemSlug = product.slug;
   const detail = product;
 
-  // Filter out redundant labels and get top 2 specs for equal-height mini grid
   const previewSpecs = detail?.specs
     ? detail.specs
         .filter(
@@ -24,6 +23,36 @@ export function ProductItemCard({
         )
         .slice(0, 2)
     : [];
+
+  if (category.slug === "additional-products") {
+    return (
+      <div className="group relative flex flex-col rounded-2xl border border-hairline bg-surface overflow-hidden shadow-sm hover:shadow-md hover:border-brass/30 transition-all h-full min-h-[300px]">
+        {/* Photo Area */}
+        <div className="relative flex-1 bg-zinc-50 border-b border-hairline overflow-hidden">
+          {product.image ? (
+            <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 absolute inset-0" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 font-bold uppercase tracking-widest text-xs absolute inset-0">No Image</div>
+          )}
+        </div>
+        
+        {/* Content Area */}
+        <div className="p-4 flex flex-col gap-3 bg-ink text-background shrink-0">
+           <h3 className="font-sans text-sm sm:text-base font-bold tracking-tight text-left line-clamp-2">
+             {product.name}
+           </h3>
+           <Link
+             to="/contact"
+             search={{ product: product.name }}
+             className="w-full flex items-center justify-center gap-1.5 rounded-full bg-brass px-3 py-2 text-xs font-bold text-ink transition-all hover:bg-brass/90 active:scale-95 shadow-sm"
+           >
+             <Sparkles className="h-3 w-3 text-ink shrink-0" />
+             Get a Quote
+           </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="group relative flex flex-col justify-between rounded-2xl border border-hairline bg-surface p-5 sm:p-6 transition-all duration-300 hover:border-ink/25 hover:shadow-soft overflow-hidden h-full">
