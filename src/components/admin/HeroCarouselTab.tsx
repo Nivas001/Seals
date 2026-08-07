@@ -31,14 +31,11 @@ export function HeroCarouselTab({ data, session, onUpdate }: { data: any, sessio
   async function handleAdd(e: React.FormEvent) {
     e.preventDefault();
     if (!newImage) return toast.error("Please select an image");
-    
-    if (newImage.size > 2 * 1024 * 1024) {
-      return toast.error("Image must be less than 2MB");
-    }
 
     setBusy(true);
     try {
-      const url = await compressImage(newImage);
+      // Use higher resolution and quality for hero images (1920px width, 90% quality)
+      const url = await compressImage(newImage, 1920, 0.9);
       await upsertHeroImage({
         data: {
           token: session.access_token,
