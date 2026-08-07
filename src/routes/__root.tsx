@@ -155,6 +155,8 @@ function RootShell({ children }: { children: ReactNode }) {
 import { Toaster } from "@/components/ui/sonner";
 import { AIChatbot } from "@/components/site/AIChatbot";
 import { useLocation } from "@tanstack/react-router";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
@@ -168,6 +170,8 @@ function RootComponent() {
       <Outlet />
       {isHomepage && <AIChatbot />}
       <Toaster position="top-center" closeButton />
+      <Analytics />
+      <SpeedInsights />
     </QueryClientProvider>
   );
 }
