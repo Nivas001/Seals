@@ -9,7 +9,6 @@ import { chatbotState } from "@/data/chatbotState";
 const NAV = [
   { to: "/", label: "Home", icon: Home },
   { to: "/products", label: "Products", icon: Package },
-  { to: "/catalog", label: "Catalog", icon: Package },
   { to: "/industries", label: "Industries", icon: Building2 },
   { to: "/about", label: "About", icon: Info },
   { to: "/contact", label: "Contact", icon: Mail },

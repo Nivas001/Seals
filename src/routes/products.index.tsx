@@ -105,6 +105,23 @@ function ProductsPage() {
             ))}
           </div>
         </section>
+
+        <section className="mx-auto mt-20 mb-20 max-w-4xl px-5 sm:px-8 text-center">
+          <div className="rounded-3xl border border-hairline bg-surface p-10 sm:p-14 flex flex-col items-center shadow-soft">
+            <h2 className="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink mb-4">
+              Looking for our complete inventory?
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-lg">
+              Explore every single product across all categories organized on one convenient page.
+            </p>
+            <Link
+              to="/catalog"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-8 py-4 text-sm font-bold uppercase tracking-wider text-background hover:bg-ink/90 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
+            >
+              View Full Catalog Collection
+            </Link>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>
