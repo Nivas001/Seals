@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Footer } from "@/components/site/Footer";
 import { toast } from "sonner";
 import { ArkaLogo } from "@/components/ui/ArkaLogo";
-import { Shield } from "lucide-react";
+import { Shield, Eye, EyeOff } from "lucide-react";
 
 export const Route = createFileRoute("/admin/")({
   component: AdminGate,
@@ -46,6 +46,7 @@ function AdminGate() {
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const navigate = useNavigate();
   const supabase = createClient();
@@ -105,14 +106,23 @@ function LoginForm() {
               </div>
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-brass/50 focus:outline-none focus:ring-1 focus:ring-brass/30 transition-all"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2.5 pr-10 text-sm text-zinc-100 placeholder-zinc-600 focus:border-brass/50 focus:outline-none focus:ring-1 focus:ring-brass/30 transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
               </div>
               <button
                 type="submit"
