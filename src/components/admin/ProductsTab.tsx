@@ -356,8 +356,14 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
           <h3 className="text-lg font-bold text-ink mb-4">{editingId ? "Edit Product" : "New Product"}</h3>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
-              <Input label="Name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} isRequired />
-              <Input label="Slug" value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value})} isRequired />
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</label>
+                <Input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Slug</label>
+                <Input value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value})} required />
+              </div>
             </div>
             
             <div className="grid grid-cols-2 gap-4">
@@ -373,11 +379,14 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
                   {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
-              <Input label="Priority (lower = first)" type="number" value={formData.priority.toString()} onChange={e => setFormData({...formData, priority: parseInt(e.target.value) || 0})} isRequired />
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Priority (lower = first)</label>
+                <Input type="number" value={formData.priority.toString()} onChange={e => setFormData({...formData, priority: parseInt(e.target.value) || 0})} required />
+              </div>
             </div>
 
             <div className="pt-2 border-t border-hairline mt-4">
-              <div className="flex items-center justify-between p-4 bg-zinc-50 border border-hairline rounded-xl">
+              <div className="flex items-center justify-between p-4 bg-zinc-900/50 border border-hairline rounded-xl">
                 <div className="space-y-0.5">
                   <Label className="text-sm font-bold text-ink">Hide Product</Label>
                   <p className="text-xs text-muted-foreground">When hidden, this product will not appear on the live website.</p>
@@ -389,7 +398,10 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
               </div>
             </div>
 
-            <Input label="Tagline" value={formData.tagline} onChange={e => setFormData({...formData, tagline: e.target.value})} />
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tagline</label>
+              <Input value={formData.tagline} onChange={e => setFormData({...formData, tagline: e.target.value})} />
+            </div>
             
             <div className="space-y-2">
               <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Description</label>

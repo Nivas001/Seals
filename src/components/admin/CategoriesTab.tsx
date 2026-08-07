@@ -290,10 +290,19 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
           <h3 className="text-lg font-bold text-ink mb-4">{editingId ? "Edit Category" : "New Category"}</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <Input label="Name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} isRequired />
-              <Input label="Slug (URL Friendly)" value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value})} isRequired />
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</label>
+                <Input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Slug (URL Friendly)</label>
+                <Input value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value})} required />
+              </div>
             </div>
-            <Input label="Short Description" value={formData.short} onChange={e => setFormData({...formData, short: e.target.value})} isRequired />
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Short Description</label>
+              <Input value={formData.short} onChange={e => setFormData({...formData, short: e.target.value})} required />
+            </div>
             <div className="space-y-2">
               <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Full Description</label>
               <Textarea 
@@ -311,11 +320,14 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
                   <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full text-xs text-ink file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brass/10 file:text-brass hover:file:bg-brass/20 cursor-pointer" />
                 </div>
               </div>
-              <Input label="Priority (lower = first)" type="number" value={formData.priority.toString()} onChange={e => setFormData({...formData, priority: parseInt(e.target.value) || 0})} isRequired />
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Priority (lower = first)</label>
+                <Input type="number" value={formData.priority.toString()} onChange={e => setFormData({...formData, priority: parseInt(e.target.value) || 0})} required />
+              </div>
             </div>
             
             <div className="pt-2 border-t border-hairline mt-4">
-              <div className="flex items-center justify-between p-4 bg-zinc-50 border border-hairline rounded-xl">
+              <div className="flex items-center justify-between p-4 bg-zinc-900/50 border border-hairline rounded-xl">
                 <div className="space-y-0.5">
                   <Label className="text-sm font-bold text-ink">Hide Category</Label>
                   <p className="text-xs text-muted-foreground">When hidden, this category will not appear on the live website.</p>
