@@ -92,25 +92,54 @@ function RootShell({ children }: { children: ReactNode }) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "AARRKKAA International",
-              "url": "https://www.aarrkkaa.com",
-              "logo": "https://www.aarrkkaa.com/logo.png",
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+91-78069-36475",
-                "contactType": "sales",
-                "areaServed": "Worldwide"
-              },
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "#3/334, 11C, Surya Nagar, 5th Cross, Arasanatti",
-                "addressLocality": "Hosur",
-                "addressRegion": "Tamil Nadu",
-                "postalCode": "635 126",
-                "addressCountry": "IN"
-              },
-              "description": "Supplier & distributor of pumps, mechanical seals, elastomers, stainless steel, hoses and precision components worldwide."
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://aarrkkaa.com/#organization",
+                  "name": "AARRKKAA International",
+                  "url": "https://aarrkkaa.com",
+                  "logo": "https://aarrkkaa.com/logo.png",
+                  "description": "Supplier and distributor of pumps, mechanical seals, elastomers, and precision components for food, pharma, chemical, and process industries worldwide.",
+                  "sameAs": [
+                    "https://www.linkedin.com/company/aarrkkaa",
+                    "https://twitter.com/aarrkkaa",
+                    "https://www.facebook.com/aarrkkaa"
+                  ],
+                  "contactPoint": {
+                    "@type": "ContactPoint",
+                    "telephone": "+91-78069-36475",
+                    "contactType": "customer service",
+                    "email": "sales.aarrkkaa@gmail.com",
+                    "availableLanguage": ["English", "Tamil", "Hindi"]
+                  }
+                },
+                {
+                  "@type": "LocalBusiness",
+                  "@id": "https://aarrkkaa.com/#localbusiness",
+                  "name": "AARRKKAA International",
+                  "parentOrganization": {
+                    "@id": "https://aarrkkaa.com/#organization"
+                  },
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "100/4, 11C, Surya Nagar, 5th Cross, Arasanatti",
+                    "addressLocality": "Hosur",
+                    "addressRegion": "Tamil Nadu",
+                    "postalCode": "635126",
+                    "addressCountry": "IN"
+                  },
+                  "telephone": "+91-91084-34478"
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://aarrkkaa.com/#website",
+                  "url": "https://aarrkkaa.com",
+                  "name": "AARRKKAA International",
+                  "publisher": {
+                    "@id": "https://aarrkkaa.com/#organization"
+                  }
+                }
+              ]
             })
           }}
         />
