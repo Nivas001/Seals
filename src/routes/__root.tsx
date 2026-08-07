@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 import "@fontsource-variable/inter";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
+import { Analytics } from "@vercel/analytics/react";
 
 import appCss from "../styles.css?url";
 
@@ -147,6 +148,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <body className="min-h-screen bg-background text-foreground selection:bg-accent/20 selection:text-ink">
         {children}
         <Scripts />
+        <Analytics />
       </body>
     </html>
   );
