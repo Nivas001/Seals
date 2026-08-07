@@ -21,7 +21,7 @@ export const getAdminData = createServerFn({ method: "POST" })
     }
 
     // 2. Fetch Data from Prisma
-    const [inquiries, subscribers, categories, products, contactInfo] = await Promise.all([
+    const [inquiries, subscribers, categories, products, contactInfo, heroImages] = await Promise.all([
       db.inquiry.findMany({ orderBy: { createdAt: 'desc' } }),
       db.subscriber.findMany({ orderBy: { createdAt: 'desc' } }),
       db.category.findMany({ 
@@ -32,10 +32,11 @@ export const getAdminData = createServerFn({ method: "POST" })
         select: { id: true, categoryId: true, name: true, slug: true, tagline: true, description: true, createdAt: true, updatedAt: true, category: true, specs: true, benefits: true, applications: true },
         orderBy: { createdAt: 'desc' } 
       }),
-      db.contactInfo.findUnique({ where: { id: 'singleton' } })
+      db.contactInfo.findUnique({ where: { id: 'singleton' } }),
+      db.heroCarouselImage.findMany({ orderBy: { order: 'asc' } })
     ]);
 
-    return { inquiries, subscribers, categories, products, contactInfo };
+    return { inquiries, subscribers, categories, products, contactInfo, heroImages };
   });
 
 const toggleStatusSchema = z.object({
@@ -106,6 +107,43 @@ export const deleteCategory = createServerFn({ method: "POST" })
 
     return await db.category.delete({ where: { id } });
   });
+
+// ----------------------------------------------------
+// HERO CAROUSEL MANAGEMENT
+// ----------------------------------------------------
+
+const heroImageSchema = z.object({
+  token: z.string(),
+  id: z.string().optional(),
+  url: z.string(),
+  order: z.number(),
+});
+
+export const upsertHeroImage = createServerFn({ method: "POST" })
+  .validator(heroImageSchema.parse)
+  .handler(async ({ data }) => {
+    const { token, id, ...rest } = data;
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) throw new Error("Unauthorized");
+
+    if (id) {
+      return await db.heroCarouselImage.update({ where: { id }, data: rest });
+    }
+    return await db.heroCarouselImage.create({ data: rest });
+  });
+
+export const deleteHeroImage = createServerFn({ method: "POST" })
+  .validator(z.object({ token: z.string(), id: z.string() }).parse)
+  .handler(async ({ data }) => {
+    const { token, id } = data;
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) throw new Error("Unauthorized");
+
+    return await db.heroCarouselImage.delete({ where: { id } });
+  });
+
 
 // ----------------------------------------------------
 // CATALOG MANAGEMENT (Products)

@@ -10,6 +10,7 @@ import {
 import heroImg from "@/assets/hero-pump.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import { CATEGORIES, SECTORS, COMPANY } from "@/data/catalog";
+import { getHeroImages } from "@/lib/catalog";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { GlowCard } from "@/components/ui/GlowCard";
@@ -17,6 +18,10 @@ import { LineSidebar } from "@/components/ui/LineSidebar";
 
 export const Route = createFileRoute("/")({
   component: Home,
+  loader: async () => {
+    const heroImages = await getHeroImages();
+    return { heroImages };
+  }
 });
 
 const BENTO_LAYOUT: Record<string, string> = {
@@ -71,6 +76,7 @@ function StatItem({ target, suffix, label }: { target: number; suffix: string; l
 }
 
 function Home() {
+  const { heroImages } = Route.useLoaderData();
   const featured = CATEGORIES.slice(0, 8);
   const sidebarSections = [
     { id: "hero", label: "Overview" },
@@ -88,7 +94,7 @@ function Home() {
       <Navbar />
       <LineSidebar sections={sidebarSections} />
       <main>
-        <Hero />
+        <Hero images={heroImages} />
         <TrustStrip />
         <AboutPreview />
         <ProductsBento featured={featured} />
@@ -158,7 +164,12 @@ function FloatingActions() {
 }
 
 /* ─────────────────────────── HERO ─────────────────────────── */
-function Hero() {
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+
+function Hero({ images }: { images: { id: string, url: string }[] }) {
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 4000, stopOnInteraction: false })]);
+
   return (
     <section id="hero" className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[560px] opacity-[0.35]">
@@ -252,13 +263,29 @@ function Hero() {
             className="relative"
           >
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-hairline bg-surface shadow-lift">
-              <img
-                src={heroImg}
-                alt="Precision industrial centrifugal pump assembly with brushed stainless steel housing and polished brass fittings"
-                width={1600}
-                height={1400}
-                className="h-full w-full object-cover"
-              />
+              {images.length > 0 ? (
+                <div className="overflow-hidden h-full w-full" ref={emblaRef}>
+                  <div className="flex h-full">
+                    {images.map(img => (
+                      <div className="flex-[0_0_100%] min-w-0 relative h-full" key={img.id}>
+                        <img
+                          src={img.url}
+                          alt="Hero product showcase"
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <img
+                  src={heroImg}
+                  alt="Precision industrial centrifugal pump assembly with brushed stainless steel housing and polished brass fittings"
+                  width={1600}
+                  height={1400}
+                  className="h-full w-full object-cover"
+                />
+              )}
               <div
                 className="pointer-events-none absolute inset-0"
                 style={{

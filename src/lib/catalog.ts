@@ -13,6 +13,13 @@ const categorySlugSchema = z.object({
   slug: z.string(),
 });
 
+export const getHeroImages = createServerFn({ method: "GET" })
+  .handler(async () => {
+    return await db.heroCarouselImage.findMany({
+      orderBy: { order: "asc" }
+    });
+  });
+
 export const getCategoryWithProducts = createServerFn({ method: "GET" })
   .validator(categorySlugSchema.parse)
   .handler(async ({ data }) => {

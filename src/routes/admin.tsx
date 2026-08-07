@@ -12,6 +12,7 @@ import { Mail, MessageCircle, Clock, Trash2, LogOut, CheckCircle2 } from "lucide
 import { CategoriesTab } from "@/components/admin/CategoriesTab";
 import { ProductsTab } from "@/components/admin/ProductsTab";
 import { ContactTab } from "@/components/admin/ContactTab";
+import { HeroCarouselTab } from "@/components/admin/HeroCarouselTab";
 export const Route = createFileRoute("/admin")({
   component: AdminPage,
   head: () => ({
@@ -130,7 +131,7 @@ function AdminLogin({ onLogin }: { onLogin: () => void }) {
 }
 
 function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: any }) {
-  const [activeTab, setActiveTab] = useState<"inquiries" | "subscribers" | "categories" | "products" | "contact">("inquiries");
+  const [activeTab, setActiveTab] = useState<"inquiries" | "subscribers" | "categories" | "products" | "contact" | "hero">("inquiries");
   const [data, setData] = useState<{ inquiries: any[]; subscribers: any[]; categories: any[]; products: any[]; contactInfo: any } | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -230,7 +231,7 @@ function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: 
 
         {/* Tabs */}
         <div className="flex flex-wrap items-center gap-4 border-b border-hairline mb-8 overflow-x-auto">
-          {["inquiries", "subscribers", "categories", "products", "contact"].map((tab) => (
+          {["inquiries", "subscribers", "hero", "categories", "products", "contact"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as any)}
@@ -347,7 +348,11 @@ function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: 
               </div>
             )}
 
-            {activeTab === "categories" && (
+          {activeTab === "hero" && (
+            <HeroCarouselTab data={data} session={session} onUpdate={fetchData} />
+          )}
+
+          {activeTab === "categories" && (
               <CategoriesTab categories={data.categories} token={session.access_token} onUpdate={() => fetchData(session.access_token)} />
             )}
 
