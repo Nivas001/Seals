@@ -90,7 +90,7 @@ function AdminLayoutShell() {
         >
           {/* Logo area */}
           <div className="flex h-16 items-center gap-3 px-5 border-b border-zinc-800 shrink-0">
-            <ArkaLogo size={32} variant="mark" />
+            <img src="/images/admin_logo.png" className="w-8 h-8 object-contain" alt="Admin Logo" />
             <div>
               <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">AARRKKAA</div>
               <div className="text-xs font-bold text-zinc-100">Admin Panel</div>

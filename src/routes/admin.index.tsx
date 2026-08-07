@@ -80,8 +80,8 @@ function LoginForm() {
         <div className="w-full max-w-sm">
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
-            <div className="h-16 w-16 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-4 shadow-lg">
-              <ArkaLogo size={36} variant="mark" />
+            <div className="h-20 w-20 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-4 shadow-lg overflow-hidden">
+              <img src="/images/admin_logo.png" className="w-full h-full object-cover" alt="Admin Logo" />
             </div>
             <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-brass mb-2">
               <Shield className="h-3 w-3" /> Restricted Area
