@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { getAllCategoriesWithProducts } from "@/lib/catalog";
 import { ProductItemCard } from "@/components/site/ProductItemCard";
+import { Navbar } from "@/components/site/Navbar";
+import { Footer } from "@/components/site/Footer";
 
 export const Route = createFileRoute("/catalog")({
   component: CatalogPage,
@@ -20,9 +22,18 @@ function CatalogPage() {
 
   return (
     <div className="bg-background min-h-screen text-ink">
+      <Navbar />
       <main className="pt-32 pb-24">
         {/* Hero Section */}
-        <section className="mx-auto max-w-7xl px-5 sm:px-8 mb-20 text-center">
+        <section className="mx-auto max-w-7xl px-5 sm:px-8 mb-20 text-center relative">
+          <div className="absolute left-5 sm:left-8 top-0">
+            <Link
+              to="/products"
+              className="inline-flex items-center gap-2 rounded-full border border-hairline bg-surface/50 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.15em] text-ink backdrop-blur-md transition-all hover:bg-surface hover:shadow-soft"
+            >
+              &larr; Back
+            </Link>
+          </div>
           <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-4">
             <span className="h-1.5 w-1.5 rounded-full bg-brass" /> Complete Collection
           </div>
@@ -105,6 +116,7 @@ function CatalogPage() {
           })}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
