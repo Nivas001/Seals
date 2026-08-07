@@ -73,7 +73,7 @@ function AdminLayoutShell() {
 
   return (
     <AdminContext.Provider value={{ session, onLogout }}>
-      <div className="min-h-screen bg-zinc-950 text-zinc-100 flex">
+      <div className="admin-theme min-h-screen bg-zinc-950 text-zinc-100 flex">
         {/* ── Mobile Overlay ── */}
         {sidebarOpen && (
           <div
