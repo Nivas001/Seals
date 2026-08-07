@@ -148,7 +148,7 @@ function AdminLayoutShell() {
         {/* ── Main Content ── */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* Top bar */}
-          <header className="sticky top-0 z-20 flex h-14 items-center gap-4 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md px-4 sm:px-6">
+          <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md px-4 sm:px-6">
             <button
               onClick={() => setSidebarOpen(true)}
               className="md:hidden flex items-center justify-center h-8 w-8 rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
