@@ -5,12 +5,61 @@ import { Textarea } from "@/components/ui/textarea";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { toast } from "sonner";
 import { upsertCategory, deleteCategory } from "@/lib/admin";
-import { Trash2, Edit2, Plus, ChevronUp, ChevronDown } from "lucide-react";
+import { Trash2, Edit2, Plus, GripVertical } from "lucide-react";
+import { updateCategoryPriorities } from "@/lib/admin";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+function SortableCategoryItem({ cat, onEdit, onDelete, busy }: any) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: cat.id });
+  
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 10 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className={`p-4 bg-surface border rounded-xl flex items-center justify-between transition-all ${isDragging ? 'shadow-xl border-brass scale-[1.01]' : 'border-hairline shadow-sm hover:shadow-md'}`}>
+      <div className="flex items-center gap-4">
+        <div {...attributes} {...listeners} className="cursor-grab text-muted-foreground hover:text-ink active:cursor-grabbing p-2 touch-none">
+          <GripVertical className="w-5 h-5" />
+        </div>
+        <img src={cat.image} alt={cat.name} className="w-16 h-16 object-cover rounded border border-hairline bg-zinc-100" />
+        <div>
+          <h4 className="font-bold text-ink">{cat.name}</h4>
+          <p className="text-xs text-muted-foreground font-mono">{cat.slug}</p>
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <Button variant="outline" size="sm" onClick={() => onEdit(cat)} disabled={busy}>
+          <Edit2 className="w-4 h-4 text-ink" />
+        </Button>
+        <Button variant="outline" size="sm" onClick={() => onDelete(cat.id, cat.name)} disabled={busy} className="hover:bg-red-50 hover:text-red-600">
+          <Trash2 className="w-4 h-4" />
+        </Button>
+      </div>
+    </div>
+  );
+}
 
 export function CategoriesTab({ categories, token, onUpdate }: { categories: any[]; token: string; onUpdate: () => void }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [activeCategories, setActiveCategories] = useState(categories);
+
+  import("react").then((React) => {
+    React.useEffect(() => {
+      setActiveCategories(categories);
+    }, [categories]);
+  });
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
 
   const defaultCategory = {
     slug: "", name: "", short: "", description: "", image: "", priority: categories.length + 1
@@ -93,26 +142,32 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
     }
   };
 
-  const changePriority = async (cat: any, delta: number) => {
-    setBusy(true);
-    try {
-      await upsertCategory({
-        data: {
-          token,
-          id: cat.id,
-          slug: cat.slug,
-          name: cat.name,
-          short: cat.short,
-          description: cat.description,
-          image: cat.image,
-          priority: cat.priority + delta,
-        }
-      });
-      onUpdate();
-    } catch (e: any) {
-      toast.error("Failed to update priority");
-    } finally {
-      setBusy(false);
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const oldIndex = activeCategories.findIndex((c: any) => c.id === active.id);
+      const newIndex = activeCategories.findIndex((c: any) => c.id === over.id);
+      const newArray = arrayMove(activeCategories, oldIndex, newIndex);
+      
+      // Optimitically update UI
+      setActiveCategories(newArray);
+      
+      // Calculate new priorities
+      const updates = newArray.map((cat: any, index: number) => ({
+        id: cat.id,
+        priority: index + 1
+      }));
+
+      setBusy(true);
+      try {
+        await updateCategoryPriorities({ data: { token, updates } });
+        onUpdate();
+      } catch (e) {
+        toast.error("Failed to save new order");
+        setActiveCategories(categories); // revert on failure
+      } finally {
+        setBusy(false);
+      }
     }
   };
 
@@ -168,30 +223,19 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
 
       {!isAdding && !editingId && (
         <div className="space-y-4">
-          {categories.map((cat, idx) => (
-            <div key={cat.id} className="p-4 bg-surface border border-hairline rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-4">
-                <div className="flex flex-col items-center">
-                  <button disabled={busy || idx === 0} onClick={() => changePriority(cat, -1)} className="text-muted-foreground hover:text-ink disabled:opacity-30"><ChevronUp className="w-5 h-5"/></button>
-                  <span className="text-xs font-mono text-muted-foreground">{cat.priority}</span>
-                  <button disabled={busy || idx === categories.length - 1} onClick={() => changePriority(cat, 1)} className="text-muted-foreground hover:text-ink disabled:opacity-30"><ChevronDown className="w-5 h-5"/></button>
-                </div>
-                <img src={cat.image} alt={cat.name} className="w-16 h-16 object-cover rounded border border-hairline bg-zinc-100" />
-                <div>
-                  <h4 className="font-bold text-ink">{cat.name}</h4>
-                  <p className="text-xs text-muted-foreground font-mono">{cat.slug}</p>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={() => startEdit(cat)} disabled={busy}>
-                  <Edit2 className="w-4 h-4 text-ink" />
-                </Button>
-                <Button variant="outline" size="sm" onClick={() => handleDelete(cat.id, cat.name)} disabled={busy} className="hover:bg-red-50 hover:text-red-600">
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          ))}
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={activeCategories.map((c: any) => c.id)} strategy={verticalListSortingStrategy}>
+              {activeCategories.map((cat: any) => (
+                <SortableCategoryItem 
+                  key={cat.id} 
+                  cat={cat} 
+                  onEdit={startEdit} 
+                  onDelete={handleDelete} 
+                  busy={busy} 
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
         </div>
       )}
     </div>

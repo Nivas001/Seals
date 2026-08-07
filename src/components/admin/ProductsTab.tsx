@@ -1,17 +1,73 @@
 import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { toast } from "sonner";
-import { upsertProduct, deleteProduct } from "@/lib/admin";
-import { Trash2, Edit2, Plus, X, Search, ChevronUp, ChevronDown } from "lucide-react";
+import { upsertProduct, deleteProduct, updateProductPriorities } from "@/lib/admin";
+import { Trash2, Edit2, Plus, ChevronUp, ChevronDown, Search, X, GripHorizontal } from "lucide-react";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+function SortableProductCard({ p, onEdit, onDelete, busy }: any) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: p.id });
+  
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 10 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className={`group flex flex-col bg-surface border rounded-2xl overflow-hidden transition-all ${isDragging ? 'shadow-xl border-brass scale-105' : 'border-hairline shadow-sm hover:shadow-md hover:border-brass/30'}`}>
+      <div className="aspect-[4/3] bg-zinc-50 relative">
+        {p.image ? (
+          <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 font-bold uppercase tracking-widest text-xs">No Image</div>
+        )}
+        <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/50 to-transparent flex items-start justify-between p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div {...attributes} {...listeners} className="p-2 cursor-grab active:cursor-grabbing text-white/80 hover:text-white bg-black/20 rounded backdrop-blur-sm touch-none">
+            <GripHorizontal className="w-5 h-5" />
+          </div>
+          <div className="flex gap-1">
+            <Button type="button" variant="secondary" size="icon" className="w-8 h-8 bg-white/90 hover:bg-white text-ink shadow-sm" onClick={() => onEdit(p)} disabled={busy}>
+              <Edit2 className="w-4 h-4" />
+            </Button>
+            <Button type="button" variant="destructive" size="icon" className="w-8 h-8 shadow-sm" onClick={() => onDelete(p.id, p.name)} disabled={busy}>
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-4 flex-1 flex flex-col">
+        <h5 className="font-bold text-ink mb-1 line-clamp-1">{p.name}</h5>
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-4 flex-1">{p.tagline || p.description}</p>
+      </div>
+    </div>
+  );
+}
 
 export function ProductsTab({ products, categories, token, onUpdate }: { products: any[]; categories: any[]; token: string; onUpdate: () => void }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState(false);
   const [busy, setBusy] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeProducts, setActiveProducts] = useState(products);
+
+  import("react").then((React) => {
+    React.useEffect(() => {
+      setActiveProducts(products);
+    }, [products]);
+  });
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
   const [scrollPos, setScrollPos] = useState(0);
 
   const defaultProduct = {
@@ -143,7 +199,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
     
     categories.forEach(c => map.set(c.id, []));
     
-    const filtered = products.filter(p => 
+    const filtered = activeProducts.filter(p => 
       p.name.toLowerCase().includes(q) || 
       p.slug.toLowerCase().includes(q)
     );
@@ -160,7 +216,43 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
     });
 
     return map;
-  }, [products, categories, searchQuery]);
+  }, [activeProducts, categories, searchQuery]);
+
+  const handleDragEnd = async (event: DragEndEvent, categoryId: string) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const catProducts = groupedProducts.get(categoryId) || [];
+      const oldIndex = catProducts.findIndex((p: any) => p.id === active.id);
+      const newIndex = catProducts.findIndex((p: any) => p.id === over.id);
+      
+      const newCatProducts = arrayMove(catProducts, oldIndex, newIndex);
+      
+      // Calculate new priorities specifically for this category
+      const updates = newCatProducts.map((p: any, index: number) => ({
+        id: p.id,
+        priority: index + 1
+      }));
+
+      // Optimistically update the main array
+      const nextProducts = [...activeProducts];
+      updates.forEach(u => {
+        const idx = nextProducts.findIndex(p => p.id === u.id);
+        if (idx !== -1) nextProducts[idx].priority = u.priority;
+      });
+      setActiveProducts(nextProducts);
+
+      setBusy(true);
+      try {
+        await updateProductPriorities({ data: { token, updates } });
+        onUpdate();
+      } catch (e) {
+        toast.error("Failed to save product order");
+        setActiveProducts(products); // revert
+      } finally {
+        setBusy(false);
+      }
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -289,10 +381,15 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
                   <div className="flex items-center justify-between border-b border-hairline pb-2">
                     <div className="flex items-center gap-3">
                       {cat.image && <img src={cat.image} alt={cat.name} className="w-8 h-8 rounded-md object-cover border border-hairline" />}
-                      <h4 className="text-lg font-bold text-ink">{cat.name}</h4>
+                      <h4 className="text-lg font-bold text-ink flex items-center gap-2">
+                        {cat.name}
+                        <span className="bg-brass/20 text-brass px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-bold">
+                          {catProducts.length} Product{catProducts.length !== 1 ? 's' : ''}
+                        </span>
+                      </h4>
                     </div>
                     <Button variant="ghost" size="sm" onClick={() => startAdd(cat.id)} className="text-xs font-semibold text-brass hover:text-brass hover:bg-brass/10">
-                      <Plus className="w-3 h-3 mr-1" /> Add to {cat.name}
+                      <Plus className="w-3 h-3 mr-1" /> Add Product
                     </Button>
                   </div>
 
@@ -301,52 +398,21 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
                       No products in this category yet.
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {catProducts.map((p, idx) => (
-                        <div key={p.id} className="group flex flex-col bg-surface border border-hairline rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-brass/30 transition-all">
-                          <div className="aspect-[4/3] bg-zinc-50 relative">
-                            {p.image ? (
-                              <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 font-bold uppercase tracking-widest text-xs">No Image</div>
-                            )}
-                            <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Button type="button" variant="secondary" size="icon" className="w-8 h-8 bg-white/90 hover:bg-white text-ink shadow-sm" onClick={() => startEdit(p)} disabled={busy}>
-                                <Edit2 className="w-4 h-4" />
-                              </Button>
-                              <Button type="button" variant="destructive" size="icon" className="w-8 h-8 shadow-sm" onClick={() => handleDelete(p.id, p.name)} disabled={busy}>
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-                          
-                          <div className="p-4 flex-1 flex flex-col">
-                            <h5 className="font-bold text-ink mb-1 line-clamp-1">{p.name}</h5>
-                            <p className="text-xs text-muted-foreground line-clamp-2 mb-4 flex-1">{p.tagline || p.description}</p>
-                            
-                            <div className="flex items-center justify-between pt-3 border-t border-hairline mt-auto">
-                              <span className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Order: {p.priority || 0}</span>
-                              <div className="flex gap-1">
-                                <button 
-                                  onClick={() => changePriority(p, -1)} 
-                                  disabled={busy || idx === 0}
-                                  className="w-6 h-6 flex items-center justify-center rounded bg-accent text-ink hover:bg-brass/20 hover:text-brass transition-colors disabled:opacity-30 disabled:pointer-events-none"
-                                >
-                                  <ChevronUp className="w-3 h-3" />
-                                </button>
-                                <button 
-                                  onClick={() => changePriority(p, 1)} 
-                                  disabled={busy || idx === catProducts.length - 1}
-                                  className="w-6 h-6 flex items-center justify-center rounded bg-accent text-ink hover:bg-brass/20 hover:text-brass transition-colors disabled:opacity-30 disabled:pointer-events-none"
-                                >
-                                  <ChevronDown className="w-3 h-3" />
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+                    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => handleDragEnd(e, cat.id)}>
+                      <SortableContext items={catProducts.map(p => p.id)} strategy={rectSortingStrategy}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {catProducts.map((p) => (
+                            <SortableProductCard 
+                              key={p.id} 
+                              p={p} 
+                              onEdit={startEdit} 
+                              onDelete={handleDelete} 
+                              busy={busy} 
+                            />
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </SortableContext>
+                    </DndContext>
                   )}
                 </div>
               );

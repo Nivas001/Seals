@@ -108,6 +108,40 @@ export const deleteCategory = createServerFn({ method: "POST" })
     return await db.category.delete({ where: { id } });
   });
 
+export const updateCategoryPriorities = createServerFn({ method: "POST" })
+  .validator(z.object({
+    token: z.string(),
+    updates: z.array(z.object({ id: z.string(), priority: z.number() }))
+  }).parse)
+  .handler(async ({ data }) => {
+    const { token, updates } = data;
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) throw new Error("Unauthorized");
+
+    await db.$transaction(
+      updates.map(u => db.category.update({ where: { id: u.id }, data: { priority: u.priority } }))
+    );
+    return { success: true };
+  });
+
+export const updateProductPriorities = createServerFn({ method: "POST" })
+  .validator(z.object({
+    token: z.string(),
+    updates: z.array(z.object({ id: z.string(), priority: z.number() }))
+  }).parse)
+  .handler(async ({ data }) => {
+    const { token, updates } = data;
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) throw new Error("Unauthorized");
+
+    await db.$transaction(
+      updates.map(u => db.product.update({ where: { id: u.id }, data: { priority: u.priority } }))
+    );
+    return { success: true };
+  });
+
 // ----------------------------------------------------
 // HERO CAROUSEL MANAGEMENT
 // ----------------------------------------------------
