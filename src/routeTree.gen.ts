@@ -24,14 +24,24 @@ import { Route as ForkliftSimRouteImport } from './routes/forklift-sim'
 import { Route as FlappyPumpRouteImport } from './routes/flappy-pump'
 import { Route as DoNotPushRouteImport } from './routes/do-not-push'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CatalogRouteImport } from './routes/catalog'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as R418RouteImport } from './routes/418'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductsCategoryRouteImport } from './routes/products.$category'
+import { Route as AdminLayoutRouteImport } from './routes/admin._layout'
 import { Route as AboutPaymentsRouteImport } from './routes/about_.payments'
 import { Route as ProductsCategoryItemRouteImport } from './routes/products.$category_.$item'
+import { Route as AdminLayoutSubscribersRouteImport } from './routes/admin._layout.subscribers'
+import { Route as AdminLayoutProductsRouteImport } from './routes/admin._layout.products'
+import { Route as AdminLayoutInquiriesRouteImport } from './routes/admin._layout.inquiries'
+import { Route as AdminLayoutHeroRouteImport } from './routes/admin._layout.hero'
+import { Route as AdminLayoutDashboardRouteImport } from './routes/admin._layout.dashboard'
+import { Route as AdminLayoutContactRouteImport } from './routes/admin._layout.contact'
+import { Route as AdminLayoutCategoriesRouteImport } from './routes/admin._layout.categories'
 
 const WhackALeakRoute = WhackALeakRouteImport.update({
   id: '/whack-a-leak',
@@ -108,6 +118,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CatalogRoute = CatalogRouteImport.update({
+  id: '/catalog',
+  path: '/catalog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -133,10 +148,19 @@ const ProductsIndexRoute = ProductsIndexRouteImport.update({
   path: '/products/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ProductsCategoryRoute = ProductsCategoryRouteImport.update({
   id: '/products/$category',
   path: '/products/$category',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLayoutRoute = AdminLayoutRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AboutPaymentsRoute = AboutPaymentsRouteImport.update({
   id: '/about_/payments',
@@ -148,12 +172,48 @@ const ProductsCategoryItemRoute = ProductsCategoryItemRouteImport.update({
   path: '/products/$category/$item',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLayoutSubscribersRoute = AdminLayoutSubscribersRouteImport.update({
+  id: '/subscribers',
+  path: '/subscribers',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutProductsRoute = AdminLayoutProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutInquiriesRoute = AdminLayoutInquiriesRouteImport.update({
+  id: '/inquiries',
+  path: '/inquiries',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutHeroRoute = AdminLayoutHeroRouteImport.update({
+  id: '/hero',
+  path: '/hero',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutDashboardRoute = AdminLayoutDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutContactRoute = AdminLayoutContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutCategoriesRoute = AdminLayoutCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/418': typeof R418Route
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
   '/do-not-push': typeof DoNotPushRoute
   '/flappy-pump': typeof FlappyPumpRoute
@@ -171,14 +231,22 @@ export interface FileRoutesByFullPath {
   '/whack-a-leak': typeof WhackALeakRoute
   '/about/payments': typeof AboutPaymentsRoute
   '/products/$category': typeof ProductsCategoryRoute
+  '/admin/': typeof AdminIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/admin/categories': typeof AdminLayoutCategoriesRoute
+  '/admin/contact': typeof AdminLayoutContactRoute
+  '/admin/dashboard': typeof AdminLayoutDashboardRoute
+  '/admin/hero': typeof AdminLayoutHeroRoute
+  '/admin/inquiries': typeof AdminLayoutInquiriesRoute
+  '/admin/products': typeof AdminLayoutProductsRoute
+  '/admin/subscribers': typeof AdminLayoutSubscribersRoute
   '/products/$category/$item': typeof ProductsCategoryItemRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/418': typeof R418Route
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
   '/do-not-push': typeof DoNotPushRoute
   '/flappy-pump': typeof FlappyPumpRoute
@@ -195,8 +263,16 @@ export interface FileRoutesByTo {
   '/system-breach': typeof SystemBreachRoute
   '/whack-a-leak': typeof WhackALeakRoute
   '/about/payments': typeof AboutPaymentsRoute
+  '/admin': typeof AdminIndexRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/products': typeof ProductsIndexRoute
+  '/admin/categories': typeof AdminLayoutCategoriesRoute
+  '/admin/contact': typeof AdminLayoutContactRoute
+  '/admin/dashboard': typeof AdminLayoutDashboardRoute
+  '/admin/hero': typeof AdminLayoutHeroRoute
+  '/admin/inquiries': typeof AdminLayoutInquiriesRoute
+  '/admin/products': typeof AdminLayoutProductsRoute
+  '/admin/subscribers': typeof AdminLayoutSubscribersRoute
   '/products/$category/$item': typeof ProductsCategoryItemRoute
 }
 export interface FileRoutesById {
@@ -204,7 +280,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/418': typeof R418Route
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
   '/do-not-push': typeof DoNotPushRoute
   '/flappy-pump': typeof FlappyPumpRoute
@@ -221,8 +298,17 @@ export interface FileRoutesById {
   '/system-breach': typeof SystemBreachRoute
   '/whack-a-leak': typeof WhackALeakRoute
   '/about_/payments': typeof AboutPaymentsRoute
+  '/admin/_layout': typeof AdminLayoutRouteWithChildren
   '/products/$category': typeof ProductsCategoryRoute
+  '/admin/': typeof AdminIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/admin/_layout/categories': typeof AdminLayoutCategoriesRoute
+  '/admin/_layout/contact': typeof AdminLayoutContactRoute
+  '/admin/_layout/dashboard': typeof AdminLayoutDashboardRoute
+  '/admin/_layout/hero': typeof AdminLayoutHeroRoute
+  '/admin/_layout/inquiries': typeof AdminLayoutInquiriesRoute
+  '/admin/_layout/products': typeof AdminLayoutProductsRoute
+  '/admin/_layout/subscribers': typeof AdminLayoutSubscribersRoute
   '/products/$category_/$item': typeof ProductsCategoryItemRoute
 }
 export interface FileRouteTypes {
@@ -232,6 +318,7 @@ export interface FileRouteTypes {
     | '/418'
     | '/about'
     | '/admin'
+    | '/catalog'
     | '/contact'
     | '/do-not-push'
     | '/flappy-pump'
@@ -249,14 +336,22 @@ export interface FileRouteTypes {
     | '/whack-a-leak'
     | '/about/payments'
     | '/products/$category'
+    | '/admin/'
     | '/products/'
+    | '/admin/categories'
+    | '/admin/contact'
+    | '/admin/dashboard'
+    | '/admin/hero'
+    | '/admin/inquiries'
+    | '/admin/products'
+    | '/admin/subscribers'
     | '/products/$category/$item'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/418'
     | '/about'
-    | '/admin'
+    | '/catalog'
     | '/contact'
     | '/do-not-push'
     | '/flappy-pump'
@@ -273,8 +368,16 @@ export interface FileRouteTypes {
     | '/system-breach'
     | '/whack-a-leak'
     | '/about/payments'
+    | '/admin'
     | '/products/$category'
     | '/products'
+    | '/admin/categories'
+    | '/admin/contact'
+    | '/admin/dashboard'
+    | '/admin/hero'
+    | '/admin/inquiries'
+    | '/admin/products'
+    | '/admin/subscribers'
     | '/products/$category/$item'
   id:
     | '__root__'
@@ -282,6 +385,7 @@ export interface FileRouteTypes {
     | '/418'
     | '/about'
     | '/admin'
+    | '/catalog'
     | '/contact'
     | '/do-not-push'
     | '/flappy-pump'
@@ -298,8 +402,17 @@ export interface FileRouteTypes {
     | '/system-breach'
     | '/whack-a-leak'
     | '/about_/payments'
+    | '/admin/_layout'
     | '/products/$category'
+    | '/admin/'
     | '/products/'
+    | '/admin/_layout/categories'
+    | '/admin/_layout/contact'
+    | '/admin/_layout/dashboard'
+    | '/admin/_layout/hero'
+    | '/admin/_layout/inquiries'
+    | '/admin/_layout/products'
+    | '/admin/_layout/subscribers'
     | '/products/$category_/$item'
   fileRoutesById: FileRoutesById
 }
@@ -307,7 +420,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R418Route: typeof R418Route
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  CatalogRoute: typeof CatalogRoute
   ContactRoute: typeof ContactRoute
   DoNotPushRoute: typeof DoNotPushRoute
   FlappyPumpRoute: typeof FlappyPumpRoute
@@ -436,6 +550,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/catalog': {
+      id: '/catalog'
+      path: '/catalog'
+      fullPath: '/catalog'
+      preLoaderRoute: typeof CatalogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -471,12 +592,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/products/$category': {
       id: '/products/$category'
       path: '/products/$category'
       fullPath: '/products/$category'
       preLoaderRoute: typeof ProductsCategoryRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/_layout': {
+      id: '/admin/_layout'
+      path: ''
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminLayoutRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/about_/payments': {
       id: '/about_/payments'
@@ -492,14 +627,100 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsCategoryItemRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/_layout/subscribers': {
+      id: '/admin/_layout/subscribers'
+      path: '/subscribers'
+      fullPath: '/admin/subscribers'
+      preLoaderRoute: typeof AdminLayoutSubscribersRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/products': {
+      id: '/admin/_layout/products'
+      path: '/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminLayoutProductsRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/inquiries': {
+      id: '/admin/_layout/inquiries'
+      path: '/inquiries'
+      fullPath: '/admin/inquiries'
+      preLoaderRoute: typeof AdminLayoutInquiriesRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/hero': {
+      id: '/admin/_layout/hero'
+      path: '/hero'
+      fullPath: '/admin/hero'
+      preLoaderRoute: typeof AdminLayoutHeroRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/dashboard': {
+      id: '/admin/_layout/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminLayoutDashboardRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/contact': {
+      id: '/admin/_layout/contact'
+      path: '/contact'
+      fullPath: '/admin/contact'
+      preLoaderRoute: typeof AdminLayoutContactRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/categories': {
+      id: '/admin/_layout/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminLayoutCategoriesRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
   }
 }
+
+interface AdminLayoutRouteChildren {
+  AdminLayoutCategoriesRoute: typeof AdminLayoutCategoriesRoute
+  AdminLayoutContactRoute: typeof AdminLayoutContactRoute
+  AdminLayoutDashboardRoute: typeof AdminLayoutDashboardRoute
+  AdminLayoutHeroRoute: typeof AdminLayoutHeroRoute
+  AdminLayoutInquiriesRoute: typeof AdminLayoutInquiriesRoute
+  AdminLayoutProductsRoute: typeof AdminLayoutProductsRoute
+  AdminLayoutSubscribersRoute: typeof AdminLayoutSubscribersRoute
+}
+
+const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
+  AdminLayoutCategoriesRoute: AdminLayoutCategoriesRoute,
+  AdminLayoutContactRoute: AdminLayoutContactRoute,
+  AdminLayoutDashboardRoute: AdminLayoutDashboardRoute,
+  AdminLayoutHeroRoute: AdminLayoutHeroRoute,
+  AdminLayoutInquiriesRoute: AdminLayoutInquiriesRoute,
+  AdminLayoutProductsRoute: AdminLayoutProductsRoute,
+  AdminLayoutSubscribersRoute: AdminLayoutSubscribersRoute,
+}
+
+const AdminLayoutRouteWithChildren = AdminLayoutRoute._addFileChildren(
+  AdminLayoutRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminLayoutRoute: typeof AdminLayoutRouteWithChildren
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLayoutRoute: AdminLayoutRouteWithChildren,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R418Route: R418Route,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
+  CatalogRoute: CatalogRoute,
   ContactRoute: ContactRoute,
   DoNotPushRoute: DoNotPushRoute,
   FlappyPumpRoute: FlappyPumpRoute,
