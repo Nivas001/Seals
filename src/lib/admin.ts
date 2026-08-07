@@ -25,11 +25,11 @@ export const getAdminData = createServerFn({ method: "POST" })
       db.inquiry.findMany({ orderBy: { createdAt: 'desc' } }),
       db.subscriber.findMany({ orderBy: { createdAt: 'desc' } }),
       db.category.findMany({ 
-        select: { id: true, slug: true, name: true, short: true, description: true, priority: true, createdAt: true, updatedAt: true },
+        select: { id: true, slug: true, name: true, short: true, description: true, image: true, priority: true, createdAt: true, updatedAt: true },
         orderBy: { priority: 'asc' } 
       }),
       db.product.findMany({ 
-        select: { id: true, categoryId: true, name: true, slug: true, tagline: true, description: true, createdAt: true, updatedAt: true, category: true, specs: true, benefits: true, applications: true },
+        select: { id: true, categoryId: true, name: true, slug: true, tagline: true, description: true, image: true, priority: true, createdAt: true, updatedAt: true, category: true, specs: true, benefits: true, applications: true },
         orderBy: { createdAt: 'desc' } 
       }),
       db.contactInfo.findUnique({ where: { id: 'singleton' } }),
