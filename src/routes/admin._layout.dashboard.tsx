@@ -22,10 +22,10 @@ function DashboardPage() {
 
   const statCards = stats
     ? [
-        { label: "Total Inquiries", value: stats.inquiryCount, icon: MessageCircle, color: "text-blue-400", bg: "bg-blue-500/10", href: "/admin/inquiries" },
-        { label: "Subscribers", value: stats.subscriberCount, icon: Mail, color: "text-emerald-400", bg: "bg-emerald-500/10", href: "/admin/subscribers" },
-        { label: "Categories", value: stats.categoryCount, icon: FolderOpen, color: "text-brass", bg: "bg-brass/10", href: "/admin/categories" },
-        { label: "Products", value: stats.productCount, icon: Package, color: "text-violet-400", bg: "bg-violet-500/10", href: "/admin/products" },
+        { label: "Total Inquiries", value: stats.inquiryCount, icon: MessageCircle, color: "text-blue-400", bg: "bg-blue-500/10", href: "/admin/_layout/inquiries" },
+        { label: "Subscribers", value: stats.subscriberCount, icon: Mail, color: "text-emerald-400", bg: "bg-emerald-500/10", href: "/admin/_layout/subscribers" },
+        { label: "Categories", value: stats.categoryCount, icon: FolderOpen, color: "text-brass", bg: "bg-brass/10", href: "/admin/_layout/categories" },
+        { label: "Products", value: stats.productCount, icon: Package, color: "text-violet-400", bg: "bg-violet-500/10", href: "/admin/_layout/products" },
       ]
     : [];
 
@@ -69,7 +69,7 @@ function DashboardPage() {
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
           <h3 className="text-sm font-bold text-white">Recent Inquiries</h3>
           <Link
-            to="/admin/inquiries"
+            to="/admin/_layout/inquiries"
             className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-brass hover:text-brass/80 transition-colors"
           >
             View all <ArrowRight className="h-3 w-3" />
@@ -114,9 +114,9 @@ function DashboardPage() {
       {/* Quick links */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {[
-          { to: "/admin/products", label: "Manage Products", desc: "Add, edit, sort products" },
-          { to: "/admin/hero", label: "Edit Hero", desc: "Change carousel images" },
-          { to: "/admin/contact", label: "Contact Info", desc: "Update phone & address" },
+          { to: "/admin/_layout/products", label: "Manage Products", desc: "Add, edit, sort products" },
+          { to: "/admin/_layout/hero", label: "Edit Hero", desc: "Change carousel images" },
+          { to: "/admin/_layout/contact", label: "Contact Info", desc: "Update phone & address" },
         ].map(({ to, label, desc }) => (
           <Link
             key={to}

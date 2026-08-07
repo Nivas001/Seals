@@ -23,13 +23,13 @@ export const Route = createFileRoute("/admin/_layout")({
 });
 
 const NAV_ITEMS = [
-  { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/admin/products", label: "Products", icon: Package },
-  { to: "/admin/categories", label: "Categories", icon: FolderOpen },
-  { to: "/admin/inquiries", label: "Inquiries", icon: MessageCircle },
-  { to: "/admin/subscribers", label: "Subscribers", icon: Mail },
-  { to: "/admin/hero", label: "Hero Carousel", icon: Image },
-  { to: "/admin/contact", label: "Contact Info", icon: PhoneCall },
+  { to: "/admin/_layout/dashboard" as const, label: "Dashboard", icon: LayoutDashboard },
+  { to: "/admin/_layout/products" as const, label: "Products", icon: Package },
+  { to: "/admin/_layout/categories" as const, label: "Categories", icon: FolderOpen },
+  { to: "/admin/_layout/inquiries" as const, label: "Inquiries", icon: MessageCircle },
+  { to: "/admin/_layout/subscribers" as const, label: "Subscribers", icon: Mail },
+  { to: "/admin/_layout/hero" as const, label: "Hero Carousel", icon: Image },
+  { to: "/admin/_layout/contact" as const, label: "Contact Info", icon: PhoneCall },
 ];
 
 function AdminLayoutShell() {
@@ -64,7 +64,7 @@ function AdminLayoutShell() {
   }
 
   if (!session) {
-    // Redirect handled by the login page at /admin
+    // Redirect to login
     if (typeof window !== "undefined") window.location.href = "/admin";
     return null;
   }

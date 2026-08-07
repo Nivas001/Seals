@@ -25,7 +25,7 @@ function AdminGate() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate({ to: "/admin/dashboard" });
+        navigate({ to: "/admin/_layout/dashboard" });
       } else {
         setLoading(false);
       }
@@ -59,7 +59,7 @@ function LoginForm() {
       setBusy(false);
     } else {
       toast.success("Welcome back!");
-      navigate({ to: "/admin/dashboard" });
+      navigate({ to: "/admin/_layout/dashboard" });
     }
   }
 
