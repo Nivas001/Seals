@@ -12,6 +12,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
   const [isAdding, setIsAdding] = useState(false);
   const [busy, setBusy] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [scrollPos, setScrollPos] = useState(0);
 
   const defaultProduct = {
     categoryId: categories[0]?.id || "", name: "", slug: "", tagline: "", description: "", image: "",
@@ -38,6 +39,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
   };
 
   const startEdit = (p: any) => {
+    setScrollPos(window.scrollY);
     setEditingId(p.id);
     setIsAdding(false);
     setFormData({
@@ -55,6 +57,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
   };
 
   const startAdd = (categoryId?: string) => {
+    setScrollPos(window.scrollY);
     setEditingId(null);
     setIsAdding(true);
     setFormData(categoryId ? { ...defaultProduct, categoryId } : defaultProduct);
@@ -63,6 +66,9 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
   const cancelForm = () => {
     setEditingId(null);
     setIsAdding(false);
+    setTimeout(() => {
+      window.scrollTo({ top: scrollPos, behavior: 'instant' });
+    }, 0);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
