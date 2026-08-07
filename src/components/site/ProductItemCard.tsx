@@ -6,10 +6,12 @@ export function ProductItemCard({
   category,
   product,
   index,
+  variant = "default",
 }: {
   category: any;
   product: any;
   index: number;
+  variant?: "default" | "bento";
 }) {
   const itemSlug = product.slug;
   const detail = product;
@@ -24,31 +26,36 @@ export function ProductItemCard({
         .slice(0, 2)
     : [];
 
-  if (category.slug === "additional-products") {
+  if (variant === "bento" || category.slug === "additional-products") {
     return (
-      <div className="group relative flex flex-col rounded-2xl border border-hairline bg-surface overflow-hidden shadow-sm hover:shadow-md hover:border-brass/30 transition-all h-full min-h-[150px]">
-        {/* Photo Area */}
-        <div className="relative flex-1 bg-zinc-50 border-b border-hairline overflow-hidden">
+      <div className="group relative flex flex-col rounded-[20px] border border-hairline bg-surface overflow-hidden shadow-sm hover:shadow-md hover:border-brass/40 transition-all h-full">
+        {/* Photo Area - full cover */}
+        <div className="absolute inset-0 bg-zinc-100 overflow-hidden z-0">
           {product.image ? (
-            <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 absolute inset-0" />
+            <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 absolute inset-0" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 font-bold uppercase tracking-widest text-xs absolute inset-0">No Image</div>
+            <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 font-bold uppercase tracking-widest text-xs">No Image</div>
           )}
         </div>
         
-        {/* Content Area */}
-        <div className="p-4 flex flex-col items-start gap-3 bg-ink text-background shrink-0">
-           <h3 className="font-sans text-sm sm:text-base font-bold tracking-tight text-left line-clamp-2 w-full">
+        {/* Dark overlay for text legibility at the bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-transparent opacity-90 z-10 pointer-events-none" />
+
+        {/* Content Area - pushed to bottom */}
+        <div className="relative z-20 p-4 sm:p-5 flex flex-col justify-end h-full">
+           <h3 className="font-display text-sm sm:text-base font-bold tracking-tight text-white line-clamp-2 w-full mb-3 shadow-black drop-shadow-md">
              {product.name}
            </h3>
-           <Link
-             to="/contact"
-             search={{ product: product.name }}
-             className="inline-flex items-center justify-center gap-1.5 rounded-full bg-brass px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-ink transition-all hover:bg-brass/90 active:scale-95 shadow-sm"
-           >
-             <Sparkles className="h-3 w-3 text-ink shrink-0" />
-             Get a Quote
-           </Link>
+           <div>
+             <Link
+               to="/contact"
+               search={{ product: product.name }}
+               className="inline-flex items-center justify-center gap-1.5 rounded-full bg-brass px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-ink transition-all hover:bg-brass/90 hover:scale-105 active:scale-95 shadow-sm"
+             >
+               <Sparkles className="h-3 w-3 text-ink shrink-0" />
+               Get a Quote
+             </Link>
+           </div>
         </div>
       </div>
     );

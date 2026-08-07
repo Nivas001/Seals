@@ -58,3 +58,23 @@ export const getContactInfo = createServerFn({ method: "GET" })
       where: { id: "singleton" },
     });
   });
+
+export const getAllCategoriesWithProducts = createServerFn({ method: "GET" })
+  .handler(async () => {
+    return await db.category.findMany({
+      orderBy: { priority: "asc" },
+      include: {
+        products: {
+          orderBy: { priority: "asc" },
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            image: true,
+            priority: true,
+            categoryId: true,
+          }
+        },
+      },
+    });
+  });

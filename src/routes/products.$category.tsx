@@ -109,9 +109,9 @@ function CategoryPage() {
               {c.products?.length || 0} products
             </span>
           </div>
-          <ul className={`mt-8 grid gap-4 items-stretch ${
+          <ul className={`mt-8 grid gap-3 md:gap-4 items-stretch ${
              c.slug === "additional-products" 
-               ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-[250px]" 
+               ? "grid-cols-2 md:grid-cols-4 auto-rows-[160px] md:auto-rows-[200px] grid-flow-dense" 
                : "sm:grid-cols-2 lg:grid-cols-3"
           }`}>
             {c.products?.map((item: any, i: number) => {
@@ -149,7 +149,7 @@ function CategoryPage() {
                
                return (
                  <li key={item.id} className={bentoClass}>
-                   <ProductItemCard category={c} product={item} index={i} />
+                   <ProductItemCard category={c} product={item} index={i} variant={c.slug === "additional-products" ? "bento" : "default"} />
                  </li>
                );
             })}
