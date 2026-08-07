@@ -5,7 +5,7 @@ import { useRef, useEffect, useState } from "react";
 import {
   ArrowUpRight, Phone, Mail, MapPin, ArrowRight,
   CheckCircle2, Sparkles, Truck, MessagesSquare, ShieldCheck,
-  ChevronUp, Star,
+  ChevronUp, Star, ChevronLeft, ChevronRight
 } from "lucide-react";
 import heroImg from "@/assets/hero-pump.jpg";
 import factoryImg from "@/assets/factory.jpg";
@@ -166,9 +166,33 @@ function FloatingActions() {
 /* ─────────────────────────── HERO ─────────────────────────── */
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { useCallback } from "react";
 
 function Hero({ images }: { images: { id: string, url: string }[] }) {
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 4000, stopOnInteraction: false })]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 4000, stopOnInteraction: false })]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const scrollTo = useCallback((index: number) => {
+    if (emblaApi) emblaApi.scrollTo(index);
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    };
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    onSelect();
+  }, [emblaApi]);
 
   return (
     <section id="hero" className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
@@ -264,16 +288,44 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
           >
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-hairline bg-surface shadow-lift">
               {images.length > 0 ? (
-                <div className="overflow-hidden h-full w-full" ref={emblaRef}>
-                  <div className="flex h-full">
-                    {images.map(img => (
-                      <div className="flex-[0_0_100%] min-w-0 relative h-full" key={img.id}>
-                        <img
-                          src={img.url}
-                          alt="Hero product showcase"
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
+                <div className="relative h-full w-full">
+                  <div className="overflow-hidden h-full w-full" ref={emblaRef}>
+                    <div className="flex h-full">
+                      {images.map(img => (
+                        <div className="flex-[0_0_100%] min-w-0 relative h-full" key={img.id}>
+                          <img
+                            src={img.url}
+                            alt="Hero product showcase"
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Navigation Buttons */}
+                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-between px-4 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                    <button onClick={scrollPrev} className="bg-background/80 backdrop-blur border border-hairline text-ink hover:bg-brass hover:text-white p-2 rounded-full transition-colors shadow-sm">
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button onClick={scrollNext} className="bg-background/80 backdrop-blur border border-hairline text-ink hover:bg-brass hover:text-white p-2 rounded-full transition-colors shadow-sm">
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Indicators */}
+                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                    {images.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => scrollTo(idx)}
+                        className={`transition-all duration-300 rounded-full ${
+                          idx === selectedIndex 
+                            ? "w-6 h-1.5 bg-brass" 
+                            : "w-1.5 h-1.5 bg-white/50 hover:bg-white/80"
+                        }`}
+                        aria-label={`Go to slide ${idx + 1}`}
+                      />
                     ))}
                   </div>
                 </div>
