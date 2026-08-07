@@ -47,6 +47,7 @@ model Product {
   tagline      String
   description  String
   image        String?
+  priority     Int                  @default(0)
   createdAt    DateTime             @default(now())
   updatedAt    DateTime             @updatedAt
   specs        ProductSpec[]

@@ -169,6 +169,7 @@ const productSchema = z.object({
   tagline: z.string(),
   description: z.string(),
   image: z.string().optional(),
+  priority: z.number().optional(),
   specs: z.array(specSchema),
   benefits: z.array(textItemSchema),
   applications: z.array(textItemSchema),
@@ -177,7 +178,7 @@ const productSchema = z.object({
 export const upsertProduct = createServerFn({ method: "POST" })
   .validator(productSchema.parse)
   .handler(async ({ data }) => {
-    const { token, id, specs, benefits, applications, ...rest } = data;
+    const { token, id, specs, benefits, applications, priority, ...rest } = data;
     const supabase = createServerSupabase();
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
@@ -194,6 +195,7 @@ export const upsertProduct = createServerFn({ method: "POST" })
         where: { id },
         data: {
           ...(rest as any),
+          ...(priority !== undefined ? { priority } : {}),
           specs: { create: specs.map(s => ({ label: s.label, value: s.value })) },
           benefits: { create: benefits.map(b => ({ text: b.text })) },
           applications: { create: applications.map(a => ({ text: a.text })) },
@@ -201,13 +203,14 @@ export const upsertProduct = createServerFn({ method: "POST" })
       });
     }
 
-    return await db.product.create({
-      data: {
-        ...(rest as any),
-        specs: { create: specs.map(s => ({ label: s.label, value: s.value })) },
-        benefits: { create: benefits.map(b => ({ text: b.text })) },
-        applications: { create: applications.map(a => ({ text: a.text })) },
-      }
+      return await db.product.create({
+        data: {
+          ...(rest as any),
+          ...(priority !== undefined ? { priority } : {}),
+          specs: { create: specs.map(s => ({ label: s.label, value: s.value })) },
+          benefits: { create: benefits.map(b => ({ text: b.text })) },
+          applications: { create: applications.map(a => ({ text: a.text })) },
+        }
     });
   });
 
