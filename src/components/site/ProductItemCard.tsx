@@ -26,7 +26,7 @@ export function ProductItemCard({
 
   if (category.slug === "additional-products") {
     return (
-      <div className="group relative flex flex-col rounded-2xl border border-hairline bg-surface overflow-hidden shadow-sm hover:shadow-md hover:border-brass/30 transition-all h-full min-h-[300px]">
+      <div className="group relative flex flex-col rounded-2xl border border-hairline bg-surface overflow-hidden shadow-sm hover:shadow-md hover:border-brass/30 transition-all h-full min-h-[150px]">
         {/* Photo Area */}
         <div className="relative flex-1 bg-zinc-50 border-b border-hairline overflow-hidden">
           {product.image ? (
@@ -37,14 +37,14 @@ export function ProductItemCard({
         </div>
         
         {/* Content Area */}
-        <div className="p-4 flex flex-col gap-3 bg-ink text-background shrink-0">
-           <h3 className="font-sans text-sm sm:text-base font-bold tracking-tight text-left line-clamp-2">
+        <div className="p-4 flex flex-col items-start gap-3 bg-ink text-background shrink-0">
+           <h3 className="font-sans text-sm sm:text-base font-bold tracking-tight text-left line-clamp-2 w-full">
              {product.name}
            </h3>
            <Link
              to="/contact"
              search={{ product: product.name }}
-             className="w-full flex items-center justify-center gap-1.5 rounded-full bg-brass px-3 py-2 text-xs font-bold text-ink transition-all hover:bg-brass/90 active:scale-95 shadow-sm"
+             className="inline-flex items-center justify-center gap-1.5 rounded-full bg-brass px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-ink transition-all hover:bg-brass/90 active:scale-95 shadow-sm"
            >
              <Sparkles className="h-3 w-3 text-ink shrink-0" />
              Get a Quote

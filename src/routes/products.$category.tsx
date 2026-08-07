@@ -109,12 +109,50 @@ function CategoryPage() {
               {c.products?.length || 0} products
             </span>
           </div>
-          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
-            {c.products?.map((item: any, i: number) => (
-              <li key={item.id} className="h-full">
-                <ProductItemCard category={c} product={item} index={i} />
-              </li>
-            ))}
+          <ul className={`mt-8 grid gap-4 items-stretch ${
+             c.slug === "additional-products" 
+               ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-[250px]" 
+               : "sm:grid-cols-2 lg:grid-cols-3"
+          }`}>
+            {c.products?.map((item: any, i: number) => {
+               let bentoClass = "h-full";
+               if (c.slug === "additional-products") {
+                  const pattern = [
+                    "col-span-2 row-span-2", 
+                    "col-span-1 row-span-1", 
+                    "col-span-1 row-span-2",
+                    "col-span-2 row-span-1",
+                    "col-span-1 row-span-1",
+                    "col-span-2 row-span-2",
+                    "col-span-1 row-span-2",
+                    "col-span-1 row-span-1",
+                    "col-span-2 row-span-1",
+                    "col-span-1 row-span-1",
+                  ];
+                  // Handle responsive spans if necessary, but tailwind doesn't support dynamic arbitrary variants easily.
+                  // For simplicity, we apply base spans which will look like a bento grid on mobile and desktop.
+                  // For a truly responsive bento, we would need md:col-span-X.
+                  const mdPattern = [
+                    "md:col-span-2 md:row-span-2", 
+                    "md:col-span-1 md:row-span-1", 
+                    "md:col-span-1 md:row-span-2",
+                    "md:col-span-2 md:row-span-1",
+                    "md:col-span-1 md:row-span-1",
+                    "md:col-span-2 md:row-span-2",
+                    "md:col-span-1 md:row-span-2",
+                    "md:col-span-1 md:row-span-1",
+                    "md:col-span-2 md:row-span-1",
+                    "md:col-span-1 md:row-span-1",
+                  ];
+                  bentoClass = `${bentoClass} ${pattern[i % pattern.length]} ${mdPattern[i % mdPattern.length]}`;
+               }
+               
+               return (
+                 <li key={item.id} className={bentoClass}>
+                   <ProductItemCard category={c} product={item} index={i} />
+                 </li>
+               );
+            })}
           </ul>
         </section>
 
