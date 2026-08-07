@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Trash2, Plus, Image as ImageIcon, ChevronUp, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { upsertHeroImage, deleteHeroImage } from "@/lib/admin";
-import { uploadFile } from "@/lib/supabase";
+import { compressImage } from "@/lib/image-utils";
 
 export function HeroCarouselTab({ data, session, onUpdate }: { data: any, session: any, onUpdate: () => void }) {
   const [busy, setBusy] = useState(false);
@@ -32,9 +32,13 @@ export function HeroCarouselTab({ data, session, onUpdate }: { data: any, sessio
     e.preventDefault();
     if (!newImage) return toast.error("Please select an image");
     
+    if (newImage.size > 2 * 1024 * 1024) {
+      return toast.error("Image must be less than 2MB");
+    }
+
     setBusy(true);
     try {
-      const url = await uploadFile(newImage, "assets");
+      const url = await compressImage(newImage);
       await upsertHeroImage({
         data: {
           token: session.access_token,
