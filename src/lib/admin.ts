@@ -252,3 +252,84 @@ export const updateContactInfo = createServerFn({ method: "POST" })
       create: { id: "singleton", ...rest },
     });
   });
+
+// ----------------------------------------------------
+// PER-SECTION LAZY FETCH FUNCTIONS
+// ----------------------------------------------------
+
+const tokenSchema = z.object({ token: z.string() });
+
+export const getInquiries = createServerFn({ method: "POST" })
+  .validator(tokenSchema.parse)
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(data.token);
+    if (error || !user) throw new Error("Unauthorized");
+    return await db.inquiry.findMany({ orderBy: { createdAt: 'desc' } });
+  });
+
+export const getSubscribers = createServerFn({ method: "POST" })
+  .validator(tokenSchema.parse)
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(data.token);
+    if (error || !user) throw new Error("Unauthorized");
+    return await db.subscriber.findMany({ orderBy: { createdAt: 'desc' } });
+  });
+
+export const getAdminProducts = createServerFn({ method: "POST" })
+  .validator(tokenSchema.parse)
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(data.token);
+    if (error || !user) throw new Error("Unauthorized");
+    const [categories, products] = await Promise.all([
+      db.category.findMany({ select: { id: true, slug: true, name: true, short: true, description: true, image: true, priority: true, createdAt: true, updatedAt: true }, orderBy: { priority: 'asc' } }),
+      db.product.findMany({ select: { id: true, categoryId: true, name: true, slug: true, tagline: true, description: true, image: true, priority: true, createdAt: true, updatedAt: true, category: true, specs: true, benefits: true, applications: true }, orderBy: { priority: 'asc' } }),
+    ]);
+    return { categories, products };
+  });
+
+export const getAdminCategories = createServerFn({ method: "POST" })
+  .validator(tokenSchema.parse)
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(data.token);
+    if (error || !user) throw new Error("Unauthorized");
+    return await db.category.findMany({ select: { id: true, slug: true, name: true, short: true, description: true, image: true, priority: true, createdAt: true, updatedAt: true }, orderBy: { priority: 'asc' } });
+  });
+
+export const getAdminHero = createServerFn({ method: "POST" })
+  .validator(tokenSchema.parse)
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(data.token);
+    if (error || !user) throw new Error("Unauthorized");
+    return await db.heroCarouselImage.findMany({ orderBy: { order: 'asc' } });
+  });
+
+export const getAdminContact = createServerFn({ method: "POST" })
+  .validator(tokenSchema.parse)
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(data.token);
+    if (error || !user) throw new Error("Unauthorized");
+    return await db.contactInfo.findUnique({ where: { id: 'singleton' } });
+  });
+
+export const getDashboardStats = createServerFn({ method: "POST" })
+  .validator(tokenSchema.parse)
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(data.token);
+    if (error || !user) throw new Error("Unauthorized");
+    const [inquiryCount, subscriberCount, categoryCount, productCount, recentInquiries] = await Promise.all([
+      db.inquiry.count(),
+      db.subscriber.count(),
+      db.category.count(),
+      db.product.count(),
+      db.inquiry.findMany({ take: 5, orderBy: { createdAt: 'desc' } }),
+    ]);
+    return { inquiryCount, subscriberCount, categoryCount, productCount, recentInquiries };
+  });
+
