@@ -5,12 +5,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { toast } from "sonner";
 import { upsertProduct, deleteProduct } from "@/lib/admin";
-import { Trash2, Edit2, Plus, X } from "lucide-react";
+import { Trash2, Edit2, Plus, X, Search } from "lucide-react";
 
 export function ProductsTab({ products, categories, token, onUpdate }: { products: any[]; categories: any[]; token: string; onUpdate: () => void }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const defaultProduct = {
     categoryId: categories[0]?.id || "", name: "", slug: "", tagline: "", description: "", image: "",
@@ -203,7 +204,23 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
 
       {!isAdding && !editingId && (
         <div className="space-y-4">
-          {products.map(p => (
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search products by name or slug..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-surface border border-hairline rounded-lg text-sm text-ink focus:border-brass outline-none"
+            />
+          </div>
+          
+          {products
+            .filter((p) => 
+              p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+              p.slug.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            .map(p => (
             <div key={p.id} className="p-4 bg-surface border border-hairline rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center gap-4">
                 {p.image && <img src={p.image} alt={p.name} className="w-12 h-12 object-cover rounded bg-zinc-100" />}
