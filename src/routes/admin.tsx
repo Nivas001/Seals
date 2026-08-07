@@ -349,7 +349,7 @@ function AdminDashboard({ onLogout, session }: { onLogout: () => void; session: 
             )}
 
           {activeTab === "hero" && (
-            <HeroCarouselTab data={data} session={session} onUpdate={fetchData} />
+            <HeroCarouselTab data={data} session={session} onUpdate={() => fetchData(session.access_token)} />
           )}
 
           {activeTab === "categories" && (
