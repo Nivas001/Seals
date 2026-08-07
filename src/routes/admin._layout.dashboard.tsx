@@ -38,80 +38,85 @@ function DashboardPage() {
         <p className="mt-1 text-sm text-zinc-400">Here's what's happening with AARRKKAA today.</p>
       </div>
 
-      {/* Stat cards */}
-      {loading ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 animate-pulse h-28" />
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {statCards.map(({ label, value, icon: Icon, color, bg, href }) => (
-            <Link
-              key={label}
-              to={href}
-              className="group rounded-2xl border border-zinc-800 bg-zinc-900 p-5 flex flex-col gap-3 hover:border-zinc-700 transition-all hover:shadow-lg hover:shadow-black/20"
-            >
-              <div className={`h-10 w-10 rounded-xl ${bg} flex items-center justify-center`}>
-                <Icon className={`h-5 w-5 ${color}`} />
-              </div>
-              <div>
-                <div className="text-3xl font-black text-white">{value}</div>
-                <div className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500 mt-0.5">{label}</div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
-
-      {/* Analytics Chart */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-        <div className="mb-6">
-          <h3 className="text-sm font-bold text-white">Inquiry Trends (Last 30 Days)</h3>
-          <p className="text-xs text-zinc-500">Track customer interest over time</p>
-        </div>
-        <div className="h-64 w-full">
+      {/* Overview Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Stat cards (Left 50%) */}
+        <div className="flex flex-col gap-4">
           {loading ? (
-            <div className="w-full h-full animate-pulse bg-zinc-800/50 rounded-xl" />
-          ) : stats?.chartData?.length > 0 ? (
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={stats.chartData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-                <XAxis 
-                  dataKey="name" 
-                  stroke="#52525b" 
-                  fontSize={10} 
-                  tickLine={false} 
-                  axisLine={false}
-                  minTickGap={20}
-                />
-                <YAxis 
-                  stroke="#52525b" 
-                  fontSize={10} 
-                  tickLine={false} 
-                  axisLine={false} 
-                  allowDecimals={false}
-                />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#09090b', borderColor: '#27272a', borderRadius: '8px', fontSize: '12px' }}
-                  itemStyle={{ color: '#dcb16e' }}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="Inquiries" 
-                  stroke="#dcb16e" 
-                  strokeWidth={3}
-                  dot={{ r: 0 }}
-                  activeDot={{ r: 6, fill: '#dcb16e', stroke: '#09090b', strokeWidth: 2 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <div className="grid grid-cols-2 gap-4 flex-1">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 animate-pulse" />
+              ))}
+            </div>
           ) : (
-            <div className="flex h-full items-center justify-center text-xs text-zinc-600 font-medium">
-              Not enough data for chart
+            <div className="grid grid-cols-2 gap-4 flex-1">
+              {statCards.map(({ label, value, icon: Icon, color, bg, href }) => (
+                <Link
+                  key={label}
+                  to={href}
+                  className="group rounded-2xl border border-zinc-800 bg-zinc-900 p-5 flex flex-col justify-center gap-3 hover:border-zinc-700 transition-all hover:shadow-lg hover:shadow-black/20"
+                >
+                  <div className={`h-10 w-10 rounded-xl ${bg} flex items-center justify-center`}>
+                    <Icon className={`h-5 w-5 ${color}`} />
+                  </div>
+                  <div>
+                    <div className="text-3xl font-black text-white">{value}</div>
+                    <div className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500 mt-0.5">{label}</div>
+                  </div>
+                </Link>
+              ))}
             </div>
           )}
+        </div>
+
+        {/* Analytics Chart (Right 50%) */}
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 flex flex-col">
+          <div className="mb-6">
+            <h3 className="text-sm font-bold text-white">Inquiry Trends (Last 30 Days)</h3>
+            <p className="text-xs text-zinc-500">Track customer interest over time</p>
+          </div>
+          <div className="flex-1 min-h-[250px] w-full">
+            {loading ? (
+              <div className="w-full h-full animate-pulse bg-zinc-800/50 rounded-xl" />
+            ) : stats?.chartData?.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={stats.chartData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="#52525b" 
+                    fontSize={10} 
+                    tickLine={false} 
+                    axisLine={false}
+                    minTickGap={20}
+                  />
+                  <YAxis 
+                    stroke="#52525b" 
+                    fontSize={10} 
+                    tickLine={false} 
+                    axisLine={false} 
+                    allowDecimals={false}
+                  />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#09090b', borderColor: '#27272a', borderRadius: '8px', fontSize: '12px' }}
+                    itemStyle={{ color: '#dcb16e' }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="Inquiries" 
+                    stroke="#dcb16e" 
+                    strokeWidth={3}
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 6, fill: '#dcb16e', stroke: '#09090b', strokeWidth: 2 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex h-full items-center justify-center text-xs text-zinc-600 font-medium">
+                Not enough data for chart
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
