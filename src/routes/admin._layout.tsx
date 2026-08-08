@@ -12,6 +12,7 @@ import {
   Image,
   PhoneCall,
   LogOut,
+  BarChart,
   Menu,
   X,
   Home,
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/admin/_layout")({
 
 const NAV_ITEMS = [
   { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/admin/analytics", label: "Analytics", icon: BarChart },
   { to: "/admin/products", label: "Products", icon: Package },
   { to: "/admin/categories", label: "Categories", icon: FolderOpen },
   { to: "/admin/inquiries", label: "Inquiries", icon: MessageCircle },
