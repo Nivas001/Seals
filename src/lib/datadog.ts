@@ -66,16 +66,16 @@ export const getDatadogStats = createServerFn({ method: "GET" }).handler(async (
         method: "POST", headers,
         body: JSON.stringify({
           compute: [{ aggregation: "count", type: "total" }],
-          filter: { query: "@type:session", from: "now-7d", to: "now" },
-          group_by: [{ facet: "@session.browser.name", limit: 5 }]
+          filter: { query: "@type:view", from: "now-7d", to: "now" },
+          group_by: [{ facet: "@browser.name", limit: 5 }]
         })
       }),
       fetch(`${siteUrl}/api/v2/rum/analytics/aggregate`, {
         method: "POST", headers,
         body: JSON.stringify({
           compute: [{ aggregation: "count", type: "total" }],
-          filter: { query: "@type:session", from: "now-7d", to: "now" },
-          group_by: [{ facet: "@network.client.geoip.country.name", limit: 5 }]
+          filter: { query: "@type:view", from: "now-7d", to: "now" },
+          group_by: [{ facet: "@geo.country", limit: 5 }]
         })
       })
     ]);
@@ -90,12 +90,12 @@ export const getDatadogStats = createServerFn({ method: "GET" }).handler(async (
     })).filter((p: any) => p.path);
 
     const browsers = (browsersData?.data?.buckets || []).map((b: any) => ({
-      name: b.by['@session.browser.name'] || 'Unknown',
+      name: b.by['@browser.name'] || 'Unknown',
       count: b.computes?.c0 || 0,
     }));
 
     const regions = (regionsData?.data?.buckets || []).map((b: any) => ({
-      name: b.by['@network.client.geoip.country.name'] || 'Unknown',
+      name: b.by['@geo.country'] || 'Unknown',
       count: b.computes?.c0 || 0,
     }));
 
