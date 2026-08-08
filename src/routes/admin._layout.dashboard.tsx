@@ -96,7 +96,7 @@ function DashboardPage() {
                     <LineChart data={analytics.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.2} />
                       <XAxis 
-                        dataKey="date" 
+                        dataKey="name" 
                         axisLine={false} 
                         tickLine={false} 
                         tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }} 
@@ -108,16 +108,10 @@ function DashboardPage() {
                         tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }} 
                       />
                       <Tooltip 
-                        contentStyle={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: '8px' }}
-                        itemStyle={{ color: '#dcb16e', fontWeight: 'bold' }}
+                        contentStyle={{ borderRadius: '12px', border: '1px solid var(--color-border)', background: 'var(--color-background)' }}
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="pageviews" 
-                        stroke="#dcb16e" 
-                        strokeWidth={3}
-                        dot={false}
-                      />
+                      <Line type="monotone" dataKey="Views" stroke="#3b82f6" strokeWidth={3} dot={false} activeDot={{ r: 6, fill: '#3b82f6', stroke: '#fff', strokeWidth: 2 }} />
+                      <Line type="monotone" dataKey="Inquiries" stroke="#10b981" strokeWidth={3} dot={false} activeDot={{ r: 6, fill: '#10b981', stroke: '#fff', strokeWidth: 2 }} />
                     </LineChart>
                   </ResponsiveContainer>
               ) : (

@@ -394,6 +394,8 @@ export const getDashboardStats = createServerFn({ method: "POST" })
       select: { createdAt: true }
     });
 
+    const vercelStats = await db.vercelTrafficLog.count();
+
     const chartData = [];
     for (let i = 29; i >= 0; i--) {
       const d = new Date();
@@ -401,10 +403,84 @@ export const getDashboardStats = createServerFn({ method: "POST" })
       const dateString = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       chartData.push({
         name: dateString,
-        Inquiries: recentInquiriesAll.filter(inq => new Date(inq.createdAt).toDateString() === d.toDateString()).length
+        Inquiries: recentInquiriesAll.filter(inq => new Date(inq.createdAt).toDateString() === d.toDateString()).length,
+        Views: 0 // We'll populate this later from vercel logs if needed
       });
     }
 
-    return { inquiryCount, subscriberCount, categoryCount, productCount, recentInquiries, chartData };
+    return { 
+      inquiryCount, 
+      subscriberCount, 
+      categoryCount, 
+      productCount, 
+      recentInquiries, 
+      chartData,
+      analytics: {
+        totalViews: vercelStats,
+        totalInteractions: inquiryCount + subscriberCount, // Dummy calculation for now
+        chartData: chartData // We will rely on Vercel data properly in getVercelAnalytics
+      }
+    };
+  });
+
+export const getVercelAnalytics = createServerFn({ method: "POST" })
+  .validator(tokenSchema.parse)
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(data.token);
+    if (error || !user) throw new Error("Unauthorized");
+
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const logs = await db.vercelTrafficLog.findMany({
+      where: { timestamp: { gte: thirtyDaysAgo } },
+      select: { path: true, country: true, userAgent: true, timestamp: true, referrer: true }
+    });
+
+    const totalViews = logs.length;
+
+    // Aggregate by page
+    const topPagesMap = logs.reduce((acc, log) => {
+      acc[log.path] = (acc[log.path] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    const topPages = Object.entries(topPagesMap).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([name, views]) => ({ name, views }));
+
+    // Aggregate by Country
+    const topCountriesMap = logs.reduce((acc, log) => {
+      acc[log.country] = (acc[log.country] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    const topCountries = Object.entries(topCountriesMap).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([name, views]) => ({ name, views }));
+    
+    // Aggregate by OS
+    const topOsMap = logs.reduce((acc, log) => {
+      let os = "Other";
+      const ua = log.userAgent.toLowerCase();
+      if (ua.includes("win")) os = "Windows";
+      else if (ua.includes("mac")) os = "MacOS";
+      else if (ua.includes("linux")) os = "Linux";
+      else if (ua.includes("android")) os = "Android";
+      else if (ua.includes("iphone") || ua.includes("ipad")) os = "iOS";
+      
+      acc[os] = (acc[os] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    const topOs = Object.entries(topOsMap).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([name, views]) => ({ name, views }));
+
+    // Chart Data
+    const chartData = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateString = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      chartData.push({
+        name: dateString,
+        Views: logs.filter(log => new Date(log.timestamp).toDateString() === d.toDateString()).length
+      });
+    }
+
+    return { totalViews, topPages, topCountries, topOs, chartData };
   });
 
