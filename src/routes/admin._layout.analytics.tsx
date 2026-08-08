@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { BarChart as BarChartIcon, Users, Activity, ExternalLink, ShieldAlert, MonitorPlay, MousePointerClick, Globe, Compass, LayoutTemplate } from "lucide-react";
+import { BarChart as BarChartIcon, Users, Activity, ExternalLink, ShieldAlert, MonitorPlay, MousePointerClick, Globe, Compass, LayoutTemplate, MonitorSmartphone, Monitor, Smartphone, Gauge, Clock, Timer } from "lucide-react";
 import { useAdminSession } from "@/components/admin/AdminContext";
 import { useState, useEffect } from "react";
 import { getDatadogStats } from "@/lib/datadog";
@@ -14,7 +14,7 @@ export const Route = createFileRoute("/admin/_layout/analytics")({
 });
 
 function AnalyticsPage() {
-  const { chartData, topPages, browsers, regions, totalViews, totalInteractions } = Route.useLoaderData();
+  const { chartData, topPages, browsers, regions, totalViews, totalInteractions, os, devices, perf } = Route.useLoaderData();
   const { session } = useAdminSession();
   const [datadogUrl, setDatadogUrl] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
@@ -178,35 +178,21 @@ function AnalyticsPage() {
               </div>
             </div>
 
-            {/* Bottom Row: Browsers (Donut) */}
-            <div className="md:col-span-1 lg:col-span-4 rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex flex-col md:flex-row items-center gap-10">
-              <div className="flex flex-col gap-2 min-w-[200px]">
-                <div className="flex items-center gap-3 mb-2">
-                  <Compass className="h-5 w-5 text-orange-400" />
-                  <h2 className="font-bold">Browser Share</h2>
-                </div>
-                {browsers.map((browser: any, i: number) => {
-                  const colors = ['#f97316', '#3b82f6', '#ec4899', '#8b5cf6', '#10b981'];
-                  return (
-                    <div key={i} className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-2">
-                        <div className="h-3 w-3 rounded-full" style={{ backgroundColor: colors[i % colors.length] }} />
-                        <span className="text-zinc-400">{browser.name}</span>
-                      </div>
-                      <span className="font-bold">{browser.count}</span>
-                    </div>
-                  );
-                })}
+            {/* Bottom Row: Browsers (Donut) + OS + Devices */}
+            <div className="md:col-span-1 lg:col-span-2 rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex flex-col items-center">
+              <div className="flex w-full items-center gap-3 mb-6">
+                <Compass className="h-5 w-5 text-orange-400" />
+                <h2 className="font-bold">Browser Share</h2>
               </div>
-              <div className="h-[200px] w-full max-w-[300px]">
+              <div className="h-[180px] w-full max-w-[250px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={browsers}
                       cx="50%"
                       cy="50%"
-                      innerRadius={60}
-                      outerRadius={80}
+                      innerRadius={50}
+                      outerRadius={70}
                       paddingAngle={5}
                       dataKey="count"
                       stroke="none"
@@ -222,6 +208,75 @@ function AnalyticsPage() {
                     />
                   </PieChart>
                 </ResponsiveContainer>
+              </div>
+              <div className="flex flex-wrap justify-center gap-3 mt-4">
+                {browsers.map((browser: any, i: number) => {
+                  const colors = ['#f97316', '#3b82f6', '#ec4899', '#8b5cf6', '#10b981'];
+                  return (
+                    <div key={i} className="flex items-center gap-2 text-xs">
+                      <div className="h-2 w-2 rounded-full" style={{ backgroundColor: colors[i % colors.length] }} />
+                      <span className="text-zinc-400">{browser.name} <span className="font-bold text-white ml-1">{browser.count}</span></span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="md:col-span-1 lg:col-span-1 rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <Monitor className="h-5 w-5 text-green-400" />
+                <h2 className="font-bold">Operating Systems</h2>
+              </div>
+              <div className="space-y-4">
+                {os.map((item: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-zinc-300">{item.name}</span>
+                    <span className="text-sm font-bold text-green-100 bg-green-900/30 px-2 py-1 rounded-md">{item.count}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="md:col-span-1 lg:col-span-1 rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <MonitorSmartphone className="h-5 w-5 text-pink-400" />
+                <h2 className="font-bold">Device Types</h2>
+              </div>
+              <div className="space-y-4">
+                {devices.map((item: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-zinc-300">{item.name}</span>
+                    <span className="text-sm font-bold text-pink-100 bg-pink-900/30 px-2 py-1 rounded-md">{item.count}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Performance Stats Row */}
+            <div className="md:col-span-3 lg:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex items-center gap-6">
+                <div className="h-16 w-16 rounded-full bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0">
+                  <Timer className="h-8 w-8" />
+                </div>
+                <div>
+                  <h3 className="text-zinc-400 font-medium mb-1">Average Time on Site</h3>
+                  <div className="flex items-end gap-2">
+                    <span className="text-3xl font-bold text-white">{perf.avgTime ? perf.avgTime.toFixed(1) : 0}</span>
+                    <span className="text-zinc-500 mb-1">seconds</span>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex items-center gap-6">
+                <div className="h-16 w-16 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center shrink-0">
+                  <Gauge className="h-8 w-8" />
+                </div>
+                <div>
+                  <h3 className="text-zinc-400 font-medium mb-1">Avg Load Time (LCP)</h3>
+                  <div className="flex items-end gap-2">
+                    <span className="text-3xl font-bold text-white">{perf.avgLoad ? perf.avgLoad.toFixed(2) : 0}</span>
+                    <span className="text-zinc-500 mb-1">seconds</span>
+                  </div>
+                </div>
               </div>
             </div>
 
