@@ -216,7 +216,10 @@ function AnalyticsPage() {
                         return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
                       })}
                     </Pie>
-                    <Tooltip contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '8px', color: '#fff' }} />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '8px', color: '#fff' }}
+                      itemStyle={{ color: '#fff', fontWeight: '500' }}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
