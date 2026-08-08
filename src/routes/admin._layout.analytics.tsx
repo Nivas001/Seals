@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { BarChart as BarChartIcon, Users, Activity, ExternalLink, ShieldAlert, MonitorPlay, MousePointerClick, Globe, Compass, LayoutTemplate, CursorClick } from "lucide-react";
+import { BarChart as BarChartIcon, Users, Activity, ExternalLink, ShieldAlert, MonitorPlay, MousePointerClick, Globe, Compass, LayoutTemplate } from "lucide-react";
 import { useAdminSession } from "@/components/admin/AdminContext";
 import { useState, useEffect } from "react";
 import { getDatadogStats } from "@/lib/datadog";
@@ -135,7 +135,7 @@ function AnalyticsPage() {
 
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex flex-col justify-center items-center text-center">
               <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-purple-500/10 text-purple-500">
-                <CursorClick className="h-7 w-7" />
+                <MousePointerClick className="h-7 w-7" />
               </div>
               <h2 className="text-lg font-bold text-zinc-400 mb-1">Total Interactions</h2>
               <span className="text-5xl font-black text-white">{totalInteractions.toLocaleString()}</span>
