@@ -14,24 +14,6 @@ import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 import { datadogRum } from '@datadog/browser-rum';
 import { reactPlugin } from '@datadog/browser-rum-react';
 
-if (typeof window !== 'undefined') {
-  datadogRum.init({
-      applicationId: '08553b56-f214-4c76-9d3d-eca6b715baae',
-      clientToken: 'pubb871725ea05e1a993eebd37003d1e57a',
-      site: 'us5.datadoghq.com',
-      service: 'aarrkkaa-website',
-      env: 'prod',
-      version: '1.0.0',
-      sessionSampleRate: 100,
-      sessionReplaySampleRate: 100, // Capturing 100% of session replays for detailed analytics
-      trackResources: true,
-      trackUserInteractions: true,
-      trackLongTasks: true,
-      plugins: [reactPlugin({ router: false })],
-  });
-  datadogRum.startSessionReplayRecording();
-}
-
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
