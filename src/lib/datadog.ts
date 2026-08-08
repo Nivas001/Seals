@@ -59,7 +59,7 @@ export const getDatadogStats = createServerFn({ method: "GET" }).handler(async (
         body: JSON.stringify({
           compute: [{ aggregation: "count", type: "total" }],
           filter: { query: "@type:view", from: "now-7d", to: "now" },
-          group_by: [{ facet: "@view.url_path", limit: 5, sort: { aggregation: "count", order: "desc" } }]
+          group_by: [{ facet: "@view.url_path", limit: 5 }]
         })
       }),
       fetch(`${siteUrl}/api/v2/rum/analytics/aggregate`, {
@@ -67,7 +67,7 @@ export const getDatadogStats = createServerFn({ method: "GET" }).handler(async (
         body: JSON.stringify({
           compute: [{ aggregation: "count", type: "total" }],
           filter: { query: "@type:session", from: "now-7d", to: "now" },
-          group_by: [{ facet: "@session.browser.name", limit: 5, sort: { aggregation: "count", order: "desc" } }]
+          group_by: [{ facet: "@session.browser.name", limit: 5 }]
         })
       }),
       fetch(`${siteUrl}/api/v2/rum/analytics/aggregate`, {
@@ -75,7 +75,7 @@ export const getDatadogStats = createServerFn({ method: "GET" }).handler(async (
         body: JSON.stringify({
           compute: [{ aggregation: "count", type: "total" }],
           filter: { query: "@type:session", from: "now-7d", to: "now" },
-          group_by: [{ facet: "@network.client.geoip.country.name", limit: 5, sort: { aggregation: "count", order: "desc" } }]
+          group_by: [{ facet: "@network.client.geoip.country.name", limit: 5 }]
         })
       })
     ]);
