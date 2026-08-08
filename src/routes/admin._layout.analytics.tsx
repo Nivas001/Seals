@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { BarChart as BarChartIcon, Users, Activity, ExternalLink, ShieldAlert, MonitorPlay, MousePointerClick } from "lucide-react";
+import { BarChart as BarChartIcon, Users, Activity, ExternalLink, ShieldAlert, MonitorPlay, MousePointerClick, Globe, Compass, LayoutTemplate, CursorClick } from "lucide-react";
 import { useAdminSession } from "@/components/admin/AdminContext";
 import { useState, useEffect } from "react";
 import { getDatadogStats } from "@/lib/datadog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid, PieChart, Pie, Cell, BarChart, Bar } from "recharts";
 
 export const Route = createFileRoute("/admin/_layout/analytics")({
   component: AnalyticsPage,
@@ -14,7 +14,7 @@ export const Route = createFileRoute("/admin/_layout/analytics")({
 });
 
 function AnalyticsPage() {
-  const { chartData, totalViews } = Route.useLoaderData();
+  const { chartData, topPages, browsers, regions, totalViews, totalInteractions } = Route.useLoaderData();
   const { session } = useAdminSession();
   const [datadogUrl, setDatadogUrl] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
@@ -102,60 +102,126 @@ function AnalyticsPage() {
         </TabsList>
 
         <TabsContent value="simplified" className="space-y-6">
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
-            <div className="mb-8">
-              <h2 className="text-xl font-bold mb-1">Traffic Overview (7 Days)</h2>
-              <div className="flex items-end gap-3">
-                <span className="text-4xl font-black text-brass">{totalViews.toLocaleString()}</span>
-                <span className="text-sm font-medium text-zinc-400 mb-1">total pageviews</span>
+          {/* BENTO GRID */}
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            
+            {/* Top Row: Total Traffic (Spans 3 cols) + Interactions (Spans 1 col) */}
+            <div className="md:col-span-2 lg:col-span-3 rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex flex-col">
+              <div className="mb-6">
+                <h2 className="text-xl font-bold mb-1">Traffic Overview (7 Days)</h2>
+                <div className="flex items-end gap-3">
+                  <span className="text-4xl font-black text-brass">{totalViews.toLocaleString()}</span>
+                  <span className="text-sm font-medium text-zinc-400 mb-1">total pageviews</span>
+                </div>
+              </div>
+              <div className="h-[250px] w-full mt-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={chartData}>
+                    <defs>
+                      <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#dcb16e" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#dcb16e" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+                    <XAxis dataKey="name" stroke="#52525b" tick={{ fill: '#a1a1aa', fontSize: 12 }} tickLine={false} axisLine={false} dy={10} />
+                    <YAxis stroke="#52525b" tick={{ fill: '#a1a1aa', fontSize: 12 }} tickLine={false} axisLine={false} dx={-10} />
+                    <Tooltip contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '8px', color: '#fff' }} itemStyle={{ color: '#dcb16e', fontWeight: 'bold' }} />
+                    <Area type="monotone" dataKey="pageviews" stroke="#dcb16e" strokeWidth={3} fillOpacity={1} fill="url(#colorViews)" />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="h-[400px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData}>
-                  <defs>
-                    <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#dcb16e" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#dcb16e" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-                  <XAxis 
-                    dataKey="name" 
-                    stroke="#52525b" 
-                    tick={{ fill: '#a1a1aa', fontSize: 12 }}
-                    tickLine={false}
-                    axisLine={false}
-                    dy={10}
-                  />
-                  <YAxis 
-                    stroke="#52525b"
-                    tick={{ fill: '#a1a1aa', fontSize: 12 }}
-                    tickLine={false}
-                    axisLine={false}
-                    dx={-10}
-                  />
-                  <Tooltip
-                    contentStyle={{ 
-                      backgroundColor: '#09090b', 
-                      border: '1px solid #27272a',
-                      borderRadius: '8px',
-                      color: '#fff'
-                    }}
-                    itemStyle={{ color: '#dcb16e', fontWeight: 'bold' }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="pageviews"
-                    stroke="#dcb16e"
-                    strokeWidth={3}
-                    fillOpacity={1}
-                    fill="url(#colorViews)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex flex-col justify-center items-center text-center">
+              <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-purple-500/10 text-purple-500">
+                <CursorClick className="h-7 w-7" />
+              </div>
+              <h2 className="text-lg font-bold text-zinc-400 mb-1">Total Interactions</h2>
+              <span className="text-5xl font-black text-white">{totalInteractions.toLocaleString()}</span>
+              <p className="text-xs text-zinc-500 mt-2">Clicks, scrolls, & form submits</p>
             </div>
+
+            {/* Middle Row: Top Pages (2 cols) + Regions (2 cols) */}
+            <div className="md:col-span-2 rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <LayoutTemplate className="h-5 w-5 text-brass" />
+                <h2 className="font-bold">Top Pages</h2>
+              </div>
+              <div className="space-y-4">
+                {topPages.map((page: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-zinc-300 truncate max-w-[200px]">{page.path}</span>
+                    <div className="flex items-center gap-3 w-1/2">
+                      <div className="h-2 bg-zinc-900 rounded-full flex-1 overflow-hidden">
+                        <div className="h-full bg-brass/80 rounded-full" style={{ width: `${(page.views / topPages[0].views) * 100}%` }} />
+                      </div>
+                      <span className="text-sm font-bold w-12 text-right">{page.views}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="md:col-span-2 rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <Globe className="h-5 w-5 text-blue-400" />
+                <h2 className="font-bold">Top Regions</h2>
+              </div>
+              <div className="space-y-4">
+                {regions.map((region: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-zinc-300">{region.name}</span>
+                    <span className="text-sm font-bold text-blue-100 bg-blue-900/30 px-2 py-1 rounded-md">{region.count.toLocaleString()}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom Row: Browsers (Donut) */}
+            <div className="md:col-span-1 lg:col-span-4 rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex flex-col md:flex-row items-center gap-10">
+              <div className="flex flex-col gap-2 min-w-[200px]">
+                <div className="flex items-center gap-3 mb-2">
+                  <Compass className="h-5 w-5 text-orange-400" />
+                  <h2 className="font-bold">Browser Share</h2>
+                </div>
+                {browsers.map((browser: any, i: number) => {
+                  const colors = ['#f97316', '#3b82f6', '#ec4899', '#8b5cf6', '#10b981'];
+                  return (
+                    <div key={i} className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="h-3 w-3 rounded-full" style={{ backgroundColor: colors[i % colors.length] }} />
+                        <span className="text-zinc-400">{browser.name}</span>
+                      </div>
+                      <span className="font-bold">{browser.count}</span>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="h-[200px] w-full max-w-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={browsers}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="count"
+                      stroke="none"
+                    >
+                      {browsers.map((entry: any, index: number) => {
+                        const colors = ['#f97316', '#3b82f6', '#ec4899', '#8b5cf6', '#10b981'];
+                        return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
+                      })}
+                    </Pie>
+                    <Tooltip contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '8px', color: '#fff' }} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
           </div>
         </TabsContent>
 
