@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { BarChart, Users, Activity, ExternalLink, ShieldAlert, MonitorPlay, MousePointerClick, RefreshCw, Smartphone } from "lucide-react";
 import { useAdminSession } from "@/components/admin/AdminContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/admin/_layout/analytics")({
   component: AnalyticsPage,
@@ -12,8 +12,27 @@ export const Route = createFileRoute("/admin/_layout/analytics")({
 function AnalyticsPage() {
   const { session } = useAdminSession();
   const [datadogUrl, setDatadogUrl] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  if (!session) return null;
+  useEffect(() => {
+    const savedUrl = localStorage.getItem("datadog_dashboard_url");
+    if (savedUrl) {
+      setDatadogUrl(savedUrl);
+    }
+    setIsLoaded(true);
+  }, []);
+
+  const handleSaveUrl = (url: string) => {
+    setDatadogUrl(url);
+    localStorage.setItem("datadog_dashboard_url", url);
+  };
+
+  const handleDisconnect = () => {
+    setDatadogUrl("");
+    localStorage.removeItem("datadog_dashboard_url");
+  };
+
+  if (!session || !isLoaded) return null;
 
   return (
     <div className="mx-auto max-w-6xl space-y-10 p-6">
@@ -101,7 +120,7 @@ function AnalyticsPage() {
                   className="flex-1 rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2.5 text-sm outline-none focus:border-brass/50 focus:ring-1 focus:ring-brass/50"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      setDatadogUrl(e.currentTarget.value);
+                      handleSaveUrl(e.currentTarget.value);
                     }
                   }}
                 />
@@ -109,7 +128,7 @@ function AnalyticsPage() {
                   className="rounded-lg bg-white px-5 py-2.5 text-sm font-bold text-black transition hover:bg-zinc-200"
                   onClick={(e) => {
                     const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-                    if (input.value) setDatadogUrl(input.value);
+                    if (input.value) handleSaveUrl(input.value);
                   }}
                 >
                   Embed
@@ -121,7 +140,7 @@ function AnalyticsPage() {
               {/* Controls */}
               <div className="absolute right-4 top-4 z-10">
                 <button 
-                  onClick={() => setDatadogUrl("")}
+                  onClick={handleDisconnect}
                   className="rounded-lg bg-zinc-900 border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-300 shadow-lg hover:bg-zinc-800 transition-colors"
                 >
                   Disconnect
