@@ -1,15 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { BarChart, Users, Activity, ExternalLink, ShieldAlert, MonitorPlay, MousePointerClick, RefreshCw, Smartphone } from "lucide-react";
+import { BarChart as BarChartIcon, Users, Activity, ExternalLink, ShieldAlert, MonitorPlay, MousePointerClick } from "lucide-react";
 import { useAdminSession } from "@/components/admin/AdminContext";
 import { useState, useEffect } from "react";
+import { getDatadogStats } from "@/lib/datadog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from "recharts";
 
 export const Route = createFileRoute("/admin/_layout/analytics")({
   component: AnalyticsPage,
+  loader: () => getDatadogStats(),
   head: () => ({ meta: [{ title: "Datadog Analytics — Admin" }] }),
 });
 
 function AnalyticsPage() {
+  const { chartData, totalViews } = Route.useLoaderData();
   const { session } = useAdminSession();
   const [datadogUrl, setDatadogUrl] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
@@ -90,17 +95,82 @@ function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Embedded Public Dashboard Section */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-1">
-        <div className="flex items-center justify-between border-b border-zinc-800 bg-zinc-900/40 px-6 py-4 rounded-t-xl">
-          <div className="flex items-center gap-3">
-            <BarChart className="h-5 w-5 text-brass" />
-            <h2 className="font-bold">Embedded Public Dashboard</h2>
+      <Tabs defaultValue="simplified" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 max-w-[400px] mb-8 bg-zinc-900 border border-zinc-800 rounded-lg p-1">
+          <TabsTrigger value="simplified" className="rounded-md data-[state=active]:bg-zinc-800 data-[state=active]:text-white">Simplified View</TabsTrigger>
+          <TabsTrigger value="advanced" className="rounded-md data-[state=active]:bg-zinc-800 data-[state=active]:text-white">Advanced View</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="simplified" className="space-y-6">
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
+            <div className="mb-8">
+              <h2 className="text-xl font-bold mb-1">Traffic Overview (7 Days)</h2>
+              <div className="flex items-end gap-3">
+                <span className="text-4xl font-black text-brass">{totalViews.toLocaleString()}</span>
+                <span className="text-sm font-medium text-zinc-400 mb-1">total pageviews</span>
+              </div>
+            </div>
+
+            <div className="h-[400px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData}>
+                  <defs>
+                    <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#dcb16e" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#dcb16e" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="#52525b" 
+                    tick={{ fill: '#a1a1aa', fontSize: 12 }}
+                    tickLine={false}
+                    axisLine={false}
+                    dy={10}
+                  />
+                  <YAxis 
+                    stroke="#52525b"
+                    tick={{ fill: '#a1a1aa', fontSize: 12 }}
+                    tickLine={false}
+                    axisLine={false}
+                    dx={-10}
+                  />
+                  <Tooltip
+                    contentStyle={{ 
+                      backgroundColor: '#09090b', 
+                      border: '1px solid #27272a',
+                      borderRadius: '8px',
+                      color: '#fff'
+                    }}
+                    itemStyle={{ color: '#dcb16e', fontWeight: 'bold' }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="pageviews"
+                    stroke="#dcb16e"
+                    strokeWidth={3}
+                    fillOpacity={1}
+                    fill="url(#colorViews)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <div className="text-xs font-medium text-zinc-500 uppercase tracking-widest bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800">
-            iframe viewer
-          </div>
-        </div>
+        </TabsContent>
+
+        <TabsContent value="advanced" className="space-y-6">
+          {/* Embedded Public Dashboard Section */}
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-1">
+            <div className="flex items-center justify-between border-b border-zinc-800 bg-zinc-900/40 px-6 py-4 rounded-t-xl">
+              <div className="flex items-center gap-3">
+                <BarChartIcon className="h-5 w-5 text-brass" />
+                <h2 className="font-bold">Embedded Public Dashboard</h2>
+              </div>
+              <div className="text-xs font-medium text-zinc-500 uppercase tracking-widest bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800">
+                iframe viewer
+              </div>
+            </div>
         
         <div className="p-6">
           {!datadogUrl ? (
@@ -159,6 +229,8 @@ function AnalyticsPage() {
           )}
         </div>
       </div>
+      </TabsContent>
+      </Tabs>
       
       {/* Disclaimer */}
       <div className="rounded-lg bg-blue-950/20 border border-blue-900/30 p-4 text-sm text-blue-200/70 flex gap-3 items-start">
