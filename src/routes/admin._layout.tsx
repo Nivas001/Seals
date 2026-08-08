@@ -17,6 +17,8 @@ import {
   X,
   Home,
   ChevronRight,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 export const Route = createFileRoute("/admin/_layout")({
@@ -38,10 +40,20 @@ function AdminLayoutShell() {
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  // Theme state
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const supabase = createClient();
 
   useEffect(() => {
+    // Load theme preference
+    const savedTheme = localStorage.getItem("adminTheme");
+    if (savedTheme !== null) {
+      setIsDarkMode(savedTheme === "dark");
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setAuthLoading(false);
@@ -52,14 +64,20 @@ function AdminLayoutShell() {
     return () => subscription.unsubscribe();
   }, []);
 
+  const toggleTheme = () => {
+    const newValue = !isDarkMode;
+    setIsDarkMode(newValue);
+    localStorage.setItem("adminTheme", newValue ? "dark" : "light");
+  };
+
   const onLogout = () => supabase.auth.signOut();
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className={`min-h-screen ${isDarkMode ? 'bg-zinc-950' : 'bg-background'} flex items-center justify-center`}>
         <div className="flex flex-col items-center gap-4">
-          <div className="h-8 w-8 rounded-full border-2 border-brass border-t-transparent animate-spin" />
-          <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Authenticating</span>
+          <div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Authenticating</span>
         </div>
       </div>
     );
@@ -75,7 +93,7 @@ function AdminLayoutShell() {
 
   return (
     <AdminContext.Provider value={{ session, onLogout }}>
-      <div className="admin-theme min-h-screen bg-zinc-950 text-zinc-100 flex">
+      <div className={`${isDarkMode ? 'admin-theme ' : ''}min-h-screen bg-background text-foreground flex transition-colors duration-300`}>
         {/* ── Mobile Overlay ── */}
         {sidebarOpen && (
           <div
@@ -86,20 +104,20 @@ function AdminLayoutShell() {
 
         {/* ── Sidebar ── */}
         <aside
-          className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-zinc-900 border-r border-zinc-800 transition-transform duration-300 ease-out md:translate-x-0 ${
+          className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-surface border-r border-border transition-transform duration-300 ease-out md:translate-x-0 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } md:sticky md:top-0 md:h-screen`}
         >
           {/* Logo area */}
-          <div className="flex h-16 items-center gap-3 px-5 border-b border-zinc-800 shrink-0">
+          <div className="flex h-16 items-center gap-3 px-5 border-b border-border shrink-0">
             <img src="/images/admin_logo.png" className="w-8 h-8 object-contain" alt="Admin Logo" />
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">AARRKKAA</div>
-              <div className="text-xs font-bold text-zinc-100">Admin Panel</div>
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">AARRKKAA</div>
+              <div className="text-xs font-bold text-foreground">Admin Panel</div>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="ml-auto md:hidden text-zinc-400 hover:text-white transition-colors"
+              className="ml-auto md:hidden text-muted-foreground hover:text-foreground transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
@@ -116,30 +134,43 @@ function AdminLayoutShell() {
                   onClick={() => setSidebarOpen(false)}
                   className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
                     isActive
-                      ? "bg-brass/15 text-brass"
-                      : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
+                      ? "bg-primary/15 text-primary"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   }`}
                 >
-                  <Icon className={`h-4 w-4 shrink-0 transition-colors ${isActive ? "text-brass" : "text-zinc-500 group-hover:text-zinc-300"}`} />
+                  <Icon className={`h-4 w-4 shrink-0 transition-colors ${isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`} />
                   {label}
-                  {isActive && <ChevronRight className="ml-auto h-3 w-3 text-brass/60" />}
+                  {isActive && <ChevronRight className="ml-auto h-3 w-3 text-primary/60" />}
                 </Link>
               );
             })}
           </nav>
 
           {/* Bottom area */}
-          <div className="shrink-0 border-t border-zinc-800 p-3 space-y-1">
+          <div className="shrink-0 border-t border-border p-3 space-y-1">
+            <button
+              onClick={toggleTheme}
+              className="w-full flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                {isDarkMode ? <Moon className="h-4 w-4 shrink-0" /> : <Sun className="h-4 w-4 shrink-0" />}
+                Theme
+              </div>
+              <div className="flex h-5 w-8 items-center rounded-full bg-muted-foreground/30 p-0.5 transition-colors">
+                <div className={`h-4 w-4 rounded-full bg-foreground transition-transform ${isDarkMode ? "translate-x-3" : "translate-x-0"}`} />
+              </div>
+            </button>
+            <div className="h-px w-full bg-border my-1" />
             <Link
               to="/"
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-500 hover:bg-zinc-800 hover:text-zinc-100 transition-colors"
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
             >
               <Home className="h-4 w-4 shrink-0" />
               Back to Site
             </Link>
             <button
               onClick={onLogout}
-              className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-500 hover:bg-red-500/10 hover:text-red-400 transition-colors"
+              className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
             >
               <LogOut className="h-4 w-4 shrink-0" />
               Sign Out
@@ -150,17 +181,17 @@ function AdminLayoutShell() {
         {/* ── Main Content ── */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* Top bar */}
-          <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md px-4 sm:px-6">
+          <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-border bg-background/80 backdrop-blur-md px-4 sm:px-6 transition-colors duration-300">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="md:hidden flex items-center justify-center h-8 w-8 rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
+              className="md:hidden flex items-center justify-center h-8 w-8 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
             >
               <Menu className="h-4 w-4" />
             </button>
             <div className="flex-1">
-              <h1 className="text-sm font-bold text-zinc-100 tracking-tight">{activeLabel}</h1>
+              <h1 className="text-sm font-bold text-foreground tracking-tight">{activeLabel}</h1>
             </div>
-            <div className="text-[10px] font-semibold uppercase tracking-widest text-zinc-600">
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
               {session.user?.email}
             </div>
           </header>

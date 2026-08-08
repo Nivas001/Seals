@@ -65,7 +65,7 @@ export function ContactTab({ initialData, token, onUpdate }: { initialData: any;
         <div className="space-y-2">
           <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Motto</label>
           <Textarea 
-            className="w-full bg-surface border-hairline focus:border-brass text-ink min-h-[80px]"
+            className="w-full bg-surface border-border focus:border-primary text-foreground min-h-[80px]"
             value={data.motto} 
             onChange={(e) => setData({ ...data, motto: e.target.value })} 
           />
@@ -86,7 +86,7 @@ export function ContactTab({ initialData, token, onUpdate }: { initialData: any;
         <div className="space-y-2">
           <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Address (JSON Format)</label>
           <Textarea 
-            className="w-full bg-surface border-hairline focus:border-brass text-ink font-mono min-h-[150px]"
+            className="w-full bg-surface border-border focus:border-primary text-foreground font-mono min-h-[150px]"
             value={data.address} 
             onChange={(e) => setData({ ...data, address: e.target.value })} 
           />
@@ -96,7 +96,7 @@ export function ContactTab({ initialData, token, onUpdate }: { initialData: any;
         <Button 
           type="submit" 
           disabled={busy} 
-          className="bg-brass text-background hover:bg-brass/90 rounded-full h-12 uppercase tracking-[0.1em] font-bold text-xs px-8"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full h-12 uppercase tracking-[0.1em] font-bold text-xs px-8"
         >
           {busy ? "Saving..." : "Save Changes"}
         </Button>

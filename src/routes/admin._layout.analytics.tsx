@@ -41,12 +41,10 @@ function AnalyticsPage() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-10 p-6">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Datadog Analytics</h1>
-          <p className="mt-1 text-zinc-400">
-            Real-time user insights, session replays, and performance metrics.
-          </p>
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">Traffic Analytics</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Deep dive into your customer behavior.</p>
         </div>
         
         {/* Session Replays CTA */}
@@ -54,306 +52,176 @@ function AnalyticsPage() {
           href="https://app.datadoghq.com/rum/replay/sessions"
           target="_blank"
           rel="noreferrer"
-          className="group relative overflow-hidden rounded-lg bg-[#632CA6] px-6 py-3 font-semibold text-white transition-all hover:bg-[#52218c] flex items-center gap-3 shadow-lg shadow-[#632CA6]/20"
+          className="group relative overflow-hidden rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground transition-all hover:opacity-90 flex items-center gap-3 shadow-lg"
         >
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
           <MonitorPlay className="h-5 w-5 group-hover:scale-110 transition-transform" />
           <span>Launch Session Replays</span>
           <ExternalLink className="h-4 w-4 ml-1 opacity-70" />
         </a>
-      </header>
+      </div>
 
       {/* Feature Highlights showing what Datadog tracks */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+        <div className="rounded-xl border border-border bg-surface p-6">
           <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
             <Users className="h-5 w-5" />
           </div>
-          <h3 className="font-semibold text-zinc-100">Live Traffic</h3>
-          <p className="mt-2 text-sm text-zinc-400">Monitor active visitors and real-time pageviews across the site.</p>
+          <h3 className="font-semibold text-foreground">Live Traffic</h3>
+          <p className="mt-2 text-sm text-muted-foreground">Monitor active visitors and real-time pageviews across the site.</p>
         </div>
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+        <div className="rounded-xl border border-border bg-surface p-6">
           <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500">
             <MousePointerClick className="h-5 w-5" />
           </div>
-          <h3 className="font-semibold text-zinc-100">User Journeys</h3>
-          <p className="mt-2 text-sm text-zinc-400">Track clicks, scrolls, and navigation paths for UX optimization.</p>
+          <h3 className="font-semibold text-foreground">User Journeys</h3>
+          <p className="mt-2 text-sm text-muted-foreground">Track clicks, scrolls, and navigation paths for UX optimization.</p>
         </div>
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+        <div className="rounded-xl border border-border bg-surface p-6">
           <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-orange-500/10 text-orange-500">
             <Activity className="h-5 w-5" />
           </div>
-          <h3 className="font-semibold text-zinc-100">Performance</h3>
-          <p className="mt-2 text-sm text-zinc-400">Core Web Vitals, load times, and API latency tracking.</p>
+          <h3 className="font-semibold text-foreground">Performance</h3>
+          <p className="mt-2 text-sm text-muted-foreground">Core Web Vitals, load times, and API latency tracking.</p>
         </div>
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+        <div className="rounded-xl border border-border bg-surface p-6">
           <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/10 text-red-500">
             <ShieldAlert className="h-5 w-5" />
           </div>
-          <h3 className="font-semibold text-zinc-100">Error Tracking</h3>
-          <p className="mt-2 text-sm text-zinc-400">Instant alerts for Javascript crashes or broken API endpoints.</p>
+          <h3 className="font-semibold text-foreground">Error Tracking</h3>
+          <p className="mt-2 text-sm text-muted-foreground">Instant alerts for Javascript crashes or broken API endpoints.</p>
         </div>
       </div>
 
-      <Tabs defaultValue="simplified" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-[400px] mb-8 bg-zinc-900 border border-zinc-800 rounded-lg p-1">
-          <TabsTrigger value="simplified" className="rounded-md data-[state=active]:bg-zinc-800 data-[state=active]:text-white">Simplified View</TabsTrigger>
-          <TabsTrigger value="advanced" className="rounded-md data-[state=active]:bg-zinc-800 data-[state=active]:text-white">Advanced View</TabsTrigger>
+      <Tabs defaultValue="simplified" className="w-full" onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-2 max-w-[400px] mb-8 bg-surface border border-border rounded-lg p-1">
+          <TabsTrigger value="simplified" className="rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground">Simplified View</TabsTrigger>
+          <TabsTrigger value="advanced" className="rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground">Advanced View</TabsTrigger>
         </TabsList>
 
         <TabsContent value="simplified" className="space-y-6">
-          {/* BENTO GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            
-            {/* Top Row: Total Traffic (Spans 3 cols) + Interactions (Spans 1 col) */}
-            <div className="md:col-span-2 lg:col-span-3 rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex flex-col">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold mb-1">Traffic Overview (7 Days)</h2>
-                <div className="flex items-end gap-3">
-                  <span className="text-4xl font-black text-brass">{totalViews.toLocaleString()}</span>
-                  <span className="text-sm font-medium text-zinc-400 mb-1">total pageviews</span>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="rounded-2xl border border-border bg-surface p-6 flex items-center gap-6">
+              <div className="h-16 w-16 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
+                <Users className="h-8 w-8" />
               </div>
-              <div className="h-[250px] w-full mt-auto">
+              <div>
+                <h3 className="text-muted-foreground font-medium mb-1">Total Pageviews (7 Days)</h3>
+                <div className="text-4xl font-black text-foreground">{totalViews.toLocaleString()}</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-border bg-surface p-6 flex items-center gap-6">
+              <div className="h-16 w-16 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
+                <MousePointerClick className="h-8 w-8" />
+              </div>
+              <div>
+                <h3 className="text-muted-foreground font-medium mb-1">Total Interactions (Estimated)</h3>
+                <div className="text-4xl font-black text-foreground">{totalInteractions.toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-2 rounded-2xl border border-border bg-surface overflow-hidden shadow-2xl relative">
+              <div className="h-[250px] w-full mt-auto p-6">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={chartData}>
                     <defs>
-                      <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#dcb16e" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="#dcb16e" stopOpacity={0} />
+                      <linearGradient id="colorViews2" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="var(--color-primary)" stopOpacity={0.4}/>
+                        <stop offset="95%" stopColor="var(--color-primary)" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-                    <XAxis dataKey="name" stroke="#52525b" tick={{ fill: '#a1a1aa', fontSize: 12 }} tickLine={false} axisLine={false} dy={10} />
-                    <YAxis stroke="#52525b" tick={{ fill: '#a1a1aa', fontSize: 12 }} tickLine={false} axisLine={false} dx={-10} />
-                    <Tooltip contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '8px', color: '#fff' }} itemStyle={{ color: '#dcb16e', fontWeight: 'bold' }} />
-                    <Area type="monotone" dataKey="pageviews" stroke="#dcb16e" strokeWidth={3} fillOpacity={1} fill="url(#colorViews)" />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.4} />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }} dy={10} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }} />
+                    <Tooltip contentStyle={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: '8px', color: 'var(--color-foreground)' }} itemStyle={{ color: 'var(--color-primary)', fontWeight: 'bold' }} />
+                    <Area type="monotone" dataKey="pageviews" stroke="var(--color-primary)" strokeWidth={4} fillOpacity={1} fill="url(#colorViews2)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex flex-col justify-center items-center text-center">
-              <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-purple-500/10 text-purple-500">
-                <MousePointerClick className="h-7 w-7" />
-              </div>
-              <h2 className="text-lg font-bold text-zinc-400 mb-1">Total Interactions</h2>
-              <span className="text-5xl font-black text-white">{totalInteractions.toLocaleString()}</span>
-              <p className="text-xs text-zinc-500 mt-2">Clicks, scrolls, & form submits</p>
-            </div>
-
-            {/* Middle Row: Top Pages (2 cols) + Regions (2 cols) */}
-            <div className="md:col-span-2 rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
+            <div className="md:col-span-1 rounded-2xl border border-border bg-surface p-6 flex flex-col">
               <div className="flex items-center gap-3 mb-6">
-                <LayoutTemplate className="h-5 w-5 text-brass" />
-                <h2 className="font-bold">Top Pages</h2>
+                <LayoutTemplate className="h-5 w-5 text-primary" />
+                <h2 className="font-bold text-foreground">Top Pages</h2>
               </div>
-              <div className="space-y-4">
-                {topPages.map((page: any, i: number) => (
-                  <div key={i} className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-zinc-300 truncate max-w-[200px]">{page.path}</span>
-                    <div className="flex items-center gap-3 w-1/2">
-                      <div className="h-2 bg-zinc-900 rounded-full flex-1 overflow-hidden">
-                        <div className="h-full bg-brass/80 rounded-full" style={{ width: `${topPages[0]?.views ? (page.views / topPages[0].views) * 100 : 0}%` }} />
-                      </div>
-                      <span className="text-sm font-bold w-12 text-right">{page.views}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="md:col-span-2 rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <Globe className="h-5 w-5 text-blue-400" />
-                <h2 className="font-bold">Top Regions</h2>
-              </div>
-              <div className="space-y-4">
-                {regions.map((region: any, i: number) => (
-                  <div key={i} className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-zinc-300">{region.name}</span>
-                    <span className="text-sm font-bold text-blue-100 bg-blue-900/30 px-2 py-1 rounded-md">{region.count.toLocaleString()}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Bottom Row: Browsers (Donut) + OS + Devices */}
-            <div className="md:col-span-1 lg:col-span-2 rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex flex-col items-center">
-              <div className="flex w-full items-center gap-3 mb-6">
-                <Compass className="h-5 w-5 text-orange-400" />
-                <h2 className="font-bold">Browser Share</h2>
-              </div>
-              <div className="h-[180px] w-full max-w-[250px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={browsers}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={50}
-                      outerRadius={70}
-                      paddingAngle={5}
-                      dataKey="count"
-                      stroke="none"
-                    >
-                      {browsers.map((entry: any, index: number) => {
-                        const colors = ['#f97316', '#3b82f6', '#ec4899', '#8b5cf6', '#10b981'];
-                        return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
-                      })}
-                    </Pie>
-                    <Tooltip 
-                      contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '8px', color: '#fff' }}
-                      itemStyle={{ color: '#fff', fontWeight: '500' }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="flex flex-wrap justify-center gap-3 mt-4">
-                {browsers.map((browser: any, i: number) => {
-                  const colors = ['#f97316', '#3b82f6', '#ec4899', '#8b5cf6', '#10b981'];
+              <div className="flex-1 flex flex-col gap-4">
+                {topPages.map((page: any, i: number) => {
+                  const maxViews = Math.max(...topPages.map((p: any) => p.views));
+                  const percentage = Math.max(5, (page.views / maxViews) * 100);
                   return (
-                    <div key={i} className="flex items-center gap-2 text-xs">
-                      <div className="h-2 w-2 rounded-full" style={{ backgroundColor: colors[i % colors.length] }} />
-                      <span className="text-zinc-400">{browser.name} <span className="font-bold text-white ml-1">{browser.count}</span></span>
+                    <div key={i} className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-medium text-foreground truncate max-w-[120px]" title={page.path}>{page.path}</span>
+                        <span className="font-bold text-foreground">{page.views}</span>
+                      </div>
+                      <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                        <div className="h-full bg-primary rounded-full transition-all duration-1000" style={{ width: `${percentage}%` }} />
+                      </div>
                     </div>
                   );
                 })}
               </div>
             </div>
-
-            <div className="md:col-span-1 lg:col-span-1 rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <Monitor className="h-5 w-5 text-green-400" />
-                <h2 className="font-bold">Operating Systems</h2>
-              </div>
-              <div className="space-y-4">
-                {os.map((item: any, i: number) => (
-                  <div key={i} className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-zinc-300">{item.name}</span>
-                    <span className="text-sm font-bold text-green-100 bg-green-900/30 px-2 py-1 rounded-md">{item.count}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="md:col-span-1 lg:col-span-1 rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <MonitorSmartphone className="h-5 w-5 text-pink-400" />
-                <h2 className="font-bold">Device Types</h2>
-              </div>
-              <div className="space-y-4">
-                {devices.map((item: any, i: number) => (
-                  <div key={i} className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-zinc-300">{item.name}</span>
-                    <span className="text-sm font-bold text-pink-100 bg-pink-900/30 px-2 py-1 rounded-md">{item.count}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Performance Stats Row */}
-            <div className="md:col-span-3 lg:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex items-center gap-6">
-                <div className="h-16 w-16 rounded-full bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0">
-                  <Timer className="h-8 w-8" />
-                </div>
-                <div>
-                  <h3 className="text-zinc-400 font-medium mb-1">Average Time on Site</h3>
-                  <div className="flex items-end gap-2">
-                    <span className="text-3xl font-bold text-white">{perf.avgTime ? perf.avgTime.toFixed(1) : 0}</span>
-                    <span className="text-zinc-500 mb-1">seconds</span>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 flex items-center gap-6">
-                <div className="h-16 w-16 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center shrink-0">
-                  <Gauge className="h-8 w-8" />
-                </div>
-                <div>
-                  <h3 className="text-zinc-400 font-medium mb-1">Avg Load Time (LCP)</h3>
-                  <div className="flex items-end gap-2">
-                    <span className="text-3xl font-bold text-white">{perf.avgLoad ? perf.avgLoad.toFixed(2) : 0}</span>
-                    <span className="text-zinc-500 mb-1">seconds</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
         </TabsContent>
 
         <TabsContent value="advanced" className="space-y-6">
-          {/* Embedded Public Dashboard Section */}
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-1">
-            <div className="flex items-center justify-between border-b border-zinc-800 bg-zinc-900/40 px-6 py-4 rounded-t-xl">
+          <div className="rounded-2xl border border-border bg-surface p-1">
+            <div className="flex items-center justify-between border-b border-border bg-background/50 px-6 py-4 rounded-t-xl">
               <div className="flex items-center gap-3">
-                <BarChartIcon className="h-5 w-5 text-brass" />
-                <h2 className="font-bold">Embedded Public Dashboard</h2>
-              </div>
-              <div className="text-xs font-medium text-zinc-500 uppercase tracking-widest bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800">
-                iframe viewer
+                <BarChartIcon className="h-5 w-5 text-primary" />
+                <h2 className="font-bold text-foreground">Embedded Public Dashboard</h2>
               </div>
             </div>
-        
-        <div className="p-6">
-          {!datadogUrl ? (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/20 py-20 text-center">
-              <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-zinc-900 border border-zinc-800 shadow-xl">
-                <BarChart className="h-8 w-8 text-zinc-500" />
-              </div>
-              <h3 className="mb-2 text-lg font-bold text-zinc-200">Connect a Datadog Dashboard</h3>
-              <p className="mb-8 max-w-md text-sm text-zinc-400">
-                You can embed any Datadog Public Dashboard here. Go to Datadog, click the share icon on a dashboard, generate a public URL, and paste it below.
-              </p>
-              
-              <div className="flex w-full max-w-lg items-center gap-3">
-                <input
-                  type="url"
-                  placeholder="https://p.datadoghq.com/sb/..."
-                  className="flex-1 rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2.5 text-sm outline-none focus:border-brass/50 focus:ring-1 focus:ring-brass/50"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSaveUrl(e.currentTarget.value);
-                    }
-                  }}
-                />
-                <button 
-                  className="rounded-lg bg-white px-5 py-2.5 text-sm font-bold text-black transition hover:bg-zinc-200"
-                  onClick={(e) => {
-                    const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-                    if (input.value) handleSaveUrl(input.value);
-                  }}
-                >
-                  Embed
-                </button>
-              </div>
+            <div className="p-6">
+              {!datadogUrl ? (
+                <div className="rounded-2xl border border-border bg-surface p-6 shadow-2xl">
+                  <div className="flex flex-col items-center text-center gap-4 py-8">
+                    <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                      <ShieldAlert className="h-8 w-8 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-foreground">Datadog Configuration Required</h3>
+                      <p className="text-sm text-muted-foreground mt-2 max-w-sm mx-auto">
+                        To view the advanced embedded dashboard, you need to provide your Datadog Public Dashboard URL.
+                      </p>
+                    </div>
+                    <div className="w-full max-w-md flex flex-col gap-2 mt-4">
+                      <label className="text-left text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Datadog Public Dashboard URL</label>
+                      <input
+                        type="url"
+                        value={datadogUrl}
+                        onChange={(e) => setDatadogUrl(e.target.value)}
+                        placeholder="https://p.datadoghq.com/sb/..."
+                        className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
+                      />
+                      <button 
+                        onClick={saveDatadogUrl}
+                        className="mt-2 w-full rounded-lg bg-primary px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-primary-foreground hover:opacity-90 transition-all"
+                      >
+                        Embed Dashboard
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="relative h-[800px] w-full overflow-hidden rounded-xl border border-border bg-surface">
+                  <div className="absolute right-4 top-4 z-10">
+                    <button 
+                      onClick={handleDisconnect}
+                      className="rounded-lg bg-background border border-border px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm hover:bg-surface transition-colors"
+                    >
+                      Disconnect
+                    </button>
+                  </div>
+                  <iframe src={datadogUrl} width="100%" height="100%" className="border-0 bg-transparent" title="Datadog Dashboard" allowFullScreen />
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="relative h-[800px] w-full overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950">
-              {/* Controls */}
-              <div className="absolute right-4 top-4 z-10">
-                <button 
-                  onClick={handleDisconnect}
-                  className="rounded-lg bg-zinc-900 border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-300 shadow-lg hover:bg-zinc-800 transition-colors"
-                >
-                  Disconnect
-                </button>
-              </div>
-              
-              <iframe
-                src={datadogUrl}
-                width="100%"
-                height="100%"
-                className="border-0 bg-transparent"
-                title="Datadog Dashboard"
-                allowFullScreen
-              />
-            </div>
-          )}
-        </div>
-      </div>
-      </TabsContent>
+          </div>
+        </TabsContent>
       </Tabs>
       
       {/* Disclaimer */}

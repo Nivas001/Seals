@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WizardRouteImport } from './routes/wizard'
 import { Route as WhackALeakRouteImport } from './routes/whack-a-leak'
 import { Route as SystemBreachRouteImport } from './routes/system-breach'
 import { Route as StressTestRouteImport } from './routes/stress-test'
@@ -43,6 +44,11 @@ import { Route as AdminLayoutDashboardRouteImport } from './routes/admin._layout
 import { Route as AdminLayoutContactRouteImport } from './routes/admin._layout.contact'
 import { Route as AdminLayoutCategoriesRouteImport } from './routes/admin._layout.categories'
 
+const WizardRoute = WizardRouteImport.update({
+  id: '/wizard',
+  path: '/wizard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WhackALeakRoute = WhackALeakRouteImport.update({
   id: '/whack-a-leak',
   path: '/whack-a-leak',
@@ -229,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/stress-test': typeof StressTestRoute
   '/system-breach': typeof SystemBreachRoute
   '/whack-a-leak': typeof WhackALeakRoute
+  '/wizard': typeof WizardRoute
   '/about/payments': typeof AboutPaymentsRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/admin/': typeof AdminIndexRoute
@@ -262,6 +269,7 @@ export interface FileRoutesByTo {
   '/stress-test': typeof StressTestRoute
   '/system-breach': typeof SystemBreachRoute
   '/whack-a-leak': typeof WhackALeakRoute
+  '/wizard': typeof WizardRoute
   '/about/payments': typeof AboutPaymentsRoute
   '/admin': typeof AdminIndexRoute
   '/products/$category': typeof ProductsCategoryRoute
@@ -297,6 +305,7 @@ export interface FileRoutesById {
   '/stress-test': typeof StressTestRoute
   '/system-breach': typeof SystemBreachRoute
   '/whack-a-leak': typeof WhackALeakRoute
+  '/wizard': typeof WizardRoute
   '/about_/payments': typeof AboutPaymentsRoute
   '/admin/_layout': typeof AdminLayoutRouteWithChildren
   '/products/$category': typeof ProductsCategoryRoute
@@ -334,6 +343,7 @@ export interface FileRouteTypes {
     | '/stress-test'
     | '/system-breach'
     | '/whack-a-leak'
+    | '/wizard'
     | '/about/payments'
     | '/products/$category'
     | '/admin/'
@@ -367,6 +377,7 @@ export interface FileRouteTypes {
     | '/stress-test'
     | '/system-breach'
     | '/whack-a-leak'
+    | '/wizard'
     | '/about/payments'
     | '/admin'
     | '/products/$category'
@@ -401,6 +412,7 @@ export interface FileRouteTypes {
     | '/stress-test'
     | '/system-breach'
     | '/whack-a-leak'
+    | '/wizard'
     | '/about_/payments'
     | '/admin/_layout'
     | '/products/$category'
@@ -437,6 +449,7 @@ export interface RootRouteChildren {
   StressTestRoute: typeof StressTestRoute
   SystemBreachRoute: typeof SystemBreachRoute
   WhackALeakRoute: typeof WhackALeakRoute
+  WizardRoute: typeof WizardRoute
   AboutPaymentsRoute: typeof AboutPaymentsRoute
   ProductsCategoryRoute: typeof ProductsCategoryRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
@@ -445,6 +458,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wizard': {
+      id: '/wizard'
+      path: '/wizard'
+      fullPath: '/wizard'
+      preLoaderRoute: typeof WizardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/whack-a-leak': {
       id: '/whack-a-leak'
       path: '/whack-a-leak'
@@ -736,6 +756,7 @@ const rootRouteChildren: RootRouteChildren = {
   StressTestRoute: StressTestRoute,
   SystemBreachRoute: SystemBreachRoute,
   WhackALeakRoute: WhackALeakRoute,
+  WizardRoute: WizardRoute,
   AboutPaymentsRoute: AboutPaymentsRoute,
   ProductsCategoryRoute: ProductsCategoryRoute,
   ProductsIndexRoute: ProductsIndexRoute,

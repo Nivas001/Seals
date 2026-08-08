@@ -23,18 +23,18 @@ function SortableCategoryItem({ cat, onEdit, onDelete, busy }: any) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} className={`p-4 bg-surface border rounded-xl flex items-center justify-between transition-all ${isDragging ? 'shadow-xl border-brass scale-[1.01]' : 'border-hairline shadow-sm hover:shadow-md'} ${cat.isHidden ? 'opacity-60' : ''}`}>
+    <div ref={setNodeRef} style={style} className={`p-4 bg-surface border rounded-xl flex items-center justify-between transition-all ${isDragging ? 'shadow-xl border-primary scale-[1.01]' : 'border-border shadow-sm hover:shadow-md'} ${cat.isHidden ? 'opacity-60' : ''}`}>
       <div className="flex items-center gap-4">
         {onEdit && (
           <div {...attributes} {...listeners} className="cursor-grab text-muted-foreground hover:text-ink active:cursor-grabbing p-2 touch-none">
             <GripVertical className="w-5 h-5" />
           </div>
         )}
-        <img src={cat.image} alt={cat.name} className="w-16 h-16 object-cover rounded border border-hairline bg-zinc-100" />
-        <div>
+        <img src={cat.image} alt={cat.name} className="w-16 h-16 object-cover rounded border border-border bg-muted" />
+        <div className="flex flex-col">
           <div className="flex items-center gap-2">
-            <h4 className="font-bold text-ink">{cat.name}</h4>
-            {cat.isHidden && <span className="bg-zinc-800 text-zinc-300 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1"><EyeOff className="w-3 h-3" /> Hidden</span>}
+            <h3 className="font-bold text-foreground">{cat.name}</h3>
+            {cat.isHidden && <span className="bg-muted-foreground text-background text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1"><EyeOff className="w-3 h-3" /> Hidden</span>}
           </div>
           <p className="text-xs text-muted-foreground font-mono">{cat.slug}</p>
         </div>
@@ -50,8 +50,8 @@ function SortableCategoryItem({ cat, onEdit, onDelete, busy }: any) {
             </Button>
           </>
         ) : (
-          <Button variant="outline" size="sm" onClick={() => onDelete(cat)} disabled={busy} className="hover:bg-brass hover:text-white hover:border-brass">
-            <ArchiveRestore className="w-4 h-4 mr-2" /> Restore
+          <Button variant="outline" size="sm" onClick={() => onDelete(cat)} disabled={busy} className="hover:bg-destructive hover:text-destructive-foreground hover:border-destructive">
+            <Trash2 className="w-4 h-4" />
           </Button>
         )}
       </div>
@@ -220,36 +220,37 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
   return (
     <div className="space-y-8">
       <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
-        <DialogContent className="bg-zinc-950 border-zinc-800 text-zinc-100">
+        <DialogContent className="bg-surface border-border text-foreground">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-red-400">
-              <AlertTriangle className="w-5 h-5" />
+            <DialogTitle className="text-xl font-bold flex items-center gap-2 text-destructive">
+              <AlertTriangle className="h-5 w-5" />
               Delete Category
             </DialogTitle>
-            <DialogDescription className="text-zinc-400 pt-2">
-              Are you sure you want to delete <strong>{categoryToDelete?.name}</strong>? 
+            <DialogDescription className="text-muted-foreground pt-2">
+              Are you sure you want to delete <span className="font-bold text-foreground">{categoryToDelete?.name}</span>? 
               This will move the category and all of its products to the Trash.
               <br /><br />
               Please type <strong className="text-white select-none">{categoryToDelete?.name}</strong> to confirm.
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
-            <Input 
+            <input 
+              type="text" 
               value={deleteConfirmText}
-              onChange={(e) => setDeleteConfirmText(e.target.value)}
-              placeholder={categoryToDelete?.name}
-              className="bg-zinc-900 border-zinc-700 text-zinc-100"
+              onChange={e => setDeleteConfirmText(e.target.value)}
+              placeholder="Type name to confirm"
+              className="bg-background border-border text-foreground w-full rounded-md px-3 text-sm focus:outline-none focus:border-destructive focus:ring-1 focus:ring-destructive"
             />
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)} className="border-zinc-700 text-zinc-300 hover:bg-zinc-800">
+          <DialogFooter className="gap-2 sm:gap-0 mt-6">
+            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)} className="border-border text-muted-foreground hover:bg-muted hover:text-foreground">
               Cancel
             </Button>
             <Button 
               variant="destructive" 
               onClick={handleDelete}
               disabled={busy || deleteConfirmText !== categoryToDelete?.name}
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-destructive hover:bg-destructive/90"
             >
               Move to Trash
             </Button>
@@ -261,16 +262,16 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <h3 className="text-xl font-display font-black text-ink">Product Categories</h3>
-            <div className="flex bg-surface border border-hairline rounded-lg p-1">
+            <div className="flex bg-muted/50 p-1 rounded-lg">
               <button 
                 onClick={() => setViewMode("active")}
-                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${viewMode === "active" ? "bg-brass text-white shadow-sm" : "text-muted-foreground hover:text-ink"}`}
+                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${viewMode === "active" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
               >
                 Active
               </button>
               <button 
                 onClick={() => setViewMode("trash")}
-                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${viewMode === "trash" ? "bg-zinc-800 text-white shadow-sm" : "text-muted-foreground hover:text-ink"}`}
+                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${viewMode === "trash" ? "bg-muted-foreground text-background shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
               >
                 Trash ({trashFiltered.length})
               </button>
@@ -278,7 +279,7 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
           </div>
           <Button 
             onClick={startAdd} 
-            className="bg-brass text-background hover:bg-brass/90 rounded-full text-xs uppercase tracking-wider font-bold"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full text-xs uppercase tracking-wider font-bold"
           >
             <Plus className="w-4 h-4 mr-2" /> Add Category
           </Button>
@@ -306,7 +307,7 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
             <div className="space-y-2">
               <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Full Description</label>
               <Textarea 
-                className="w-full bg-surface border-hairline focus:border-brass text-ink min-h-[80px]"
+                className="w-full bg-surface border-border focus:border-primary text-foreground min-h-[80px]"
                 value={formData.description} 
                 onChange={e => setFormData({...formData, description: e.target.value})} 
                 required
@@ -316,8 +317,8 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
               <div className="space-y-2">
                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category Image</label>
                 <div className="flex items-center gap-3">
-                  {formData.image && <img src={formData.image} alt="Preview" className="w-10 h-10 object-cover rounded bg-zinc-100 border border-hairline" />}
-                  <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full text-xs text-ink file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brass/10 file:text-brass hover:file:bg-brass/20 cursor-pointer" />
+                  {formData.image && <img src={formData.image} alt="Preview" className="w-10 h-10 object-cover rounded bg-muted border border-border" />}
+                  <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full text-xs text-foreground file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer" />
                 </div>
               </div>
               <div className="space-y-2">
@@ -325,12 +326,11 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
                 <Input type="number" value={formData.priority.toString()} onChange={e => setFormData({...formData, priority: parseInt(e.target.value) || 0})} required />
               </div>
             </div>
-            
-            <div className="pt-2 border-t border-hairline mt-4">
-              <div className="flex items-center justify-between p-4 bg-zinc-900/50 border border-hairline rounded-xl">
-                <div className="space-y-0.5">
-                  <Label className="text-sm font-bold text-ink">Hide Category</Label>
-                  <p className="text-xs text-muted-foreground">When hidden, this category will not appear on the live website.</p>
+            <div className="pt-2 border-t border-border mt-4">
+              <div className="flex items-center justify-between p-4 bg-muted/30 border border-border rounded-xl">
+                <div>
+                  <div className="text-sm font-bold text-foreground">Visibility Status</div>
+                  <p className="text-xs text-muted-foreground mt-1">When hidden, this category will not appear on the live website.</p>
                 </div>
                 <Switch 
                   checked={formData.isHidden} 

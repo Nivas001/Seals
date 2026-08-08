@@ -38,8 +38,8 @@ function AdminProductsPage() {
 
 function SectionLoader({ label }: { label: string }) {
   return (
-    <div className="flex flex-col items-center justify-center py-32 gap-4 text-zinc-600">
-      <div className="h-7 w-7 rounded-full border-2 border-brass border-t-transparent animate-spin" />
+    <div className="flex flex-col items-center justify-center py-32 gap-4 text-muted-foreground">
+      <div className="h-7 w-7 rounded-full border-2 border-primary border-t-transparent animate-spin" />
       <span className="text-xs font-bold uppercase tracking-widest">{label}</span>
     </div>
   );
