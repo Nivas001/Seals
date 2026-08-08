@@ -164,6 +164,22 @@ function RootComponent() {
   const location = useLocation();
   const isHomepage = location.pathname === "/";
 
+  // Custom Analytics Tracker to bypass Vercel Log Drain limitations
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      fetch("/api/log-drain", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "custom-tracker",
+          path: location.pathname,
+          userAgent: navigator.userAgent,
+          referrer: document.referrer || "Direct"
+        })
+      }).catch(() => {}); // silently fail to not disrupt UX
+    }
+  }, [location.pathname]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <RoutePendingIndicator />

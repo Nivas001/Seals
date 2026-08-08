@@ -10,9 +10,21 @@ export const APIRoute = createAPIFileRoute("/api/log-drain")({
       const logs = Array.isArray(data) ? data : [data];
       
       const trafficLogs = logs
-        .filter((log: any) => log.source === "edge" || log.type === "request")
+        .filter((log: any) => log.source === "edge" || log.type === "request" || log.source === "custom-tracker")
         .map((log: any) => {
-          // Extract info from log.proxy or log directly depending on Vercel's payload format
+          if (log.source === "custom-tracker") {
+             // Custom tracker sends these directly, but we get IP/Country from the incoming request headers
+             return {
+                path: log.path || "/",
+                userAgent: log.userAgent || "Unknown",
+                referrer: log.referrer || "Direct",
+                country: request.headers.get("x-vercel-ip-country") || "Unknown",
+                ip: request.headers.get("x-forwarded-for") || "0.0.0.0",
+                timestamp: new Date()
+             };
+          }
+
+          // Legacy Vercel payload handling
           const proxy = log.proxy || {};
           const headers = log.headers || {};
           
