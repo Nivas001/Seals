@@ -269,6 +269,13 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
               >
                 Request a quote
               </Link>
+              <Link
+                to="/wizard"
+                className="inline-flex items-center gap-2 rounded-full border border-brass/50 bg-brass/10 px-5 py-3 text-sm font-bold text-brass transition hover:bg-brass hover:text-black"
+              >
+                Find My Seal Wizard
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </motion.div>
 
             {/* Animated stats */}
