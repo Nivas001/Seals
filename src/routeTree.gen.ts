@@ -43,6 +43,7 @@ import { Route as AdminLayoutHeroRouteImport } from './routes/admin._layout.hero
 import { Route as AdminLayoutDashboardRouteImport } from './routes/admin._layout.dashboard'
 import { Route as AdminLayoutContactRouteImport } from './routes/admin._layout.contact'
 import { Route as AdminLayoutCategoriesRouteImport } from './routes/admin._layout.categories'
+import { Route as AdminLayoutAnalyticsRouteImport } from './routes/admin._layout.analytics'
 
 const WizardRoute = WizardRouteImport.update({
   id: '/wizard',
@@ -213,6 +214,11 @@ const AdminLayoutCategoriesRoute = AdminLayoutCategoriesRouteImport.update({
   path: '/categories',
   getParentRoute: () => AdminLayoutRoute,
 } as any)
+const AdminLayoutAnalyticsRoute = AdminLayoutAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -240,6 +246,7 @@ export interface FileRoutesByFullPath {
   '/products/$category': typeof ProductsCategoryRoute
   '/admin/': typeof AdminIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/admin/analytics': typeof AdminLayoutAnalyticsRoute
   '/admin/categories': typeof AdminLayoutCategoriesRoute
   '/admin/contact': typeof AdminLayoutContactRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
@@ -274,6 +281,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/products': typeof ProductsIndexRoute
+  '/admin/analytics': typeof AdminLayoutAnalyticsRoute
   '/admin/categories': typeof AdminLayoutCategoriesRoute
   '/admin/contact': typeof AdminLayoutContactRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
@@ -311,6 +319,7 @@ export interface FileRoutesById {
   '/products/$category': typeof ProductsCategoryRoute
   '/admin/': typeof AdminIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/admin/_layout/analytics': typeof AdminLayoutAnalyticsRoute
   '/admin/_layout/categories': typeof AdminLayoutCategoriesRoute
   '/admin/_layout/contact': typeof AdminLayoutContactRoute
   '/admin/_layout/dashboard': typeof AdminLayoutDashboardRoute
@@ -348,6 +357,7 @@ export interface FileRouteTypes {
     | '/products/$category'
     | '/admin/'
     | '/products/'
+    | '/admin/analytics'
     | '/admin/categories'
     | '/admin/contact'
     | '/admin/dashboard'
@@ -382,6 +392,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/products/$category'
     | '/products'
+    | '/admin/analytics'
     | '/admin/categories'
     | '/admin/contact'
     | '/admin/dashboard'
@@ -418,6 +429,7 @@ export interface FileRouteTypes {
     | '/products/$category'
     | '/admin/'
     | '/products/'
+    | '/admin/_layout/analytics'
     | '/admin/_layout/categories'
     | '/admin/_layout/contact'
     | '/admin/_layout/dashboard'
@@ -696,10 +708,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutCategoriesRouteImport
       parentRoute: typeof AdminLayoutRoute
     }
+    '/admin/_layout/analytics': {
+      id: '/admin/_layout/analytics'
+      path: '/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminLayoutAnalyticsRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
   }
 }
 
 interface AdminLayoutRouteChildren {
+  AdminLayoutAnalyticsRoute: typeof AdminLayoutAnalyticsRoute
   AdminLayoutCategoriesRoute: typeof AdminLayoutCategoriesRoute
   AdminLayoutContactRoute: typeof AdminLayoutContactRoute
   AdminLayoutDashboardRoute: typeof AdminLayoutDashboardRoute
@@ -710,6 +730,7 @@ interface AdminLayoutRouteChildren {
 }
 
 const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
+  AdminLayoutAnalyticsRoute: AdminLayoutAnalyticsRoute,
   AdminLayoutCategoriesRoute: AdminLayoutCategoriesRoute,
   AdminLayoutContactRoute: AdminLayoutContactRoute,
   AdminLayoutDashboardRoute: AdminLayoutDashboardRoute,

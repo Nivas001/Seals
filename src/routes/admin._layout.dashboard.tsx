@@ -28,6 +28,7 @@ function DashboardPage() {
         { label: "Categories", value: stats.categoryCount, icon: FolderOpen, color: "text-brass", bg: "bg-brass/10", href: "/admin/categories" },
         { label: "Products", value: stats.productCount, icon: Package, color: "text-violet-400", bg: "bg-violet-500/10", href: "/admin/products" },
       ]
+    : [];
   const analytics = stats?.analytics || { totalViews: 0, totalInteractions: 0, chartData: [] };
   const subCount = stats?.subscriberCount || 0;
   const inquiries = stats?.recentInquiries || [];
@@ -53,8 +54,8 @@ function DashboardPage() {
           ) : (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { label: "Total Views", value: analytics.totalViews, icon: Eye, color: "text-blue-500", bg: "bg-blue-500/10" },
-                { label: "Interactions", value: analytics.totalInteractions, icon: MousePointerClick, color: "text-orange-500", bg: "bg-orange-500/10" },
+                { label: "Total Views", value: analytics.totalViews, icon: MessageCircle, color: "text-blue-500", bg: "bg-blue-500/10" },
+                { label: "Interactions", value: analytics.totalInteractions, icon: CheckCircle2, color: "text-orange-500", bg: "bg-orange-500/10" },
                 { label: "Subscribers", value: subCount, icon: Mail, color: "text-purple-500", bg: "bg-purple-500/10" },
                 { label: "Inquiries", value: inquiries.length, icon: MessageCircle, color: "text-emerald-500", bg: "bg-emerald-500/10" },
               ].map(({ label, value, icon: Icon, color, bg }) => (
@@ -92,13 +93,7 @@ function DashboardPage() {
                 <div className="w-full h-full animate-pulse bg-muted rounded-xl" />
               ) : analytics?.chartData?.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={analytics.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                      <defs>
-                        <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#dcb16e" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#dcb16e" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
+                    <LineChart data={analytics.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.2} />
                       <XAxis 
                         dataKey="date" 
@@ -116,15 +111,14 @@ function DashboardPage() {
                         contentStyle={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: '8px' }}
                         itemStyle={{ color: '#dcb16e', fontWeight: 'bold' }}
                       />
-                      <Area 
+                      <Line 
                         type="monotone" 
                         dataKey="pageviews" 
                         stroke="#dcb16e" 
                         strokeWidth={3}
-                        fillOpacity={1} 
-                        fill="url(#colorViews)" 
+                        dot={false}
                       />
-                    </AreaChart>
+                    </LineChart>
                   </ResponsiveContainer>
               ) : (
                   <div className="flex h-full items-center justify-center text-xs text-muted-foreground font-medium">
@@ -176,8 +170,6 @@ function DashboardPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: "Manage Products", to: "/admin/products", icon: Package },
-          { label: "View Analytics", to: "/admin/analytics", icon: BarChart },
-          { label: "Edit Hero", to: "/admin/hero", icon: Image },
           { label: "Subscribers", to: "/admin/subscribers", icon: Mail },
         ].map(({ label, to, icon: Icon }) => (
           <Link
