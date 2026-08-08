@@ -484,3 +484,32 @@ export const getVercelAnalytics = createServerFn({ method: "POST" })
     return { totalViews, topPages, topCountries, topOs, chartData };
   });
 
+const logTrafficSchema = z.object({
+  path: z.string(),
+  userAgent: z.string(),
+  referrer: z.string().optional()
+});
+
+export const logTraffic = createServerFn({ method: "POST" })
+  .validator(logTrafficSchema.parse)
+  .handler(async ({ data }) => {
+    // In production, we'd extract IP and country from request headers
+    // For now, we'll store basic tracking data
+    try {
+      await db.vercelTrafficLog.create({
+        data: {
+          path: data.path,
+          userAgent: data.userAgent,
+          referrer: data.referrer || "Direct",
+          country: "Unknown", // Can be extended with real header parsing if context allows
+          ip: "0.0.0.0",
+          timestamp: new Date()
+        }
+      });
+      return { success: true };
+    } catch (error) {
+      console.error("Failed to log traffic", error);
+      return { success: false };
+    }
+  });
+
