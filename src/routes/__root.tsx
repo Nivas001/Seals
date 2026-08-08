@@ -11,8 +11,6 @@ import { useEffect, type ReactNode } from "react";
 import "@fontsource-variable/inter";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 
-import { datadogRum } from '@datadog/browser-rum';
-import { reactPlugin } from '@datadog/browser-rum-react';
 
 import appCss from "../styles.css?url";
 
