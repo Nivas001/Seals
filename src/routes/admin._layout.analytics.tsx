@@ -154,7 +154,7 @@ function AnalyticsPage() {
                     <span className="text-sm font-medium text-zinc-300 truncate max-w-[200px]">{page.path}</span>
                     <div className="flex items-center gap-3 w-1/2">
                       <div className="h-2 bg-zinc-900 rounded-full flex-1 overflow-hidden">
-                        <div className="h-full bg-brass/80 rounded-full" style={{ width: `${(page.views / topPages[0].views) * 100}%` }} />
+                        <div className="h-full bg-brass/80 rounded-full" style={{ width: `${topPages[0]?.views ? (page.views / topPages[0].views) * 100 : 0}%` }} />
                       </div>
                       <span className="text-sm font-bold w-12 text-right">{page.views}</span>
                     </div>
