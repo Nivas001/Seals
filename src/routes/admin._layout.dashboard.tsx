@@ -54,11 +54,11 @@ function DashboardPage() {
           ) : (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { label: "Total Views", value: analytics.totalViews, icon: MessageCircle, color: "text-blue-500", bg: "bg-blue-500/10" },
+                { label: "Total Views", value: analytics.totalViews, icon: MessageCircle, color: "text-blue-500", bg: "bg-blue-500/10", caption: "Updated for 24 hrs only data" },
                 { label: "Interactions", value: analytics.totalInteractions, icon: CheckCircle2, color: "text-orange-500", bg: "bg-orange-500/10" },
                 { label: "Subscribers", value: subCount, icon: Mail, color: "text-purple-500", bg: "bg-purple-500/10" },
                 { label: "Inquiries", value: inquiries.length, icon: MessageCircle, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-              ].map(({ label, value, icon: Icon, color, bg }) => (
+              ].map(({ label, value, icon: Icon, color, bg, caption }) => (
                 <div 
                   key={label}
                   className="group rounded-2xl border border-border bg-surface p-5 flex flex-col justify-center gap-3 hover:border-border/80 transition-all hover:shadow-lg"
@@ -70,6 +70,9 @@ function DashboardPage() {
                     <div>
                       <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mt-0.5">{label}</div>
                       <div className="text-2xl font-black text-foreground">{value}</div>
+                      {caption && (
+                        <div className="text-[9px] font-medium text-orange-500 mt-1 uppercase tracking-wider">{caption}</div>
+                      )}
                     </div>
                   </div>
                 </div>

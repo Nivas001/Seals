@@ -395,6 +395,10 @@ export const getDashboardStats = createServerFn({ method: "POST" })
     });
 
     const vercelStats = await db.vercelTrafficLog.count();
+    const vercelLogsAll = await db.vercelTrafficLog.findMany({
+      where: { timestamp: { gte: thirtyDaysAgo } },
+      select: { timestamp: true }
+    });
 
     const chartData = [];
     for (let i = 29; i >= 0; i--) {
@@ -404,7 +408,7 @@ export const getDashboardStats = createServerFn({ method: "POST" })
       chartData.push({
         name: dateString,
         Inquiries: recentInquiriesAll.filter(inq => new Date(inq.createdAt).toDateString() === d.toDateString()).length,
-        Views: 0 // We'll populate this later from vercel logs if needed
+        Views: vercelLogsAll.filter(log => new Date(log.timestamp).toDateString() === d.toDateString()).length
       });
     }
 

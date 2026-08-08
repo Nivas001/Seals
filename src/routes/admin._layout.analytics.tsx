@@ -32,19 +32,6 @@ function AdminAnalyticsPage() {
       <div className="space-y-8">
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-foreground">Datadog Overview</h2>
-          </div>
-          <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-sm h-[600px] xl:h-[800px]">
-            <iframe 
-              src="https://p.us5.datadoghq.com/sb/4de922cb-7df5-11f1-9ddf-fa7143159411-eadfd38513c3cb9351d3c652f831798a"
-              className="w-full h-full border-0"
-              title="Datadog Analytics Dashboard"
-            />
-          </div>
-        </section>
-
-        <section>
-          <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-foreground">Vercel Traffic Analytics</h2>
             <span className="px-3 py-1 bg-blue-500/10 text-blue-500 text-[10px] font-bold uppercase tracking-widest rounded-full">Live Data</span>
           </div>
@@ -153,6 +140,19 @@ function AdminAnalyticsPage() {
 
             </div>
           )}
+        </section>
+
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-foreground">Datadog Overview</h2>
+          </div>
+          <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-sm h-[600px] xl:h-[800px]">
+            <iframe 
+              src="https://p.us5.datadoghq.com/sb/4de922cb-7df5-11f1-9ddf-fa7143159411-eadfd38513c3cb9351d3c652f831798a"
+              className="w-full h-full border-0"
+              title="Datadog Analytics Dashboard"
+            />
+          </div>
         </section>
       </div>
     </div>
