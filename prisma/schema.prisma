@@ -97,3 +97,13 @@ model HeroCarouselImage {
   order     Int      @default(0)
   createdAt DateTime @default(now())
 }
+
+model VercelTrafficLog {
+  id        String   @id @default(uuid())
+  path      String
+  userAgent String
+  referrer  String
+  country   String
+  ip        String
+  timestamp DateTime @default(now())
+}
