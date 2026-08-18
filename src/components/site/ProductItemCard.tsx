@@ -50,9 +50,9 @@ export function ProductItemCard({
              <Link
                to="/contact"
                search={{ product: product.name }}
-               className="inline-flex items-center justify-center gap-1.5 rounded-full bg-brass px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-ink transition-all hover:bg-brass/90 hover:scale-105 active:scale-95 shadow-sm"
+               className="inline-flex items-center justify-center gap-1.5 rounded-full bg-brass px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:bg-brass/90 hover:scale-105 active:scale-95 shadow-sm"
              >
-               <Sparkles className="h-3 w-3 text-ink shrink-0" />
+               <Sparkles className="h-3 w-3 text-white shrink-0" />
                Get a Quote
              </Link>
            </div>
@@ -134,9 +134,9 @@ export function ProductItemCard({
           to="/contact"
           search={{ category: category.name, product: product.name }}
           preload="intent"
-          className="inline-flex items-center gap-1.5 rounded-full bg-brass px-3.5 py-1.5 text-[11px] font-bold text-ink shadow-2xs transition-all hover:bg-brass/90 hover:shadow active:scale-95"
+          className="inline-flex items-center gap-1.5 rounded-full bg-brass px-3.5 py-1.5 text-[11px] font-bold text-white shadow-2xs transition-all hover:bg-brass/90 hover:shadow active:scale-95"
         >
-          <Sparkles className="h-3 w-3 text-ink shrink-0" />
+          <Sparkles className="h-3 w-3 text-white shrink-0" />
           <span>Get Quote</span>
         </Link>
       </div>

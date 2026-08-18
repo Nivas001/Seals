@@ -196,7 +196,7 @@ function AboutPage() {
                 <div className="mt-8">
                   <Link 
                     to="/about/payments"
-                    className="inline-flex items-center gap-2 rounded-full bg-brass text-ink px-6 py-3 text-xs font-bold uppercase tracking-widest transition-transform duration-300 hover:scale-105"
+                    className="inline-flex items-center gap-2 rounded-full bg-brass text-white px-6 py-3 text-xs font-bold uppercase tracking-widest transition-transform duration-300 hover:scale-105"
                   >
                     View Payment Options &rarr;
                   </Link>

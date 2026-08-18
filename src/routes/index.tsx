@@ -298,7 +298,7 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
               </Link>
               <Link
                 to="/wizard"
-                className="inline-flex items-center gap-2 rounded-full border border-brass/50 bg-brass/10 px-5 py-3 text-sm font-bold text-brass transition hover:bg-brass hover:text-black"
+                className="inline-flex items-center gap-2 rounded-full border border-brass/50 bg-brass/10 px-5 py-3 text-sm font-bold text-brass transition hover:bg-brass hover:text-white"
               >
                 Find My Seal Wizard
                 <ArrowRight className="h-4 w-4" />

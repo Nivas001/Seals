@@ -491,7 +491,7 @@ export function AIChatbot() {
                         <Link
                           to="/contact"
                           onClick={() => setOpen(false)}
-                          className="mt-1 flex items-center justify-center gap-1.5 w-full rounded-xl bg-brass px-3 py-2 text-xs font-bold text-ink shadow-2xs hover:bg-brass/90 transition-colors"
+                          className="mt-1 flex items-center justify-center gap-1.5 w-full rounded-xl bg-brass px-3 py-2 text-xs font-bold text-white shadow-2xs hover:bg-brass/90 transition-colors"
                         >
                           <span>Open Formal Enquiry Form</span>
                           <ArrowRight className="h-3.5 w-3.5" />
@@ -542,7 +542,7 @@ export function AIChatbot() {
                                     category: prod.categoryName,
                                   }}
                                   onClick={() => setOpen(false)}
-                                  className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-brass/20 border border-brass/40 py-1 text-[11px] font-bold text-ink hover:bg-brass hover:text-ink transition-colors"
+                                  className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-brass/20 border border-brass/40 py-1 text-[11px] font-bold text-ink hover:bg-brass hover:text-white transition-colors"
                                 >
                                   <span>Get Quote ⚡</span>
                                 </Link>
@@ -594,7 +594,7 @@ export function AIChatbot() {
               <button
                 type="submit"
                 disabled={!input.trim() || isTyping}
-                className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brass text-ink font-bold shadow-2xs hover:bg-brass/90 disabled:opacity-40 transition-colors"
+                className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brass text-white font-bold shadow-2xs hover:bg-brass/90 disabled:opacity-40 transition-colors"
                 aria-label="Send message"
               >
                 <Send className="h-4 w-4" />
@@ -612,7 +612,7 @@ export function AIChatbot() {
         className="group relative hidden md:flex items-center gap-2.5 rounded-full border-2 border-brass/70 bg-surface/95 backdrop-blur-md px-4 py-3 text-ink shadow-[0_8px_25px_-5px_rgba(217,119,6,0.3)] transition-all hover:border-brass hover:bg-white hover:shadow-[0_12px_35px_-5px_rgba(217,119,6,0.5)]"
         aria-label="Toggle ASK ARKA Chatbot"
       >
-        <span className="grid h-6 w-6 place-items-center rounded-full bg-brass text-ink font-bold shadow-2xs">
+        <span className="grid h-6 w-6 place-items-center rounded-full bg-brass text-white font-bold shadow-2xs">
           {open ? <X className="h-3.5 w-3.5" /> : <Sparkles className="h-3.5 w-3.5 animate-pulse" />}
         </span>
         <span className="text-xs font-bold tracking-wide uppercase text-ink">
