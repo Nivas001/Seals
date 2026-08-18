@@ -10,7 +10,7 @@ interface GlowCardProps extends HTMLAttributes<HTMLDivElement> {
 export function GlowCard({
   children,
   className = "",
-  glowColor = "rgba(217, 119, 6, 0.8)",
+  glowColor = "rgba(2, 132, 199, 0.85)",
   ...props
 }: GlowCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -37,11 +37,11 @@ export function GlowCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative rounded-[1.75rem] p-[2px] transition-all duration-300 overflow-hidden bg-hairline hover:shadow-[0_15px_40px_-10px_rgba(217,119,6,0.35)] ${className}`}
+      className={`group relative rounded-[1.75rem] p-[2px] transition-all duration-300 overflow-hidden bg-hairline hover:shadow-[0_15px_40px_-10px_rgba(2,132,199,0.35)] ${className}`}
       {...props}
     >
       {/* 1. Ambient continuous rotating gradient glow */}
-      <div className="absolute -inset-full animate-spin bg-[conic-gradient(from_0deg,transparent_0_300deg,#D97706_330deg,transparent_360deg)] opacity-0 group-hover:opacity-75 transition-opacity duration-500" style={{ animationDuration: "6s" }} />
+      <div className="absolute -inset-full animate-spin bg-[conic-gradient(from_0deg,transparent_0_300deg,#0284c7_330deg,transparent_360deg)] opacity-0 group-hover:opacity-75 transition-opacity duration-500" style={{ animationDuration: "6s" }} />
 
       {/* 2. Cursor-following border light beam */}
       <motion.div

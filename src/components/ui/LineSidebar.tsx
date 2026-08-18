@@ -90,7 +90,7 @@ export function LineSidebar({ sections }: LineSidebarProps) {
               <span
                 className={`transition-all duration-300 rounded-full shrink-0 relative z-10 ${
                   isActive
-                    ? "h-6 w-[2px] bg-brass shadow-[0_0_10px_rgba(217,119,6,0.6)]"
+                    ? "h-6 w-[2px] bg-brass shadow-[0_0_10px_rgba(2,132,199,0.6)]"
                     : "h-3.5 w-[1.5px] bg-ink/20 group-hover:bg-ink/50 group-hover:h-5 group-hover:w-[2px]"
                 }`}
               />

@@ -78,9 +78,9 @@ export function DownloadCatalog({
 
   const activeStyles =
     state === "downloaded"
-      ? "!border-brass/60 !shadow-[0_0_15px_rgba(217,119,6,0.15)] scale-[1.02]"
+      ? "!border-brass/60 !shadow-[0_0_15px_rgba(2,132,199,0.25)] scale-[1.02]"
       : state === "downloading"
-      ? "!border-brass/60 !shadow-[0_0_15px_rgba(217,119,6,0.15)]"
+      ? "!border-brass/60 !shadow-[0_0_15px_rgba(2,132,199,0.25)]"
       : "";
 
   const inlineStyle =

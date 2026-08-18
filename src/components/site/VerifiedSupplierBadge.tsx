@@ -57,8 +57,8 @@ export function VerifiedSupplierBadge() {
         <div className="w-10 h-14 bg-gradient-to-b from-ink via-zinc-800 to-ink rounded-t-md shadow-inner border-x border-t border-brass/30 flex items-center justify-center">
           <div className="w-1 h-full bg-brass/20" />
         </div>
-        {/* Brass metallic ring */}
-        <div className="w-14 h-7 -mt-2 rounded-full border-4 border-brass bg-gradient-to-b from-amber-400 via-brass to-amber-700 shadow-md flex items-center justify-center">
+        {/* Metallic ring */}
+        <div className="w-14 h-7 -mt-2 rounded-full border-4 border-brass bg-gradient-to-b from-sky-400 via-brass to-blue-700 shadow-md flex items-center justify-center">
           <div className="w-8 h-2 rounded-full bg-ink/80 shadow-inner" />
         </div>
       </div>
@@ -69,12 +69,12 @@ export function VerifiedSupplierBadge() {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="group relative w-full max-w-[350px] sm:max-w-[380px] rounded-[2rem] border-2 border-brass/60 bg-gradient-to-br from-surface via-background to-surface/95 p-6 sm:p-7 shadow-[0_25px_60px_-15px_rgba(217,119,6,0.35)] backdrop-blur-xl transition-shadow hover:shadow-[0_35px_70px_-15px_rgba(217,119,6,0.5)] cursor-pointer overflow-hidden text-ink"
+        className="group relative w-full max-w-[350px] sm:max-w-[380px] rounded-[2rem] border-2 border-brass/60 bg-gradient-to-br from-surface via-background to-surface/95 p-6 sm:p-7 shadow-[0_25px_60px_-15px_rgba(2,132,199,0.35)] backdrop-blur-xl transition-shadow hover:shadow-[0_35px_70px_-15px_rgba(2,132,199,0.5)] cursor-pointer overflow-hidden text-ink"
       >
         {/* Interactive Foil Sheen Glare */}
         <motion.div
           style={{ left: sheenX, top: sheenY }}
-          className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-radial from-brass/30 via-amber-400/10 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-radial from-brass/30 via-sky-400/10 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         />
 
         {/* Card Header Banner */}
