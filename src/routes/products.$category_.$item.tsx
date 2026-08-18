@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Phone, Mail } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { getProductDetails, getCategories, getContactInfo } from "@/lib/catalog";
+import { getProductPageData, getCategories, getContactInfo } from "@/lib/catalog";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 import { CreativePoster } from "@/components/ui/CreativePoster";
 
@@ -12,22 +12,30 @@ import { FlubberEasterEgg } from "@/components/site/easter-eggs/Flubber";
 
 export const Route = createFileRoute("/products/$category_/$item")({
   loader: async ({ params }) => {
-    if (params.category === "pumps" && params.item === "quantum-slurry-hyper-pump") {
-      return { isEasterEgg: true, type: "unobtainium", detail: null, allCategories: [], contactInfo: null };
+    const pCategory = (params as any).category_ || (params as any).category;
+    if (pCategory === "pumps" && params.item === "quantum-slurry-hyper-pump") {
+      return { isEasterEgg: true, type: "unobtainium", detail: null, siblings: [], allCategories: [], contactInfo: null };
     }
-    if (params.category === "bearings" && params.item === "anti-gravity-bearing") {
-      return { isEasterEgg: true, type: "antigravity", detail: null, allCategories: [], contactInfo: null };
+    if (pCategory === "bearings" && params.item === "anti-gravity-bearing") {
+      return { isEasterEgg: true, type: "antigravity", detail: null, siblings: [], allCategories: [], contactInfo: null };
     }
-    if (params.category === "elastomers" && params.item === "flubber") {
-      return { isEasterEgg: true, type: "flubber", detail: null, allCategories: [], contactInfo: null };
+    if (pCategory === "elastomers" && params.item === "flubber") {
+      return { isEasterEgg: true, type: "flubber", detail: null, siblings: [], allCategories: [], contactInfo: null };
     }
-    const [detail, allCategories, contactInfo] = await Promise.all([
-      getProductDetails({ data: { slug: params.item } }),
+    const [pageData, allCategories, contactInfo] = await Promise.all([
+      getProductPageData({ data: { slug: params.item } }),
       getCategories(),
       getContactInfo()
     ]);
-    if (!detail) throw notFound();
-    return { isEasterEgg: false, detail, allCategories, contactInfo, type: null };
+    if (!pageData || !pageData.product) throw notFound();
+    return { 
+      isEasterEgg: false, 
+      detail: pageData.product, 
+      siblings: pageData.siblings || [], 
+      allCategories, 
+      contactInfo, 
+      type: null 
+    };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -96,14 +104,8 @@ function ItemPage() {
   const contactInfo = data.contactInfo;
   const phone = contactInfo?.phones?.[0] || "+91 78069 36475";
   const email = contactInfo?.emails?.[0] || "aarrkkaainternational@gmail.com";
-  
-  // Calculate siblings and related internally since they aren't directly fetched
-  // If we had them in DB, we'd use them. But since we didn't include them in the query, we can just skip or fetch
-  // Wait, we can't skip because the UI depends on d.siblings and d.relatedCategories.
+  const siblings = data.siblings || [];
   const allCategories = data.allCategories || [];
-  // For siblings, we ideally should have fetched products in the same category.
-  // For now we will just use empty arrays to prevent crashes.
-  const siblings = [];
   const relatedCategories = allCategories.filter((cat: any) => cat.slug !== c.slug);
 
 

@@ -81,6 +81,7 @@ export function ProductItemCard({
         <Link
           to="/products/$category/$item"
           params={{ category: category.slug, item: itemSlug }}
+          preload="intent"
           className="block group/title after:absolute after:inset-0 after:z-10"
         >
           <h3 className="font-sans text-base sm:text-lg font-bold tracking-tight text-ink group-hover/title:text-brass transition-colors flex items-center justify-between">
@@ -122,6 +123,7 @@ export function ProductItemCard({
         <Link
           to="/products/$category/$item"
           params={{ category: category.slug, item: itemSlug }}
+          preload="intent"
           className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-background px-3.5 py-1.5 text-xs font-semibold text-ink transition-all hover:border-ink/25 hover:bg-surface active:scale-95 group/btn shadow-2xs"
         >
           <span>View Specs &amp; Details</span>
@@ -131,6 +133,7 @@ export function ProductItemCard({
         <Link
           to="/contact"
           search={{ category: category.name, product: product.name }}
+          preload="intent"
           className="inline-flex items-center gap-1.5 rounded-full bg-brass px-3.5 py-1.5 text-[11px] font-bold text-ink shadow-2xs transition-all hover:bg-brass/90 hover:shadow active:scale-95"
         >
           <Sparkles className="h-3 w-3 text-ink shrink-0" />
