@@ -13,7 +13,18 @@ import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, us
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-function SortableCategoryItem({ cat, onEdit, onDelete, busy }: any) {
+const BENTO_SLOT_LABELS = [
+  "Slot 1 (Home: Large Card)",
+  "Slot 2 (Home: Tall Card)",
+  "Slot 3 (Home: Standard)",
+  "Slot 4 (Home: Standard)",
+  "Slot 5 (Home: Standard)",
+  "Slot 6 (Home: Wide Card)",
+  "Slot 7 (Home: Standard)",
+  "Slot 8 (Home: Standard)",
+];
+
+function SortableCategoryItem({ cat, onEdit, onDelete, busy, index }: any) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: cat.id });
   
   const style = {
@@ -21,6 +32,8 @@ function SortableCategoryItem({ cat, onEdit, onDelete, busy }: any) {
     transition,
     zIndex: isDragging ? 10 : 1,
   };
+
+  const isBento = index !== undefined && index < 8 && !cat.isHidden && !cat.isDeleted;
 
   return (
     <div ref={setNodeRef} style={style} className={`p-4 bg-surface border rounded-xl flex items-center justify-between transition-all ${isDragging ? 'shadow-xl border-primary scale-[1.01]' : 'border-border shadow-sm hover:shadow-md'} ${cat.isHidden ? 'opacity-60' : ''}`}>
@@ -30,10 +43,15 @@ function SortableCategoryItem({ cat, onEdit, onDelete, busy }: any) {
             <GripVertical className="w-5 h-5" />
           </div>
         )}
-        <img src={cat.image} alt={cat.name} className="w-16 h-16 object-cover rounded border border-border bg-muted" />
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2">
+        <img src={cat.image || "/placeholder.svg"} alt={cat.name} className="w-16 h-16 object-cover rounded border border-border bg-muted" />
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2 flex-wrap">
             <h3 className="font-bold text-foreground">{cat.name}</h3>
+            {isBento && (
+              <span className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                {BENTO_SLOT_LABELS[index]}
+              </span>
+            )}
             {cat.isHidden && <span className="bg-muted-foreground text-background text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1"><EyeOff className="w-3 h-3" /> Hidden</span>}
           </div>
           <p className="text-xs text-muted-foreground font-mono">{cat.slug}</p>
@@ -42,7 +60,7 @@ function SortableCategoryItem({ cat, onEdit, onDelete, busy }: any) {
       <div className="flex gap-2">
         {onEdit ? (
           <>
-            <Button variant="outline" size="sm" onClick={() => onEdit(cat)} disabled={busy}>
+            <Button variant="outline" size="sm" onClick={() => onEdit(cat)} disabled={busy} title="Edit Category & Photo">
               <Edit2 className="w-4 h-4 text-ink" />
             </Button>
             <Button variant="outline" size="sm" onClick={() => onDelete(cat)} disabled={busy} className="hover:bg-red-50 hover:text-red-600">
@@ -349,12 +367,20 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
 
       {!isAdding && !editingId && viewMode === "active" && (
         <div className="space-y-4">
+          <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 flex items-start gap-3">
+            <div className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+            <div className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed">
+              <strong className="text-neutral-900 dark:text-neutral-100 font-bold">Home Page Bento Sync:</strong> The first 8 active categories in this list are automatically displayed in the Home page Bento grid. Updating category photos or dragging to reorder them will instantly reflect on the live Home page!
+            </div>
+          </div>
+
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
             <SortableContext items={activeCategories.filter(c => !c.isDeleted).map((c: any) => c.id)} strategy={verticalListSortingStrategy}>
-              {activeCategories.filter(c => !c.isDeleted).map((cat: any) => (
+              {activeCategories.filter(c => !c.isDeleted).map((cat: any, index: number) => (
                 <SortableCategoryItem 
                   key={cat.id} 
                   cat={cat} 
+                  index={index}
                   onEdit={startEdit} 
                   onDelete={confirmDelete} 
                   busy={busy} 

@@ -10,7 +10,7 @@ import {
 import heroImg from "@/assets/hero-pump.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import { CATEGORIES, SECTORS, COMPANY } from "@/data/catalog";
-import { getHeroImages } from "@/lib/catalog";
+import { getHeroImages, getAllCategoriesWithProducts } from "@/lib/catalog";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { GlowCard } from "@/components/ui/GlowCard";
@@ -19,10 +19,24 @@ import { LineSidebar } from "@/components/ui/LineSidebar";
 export const Route = createFileRoute("/")({
   component: Home,
   loader: async () => {
-    const heroImages = await getHeroImages();
-    return { heroImages };
+    const [heroImages, dbCategories] = await Promise.all([
+      getHeroImages(),
+      getAllCategoriesWithProducts(),
+    ]);
+    return { heroImages, dbCategories };
   }
 });
+
+const BENTO_SLOT_CLASSES: string[] = [
+  "sm:col-span-4 sm:row-span-2", // Slot 0: Top Left Large
+  "sm:col-span-2 sm:row-span-2", // Slot 1: Top Right Tall
+  "sm:col-span-2",               // Slot 2: Middle Row 1
+  "sm:col-span-2",               // Slot 3: Middle Row 2
+  "sm:col-span-2",               // Slot 4: Middle Row 3
+  "sm:col-span-4",               // Slot 5: Bottom Row Wide
+  "sm:col-span-2",               // Slot 6: Bottom Row Right
+  "sm:col-span-2",               // Slot 7: Extra
+];
 
 const BENTO_LAYOUT: Record<string, string> = {
   pumps: "sm:col-span-4 sm:row-span-2",
@@ -76,8 +90,21 @@ function StatItem({ target, suffix, label }: { target: number; suffix: string; l
 }
 
 function Home() {
-  const { heroImages } = Route.useLoaderData();
-  const featured = CATEGORIES.slice(0, 8);
+  const { heroImages, dbCategories } = Route.useLoaderData();
+  const featured = (dbCategories && dbCategories.length > 0)
+    ? dbCategories.slice(0, 8).map((cat) => {
+        const staticMatch = CATEGORIES.find((c) => c.slug === cat.slug);
+        return {
+          slug: cat.slug,
+          name: cat.name,
+          short: cat.short || staticMatch?.short || "",
+          description: cat.description || staticMatch?.description || "",
+          image: cat.image || staticMatch?.image || "",
+          count: cat.products?.length || staticMatch?.count || 0,
+        };
+      })
+    : CATEGORIES.slice(0, 8);
+
   const sidebarSections = [
     { id: "hero", label: "Overview" },
     { id: "about", label: "About Us" },
@@ -533,7 +560,7 @@ function AboutPreview() {
 }
 
 /* ─── PRODUCTS BENTO ─── */
-function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
+function ProductsBento({ featured }: { featured: Array<{ slug: string; name: string; short: string; description: string; image: string; count: number }> }) {
   return (
     <section id="catalog" className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
@@ -554,53 +581,60 @@ function ProductsBento({ featured }: { featured: typeof CATEGORIES }) {
       </div>
 
       <div className="mt-10 grid auto-rows-[160px] grid-cols-2 gap-3 sm:auto-rows-[220px] sm:grid-cols-6 lg:auto-rows-[240px] sm:gap-4">
-        {featured.map((cat, i) => (
-          <motion.div
-            key={cat.slug}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, delay: i * 0.04 }}
-            className={`bento-tile bento-tile-hover ${i >= 4 ? "hidden sm:block" : ""} ${BENTO_LAYOUT[cat.slug] ?? "sm:col-span-2"}`}
-          >
-            <Link
-              to="/products/$category"
-              params={{ category: cat.slug }}
-              className="group relative flex h-full w-full flex-col justify-between overflow-hidden p-5"
+        {featured.map((cat, i) => {
+          const slotClass = BENTO_SLOT_CLASSES[i] ?? BENTO_LAYOUT[cat.slug] ?? "sm:col-span-2";
+          return (
+            <motion.div
+              key={cat.slug}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5, delay: i * 0.04 }}
+              className={`bento-tile bento-tile-hover ${i >= 4 ? "hidden sm:block" : ""} ${slotClass}`}
             >
-              <img
-                src={cat.image}
-                alt={cat.name}
-                loading="lazy"
-                className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
-              />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, oklch(1 0 0 / 0.05) 0%, oklch(0.14 0.02 260 / 0.55) 100%)",
-                }}
-              />
-              <div className="relative flex items-start justify-between">
-                <span className="glass rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink">
-                  {String(cat.count).padStart(2, "0")} items
-                </span>
-                <span className="glass-strong grid h-8 w-8 place-items-center rounded-full text-ink transition group-hover:bg-ink group-hover:text-background">
-                  <ArrowUpRight className="h-4 w-4" />
-                </span>
-              </div>
-              <div className="relative">
-                <h3 className="font-display text-lg font-black tracking-tight text-white sm:text-2xl">
-                  {cat.name}
-                </h3>
-                <p className="mt-1 hidden max-w-xs text-[13px] leading-snug text-white/85 sm:block">
-                  {cat.short}
-                </p>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
+              <Link
+                to="/products/$category"
+                params={{ category: cat.slug }}
+                className="group relative flex h-full w-full flex-col justify-between overflow-hidden p-5"
+              >
+                {cat.image ? (
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
+                    loading="lazy"
+                    className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="pointer-events-none absolute inset-0 bg-neutral-900" />
+                )}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, oklch(1 0 0 / 0.05) 0%, oklch(0.14 0.02 260 / 0.55) 100%)",
+                  }}
+                />
+                <div className="relative flex items-start justify-between">
+                  <span className="glass rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink">
+                    {String(cat.count).padStart(2, "0")} items
+                  </span>
+                  <span className="glass-strong grid h-8 w-8 place-items-center rounded-full text-ink transition group-hover:bg-ink group-hover:text-background">
+                    <ArrowUpRight className="h-4 w-4" />
+                  </span>
+                </div>
+                <div className="relative">
+                  <h3 className="font-display text-lg font-black tracking-tight text-white sm:text-2xl">
+                    {cat.name}
+                  </h3>
+                  <p className="mt-1 hidden max-w-xs text-[13px] leading-snug text-white/85 sm:block">
+                    {cat.short}
+                  </p>
+                </div>
+              </Link>
+            </motion.div>
+          );
+        })}
       </div>
 
       <div className="mt-8 flex justify-center sm:hidden">
