@@ -68,14 +68,17 @@ export function Footer() {
         </div>
 
         {/* Main footer grid */}
-        <div className="hidden gap-8 sm:grid lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.5fr]">
+        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.5fr]">
           {/* Brand column */}
           <div>
             <div className="flex items-center">
               <ArkaLogo size={46} variant="full" />
             </div>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              supplier and distributor of pumps, mechanical seals, elastomers,
+            <div className="mt-4 font-display font-bold text-base tracking-tight text-ink">
+              AARRKKAA International
+            </div>
+            <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Supplier and distributor of pumps, mechanical seals, elastomers,
               stainless steel and precision components for food, pharma,
               chemical and process industries worldwide with service available globally.
             </p>
