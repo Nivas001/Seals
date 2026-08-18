@@ -48,7 +48,7 @@ function SortableCategoryItem({ cat, onEdit, onDelete, busy, index }: any) {
           <div className="flex items-center gap-2 flex-wrap">
             <h3 className="font-bold text-foreground">{cat.name}</h3>
             {isBento && (
-              <span className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+              <span className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                 {BENTO_SLOT_LABELS[index]}
               </span>
             )}
@@ -367,8 +367,8 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
 
       {!isAdding && !editingId && viewMode === "active" && (
         <div className="space-y-4">
-          <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 flex items-start gap-3">
-            <div className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 flex items-start gap-3">
+            <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 shrink-0" />
             <div className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed">
               <strong className="text-neutral-900 dark:text-neutral-100 font-bold">Home Page Bento Sync:</strong> The first 8 active categories in this list are automatically displayed in the Home page Bento grid. Updating category photos or dragging to reorder them will instantly reflect on the live Home page!
             </div>
