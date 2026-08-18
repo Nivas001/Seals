@@ -164,16 +164,24 @@ function RootComponent() {
   const location = useLocation();
   const isHomepage = location.pathname === "/";
 
-  // Custom Analytics Tracker using RPC
+  // Custom Analytics Tracker using non-blocking background task
   useEffect(() => {
     if (typeof window !== "undefined") {
-      logTraffic({
-        data: {
-          path: location.pathname,
-          userAgent: navigator.userAgent,
-          referrer: document.referrer || "Direct"
-        }
-      }).catch(() => {});
+      const sendLog = () => {
+        logTraffic({
+          data: {
+            path: location.pathname,
+            userAgent: navigator.userAgent,
+            referrer: document.referrer || "Direct"
+          }
+        }).catch(() => {});
+      };
+
+      if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(sendLog, { timeout: 2000 });
+      } else {
+        setTimeout(sendLog, 300);
+      }
     }
   }, [location.pathname]);
 

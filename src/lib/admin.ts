@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { db } from "./db";
 import { createServerSupabase } from "./supabase";
+import { clearCatalogCache } from "./catalog";
 
 const adminDataSchema = z.object({
   token: z.string(),
@@ -90,11 +91,15 @@ export const upsertCategory = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
+    let result;
     if (id) {
       if (rest.image === undefined) delete rest.image;
-      return await db.category.update({ where: { id }, data: rest as any });
+      result = await db.category.update({ where: { id }, data: rest as any });
+    } else {
+      result = await db.category.create({ data: { ...rest, image: rest.image || "" } as any });
     }
-    return await db.category.create({ data: { ...rest, image: rest.image || "" } as any });
+    clearCatalogCache();
+    return result;
   });
 
 export const deleteCategory = createServerFn({ method: "POST" })
@@ -105,7 +110,9 @@ export const deleteCategory = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
-    return await db.category.update({ where: { id }, data: { isDeleted: true } });
+    const result = await db.category.update({ where: { id }, data: { isDeleted: true } });
+    clearCatalogCache();
+    return result;
   });
 
 export const restoreCategory = createServerFn({ method: "POST" })
@@ -116,7 +123,9 @@ export const restoreCategory = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
-    return await db.category.update({ where: { id }, data: { isDeleted: false } });
+    const result = await db.category.update({ where: { id }, data: { isDeleted: false } });
+    clearCatalogCache();
+    return result;
   });
 
 export const updateCategoryPriorities = createServerFn({ method: "POST" })
@@ -133,6 +142,7 @@ export const updateCategoryPriorities = createServerFn({ method: "POST" })
     await db.$transaction(
       updates.map(u => db.category.update({ where: { id: u.id }, data: { priority: u.priority } }))
     );
+    clearCatalogCache();
     return { success: true };
   });
 
@@ -150,6 +160,7 @@ export const updateProductPriorities = createServerFn({ method: "POST" })
     await db.$transaction(
       updates.map(u => db.product.update({ where: { id: u.id }, data: { priority: u.priority } }))
     );
+    clearCatalogCache();
     return { success: true };
   });
 
@@ -172,10 +183,14 @@ export const upsertHeroImage = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
+    let result;
     if (id) {
-      return await db.heroCarouselImage.update({ where: { id }, data: rest });
+      result = await db.heroCarouselImage.update({ where: { id }, data: rest });
+    } else {
+      result = await db.heroCarouselImage.create({ data: rest });
     }
-    return await db.heroCarouselImage.create({ data: rest });
+    clearCatalogCache();
+    return result;
   });
 
 export const deleteHeroImage = createServerFn({ method: "POST" })
@@ -186,7 +201,9 @@ export const deleteHeroImage = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
-    return await db.heroCarouselImage.delete({ where: { id } });
+    const result = await db.heroCarouselImage.delete({ where: { id } });
+    clearCatalogCache();
+    return result;
   });
 
 
@@ -228,6 +245,7 @@ export const upsertProduct = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
+    let result;
     if (id) {
       // Delete old relations and recreate
       await db.productSpec.deleteMany({ where: { productId: id } });
@@ -236,7 +254,7 @@ export const upsertProduct = createServerFn({ method: "POST" })
 
       if (rest.image === undefined) delete rest.image;
 
-      return await db.product.update({
+      result = await db.product.update({
         where: { id },
         data: {
           ...(rest as any),
@@ -246,9 +264,8 @@ export const upsertProduct = createServerFn({ method: "POST" })
           applications: { create: applications.map(a => ({ text: a.text })) },
         }
       });
-    }
-
-      return await db.product.create({
+    } else {
+      result = await db.product.create({
         data: {
           ...(rest as any),
           ...(priority !== undefined ? { priority } : {}),
@@ -256,7 +273,10 @@ export const upsertProduct = createServerFn({ method: "POST" })
           benefits: { create: benefits.map(b => ({ text: b.text })) },
           applications: { create: applications.map(a => ({ text: a.text })) },
         }
-    });
+      });
+    }
+    clearCatalogCache();
+    return result;
   });
 
 export const deleteProduct = createServerFn({ method: "POST" })
@@ -267,7 +287,9 @@ export const deleteProduct = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
-    return await db.product.update({ where: { id }, data: { isDeleted: true } });
+    const result = await db.product.update({ where: { id }, data: { isDeleted: true } });
+    clearCatalogCache();
+    return result;
   });
 
 export const restoreProduct = createServerFn({ method: "POST" })
@@ -278,7 +300,9 @@ export const restoreProduct = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
-    return await db.product.update({ where: { id }, data: { isDeleted: false } });
+    const result = await db.product.update({ where: { id }, data: { isDeleted: false } });
+    clearCatalogCache();
+    return result;
   });
 
 // ----------------------------------------------------
@@ -302,11 +326,13 @@ export const updateContactInfo = createServerFn({ method: "POST" })
     const { data: { user }, error } = await supabase.auth.getUser(token);
     if (error || !user) throw new Error("Unauthorized");
 
-    return await db.contactInfo.upsert({
+    const result = await db.contactInfo.upsert({
       where: { id: "singleton" },
       update: rest,
       create: { id: "singleton", ...rest },
     });
+    clearCatalogCache();
+    return result;
   });
 
 // ----------------------------------------------------
