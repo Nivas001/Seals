@@ -32,7 +32,13 @@ export function ProductItemCard({
         {/* Photo Area - full cover */}
         <div className="absolute inset-0 bg-zinc-100 overflow-hidden z-0">
           {product.image ? (
-            <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 absolute inset-0" />
+            <img
+              src={product.image}
+              alt={product.name}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 absolute inset-0"
+            />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 font-bold uppercase tracking-widest text-xs">No Image</div>
           )}

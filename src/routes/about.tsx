@@ -58,7 +58,7 @@ function AboutPage() {
 
         <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
           <div className="overflow-hidden rounded-[2rem] border border-hairline">
-            <img src={factoryImg} alt="Industrial processing plant with stainless steel tanks and piping" className="h-full w-full object-cover" />
+            <img src={factoryImg} alt="Industrial processing plant with stainless steel tanks and piping" loading="lazy" decoding="async" className="h-full w-full object-cover" />
           </div>
         </section>
 

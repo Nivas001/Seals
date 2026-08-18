@@ -199,6 +199,9 @@ function IndustriesPage() {
                   alt="Industrial processing facility with stainless steel piping and machinery"
                   width={1600}
                   height={900}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   className="h-[280px] w-full object-cover sm:h-[380px] lg:h-[440px]"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent p-5 sm:p-6">
@@ -242,6 +245,7 @@ function IndustriesPage() {
                 width={1200}
                 height={1200}
                 loading="lazy"
+                decoding="async"
                 className="h-64 w-full object-cover md:h-full"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
@@ -336,6 +340,7 @@ function IndustriesPage() {
                 width={1200}
                 height={900}
                 loading="lazy"
+                decoding="async"
                 className="h-64 w-full object-cover sm:h-96"
               />
             </div>
@@ -467,6 +472,7 @@ function SectorCard({ sector, index }: { sector: Sector; index: number }) {
           src={sector.image}
           alt={`${sector.name} industry application`}
           loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />

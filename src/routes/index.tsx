@@ -325,11 +325,14 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
                 <div className="relative h-full w-full">
                   <div className="overflow-hidden h-full w-full" ref={emblaRef}>
                     <div className="flex h-full">
-                      {images.map(img => (
+                      {images.map((img, idx) => (
                         <div className="flex-[0_0_100%] min-w-0 relative h-full" key={img.id}>
                           <img
                             src={img.url}
                             alt="Hero product showcase"
+                            loading={idx === 0 ? "eager" : "lazy"}
+                            fetchPriority={idx === 0 ? "high" : "auto"}
+                            decoding="async"
                             className="h-full w-full object-cover"
                           />
                         </div>
@@ -369,6 +372,9 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
                   alt="Precision industrial centrifugal pump assembly with brushed stainless steel housing and polished brass fittings"
                   width={1600}
                   height={1400}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   className="h-full w-full object-cover"
                 />
               )}
@@ -601,7 +607,9 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
                   <img
                     src={cat.image}
                     alt={cat.name}
-                    loading="lazy"
+                    loading={i < 2 ? "eager" : "lazy"}
+                    fetchPriority={i < 2 ? "high" : "auto"}
+                    decoding="async"
                     className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
                   />
                 ) : (

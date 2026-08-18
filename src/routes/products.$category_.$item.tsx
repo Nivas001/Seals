@@ -178,6 +178,9 @@ function ItemPage() {
                   className="h-full w-full object-cover"
                   width={1200}
                   height={900}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                 />
               ) : (
                 <CreativePoster title={d.name} />
@@ -309,6 +312,7 @@ function ItemPage() {
                       src={o.image}
                       alt={o.name}
                       loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition group-hover:scale-105"
                     />
                   ) : (

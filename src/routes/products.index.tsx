@@ -80,7 +80,9 @@ function ProductsPage() {
                       <img
                         src={cat.image}
                         alt={cat.name}
-                        loading="lazy"
+                        loading={i < 4 ? "eager" : "lazy"}
+                        fetchPriority={i < 4 ? "high" : "auto"}
+                        decoding="async"
                         className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                       />
                     ) : (

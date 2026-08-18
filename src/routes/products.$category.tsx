@@ -91,7 +91,16 @@ function CategoryPage() {
 
             <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-hairline bg-surface shadow-lift">
               {c.image ? (
-                <img src={c.image} alt={c.name} className="h-full w-full object-cover" width={1200} height={900} />
+                <img
+                  src={c.image}
+                  alt={c.name}
+                  className="h-full w-full object-cover"
+                  width={1200}
+                  height={900}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                />
               ) : (
                 <CreativePoster title={c.name} />
               )}
@@ -171,7 +180,7 @@ function CategoryPage() {
               >
                 <div className="relative aspect-[5/3] overflow-hidden">
                   {o.image ? (
-                    <img src={o.image} alt={o.name} loading="lazy" className="h-full w-full object-cover transition group-hover:scale-105" />
+                    <img src={o.image} alt={o.name} loading="lazy" decoding="async" className="h-full w-full object-cover transition group-hover:scale-105" />
                   ) : (
                     <CreativePoster title={o.name} />
                   )}
