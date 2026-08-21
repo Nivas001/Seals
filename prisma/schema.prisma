@@ -107,3 +107,19 @@ model VercelTrafficLog {
   ip        String
   timestamp DateTime @default(now())
 }
+
+model Industry {
+  id           String    @id @default(uuid())
+  slug         String    @unique
+  name         String
+  tagline      String
+  desc         String
+  image        String
+  duty         String
+  compliance   String?
+  applications String[]
+  products     Json?
+  priority     Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}

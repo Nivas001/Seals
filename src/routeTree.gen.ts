@@ -39,6 +39,7 @@ import { Route as ProductsCategoryItemRouteImport } from './routes/products.$cat
 import { Route as AdminLayoutSubscribersRouteImport } from './routes/admin._layout.subscribers'
 import { Route as AdminLayoutProductsRouteImport } from './routes/admin._layout.products'
 import { Route as AdminLayoutInquiriesRouteImport } from './routes/admin._layout.inquiries'
+import { Route as AdminLayoutIndustriesRouteImport } from './routes/admin._layout.industries'
 import { Route as AdminLayoutHeroRouteImport } from './routes/admin._layout.hero'
 import { Route as AdminLayoutDashboardRouteImport } from './routes/admin._layout.dashboard'
 import { Route as AdminLayoutContactRouteImport } from './routes/admin._layout.contact'
@@ -194,6 +195,11 @@ const AdminLayoutInquiriesRoute = AdminLayoutInquiriesRouteImport.update({
   path: '/inquiries',
   getParentRoute: () => AdminLayoutRoute,
 } as any)
+const AdminLayoutIndustriesRoute = AdminLayoutIndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
 const AdminLayoutHeroRoute = AdminLayoutHeroRouteImport.update({
   id: '/hero',
   path: '/hero',
@@ -251,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/admin/contact': typeof AdminLayoutContactRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/hero': typeof AdminLayoutHeroRoute
+  '/admin/industries': typeof AdminLayoutIndustriesRoute
   '/admin/inquiries': typeof AdminLayoutInquiriesRoute
   '/admin/products': typeof AdminLayoutProductsRoute
   '/admin/subscribers': typeof AdminLayoutSubscribersRoute
@@ -286,6 +293,7 @@ export interface FileRoutesByTo {
   '/admin/contact': typeof AdminLayoutContactRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/hero': typeof AdminLayoutHeroRoute
+  '/admin/industries': typeof AdminLayoutIndustriesRoute
   '/admin/inquiries': typeof AdminLayoutInquiriesRoute
   '/admin/products': typeof AdminLayoutProductsRoute
   '/admin/subscribers': typeof AdminLayoutSubscribersRoute
@@ -324,6 +332,7 @@ export interface FileRoutesById {
   '/admin/_layout/contact': typeof AdminLayoutContactRoute
   '/admin/_layout/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/_layout/hero': typeof AdminLayoutHeroRoute
+  '/admin/_layout/industries': typeof AdminLayoutIndustriesRoute
   '/admin/_layout/inquiries': typeof AdminLayoutInquiriesRoute
   '/admin/_layout/products': typeof AdminLayoutProductsRoute
   '/admin/_layout/subscribers': typeof AdminLayoutSubscribersRoute
@@ -362,6 +371,7 @@ export interface FileRouteTypes {
     | '/admin/contact'
     | '/admin/dashboard'
     | '/admin/hero'
+    | '/admin/industries'
     | '/admin/inquiries'
     | '/admin/products'
     | '/admin/subscribers'
@@ -397,6 +407,7 @@ export interface FileRouteTypes {
     | '/admin/contact'
     | '/admin/dashboard'
     | '/admin/hero'
+    | '/admin/industries'
     | '/admin/inquiries'
     | '/admin/products'
     | '/admin/subscribers'
@@ -434,6 +445,7 @@ export interface FileRouteTypes {
     | '/admin/_layout/contact'
     | '/admin/_layout/dashboard'
     | '/admin/_layout/hero'
+    | '/admin/_layout/industries'
     | '/admin/_layout/inquiries'
     | '/admin/_layout/products'
     | '/admin/_layout/subscribers'
@@ -680,6 +692,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutInquiriesRouteImport
       parentRoute: typeof AdminLayoutRoute
     }
+    '/admin/_layout/industries': {
+      id: '/admin/_layout/industries'
+      path: '/industries'
+      fullPath: '/admin/industries'
+      preLoaderRoute: typeof AdminLayoutIndustriesRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
     '/admin/_layout/hero': {
       id: '/admin/_layout/hero'
       path: '/hero'
@@ -724,6 +743,7 @@ interface AdminLayoutRouteChildren {
   AdminLayoutContactRoute: typeof AdminLayoutContactRoute
   AdminLayoutDashboardRoute: typeof AdminLayoutDashboardRoute
   AdminLayoutHeroRoute: typeof AdminLayoutHeroRoute
+  AdminLayoutIndustriesRoute: typeof AdminLayoutIndustriesRoute
   AdminLayoutInquiriesRoute: typeof AdminLayoutInquiriesRoute
   AdminLayoutProductsRoute: typeof AdminLayoutProductsRoute
   AdminLayoutSubscribersRoute: typeof AdminLayoutSubscribersRoute
@@ -735,6 +755,7 @@ const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
   AdminLayoutContactRoute: AdminLayoutContactRoute,
   AdminLayoutDashboardRoute: AdminLayoutDashboardRoute,
   AdminLayoutHeroRoute: AdminLayoutHeroRoute,
+  AdminLayoutIndustriesRoute: AdminLayoutIndustriesRoute,
   AdminLayoutInquiriesRoute: AdminLayoutInquiriesRoute,
   AdminLayoutProductsRoute: AdminLayoutProductsRoute,
   AdminLayoutSubscribersRoute: AdminLayoutSubscribersRoute,

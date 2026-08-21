@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "./db";
 import { createServerSupabase } from "./supabase";
 import { clearCatalogCache } from "./catalog";
+import { DEFAULT_SECTORS_DATA } from "@/data/defaultIndustries";
 
 const adminDataSchema = z.object({
   token: z.string(),
@@ -541,5 +542,117 @@ export const logTraffic = createServerFn({ method: "POST" })
       console.error("Failed to log traffic", error);
       return { success: false };
     }
+  });
+
+export const getAdminIndustries = createServerFn({ method: "POST" })
+  .validator(adminDataSchema.parse)
+  .handler(async ({ data }) => {
+    const { token } = data;
+    
+    // Verify Authentication
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) {
+      throw new Error("Unauthorized");
+    }
+
+    let industries = await db.industry.findMany({
+      orderBy: { priority: 'asc' }
+    });
+
+    // Auto-seed if database is empty
+    if (industries.length === 0) {
+      for (const item of DEFAULT_SECTORS_DATA) {
+        await db.industry.create({
+          data: {
+            slug: item.slug,
+            name: item.name,
+            tagline: item.tagline,
+            desc: item.desc,
+            image: item.image,
+            duty: item.duty,
+            compliance: item.compliance || null,
+            applications: item.applications,
+            products: item.products ? item.products : undefined,
+            priority: item.priority || 0,
+          }
+        });
+      }
+      industries = await db.industry.findMany({
+        orderBy: { priority: 'asc' }
+      });
+    }
+
+    return industries;
+  });
+
+const updateIndustryImageSchema = z.object({
+  token: z.string(),
+  id: z.string(),
+  image: z.string(),
+});
+
+export const updateIndustryImage = createServerFn({ method: "POST" })
+  .validator(updateIndustryImageSchema.parse)
+  .handler(async ({ data }) => {
+    const { token, id, image } = data;
+    
+    // Verify Authentication
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) {
+      throw new Error("Unauthorized");
+    }
+
+    const updated = await db.industry.update({
+      where: { id },
+      data: { image },
+    });
+
+    clearCatalogCache();
+    return updated;
+  });
+
+const upsertIndustrySchema = z.object({
+  token: z.string(),
+  id: z.string().optional(),
+  slug: z.string(),
+  name: z.string(),
+  tagline: z.string(),
+  desc: z.string(),
+  image: z.string(),
+  duty: z.string(),
+  compliance: z.string().nullable().optional(),
+  applications: z.array(z.string()).optional(),
+  products: z.any().optional(),
+  priority: z.number().default(0),
+});
+
+export const upsertIndustry = createServerFn({ method: "POST" })
+  .validator(upsertIndustrySchema.parse)
+  .handler(async ({ data }) => {
+    const { token, id, ...industryData } = data;
+    
+    // Verify Authentication
+    const supabase = createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) {
+      throw new Error("Unauthorized");
+    }
+
+    let result;
+    if (id) {
+      result = await db.industry.update({
+        where: { id },
+        data: industryData,
+      });
+    } else {
+      result = await db.industry.create({
+        data: industryData,
+      });
+    }
+
+    clearCatalogCache();
+    return result;
   });
 

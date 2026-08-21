@@ -77,6 +77,15 @@ export const getHeroImages = createServerFn({ method: "GET" })
     );
   });
 
+export const getIndustries = createServerFn({ method: "GET" })
+  .handler(async () => {
+    return await getCached("industries", async () => {
+      return await db.industry.findMany({
+        orderBy: { priority: "asc" },
+      });
+    });
+  });
+
 export const getCategoryWithProducts = createServerFn({ method: "GET" })
   .validator(categorySlugSchema.parse)
   .handler(async ({ data }) => {

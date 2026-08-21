@@ -17,7 +17,19 @@ import nozzles from "@/assets/cat-nozzles.jpg";
 import silicone from "@/assets/cat-silicone.jpg";
 import valves from "@/assets/cat-valves.jpg";
 
+import { getIndustries } from "@/lib/catalog";
+
 export const Route = createFileRoute("/industries")({
+  loader: async () => {
+    try {
+      const dbIndustries = await getIndustries();
+      return {
+        industries: dbIndustries && dbIndustries.length > 0 ? dbIndustries : null,
+      };
+    } catch {
+      return { industries: null };
+    }
+  },
   head: () => ({
     meta: [
       { title: "Industries We Serve — AARRKKAA International" },
@@ -152,6 +164,24 @@ const SECTORS: Sector[] = [
 ];
 
 function IndustriesPage() {
+  const { industries } = Route.useLoaderData();
+
+  const displaySectors: Sector[] = SECTORS.map((defaultSec) => {
+    const slug = defaultSec.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    const matched = industries?.find((ind: any) => ind.slug === slug || ind.name.toLowerCase() === defaultSec.name.toLowerCase());
+    if (!matched) return defaultSec;
+    return {
+      ...defaultSec,
+      name: matched.name || defaultSec.name,
+      tagline: matched.tagline || defaultSec.tagline,
+      desc: matched.desc || defaultSec.desc,
+      image: matched.image || defaultSec.image,
+      duty: matched.duty || defaultSec.duty,
+      compliance: matched.compliance !== undefined ? (matched.compliance || undefined) : defaultSec.compliance,
+      applications: matched.applications && matched.applications.length > 0 ? matched.applications : defaultSec.applications,
+    };
+  });
+
   return (
     <div className="min-h-screen bg-background text-ink font-sans">
       <Navbar />
@@ -324,7 +354,7 @@ function IndustriesPage() {
           </div>
 
           <div className="mt-10 grid gap-5 lg:grid-cols-2">
-            {SECTORS.map((s, i) => (
+            {displaySectors.map((s, i) => (
               <SectorCard key={s.name} sector={s} index={i} />
             ))}
           </div>
