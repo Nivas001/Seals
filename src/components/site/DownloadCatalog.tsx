@@ -45,8 +45,8 @@ export function DownloadCatalog({
     // Transition to downloaded state after 1.2s animation
     setTimeout(() => {
       setState("downloaded");
-      toast.success("AARRKKAA Product Catalog downloaded!", {
-        description: "10 major industrial pump & seal categories saved to your device.",
+      toast.success("AARRKKAA Business Brochure downloaded!", {
+        description: "AARRKKAA International Business Brochure saved to your device.",
         icon: <CheckCircle2 className="h-4 w-4 text-brass" />,
         duration: 4000,
       });
