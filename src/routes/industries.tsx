@@ -183,7 +183,7 @@ function IndustriesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-background text-ink font-sans">
+    <div className="revamp-page revamp-industries min-h-screen bg-background text-ink font-sans">
       <Navbar />
       <main className="overflow-x-clip pt-28 sm:pt-36">
         {/* Hero */}
@@ -239,7 +239,7 @@ function IndustriesPage() {
                     Trusted supply chain
                   </div>
                   <p className="mt-1 text-sm font-medium text-white sm:text-base">
-                    500+ SKUs across 12 categories — dispatched from Hosur, Tamil Nadu.
+                    Industrial components and application support — dispatched from Hosur, Tamil Nadu.
                   </p>
                 </div>
               </div>
