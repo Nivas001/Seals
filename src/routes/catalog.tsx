@@ -21,7 +21,7 @@ function CatalogPage() {
   const categories = Route.useLoaderData();
 
   return (
-    <div className="bg-background min-h-screen text-ink">
+    <div className="revamp-page revamp-catalog bg-background min-h-screen text-ink">
       <Navbar />
       <main className="pt-32 pb-24">
         {/* Hero Section */}
@@ -74,42 +74,12 @@ function CatalogPage() {
                 </div>
 
                 {/* Bento Grid for Products */}
-                <ul className="grid grid-cols-2 md:grid-cols-4 auto-rows-[160px] md:auto-rows-[200px] gap-3 md:gap-4 grid-flow-dense items-stretch">
-                  {category.products.map((item: any, i: number) => {
-                    const pattern = [
-                      "col-span-2 row-span-2", 
-                      "col-span-1 row-span-1", 
-                      "col-span-1 row-span-2",
-                      "col-span-2 row-span-1",
-                      "col-span-1 row-span-1",
-                      "col-span-2 row-span-2",
-                      "col-span-1 row-span-2",
-                      "col-span-1 row-span-1",
-                      "col-span-2 row-span-1",
-                      "col-span-1 row-span-1",
-                    ];
-                    
-                    const mdPattern = [
-                      "md:col-span-2 md:row-span-2", 
-                      "md:col-span-1 md:row-span-1", 
-                      "md:col-span-1 md:row-span-2",
-                      "md:col-span-2 md:row-span-1",
-                      "md:col-span-1 md:row-span-1",
-                      "md:col-span-2 md:row-span-2",
-                      "md:col-span-1 md:row-span-2",
-                      "md:col-span-1 md:row-span-1",
-                      "md:col-span-2 md:row-span-1",
-                      "md:col-span-1 md:row-span-1",
-                    ];
-                    
-                    const bentoClass = `h-full ${pattern[i % pattern.length]} ${mdPattern[i % mdPattern.length]}`;
-
-                    return (
-                      <li key={item.id} className={bentoClass}>
-                        <ProductItemCard category={category} product={item} index={i} variant="bento" />
-                      </li>
-                    );
-                  })}
+                <ul className="arka-product-grid">
+                  {category.products.map((item: any, index: number) => (
+                    <li key={item.id}>
+                      <ProductItemCard category={category} product={item} index={index} variant="bento" />
+                    </li>
+                  ))}
                 </ul>
               </section>
             );
