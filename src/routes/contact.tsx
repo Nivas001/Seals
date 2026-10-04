@@ -14,8 +14,6 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { VerifiedSupplierBadge } from "@/components/site/VerifiedSupplierBadge";
-import { GlowCard } from "@/components/ui/GlowCard";
 import { Input } from "@/components/base/input/input";
 import { toast } from "sonner";
 import { chatbotState } from "@/data/chatbotState";
@@ -65,7 +63,7 @@ function ContactPage() {
   const { contactInfo } = Route.useLoaderData();
 
   return (
-    <div className="min-h-screen bg-background text-ink">
+    <div className="revamp-page revamp-contact min-h-screen bg-background text-ink">
       <Navbar />
       <main className="overflow-x-clip pt-28 sm:pt-32">
         <section className="mx-auto max-w-7xl px-4 sm:px-8">
@@ -89,7 +87,7 @@ function ContactPage() {
               </p>
             </div>
             <div className="hidden sm:flex lg:col-span-5 justify-center lg:justify-end">
-              <VerifiedSupplierBadge />
+              <div className="arka-enquiry-note"><strong>For an accurate quotation</strong><ul><li>Product name or model number</li><li>Required quantity and material</li><li>Operating temperature and pressure</li><li>A drawing or photo, if available</li></ul></div>
             </div>
           </div>
 
@@ -152,7 +150,7 @@ function CardShell({
   className?: string;
 }) {
   return (
-    <GlowCard className={className}>
+    <div className={`arka-contact-card ${className}`}>
       <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass">
         {eyebrow}
       </div>
@@ -160,7 +158,7 @@ function CardShell({
         {title}
       </h2>
       <div className="mt-6">{children}</div>
-    </GlowCard>
+    </div>
   );
 }
 
