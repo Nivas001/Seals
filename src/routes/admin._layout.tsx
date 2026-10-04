@@ -95,7 +95,7 @@ function AdminLayoutShell() {
 
   return (
     <AdminContext.Provider value={{ session, onLogout }}>
-      <div className={`${isDarkMode ? 'admin-theme ' : ''}min-h-screen bg-background text-foreground flex transition-colors duration-300`}>
+      <div className={`revamp-admin ${isDarkMode ? 'admin-theme ' : ''}min-h-screen bg-background text-foreground flex transition-colors duration-300`}>
         {/* ── Mobile Overlay ── */}
         {sidebarOpen && (
           <div
