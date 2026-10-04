@@ -110,7 +110,7 @@ function ItemPage() {
 
 
   return (
-    <div className="min-h-screen bg-background text-ink">
+    <div className="revamp-page revamp-detail min-h-screen bg-background text-ink">
       <Navbar />
       <main className="pt-28 sm:pt-32">
         <section className="mx-auto max-w-7xl px-5 sm:px-8">
