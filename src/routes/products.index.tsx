@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -23,10 +22,9 @@ export const Route = createFileRoute("/products/")({
 
 function ProductsPage() {
   const categories = Route.useLoaderData();
-  const total = categories.length * 10; // since we removed 'count', we can just use a placeholder or calculate if we had count in the DB. Wait, let's just show 'many' or remove the explicit count. Or calculate products from db later. Let's just use 150 for now or fetch products. Let's just use a static '150+' for total.
 
   return (
-    <div className="min-h-screen bg-background text-ink">
+    <div className="revamp-page revamp-products min-h-screen bg-background text-ink">
       <Navbar />
       <main className="pt-32 sm:pt-40">
         <section className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -73,7 +71,7 @@ function ProductsPage() {
                 <Link
                   to="/products/$category"
                   params={{ category: cat.slug }}
-                  className="group block overflow-hidden rounded-2xl border border-hairline bg-surface transition hover:shadow-lift"
+                  className="arka-category-card"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     {cat.image ? (
@@ -99,7 +97,7 @@ function ProductsPage() {
                       </p>
                     </div>
                     <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ink/[0.04] text-ink transition group-hover:bg-ink group-hover:text-background">
-                      <ArrowUpRight className="h-4 w-4" />
+                      <span className="text-sm font-semibold" aria-hidden="true">+</span>
                     </span>
                   </div>
                 </Link>
