@@ -409,7 +409,7 @@ export function AIChatbot() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="mb-3 w-[calc(100vw-32px)] sm:w-[380px] md:w-[400px] h-[520px] max-h-[80vh] rounded-2xl border-2 border-brass/50 bg-surface/95 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] flex flex-col overflow-hidden text-ink"
+            className="arka-chat-panel mb-3 w-[calc(100vw-32px)] sm:w-[380px] md:w-[400px] h-[520px] max-h-[80vh] rounded-2xl border-2 border-brass/50 bg-surface/95 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] flex flex-col overflow-hidden text-ink"
           >
             {/* Header */}
             <div className="flex items-center justify-between bg-gradient-to-r from-brass/25 via-brass/15 to-surface px-4 py-3 text-ink border-b border-brass/40">
@@ -609,7 +609,7 @@ export function AIChatbot() {
         onClick={() => setOpen((prev) => !prev)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="group relative hidden md:flex items-center gap-2.5 rounded-full border-2 border-brass/70 bg-surface/95 backdrop-blur-md px-4 py-3 text-ink shadow-[0_8px_25px_-5px_rgba(217,119,6,0.3)] transition-all hover:border-brass hover:bg-white hover:shadow-[0_12px_35px_-5px_rgba(217,119,6,0.5)]"
+        className="arka-chat-toggle group relative flex items-center gap-2.5 rounded-full border-2 border-brass/70 bg-surface/95 backdrop-blur-md px-4 py-3 text-ink shadow-[0_8px_25px_-5px_rgba(217,119,6,0.3)] transition-all hover:border-brass hover:bg-white hover:shadow-[0_12px_35px_-5px_rgba(217,119,6,0.5)]"
         aria-label="Toggle ASK ARKA Chatbot"
       >
         <span className="grid h-6 w-6 place-items-center rounded-full bg-brass text-white font-bold shadow-2xs">
