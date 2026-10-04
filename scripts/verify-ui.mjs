@@ -56,6 +56,8 @@ for (const path of paths) {
       await audit(path, width);
       if (screenshotPaths.has(path)) {
         const name = (path === "/" ? "home" : path.slice(1).replaceAll("/", "-")) + "-" + width;
+        // Capture the settled layout after existing entrance animations finish.
+        await page.waitForTimeout(700);
         await page.screenshot({ path: "ui-artifacts/" + name + ".png", fullPage: true });
         if (screenshotPaths.has(path)) {
           const preview = await page.screenshot({ type: "jpeg", quality: 45 });
