@@ -30,7 +30,7 @@ function AboutPage() {
   const motto = contactInfo?.motto || "To provide quality products and support to our valuable customers with a timely approach.";
 
   return (
-    <div className="min-h-screen bg-background text-ink">
+    <div className="revamp-page revamp-about min-h-screen bg-background text-ink">
       <Navbar />
       <main className="overflow-x-clip pt-32 sm:pt-40">
         <section className="mx-auto max-w-6xl px-5 sm:px-8">
