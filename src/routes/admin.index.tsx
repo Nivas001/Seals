@@ -50,7 +50,7 @@ function AdminGate() {
   }
 
   return (
-    <div className={`${isDarkMode ? 'admin-theme ' : ''}min-h-screen bg-background text-foreground flex flex-col transition-colors duration-300`}>
+    <div className={`revamp-admin ${isDarkMode ? 'admin-theme ' : ''}min-h-screen bg-background text-foreground flex flex-col transition-colors duration-300`}>
       <LoginForm />
     </div>
   );
