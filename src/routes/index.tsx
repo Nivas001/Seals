@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 
 import {
   ArrowUpRight, Phone, Mail, MapPin, ArrowRight,
@@ -14,7 +14,6 @@ import { getHeroImages, getAllCategoriesWithProducts } from "@/lib/catalog";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { GlowCard } from "@/components/ui/GlowCard";
-import { LineSidebar } from "@/components/ui/LineSidebar";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -26,68 +25,6 @@ export const Route = createFileRoute("/")({
     return { heroImages, dbCategories };
   }
 });
-
-const BENTO_SLOT_CLASSES: string[] = [
-  "sm:col-span-4 sm:row-span-2", // Slot 0: Top Left Large
-  "sm:col-span-2 sm:row-span-2", // Slot 1: Top Right Tall
-  "sm:col-span-2",               // Slot 2: Middle Row 1
-  "sm:col-span-2",               // Slot 3: Middle Row 2
-  "sm:col-span-2",               // Slot 4: Middle Row 3
-  "sm:col-span-4",               // Slot 5: Bottom Row Wide
-  "sm:col-span-2",               // Slot 6: Bottom Row Right
-  "sm:col-span-2",               // Slot 7: Extra
-];
-
-const BENTO_LAYOUT: Record<string, string> = {
-  pumps: "sm:col-span-4 sm:row-span-2",
-  "mechanical-seals": "sm:col-span-2 sm:row-span-2",
-  elastomers: "sm:col-span-2",
-  silicone: "sm:col-span-2",
-  hoses: "sm:col-span-2",
-  "stainless-steel": "sm:col-span-4",
-  bearings: "sm:col-span-2",
-  couplings: "sm:col-span-2",
-  nozzles: "sm:col-span-2",
-  valves: "sm:col-span-2",
-  springs: "sm:col-span-2",
-  other: "sm:col-span-2",
-};
-
-function useCountUp(target: number, duration = 1500) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  useEffect(() => {
-    if (!inView) return;
-    let start = 0;
-    const step = target / (duration / 16);
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [inView, target, duration]);
-  return { count, ref };
-}
-
-function StatItem({ target, suffix, label }: { target: number; suffix: string; label: string }) {
-  const { count, ref } = useCountUp(target);
-  return (
-    <div ref={ref} className="relative">
-      <div className="font-display text-2xl font-black tracking-tight text-ink sm:text-3xl">
-        {count}{suffix}
-      </div>
-      <div className="mt-1 text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
-        {label}
-      </div>
-    </div>
-  );
-}
 
 function Home() {
   const { heroImages, dbCategories } = Route.useLoaderData();
@@ -105,23 +42,12 @@ function Home() {
       })
     : CATEGORIES.slice(0, 8);
 
-  const sidebarSections = [
-    { id: "hero", label: "Overview" },
-    { id: "about", label: "About Us" },
-    { id: "catalog", label: "Products" },
-    { id: "industries", label: "Industries" },
-    { id: "why-us", label: "Why AARRKKAA" },
-    { id: "testimonials", label: "Reviews" },
-    { id: "process", label: "How We Work" },
-    { id: "find-us", label: "Location" },
-  ];
 
   return (
-    <div className="min-h-screen bg-background text-ink">
+    <div className="revamp-page revamp-home min-h-screen bg-background text-ink">
       <Navbar />
-      <LineSidebar sections={sidebarSections} />
       <main>
-        <Hero images={heroImages} />
+        <Hero images={heroImages} categoryCount={dbCategories?.length || CATEGORIES.length} productCount={dbCategories?.reduce((sum, category) => sum + (category.products?.length || 0), 0) || CATEGORIES.reduce((sum, category) => sum + category.count, 0)} />
         <TrustStrip />
         <AboutPreview />
         <ProductsBento featured={featured} />
@@ -192,260 +118,65 @@ function FloatingActions() {
 
 /* ─────────────────────────── HERO ─────────────────────────── */
 import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
-import { useCallback } from "react";
 
-function Hero({ images }: { images: { id: string, url: string }[] }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 4000, stopOnInteraction: false })]);
+function Hero({ images, categoryCount, productCount }: { images: { id: string; url: string }[]; categoryCount: number; productCount: number }) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
-
-  const scrollTo = useCallback((index: number) => {
-    if (emblaApi) emblaApi.scrollTo(index);
-  }, [emblaApi]);
-
   useEffect(() => {
     if (!emblaApi) return;
-    const onSelect = () => {
-      setSelectedIndex(emblaApi.selectedScrollSnap());
-    };
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
     emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
     onSelect();
+    return () => { emblaApi.off("select", onSelect); };
   }, [emblaApi]);
+  const slides = images.length ? images : [{ id: "existing-hero", url: heroImg }];
 
   return (
-    <section id="hero" className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[560px] opacity-[0.35]">
-        <div className="grid-lines absolute inset-0" />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% 0%, oklch(0.985 0.005 85 / 0) 55%, oklch(0.985 0.005 85) 82%)",
-          }}
-        />
-      </div>
-
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
-          <div className="flex flex-col justify-center">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex w-fit items-center gap-2 rounded-full border border-hairline bg-white/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground backdrop-blur"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-brass" />
-              Integrated technology support
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.05 }}
-              className="mt-5 text-balance font-display font-black leading-[0.95] tracking-[-0.035em] text-ink"
-              style={{ fontSize: "clamp(2.5rem, 6.2vw, 5.25rem)" }}
-            >
-              Precision parts for
-              <br />
-              industry that
-              <span
-                className="inline-block bg-clip-text px-2 italic text-transparent"
-                style={{ backgroundImage: "var(--gradient-brand)" }}
-              >
-                can&rsquo;t stop.
-              </span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="mt-6 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg"
-            >
-              AARRKKAA International supplies pumps, mechanical seals,
-              stainless steel, elastomers and specialty components to food,
-              pharma, chemical and process plants worldwide with service available globally — matched
-              accurately, shipped on time.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
-              className="mt-8 flex flex-wrap items-center gap-3"
-            >
-              <Link
-                to="/products"
-                className="group inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background transition hover:bg-ink/85"
-              >
-                Explore the catalog
-                <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-3 text-sm font-semibold text-ink backdrop-blur transition hover:bg-white"
-              >
-                Request a quote
-              </Link>
-              <Link
-                to="/wizard"
-                className="inline-flex items-center gap-2 rounded-full border border-brass/50 bg-brass/10 px-5 py-3 text-sm font-bold text-brass transition hover:bg-brass hover:text-white"
-              >
-                Find My Seal Wizard
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </motion.div>
-
-            {/* Animated stats */}
-            <div className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-hairline pt-6">
-              <StatItem target={12} suffix="+" label="Product categories" />
-              <StatItem target={8} suffix="" label="Sectors served" />
-              <StatItem target={100} suffix="+" label="SKU lines stocked" />
+    <section id="hero" className="arka-hero">
+      <div className="arka-container arka-hero-grid">
+        <div className="arka-hero-copy">
+          <div className="arka-overline">Precision supply. Practical expertise.</div>
+          <h1>For industry<br />that <span>can’t stop.</span></h1>
+          <p>Pumps, mechanical seals and precision components for your process line. Accurately matched. Reliably supplied.</p>
+          <div className="arka-hero-actions">
+            <Link to="/products" className="arka-button arka-button-light">Explore products</Link>
+            <Link to="/contact" className="arka-button arka-button-outline-light">Request a quote</Link>
+          </div>
+          <Link to="/wizard" className="arka-finder-link">Need help choosing a seal? Use our product finder.</Link>
+          <div className="arka-hero-stats">
+            <div><strong>{categoryCount}</strong><span>Product categories</span></div>
+            <div><strong>{productCount}</strong><span>Products in our catalog</span></div>
+            <div><strong>8</strong><span>Industries served</span></div>
+          </div>
+        </div>
+        <div className="arka-hero-visual">
+          <div className="arka-hero-image" ref={emblaRef}>
+            <div className="flex h-full">
+              {slides.map((img, index) => (
+                <div className="min-w-0 flex-[0_0_100%] h-full" key={img.id}>
+                  <img src={img.url} alt="AARRKKAA industrial components and process equipment"
+                    loading={index === 0 ? "eager" : "lazy"} fetchPriority={index === 0 ? "high" : "auto"}
+                    decoding="async" className="h-full w-full object-cover" />
+                </div>
+              ))}
             </div>
           </div>
-
-          {/* Hero bento */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="relative"
-          >
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-hairline bg-surface shadow-lift">
-              {images.length > 0 ? (
-                <div className="relative h-full w-full">
-                  <div className="overflow-hidden h-full w-full" ref={emblaRef}>
-                    <div className="flex h-full">
-                      {images.map((img, idx) => (
-                        <div className="flex-[0_0_100%] min-w-0 relative h-full" key={img.id}>
-                          <img
-                            src={img.url}
-                            alt="Hero product showcase"
-                            loading={idx === 0 ? "eager" : "lazy"}
-                            fetchPriority={idx === 0 ? "high" : "auto"}
-                            decoding="async"
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  {/* Navigation Buttons */}
-                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-between px-4 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                    <button onClick={scrollPrev} className="bg-background/80 backdrop-blur border border-hairline text-ink hover:bg-brass hover:text-white p-2 rounded-full transition-colors shadow-sm">
-                      <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button onClick={scrollNext} className="bg-background/80 backdrop-blur border border-hairline text-ink hover:bg-brass hover:text-white p-2 rounded-full transition-colors shadow-sm">
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                  </div>
-
-                  {/* Indicators */}
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2">
-                    {images.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => scrollTo(idx)}
-                        className={`transition-all duration-300 rounded-full ${
-                          idx === selectedIndex 
-                            ? "w-6 h-1.5 bg-brass" 
-                            : "w-1.5 h-1.5 bg-white/50 hover:bg-white/80"
-                        }`}
-                        aria-label={`Go to slide ${idx + 1}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <img
-                  src={heroImg}
-                  alt="Precision industrial centrifugal pump assembly with brushed stainless steel housing and polished brass fittings"
-                  width={1600}
-                  height={1400}
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="async"
-                  className="h-full w-full object-cover"
-                />
-              )}
-              <div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, transparent 55%, oklch(0.14 0.02 260 / 0.35) 100%)",
-                }}
-              />
-
-              {/* Floating cards */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="glass-strong absolute left-4 top-4 max-w-[85%] sm:max-w-[78%] rounded-2xl p-3.5"
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    aria-hidden
-                    className="grid h-8 w-8 place-items-center rounded-lg text-primary-foreground shrink-0"
-                    style={{ background: "var(--gradient-brass)" }}
-                  >
-                    <Sparkles className="h-4 w-4" />
-                  </span>
-                  <div className="leading-tight">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                      Process Equipment Spares
-                    </div>
-                    <div className="text-xs sm:text-sm font-bold text-ink leading-snug mt-0.5">
-                      Mechanical Seal · Bearing · Elastomer · Spring · Valve
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.65 }}
-                className="glass-strong absolute bottom-4 left-4 right-4 rounded-2xl p-4"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                      Head office
-                    </div>
-                    <div className="mt-0.5 text-sm font-bold text-ink">
-                      Hosur, Tamil Nadu
-                    </div>
-                    <div className="mt-0.5 text-xs text-muted-foreground">
-                      Service available globally
-                    </div>
-                  </div>
-                  <Link
-                    to="/contact"
-                    className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ink text-background transition hover:bg-ink/85"
-                    aria-label="Contact us"
-                  >
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
+          <div className="arka-image-caption">
+            <div><span>Process equipment &amp; spares</span><strong>Built around your application.</strong></div>
+            {slides.length > 1 && (
+              <div className="flex items-center gap-2" role="group" aria-label="Product photographs">
+                <button type="button" onClick={() => emblaApi?.scrollPrev()} className="arka-image-control" aria-label="Previous photograph"><ChevronLeft className="h-5 w-5" /></button>
+                <span className="text-sm" aria-live="polite">{selectedIndex + 1} / {slides.length}</span>
+                <button type="button" onClick={() => emblaApi?.scrollNext()} className="arka-image-control" aria-label="Next photograph"><ChevronRight className="h-5 w-5" /></button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
 
 /* ─── TRUST STRIP ─── */
 function TrustStrip() {
@@ -570,94 +301,29 @@ function AboutPreview() {
 /* ─── PRODUCTS BENTO ─── */
 function ProductsBento({ featured }: { featured: Array<{ slug: string; name: string; short: string; description: string; image: string; count: number }> }) {
   return (
-    <section id="catalog" className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
-      <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-        <div>
-          <Eyebrow>What we supply</Eyebrow>
-          <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
-            A catalog built for
-            <br />
-            process reliability.
-          </h2>
-        </div>
-        <Link
-          to="/products"
-          className="hidden sm:inline-flex items-center gap-2 self-start rounded-full border border-ink/15 bg-white/60 px-4 py-2 text-sm font-semibold text-ink backdrop-blur hover:bg-white sm:self-end"
-        >
-          View all categories <ArrowRight className="h-4 w-4" />
-        </Link>
+    <section id="catalog" className="arka-container arka-section">
+      <div className="arka-section-heading">
+        <div><Eyebrow>Our product range</Eyebrow><h2>Essential components.<br />One reliable source.</h2></div>
+        <Link to="/products" className="arka-button arka-button-secondary">View all categories</Link>
       </div>
-
-      <div className="mt-10 grid auto-rows-[160px] grid-cols-2 gap-3 sm:auto-rows-[220px] sm:grid-cols-6 lg:auto-rows-[240px] sm:gap-4">
-        {featured.map((cat, i) => {
-          const slotClass = BENTO_SLOT_CLASSES[i] ?? BENTO_LAYOUT[cat.slug] ?? "sm:col-span-2";
-          return (
-            <motion.div
-              key={cat.slug}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: i * 0.04 }}
-              className={`bento-tile bento-tile-hover ${i >= 4 ? "hidden sm:block" : ""} ${slotClass}`}
-            >
-              <Link
-                to="/products/$category"
-                params={{ category: cat.slug }}
-                className="group relative flex h-full w-full flex-col justify-between overflow-hidden p-5"
-              >
-                {cat.image ? (
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    loading={i < 2 ? "eager" : "lazy"}
-                    fetchPriority={i < 2 ? "high" : "auto"}
-                    decoding="async"
-                    className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="pointer-events-none absolute inset-0 bg-neutral-900" />
-                )}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, oklch(1 0 0 / 0.05) 0%, oklch(0.14 0.02 260 / 0.55) 100%)",
-                  }}
-                />
-                <div className="relative flex items-start justify-between">
-                  <span className="glass rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink">
-                    {String(cat.count).padStart(2, "0")} items
-                  </span>
-                  <span className="glass-strong grid h-8 w-8 place-items-center rounded-full text-ink transition group-hover:bg-ink group-hover:text-background">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </span>
-                </div>
-                <div className="relative">
-                  <h3 className="font-display text-lg font-black tracking-tight text-white sm:text-2xl">
-                    {cat.name}
-                  </h3>
-                  <p className="mt-1 hidden max-w-xs text-[13px] leading-snug text-white/85 sm:block">
-                    {cat.short}
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      <div className="mt-8 flex justify-center sm:hidden">
-        <Link
-          to="/products"
-          className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-2.5 text-sm font-semibold text-ink backdrop-blur hover:bg-white"
-        >
-          View all categories <ArrowRight className="h-4 w-4" />
-        </Link>
+      <div className="arka-featured-grid">
+        {featured.map((cat) => (
+          <Link key={cat.slug} to="/products/$category" params={{ category: cat.slug }} className="arka-category-card">
+            <div className="arka-category-image">
+              {cat.image ? <img src={cat.image} alt={cat.name} loading="lazy" decoding="async" /> : <span>Product photograph on request</span>}
+            </div>
+            <div className="arka-category-copy">
+              <span className="arka-overline">{cat.count} products</span>
+              <h3>{cat.name}</h3>
+              <p>{cat.short}</p>
+            </div>
+          </Link>
+        ))}
       </div>
     </section>
   );
 }
+
 
 /* ─── INDUSTRIES ─── */
 function Industries() {
