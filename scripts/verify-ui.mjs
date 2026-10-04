@@ -49,7 +49,7 @@ async function audit(path, width) {
   report.push({ path, width, status: response.status(), heading: heading.trim(), ...result });
 }
 
-const screenshotPaths = new Set(["/", "/products", "/products/mechanical-seals", "/contact", "/about", "/about/payments", "/wizard"]);
+const screenshotPaths = new Set(["/", "/products", "/products/mechanical-seals", "/contact", "/about", "/about/payments", "/wizard", "/industries", "/catalog", "/products/mechanical-seals/conical-spring"]);
 for (const path of paths) {
   for (const width of [1440, 390]) {
     try {
@@ -57,9 +57,9 @@ for (const path of paths) {
       if (screenshotPaths.has(path)) {
         const name = (path === "/" ? "home" : path.slice(1).replaceAll("/", "-")) + "-" + width;
         await page.screenshot({ path: "ui-artifacts/" + name + ".png", fullPage: true });
-        if (path === "/" && width === 1440) {
+        if (screenshotPaths.has(path)) {
           const preview = await page.screenshot({ type: "jpeg", quality: 45 });
-          console.log("VISUAL_PREVIEW_JPEG:" + preview.toString("base64"));
+          console.log("VISUAL_REVIEW:" + name + ":" + preview.toString("base64"));
         }
       }
     } catch (error) {
