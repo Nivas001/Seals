@@ -463,7 +463,7 @@ button:disabled { cursor: not-allowed; }
 .revamp-home #hero + section { margin-top:0; padding-block:1.5rem; background:#fff; }
 .revamp-home #about,.revamp-home #industries,.revamp-home #why-us,.revamp-home #testimonials,.revamp-home #process,.revamp-home #find-us { margin-top:6rem; }
 .revamp-home #about { padding-bottom:3rem; border-bottom:1px solid #d6e0e5; }
-.revamp-home #testimonials > div:last-child > div { background:#fff; border:1px solid #d6e0e5; border-top:3px solid #176a7b; padding:2rem; }
+.revamp-home #testimonials .arka-surface-card { border-top:3px solid #176a7b; }
 .arka-page-heading { max-width:52rem; }
 .arka-page-heading h1 { margin-top:1rem; }
 .arka-page-heading p { margin-top:1.5rem; max-width:38rem; color:#526570; }
@@ -622,3 +622,20 @@ button:disabled { cursor: not-allowed; }
 .arka-chat-toggle { min-height:2.75rem; border-radius:.25rem; border-width:1px; box-shadow:0 3px 16px #12334415; }
 .arka-chat-toggle .animate-ping,.arka-chat-toggle .animate-pulse,.arka-chat-panel .animate-ping,.arka-chat-panel .animate-pulse { animation:none; }
 @media(max-width:767px) { .arka-chat-toggle { padding:.625rem .75rem; } }
+
+/* Final typography, image captions and action contrast. */
+.revamp-page main :is(h1,h2,h3) { overflow-wrap:break-word; }
+.revamp-page main :is(a,button).bg-brass { color:#fff; }
+.revamp-home #about p.font-display { font-size:1.5rem; line-height:1.45; }
+.revamp-detail main > section:first-child > .grid > div:last-child { display:flex; flex-direction:column; }
+.revamp-detail main > section:first-child > .grid > div:last-child > img { flex:1; min-height:0; height:0; width:100%; }
+.revamp-detail main > section:first-child > .grid > div:last-child > div { flex-shrink:0; }
+
+.arka-surface-card { border:1px solid var(--hairline); border-radius:.3rem; background:var(--surface); box-shadow:none; }
+.arka-testimonial-grid,.arka-process-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.25rem; }
+.arka-about-values { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+.revamp-about main > section:nth-child(3) > div { min-width:0; }
+@media(max-width:767px) {
+  .arka-testimonial-grid,.arka-process-grid,.arka-about-values { grid-template-columns:1fr; }
+  .revamp-home #process > div { padding:1.5rem; }
+}
