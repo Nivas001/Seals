@@ -72,13 +72,13 @@ function AboutPage() {
             </h2>
           </div>
           <div className="lg:col-span-2 relative">
-            <div className="flex snap-x snap-mandatory overflow-x-auto pb-4 gap-4 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0">
+            <div className="arka-about-values">
               {[
                 { k: "Response", d: "Improve response time on every customer query.", icon: Clock },
                 { k: "Convenience", d: "Convenient ordering with accurate matching, first time.", icon: MousePointerClick },
                 { k: "Feedback", d: "Continuous feedback creates a strong long-term bond.", icon: HeartHandshake },
               ].map((x) => (
-                <div key={x.k} className="snap-center shrink-0 w-[85%] sm:w-auto flex">
+                <div key={x.k} className="flex min-w-0">
                   <GlowCard className="flex w-full flex-col justify-between group">
                     <div>
                       <span
@@ -182,7 +182,7 @@ function AboutPage() {
           <div className="group relative overflow-hidden rounded-[2rem] bg-ink text-background p-8 sm:p-12 shadow-2xl">
             <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-brass via-transparent to-transparent transition-opacity duration-500 group-hover:opacity-40" />
             
-            <div className="relative z-10 grid gap-8 sm:grid-cols-2 items-center">
+            <div className="relative z-10 max-w-3xl">
               <div>
                 <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass mb-3">
                   Global Commerce
@@ -203,14 +203,6 @@ function AboutPage() {
                 </div>
               </div>
               
-              <div className="hidden sm:flex justify-end pr-8">
-                {/* Decorative overlapping circles to represent payments/coins/global */}
-                <div className="relative h-32 w-32">
-                  <div className="absolute right-0 top-0 h-24 w-24 rounded-full border border-brass/50 mix-blend-screen transition-transform duration-700 group-hover:-translate-x-4 group-hover:translate-y-4" />
-                  <div className="absolute bottom-0 left-0 h-20 w-20 rounded-full border border-background/20 bg-background/5 backdrop-blur-md transition-transform duration-700 group-hover:translate-x-6 group-hover:-translate-y-2" />
-                  <div className="absolute top-1/2 left-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-tr from-brass to-[#d4af37] shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-transform duration-500 group-hover:scale-110" />
-                </div>
-              </div>
             </div>
           </div>
         </section>
