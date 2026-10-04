@@ -162,7 +162,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
-  const isHomepage = location.pathname === "/";
+  const showChatbot = ["/", "/products", "/industries", "/about", "/contact", "/catalog"].some((path) => path === "/" ? location.pathname === "/" : location.pathname === path || location.pathname.startsWith(`${path}/`));
 
   // Custom Analytics Tracker using non-blocking background task
   useEffect(() => {
@@ -190,7 +190,7 @@ function RootComponent() {
       <RoutePendingIndicator />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
-      {isHomepage && <AIChatbot />}
+      {showChatbot && <AIChatbot />}
       <Toaster position="top-center" closeButton />
       <Analytics />
       <SpeedInsights />
