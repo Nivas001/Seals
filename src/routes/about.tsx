@@ -1,3 +1,5 @@
+import { CLIENTS } from "@/data/clients";
+import { ClientLogo } from "@/components/site/ClientLogo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -112,64 +114,22 @@ function AboutPage() {
           </div>
           <div className="mt-12 relative flex flex-col gap-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <div className="marquee-track flex w-max gap-4 hover:[animation-play-state:paused]">
-              {[
-                ...[
-                  "Tata Electronics",
-                  "Thermax Onsite Energy Solutions",
-                  "Anthem Biosciences",
-                  "Werner Finley",
-                  "Astral Coatings",
-                  "Ecovinal International",
-                  "Yashaswi Fish Meal & Oil",
-                  "Zenfold Sustainable Technology",
-                ],
-                ...[
-                  "Tata Electronics",
-                  "Thermax Onsite Energy Solutions",
-                  "Anthem Biosciences",
-                  "Werner Finley",
-                  "Astral Coatings",
-                  "Ecovinal International",
-                  "Yashaswi Fish Meal & Oil",
-                  "Zenfold Sustainable Technology",
-                ],
-              ].map((client, i) => (
+              {[...CLIENTS.slice(0, 8), ...CLIENTS.slice(0, 8)].map((client, i) => (
                 <div
-                  key={`${client}-${i}`}
-                  className="glass-shimmer flex items-center justify-center rounded-full border border-hairline bg-surface/50 px-6 py-3 text-sm font-semibold tracking-tight text-ink/85 transition-all duration-300 hover:-translate-y-1 hover:border-ink/20 hover:bg-white hover:text-ink hover:shadow-soft cursor-pointer whitespace-nowrap"
+                  key={`${client.name}-${i}`}
+                  className="glass-shimmer flex items-center justify-center rounded-full border border-hairline bg-surface/50 px-6 py-3 transition-all duration-300 hover:-translate-y-1 hover:border-ink/20 hover:bg-white hover:shadow-soft cursor-pointer whitespace-nowrap"
                 >
-                  {client}
+                  <ClientLogo client={client} />
                 </div>
               ))}
             </div>
             <div className="marquee-track-reverse flex w-max gap-4 hover:[animation-play-state:paused]">
-              {[
-                ...[
-                  "H&V Advanced Materials",
-                  "Eco Edge Solutions",
-                  "Mukka Proteins",
-                  "Megha Fruit Processing",
-                  "RMZ Oilfield Engineering",
-                  "Ingex Botanicals",
-                  "Ovobel Foods",
-                  "Essae Gears & Transmissions",
-                ],
-                ...[
-                  "H&V Advanced Materials",
-                  "Eco Edge Solutions",
-                  "Mukka Proteins",
-                  "Megha Fruit Processing",
-                  "RMZ Oilfield Engineering",
-                  "Ingex Botanicals",
-                  "Ovobel Foods",
-                  "Essae Gears & Transmissions",
-                ],
-              ].map((client, i) => (
+              {[...CLIENTS.slice(8), ...CLIENTS.slice(8)].map((client, i) => (
                 <div
-                  key={`${client}-${i}`}
-                  className="glass-shimmer flex items-center justify-center rounded-full border border-hairline bg-surface/50 px-6 py-3 text-sm font-semibold tracking-tight text-ink/85 transition-all duration-300 hover:-translate-y-1 hover:border-ink/20 hover:bg-white hover:text-ink hover:shadow-soft cursor-pointer whitespace-nowrap"
+                  key={`${client.name}-${i}`}
+                  className="glass-shimmer flex items-center justify-center rounded-full border border-hairline bg-surface/50 px-6 py-3 transition-all duration-300 hover:-translate-y-1 hover:border-ink/20 hover:bg-white hover:shadow-soft cursor-pointer whitespace-nowrap"
                 >
-                  {client}
+                  <ClientLogo client={client} />
                 </div>
               ))}
             </div>

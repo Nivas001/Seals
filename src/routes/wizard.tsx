@@ -1,3 +1,4 @@
+import { ArkaLogo } from "@/components/ui/ArkaLogo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -102,8 +103,9 @@ function WizardPage() {
             </div>
             <span className="hidden sm:inline font-bold tracking-widest uppercase text-sm">Back to Home</span>
           </Link>
-          <div className="hidden sm:block text-zinc-500 font-medium text-xs tracking-widest uppercase">
-            Product Finder Wizard
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:block text-zinc-500 font-medium text-xs tracking-widest uppercase">Product Finder Wizard</span>
+            <span className="rounded-xl bg-white px-2 py-1"><ArkaLogo size={32} variant="full" /></span>
           </div>
         </div>
       </header>

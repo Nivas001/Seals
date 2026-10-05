@@ -1,3 +1,5 @@
+import { CLIENTS, BRANDS } from "@/data/clients";
+import { ClientLogo } from "@/components/site/ClientLogo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
@@ -449,24 +451,7 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
 
 /* ─── TRUST STRIP ─── */
 function TrustStrip() {
-  const items = [
-    "Tata Electronics",
-    "Thermax Onsite Energy Solutions",
-    "Anthem Biosciences",
-    "Werner Finley",
-    "Astral Coatings",
-    "Ecovinal International",
-    "Yashaswi Fish Meal & Oil",
-    "Zenfold Sustainable Technology",
-    "H&V Advanced Materials",
-    "Eco Edge Solutions",
-    "Mukka Proteins",
-    "Megha Fruit Processing",
-    "RMZ Oilfield Engineering",
-    "Ingex Botanicals",
-    "Ovobel Foods",
-    "Essae Gears & Transmissions",
-  ];
+  const items = CLIENTS;
   return (
     <section className="mt-20 border-y border-hairline bg-surface py-6 sm:mt-28">
       <div className="mx-auto flex max-w-7xl items-center gap-6 overflow-hidden px-5 sm:px-8">
@@ -476,11 +461,16 @@ function TrustStrip() {
         <div className="relative flex-1 overflow-hidden">
           <div className="marquee-track flex w-max gap-10">
             {[...items, ...items].map((x, i) => (
-              <span
-                key={i}
-                className="flex items-center gap-10 whitespace-nowrap text-[13px] font-bold tracking-tight text-ink/75"
-              >
-                <span>{x}</span>
+              <span key={i} className="flex items-center gap-10">
+                <ClientLogo client={x} />
+                <span aria-hidden className="h-1 w-1 rounded-full bg-brass/60" />
+              </span>
+            ))}
+          </div>
+          <div className="marquee-track-reverse mt-4 flex w-max gap-10">
+            {[...BRANDS, ...BRANDS, ...BRANDS, ...BRANDS].map((x, i) => (
+              <span key={i} className="flex items-center gap-10">
+                <ClientLogo client={x} size="lg" />
                 <span aria-hidden className="h-1 w-1 rounded-full bg-brass/60" />
               </span>
             ))}
