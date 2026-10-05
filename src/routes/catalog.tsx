@@ -26,10 +26,10 @@ function CatalogPage() {
       <main className="pt-32 pb-24">
         {/* Hero Section */}
         <section className="mx-auto max-w-7xl px-5 sm:px-8 mb-20 text-center relative">
-          <div className="absolute left-5 sm:left-8 top-0">
+          <div className="mb-5 text-left sm:mb-0 sm:absolute sm:left-8 sm:top-0">
             <Link
               to="/products"
-              className="inline-flex items-center gap-2 rounded-full border border-hairline bg-surface/50 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.15em] text-ink backdrop-blur-md transition-all hover:bg-surface hover:shadow-soft"
+              className="inline-flex items-center gap-2 rounded-full border border-hairline bg-surface/50 px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.15em] text-ink backdrop-blur-md transition-all hover:bg-surface hover:shadow-soft"
             >
               &larr; Back
             </Link>
@@ -47,7 +47,7 @@ function CatalogPage() {
         </section>
 
         {/* Categories Loop */}
-        <div className="space-y-32">
+        <div className="space-y-20 sm:space-y-32">
           {categories.map((category) => {
             if (!category.products || category.products.length === 0) return null;
             return (
@@ -66,7 +66,7 @@ function CatalogPage() {
                     <Link
                       to="/products/$category"
                       params={{ category: category.slug }}
-                      className="text-xs font-bold uppercase tracking-wider text-brass hover:text-brass/80 transition-colors"
+                      className="-my-2 py-2 text-xs font-bold uppercase tracking-wider text-brass hover:text-brass/80 transition-colors"
                     >
                       View Details &rarr;
                     </Link>

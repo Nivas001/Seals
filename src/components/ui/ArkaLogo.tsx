@@ -16,7 +16,10 @@ export function ArkaLogo({
       <img 
         src="/logo.png" 
         alt="AARRKKAA International"
-        style={{ height: size }}
+        width={Math.round((size * 817) / 678)}
+        height={size}
+        decoding="async"
+        style={{ height: size, width: "auto" }}
         className="object-contain drop-shadow-sm transition-transform duration-300"
       />
     </div>

@@ -36,15 +36,15 @@ function SortableCategoryItem({ cat, onEdit, onDelete, busy, index }: any) {
   const isBento = index !== undefined && index < 8 && !cat.isHidden && !cat.isDeleted;
 
   return (
-    <div ref={setNodeRef} style={style} className={`p-4 bg-surface border rounded-xl flex items-center justify-between transition-all ${isDragging ? 'shadow-xl border-primary scale-[1.01]' : 'border-border shadow-sm hover:shadow-md'} ${cat.isHidden ? 'opacity-60' : ''}`}>
-      <div className="flex items-center gap-4">
+    <div ref={setNodeRef} style={style} className={`p-3 sm:p-4 bg-surface border rounded-xl flex items-center justify-between gap-3 transition-all ${isDragging ? 'shadow-xl border-primary scale-[1.01]' : 'border-border shadow-sm hover:shadow-md'} ${cat.isHidden ? 'opacity-60' : ''}`}>
+      <div className="flex min-w-0 items-center gap-2 sm:gap-4">
         {onEdit && (
           <div {...attributes} {...listeners} className="cursor-grab text-muted-foreground hover:text-ink active:cursor-grabbing p-2 touch-none">
             <GripVertical className="w-5 h-5" />
           </div>
         )}
-        <img src={cat.image || "/placeholder.svg"} alt={cat.name} className="w-16 h-16 object-cover rounded border border-border bg-muted" />
-        <div className="flex flex-col gap-1">
+        <img src={cat.image || "/placeholder.svg"} alt={cat.name} className="w-12 h-12 sm:w-16 sm:h-16 shrink-0 object-cover rounded border border-border bg-muted" />
+        <div className="flex min-w-0 flex-col gap-1">
           <div className="flex items-center gap-2 flex-wrap">
             <h3 className="font-bold text-foreground">{cat.name}</h3>
             {isBento && (
@@ -54,10 +54,10 @@ function SortableCategoryItem({ cat, onEdit, onDelete, busy, index }: any) {
             )}
             {cat.isHidden && <span className="bg-muted-foreground text-background text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1"><EyeOff className="w-3 h-3" /> Hidden</span>}
           </div>
-          <p className="text-xs text-muted-foreground font-mono">{cat.slug}</p>
+          <p className="break-all text-xs text-muted-foreground font-mono">{cat.slug}</p>
         </div>
       </div>
-      <div className="flex gap-2">
+      <div className="flex shrink-0 gap-2">
         {onEdit ? (
           <>
             <Button variant="outline" size="sm" onClick={() => onEdit(cat)} disabled={busy} title="Edit Category & Photo">
@@ -277,8 +277,8 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
       </Dialog>
 
       {!isAdding && !editingId && (
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-wrap justify-between items-center gap-3">
+          <div className="flex flex-wrap items-center gap-4">
             <h3 className="text-xl font-display font-black text-ink">Product Categories</h3>
             <div className="flex bg-muted/50 p-1 rounded-lg">
               <button 
@@ -308,7 +308,7 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
         <GlowCard className="p-6">
           <h3 className="text-lg font-bold text-ink mb-4">{editingId ? "Edit Category" : "New Category"}</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</label>
                 <Input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required />
@@ -331,7 +331,7 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
                 required
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category Image</label>
                 <div className="flex items-center gap-3">

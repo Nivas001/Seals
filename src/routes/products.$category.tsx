@@ -48,9 +48,9 @@ function CategoryPage() {
         {/* Hero */}
         <section className="mx-auto max-w-7xl px-5 sm:px-8">
           <nav aria-label="Breadcrumb" className="text-[12px] text-muted-foreground">
-            <Link to="/" className="hover:text-ink">Home</Link>
+            <Link to="/" className="inline-block py-2 hover:text-ink">Home</Link>
             <span className="mx-1.5">/</span>
-            <Link to="/products" className="hover:text-ink">Products</Link>
+            <Link to="/products" className="inline-block py-2 hover:text-ink">Products</Link>
             <span className="mx-1.5">/</span>
             <span className="text-ink">{c.name}</span>
           </nav>
@@ -170,7 +170,7 @@ function CategoryPage() {
           <h2 className="font-display text-2xl font-black tracking-tight text-ink sm:text-3xl">
             Explore other categories
           </h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
             {others.map((o) => (
               <Link
                 key={o.slug}

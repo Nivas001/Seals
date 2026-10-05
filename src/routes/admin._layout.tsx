@@ -99,16 +99,16 @@ function AdminLayoutShell() {
         {/* ── Mobile Overlay ── */}
         {sidebarOpen && (
           <div
-            className="fixed inset-0 z-30 bg-black/60 md:hidden"
+            className="fixed inset-0 z-30 bg-black/60 lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}
 
         {/* ── Sidebar ── */}
         <aside
-          className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-surface border-r border-border transition-transform duration-300 ease-out md:translate-x-0 ${
+          className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-surface border-r border-border transition-transform duration-300 ease-out lg:translate-x-0 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } md:sticky md:top-0 md:h-screen`}
+          } lg:sticky lg:top-0 lg:h-screen`}
         >
           {/* Logo area */}
           <div className="flex h-16 items-center gap-3 px-5 border-b border-border shrink-0">
@@ -119,7 +119,7 @@ function AdminLayoutShell() {
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="ml-auto md:hidden text-muted-foreground hover:text-foreground transition-colors"
+              className="ml-auto lg:hidden flex h-11 w-11 items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
@@ -186,14 +186,14 @@ function AdminLayoutShell() {
           <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-border bg-background/80 backdrop-blur-md px-4 sm:px-6 transition-colors duration-300">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="md:hidden flex items-center justify-center h-8 w-8 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              className="lg:hidden flex items-center justify-center h-11 w-11 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
             >
               <Menu className="h-4 w-4" />
             </button>
             <div className="flex-1">
               <h1 className="text-sm font-bold text-foreground tracking-tight">{activeLabel}</h1>
             </div>
-            <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            <div className="hidden sm:block max-w-[14rem] truncate text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
               {session.user?.email}
             </div>
           </header>

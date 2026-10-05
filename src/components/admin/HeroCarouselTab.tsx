@@ -130,7 +130,7 @@ export function HeroCarouselTab({ data, session, onUpdate }: { data: any, sessio
       )}
 
       {!isAdding && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {images.length === 0 ? (
             <div className="col-span-full py-12 text-center text-muted-foreground bg-surface border border-dashed border-hairline rounded-xl">
               No images in the carousel yet. Add one to get started.
@@ -140,7 +140,7 @@ export function HeroCarouselTab({ data, session, onUpdate }: { data: any, sessio
               <div key={img.id} className="group relative rounded-xl overflow-hidden border border-hairline bg-surface shadow-sm hover:shadow-md transition-all">
                 <div className="aspect-video relative">
                   <img src={img.url} alt="Carousel slide" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <Button variant="destructive" size="sm" onClick={() => handleDelete(img.id)} disabled={busy}>
                       <Trash2 className="w-4 h-4 mr-2" /> Remove
                     </Button>
@@ -149,8 +149,8 @@ export function HeroCarouselTab({ data, session, onUpdate }: { data: any, sessio
                 <div className="p-3 bg-surface flex items-center justify-between">
                   <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">Order: {img.order}</span>
                   <div className="flex gap-1">
-                    <button disabled={busy || idx === 0} onClick={() => changePriority(img, -1)} className="p-1 rounded bg-accent/50 text-muted-foreground hover:text-ink disabled:opacity-30"><ChevronUp className="w-4 h-4"/></button>
-                    <button disabled={busy || idx === images.length - 1} onClick={() => changePriority(img, 1)} className="p-1 rounded bg-accent/50 text-muted-foreground hover:text-ink disabled:opacity-30"><ChevronDown className="w-4 h-4"/></button>
+                    <button disabled={busy || idx === 0} onClick={() => changePriority(img, -1)} className="grid h-10 w-10 place-items-center rounded bg-accent/50 text-muted-foreground hover:text-ink disabled:opacity-30"><ChevronUp className="w-4 h-4"/></button>
+                    <button disabled={busy || idx === images.length - 1} onClick={() => changePriority(img, 1)} className="grid h-10 w-10 place-items-center rounded bg-accent/50 text-muted-foreground hover:text-ink disabled:opacity-30"><ChevronDown className="w-4 h-4"/></button>
                   </div>
                 </div>
               </div>

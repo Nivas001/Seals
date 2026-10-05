@@ -55,7 +55,7 @@ export function LineSidebar({ sections }: LineSidebarProps) {
         pointerEvents: isChatbotOpen ? "none" : "auto",
       }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
-      className="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col items-end"
+      className="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-end"
       aria-label="Page section navigation"
     >
       <div className="relative flex flex-col items-end gap-3 py-4 pl-4 pr-0.5">

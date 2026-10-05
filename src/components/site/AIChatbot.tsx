@@ -409,7 +409,7 @@ export function AIChatbot() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="mb-3 w-[calc(100vw-32px)] sm:w-[380px] md:w-[400px] h-[520px] max-h-[80vh] rounded-2xl border-2 border-brass/50 bg-surface/95 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] flex flex-col overflow-hidden text-ink"
+            className="mb-3 w-[calc(100vw-32px)] sm:w-[380px] md:w-[400px] h-[520px] max-h-[80dvh] rounded-2xl border-2 border-brass/50 bg-surface/95 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] flex flex-col overflow-hidden text-ink"
           >
             {/* Header */}
             <div className="flex items-center justify-between bg-gradient-to-r from-brass/25 via-brass/15 to-surface px-4 py-3 text-ink border-b border-brass/40">
@@ -422,7 +422,7 @@ export function AIChatbot() {
                     <span>ASK ARKA</span>
                     <Sparkles className="h-3.5 w-3.5 text-brass shrink-0 animate-pulse" />
                   </div>
-                  <div className="flex items-center gap-1.5 text-[10px] text-ink/75 font-medium">
+                  <div className="flex items-center gap-1.5 text-[11px] text-ink/75 font-medium">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
                     <span>Integrated Process Support • Online</span>
                   </div>
@@ -430,7 +430,7 @@ export function AIChatbot() {
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="grid h-8 w-8 place-items-center rounded-lg text-ink/70 hover:bg-brass/20 hover:text-ink transition-colors"
+                className="grid h-11 w-11 place-items-center rounded-lg text-ink/70 hover:bg-brass/20 hover:text-ink transition-colors"
                 aria-label="Close ASK ARKA"
               >
                 <X className="h-5 w-5" />
@@ -438,7 +438,7 @@ export function AIChatbot() {
             </div>
 
             {/* Message History */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs">
+            <div className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-3.5 text-xs">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
@@ -515,7 +515,7 @@ export function AIChatbot() {
                                 <span className="font-display font-bold text-ink truncate text-xs">
                                   {prod.name}
                                 </span>
-                                <span className="rounded-full bg-brass/15 border border-brass/30 px-2 py-0.5 text-[9px] font-bold text-ink shrink-0">
+                                <span className="rounded-full bg-brass/15 border border-brass/30 px-2 py-0.5 text-[11px] font-bold text-ink shrink-0">
                                   {prod.categoryName}
                                 </span>
                               </div>
@@ -530,7 +530,7 @@ export function AIChatbot() {
                                     item: prod.itemSlug,
                                   }}
                                   onClick={() => setOpen(false)}
-                                  className="flex-1 flex items-center justify-center gap-1 rounded-lg border border-hairline bg-background py-1 text-[11px] font-bold text-ink hover:border-ink/40 transition-colors"
+                                  className="flex-1 flex items-center justify-center gap-1 rounded-lg border border-hairline bg-background py-2 text-[11px] font-bold text-ink hover:border-ink/40 transition-colors"
                                 >
                                   <span>View Specs</span>
                                   <ChevronRight className="h-3 w-3" />
@@ -542,7 +542,7 @@ export function AIChatbot() {
                                     category: prod.categoryName,
                                   }}
                                   onClick={() => setOpen(false)}
-                                  className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-brass/20 border border-brass/40 py-1 text-[11px] font-bold text-ink hover:bg-brass hover:text-white transition-colors"
+                                  className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-brass/20 border border-brass/40 py-2 text-[11px] font-bold text-ink hover:bg-brass hover:text-white transition-colors"
                                 >
                                   <span>Get Quote ⚡</span>
                                 </Link>
@@ -553,7 +553,7 @@ export function AIChatbot() {
                       </div>
                     )}
                   </div>
-                  <span className="mt-1 px-1 text-[9px] text-muted-foreground/70 font-medium">
+                  <span className="mt-1 px-1 text-[11px] text-muted-foreground/70 font-medium">
                     {msg.timestamp}
                   </span>
                 </div>
@@ -574,7 +574,7 @@ export function AIChatbot() {
                   <button
                     key={chip.label}
                     onClick={() => handleChipClick(chip.query)}
-                    className="rounded-full border border-hairline bg-background px-2.5 py-1 text-[11px] font-semibold text-ink/80 shadow-2xs hover:border-brass hover:bg-brass/10 hover:text-ink transition-all whitespace-nowrap"
+                    className="rounded-full border border-hairline bg-background px-3 py-2 text-[11px] font-semibold text-ink/80 shadow-2xs hover:border-brass hover:bg-brass/10 hover:text-ink transition-all whitespace-nowrap"
                   >
                     {chip.label}
                   </button>
@@ -589,12 +589,12 @@ export function AIChatbot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask about pumps, seals, or contact ways…"
-                className="flex-1 rounded-xl border border-input bg-surface px-3 py-2 text-xs text-ink placeholder:text-muted-foreground focus:border-brass focus:outline-none focus:ring-1 focus:ring-brass transition-all"
+                className="min-w-0 flex-1 rounded-xl border border-input bg-surface px-3 py-2 text-base md:text-xs text-ink placeholder:text-muted-foreground focus:border-brass focus:outline-none focus:ring-1 focus:ring-brass transition-all"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isTyping}
-                className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brass text-white font-bold shadow-2xs hover:bg-brass/90 disabled:opacity-40 transition-colors"
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brass text-white font-bold shadow-2xs hover:bg-brass/90 disabled:opacity-40 transition-colors"
                 aria-label="Send message"
               >
                 <Send className="h-4 w-4" />

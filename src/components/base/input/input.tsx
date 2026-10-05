@@ -39,7 +39,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             required={isRequired}
             className={cn(
-              "w-full rounded-full border border-ink/15 bg-background py-3 text-sm text-ink placeholder:text-muted-foreground outline-none transition focus:border-brass/70 focus:ring-2 focus:ring-brass/30",
+              "w-full rounded-full border border-ink/15 bg-background py-3 text-base sm:text-sm text-ink placeholder:text-muted-foreground outline-none transition focus:border-brass/70 focus:ring-2 focus:ring-brass/30",
               Icon ? "pl-11 pr-5" : "px-5",
               className
             )}

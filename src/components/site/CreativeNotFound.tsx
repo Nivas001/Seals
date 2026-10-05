@@ -14,11 +14,11 @@ import { GlowCard } from "@/components/ui/GlowCard";
 
 export function CreativeNotFound() {
   return (
-    <div className="min-h-screen bg-background text-ink flex flex-col justify-between selection:bg-brass/20 selection:text-ink relative">
+    <div className="min-h-dvh bg-background text-ink flex flex-col justify-between selection:bg-brass/20 selection:text-ink relative">
       {/* Automatically hide Equipment Advisor floating widget when on any 404 page */}
       <style>{`#ai-chatbot-widget { display: none !important; }`}</style>
 
-      <main className="relative flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[80vh]">
+      <main className="relative flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[80dvh]">
         {/* Blueprint & Grid background effects */}
         <div className="pointer-events-none absolute inset-0 opacity-40">
           <div className="grid-lines absolute inset-0" />
@@ -77,7 +77,7 @@ export function CreativeNotFound() {
         </div>
 
         {/* 12-Column Layout: Left columns reserved for hanging bulb, Right columns contain 404 content */}
-        <div className="relative z-10 max-w-6xl mx-auto w-full pt-[42vh] sm:pt-[48vh] lg:pt-0 lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center my-12">
+        <div className="relative z-10 max-w-6xl mx-auto w-full pt-[calc(160px+32vh)] sm:pt-[calc(210px+38vh)] md:pt-[calc(240px+42vh)] lg:pt-0 lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center my-12">
           {/* Reserved space on desktop for hanging bulb */}
           <div className="hidden lg:block lg:col-span-5" />
 

@@ -74,7 +74,7 @@ function RogueAIChat() {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-1000 flex flex-col ${glitchMode ? 'bg-red-950' : 'bg-zinc-900'}`}>
+    <div className={`h-dvh transition-colors duration-1000 flex flex-col ${glitchMode ? 'bg-red-950' : 'bg-zinc-900'}`}>
       {/* Header */}
       <div className={`p-4 border-b flex justify-between items-center ${glitchMode ? 'border-red-900 bg-red-950' : 'border-zinc-800 bg-zinc-950'}`}>
         <div>

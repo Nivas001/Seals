@@ -115,14 +115,14 @@ function ItemPage() {
       <main className="pt-28 sm:pt-32">
         <section className="mx-auto max-w-7xl px-5 sm:px-8">
           <nav aria-label="Breadcrumb" className="text-[12px] text-muted-foreground">
-            <Link to="/" className="hover:text-ink">Home</Link>
+            <Link to="/" className="inline-block py-2 hover:text-ink">Home</Link>
             <span className="mx-1.5">/</span>
-            <Link to="/products" className="hover:text-ink">Products</Link>
+            <Link to="/products" className="inline-block py-2 hover:text-ink">Products</Link>
             <span className="mx-1.5">/</span>
             <Link
               to="/products/$category"
               params={{ category: c.slug }}
-              className="hover:text-ink"
+              className="inline-block py-2 hover:text-ink"
             >
               {c.name}
             </Link>
@@ -170,7 +170,7 @@ function ItemPage() {
               </div>
             </div>
 
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-hairline bg-surface shadow-lift">
+            <div className="relative order-first lg:order-none aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-hairline bg-surface shadow-lift">
               {d.image || c.image ? (
                 <img
                   src={d.image || c.image}
@@ -185,7 +185,7 @@ function ItemPage() {
               ) : (
                 <CreativePoster title={d.name} />
               )}
-              <div className="pointer-events-none absolute inset-x-4 bottom-4 rounded-2xl border border-white/40 bg-white/70 px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink/70 backdrop-blur">
+              <div className="pointer-events-none absolute inset-x-4 bottom-4 hidden sm:block rounded-2xl border border-white/40 bg-white/70 px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink/70 backdrop-blur">
                 {d.image ? `Product photo · ${d.name}` : `Representative image · ${c.name}`}
               </div>
             </div>
@@ -204,11 +204,11 @@ function ItemPage() {
               </h2>
               <dl className="mt-6 divide-y divide-hairline">
                 {d.specs.map((s: any) => (
-                  <div key={s.label} className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-[180px_1fr] sm:gap-4">
+                  <div key={s.label} className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-4">
                     <dt className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                       {s.label}
                     </dt>
-                    <dd className="text-sm font-medium text-ink">{s.value}</dd>
+                    <dd className="break-words text-sm font-medium text-ink">{s.value}</dd>
                   </div>
                 ))}
               </dl>

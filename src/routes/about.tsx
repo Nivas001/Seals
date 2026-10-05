@@ -58,11 +58,11 @@ function AboutPage() {
 
         <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
           <div className="overflow-hidden rounded-[2rem] border border-hairline">
-            <img src={factoryImg} alt="Industrial processing plant with stainless steel tanks and piping" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+            <img src={factoryImg} alt="Industrial processing plant with stainless steel tanks and piping" width={1600} height={900} loading="lazy" decoding="async" className="h-full w-full object-cover" />
           </div>
         </section>
 
-        <section className="mx-auto mt-16 grid max-w-6xl gap-10 px-5 sm:mt-24 sm:px-8 lg:grid-cols-3">
+        <section className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-10 px-5 sm:mt-24 sm:px-8 lg:grid-cols-3">
           <div className="lg:col-span-1 flex flex-col justify-center">
             <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
               Our motto
@@ -71,7 +71,7 @@ function AboutPage() {
               &ldquo;{motto}&rdquo;
             </h2>
           </div>
-          <div className="lg:col-span-2 relative">
+          <div className="lg:col-span-2 relative min-w-0">
             <div className="flex snap-x snap-mandatory overflow-x-auto pb-4 gap-4 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0">
               {[
                 { k: "Response", d: "Improve response time on every customer query.", icon: Clock },

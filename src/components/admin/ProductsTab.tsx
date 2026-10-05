@@ -35,7 +35,7 @@ function SortableProductCard({ p, onEdit, onDelete, busy }: any) {
             <EyeOff className="w-3 h-3" /> Hidden
           </div>
         )}
-        <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/50 to-transparent flex items-start justify-between p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/50 to-transparent flex items-start justify-between p-2 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity">
           {onEdit ? (
             <div {...attributes} {...listeners} className="p-2 cursor-grab active:cursor-grabbing text-white/80 hover:text-white bg-black/20 rounded backdrop-blur-sm touch-none">
               <GripHorizontal className="w-5 h-5" />
@@ -44,10 +44,10 @@ function SortableProductCard({ p, onEdit, onDelete, busy }: any) {
           <div className="flex gap-1">
             {onEdit ? (
               <>
-                <Button type="button" variant="secondary" size="icon" className="w-8 h-8 bg-white/90 hover:bg-white text-ink shadow-sm" onClick={() => onEdit(p)} disabled={busy}>
+                <Button type="button" variant="secondary" size="icon" className="w-10 h-10 bg-white/90 hover:bg-white text-ink shadow-sm" onClick={() => onEdit(p)} disabled={busy}>
                   <Edit2 className="w-4 h-4" />
                 </Button>
-                <Button type="button" variant="destructive" size="icon" className="w-8 h-8 shadow-sm" onClick={() => onDelete(p)} disabled={busy}>
+                <Button type="button" variant="destructive" size="icon" className="w-10 h-10 shadow-sm" onClick={() => onDelete(p)} disabled={busy}>
                   <Trash2 className="w-4 h-4" />
                 </Button>
               </>
@@ -314,15 +314,15 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
 
       {!isAdding && !editingId && (
         <div className="flex justify-between items-center gap-4 flex-wrap">
-          <div className="flex items-center gap-4">
-            <div className="relative">
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="relative w-full sm:w-auto">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input 
                 type="text"
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="pl-9 pr-4 py-2 w-64 rounded-full border border-border bg-surface text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                className="pl-9 pr-4 py-2 w-full sm:w-64 rounded-full border border-border bg-surface text-base sm:text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
               />
               {searchQuery && (
                 <button onClick={() => setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
@@ -356,7 +356,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
         <GlowCard className="p-6">
           <h3 className="text-lg font-bold text-ink mb-4">{editingId ? "Edit Product" : "New Product"}</h3>
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</label>
                 <Input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required />
@@ -367,7 +367,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category</label>
                 <select 
@@ -422,7 +422,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
               <div>
                 <h4 className="text-sm font-bold text-ink mb-2">Specifications</h4>
                 {formData.specs.map((spec, i) => (
-                  <div key={i} className="flex gap-2 mb-2">
+                  <div key={i} className="flex flex-col sm:flex-row sm:items-end gap-2 mb-2 [&>*]:min-w-0">
                     <Input label="Label" value={spec.label} onChange={e => {
                       const newSpecs = [...formData.specs]; newSpecs[i].label = e.target.value; setFormData({...formData, specs: newSpecs})
                     }} />
@@ -438,7 +438,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
               <div>
                 <h4 className="text-sm font-bold text-ink mb-2">Benefits</h4>
                 {formData.benefits.map((benefit, i) => (
-                  <div key={i} className="flex gap-2 mb-2">
+                  <div key={i} className="flex flex-col sm:flex-row sm:items-end gap-2 mb-2 [&>*]:min-w-0">
                     <Input label="Benefit" value={benefit.text} onChange={e => {
                       const newB = [...formData.benefits]; newB[i].text = e.target.value; setFormData({...formData, benefits: newB})
                     }} />
@@ -451,7 +451,7 @@ export function ProductsTab({ products, categories, token, onUpdate }: { product
               <div>
                 <h4 className="text-sm font-bold text-ink mb-2">Applications</h4>
                 {formData.applications.map((app, i) => (
-                  <div key={i} className="flex gap-2 mb-2">
+                  <div key={i} className="flex flex-col sm:flex-row sm:items-end gap-2 mb-2 [&>*]:min-w-0">
                     <Input label="Application" value={app.text} onChange={e => {
                       const newA = [...formData.applications]; newA[i].text = e.target.value; setFormData({...formData, applications: newA})
                     }} />

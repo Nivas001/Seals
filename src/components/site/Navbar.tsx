@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Menu, X, Phone, Download, Sparkles, Home, Package, Building2, Info, Mail } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { DownloadCatalog } from "@/components/site/DownloadCatalog";
-import { chatbotState } from "@/data/chatbotState";
+import { chatbotState, CHATBOT_PATHS } from "@/data/chatbotState";
 
 
 const NAV = [
@@ -35,6 +35,10 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -100,7 +104,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              className="grid h-9 w-9 place-items-center rounded-full border border-white/60 bg-white/60 text-ink shadow-[0_1px_0_0_rgba(255,255,255,0.9)_inset] transition hover:bg-white md:hidden"
+              className="grid h-11 w-11 place-items-center rounded-full border border-white/60 bg-white/60 text-ink shadow-[0_1px_0_0_rgba(255,255,255,0.9)_inset] transition hover:bg-white md:hidden"
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
             >
@@ -118,6 +122,9 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 md:hidden"
+            onClick={(e) => {
+              if (e.target === e.currentTarget || (e.target as HTMLElement).dataset.closeMenu) setOpen(false);
+            }}
           >
             <div
               className="glass-liquid-strong absolute inset-0 rounded-none"
@@ -128,7 +135,8 @@ export function Navbar() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -10, opacity: 0 }}
               transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
-              className="relative flex h-full flex-col justify-between px-6 pb-8 pt-24"
+              data-close-menu="true"
+              className="relative flex h-full flex-col justify-between gap-6 overflow-y-auto overscroll-contain px-6 pb-[max(2rem,env(safe-area-inset-bottom))] pt-24"
             >
               <ul className="space-y-1">
                 {NAV.map((item, i) => {
@@ -146,7 +154,7 @@ export function Navbar() {
                       <Link
                         to={item.to}
                         onClick={() => setOpen(false)}
-                        className={`relative flex items-center gap-4 border-b border-hairline/70 py-4 pl-4 text-3xl font-semibold tracking-tight text-ink ${
+                        className={`relative flex items-center gap-4 border-b border-hairline/70 py-3 pl-4 text-2xl font-semibold tracking-tight text-ink [@media(min-height:700px)]:py-4 [@media(min-height:700px)]:text-3xl ${
                           isActive ? "" : "text-ink/85"
                         }`}
                       >
@@ -165,16 +173,18 @@ export function Navbar() {
               </ul>
               <div className="space-y-3">
                 <DownloadCatalog variant="mobile-menu" label="Download catalog (PDF)" onDownload={() => setOpen(false)} />
-                <button
-                  onClick={() => {
-                    setOpen(false);
-                    chatbotState.setOpen(true);
-                  }}
-                  className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-brass/70 bg-surface/95 px-6 py-3.5 text-sm font-bold text-ink shadow-md"
-                >
-                  <Sparkles className="h-4 w-4 text-brass animate-pulse" />
-                  Launch ASK ARKA
-                </button>
+                {CHATBOT_PATHS.includes(pathname) && (
+                  <button
+                    onClick={() => {
+                      setOpen(false);
+                      chatbotState.setOpen(true);
+                    }}
+                    className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-brass/70 bg-surface/95 px-6 py-3.5 text-sm font-bold text-ink shadow-md"
+                  >
+                    <Sparkles className="h-4 w-4 text-brass animate-pulse" />
+                    Launch ASK ARKA
+                  </button>
+                )}
                 <a
                   href="tel:+917806936475"
                   className="glass-cta-dark flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-background"

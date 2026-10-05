@@ -41,7 +41,7 @@ export function GlowCard({
       {...props}
     >
       {/* 1. Ambient continuous rotating gradient glow */}
-      <div className="absolute -inset-full animate-spin bg-[conic-gradient(from_0deg,transparent_0_300deg,#0284c7_330deg,transparent_360deg)] opacity-0 group-hover:opacity-75 transition-opacity duration-500" style={{ animationDuration: "6s" }} />
+      <div className="absolute -inset-full group-hover:animate-spin bg-[conic-gradient(from_0deg,transparent_0_300deg,#0284c7_330deg,transparent_360deg)] opacity-0 group-hover:opacity-75 transition-opacity duration-500" style={{ animationDuration: "6s" }} />
 
       {/* 2. Cursor-following border light beam */}
       <motion.div

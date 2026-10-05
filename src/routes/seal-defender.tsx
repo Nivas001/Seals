@@ -1,12 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Shield, RotateCcw } from "lucide-react";
+import { DesktopOnly } from "@/components/site/DesktopOnly";
 
 export const Route = createFileRoute("/seal-defender")({
   head: () => ({
     meta: [{ title: "Seal Defender | AARRKKAA" }, { name: "robots", content: "noindex" }],
   }),
-  component: SealDefender,
+  component: () => (
+    <DesktopOnly>
+      <SealDefender />
+    </DesktopOnly>
+  ),
 });
 
 type GameObject = { id: number; x: number; y: number };

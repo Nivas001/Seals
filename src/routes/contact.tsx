@@ -118,7 +118,7 @@ function ContactPage() {
                 href="https://maps.google.com/?q=Arasanatti+Hosur+Tamil+Nadu+635126"
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs font-semibold uppercase tracking-[0.14em] text-ink/70 hover:text-ink"
+                className="inline-block py-2 text-xs font-semibold uppercase tracking-[0.14em] text-ink/70 hover:text-ink"
               >
                 Open in Maps →
               </a>
@@ -126,7 +126,7 @@ function ContactPage() {
             <iframe
               title="AARRKKAA International — Hosur head office map"
               src="https://maps.google.com/maps?q=Arasanatti%20Hosur%20Tamil%20Nadu%20635126&t=&z=13&ie=UTF8&iwloc=&output=embed"
-              className="h-80 w-full border-t border-hairline"
+              className="h-64 sm:h-80 w-full border-t border-hairline"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
@@ -210,7 +210,7 @@ function CorporateCard({ className, contactInfo }: { className?: string; contact
               <a
                 key={p}
                 href={`tel:${p.replace(/\s/g, "")}`}
-                className="hover:text-brass"
+                className="inline-block py-2 hover:text-brass"
               >
                 {p}
               </a>
@@ -223,7 +223,7 @@ function CorporateCard({ className, contactInfo }: { className?: string; contact
               <a
                 key={e}
                 href={`mailto:${e}`}
-                className="break-all hover:text-brass"
+                className="inline-block break-all py-2 hover:text-brass"
               >
                 {e}
               </a>
@@ -243,7 +243,7 @@ function CorporateCard({ className, contactInfo }: { className?: string; contact
             <span className="text-muted-foreground">Get instant answers &amp; technical guidance anytime.</span>
             <button
               onClick={() => chatbotState.setOpen(true)}
-              className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brass hover:underline w-fit cursor-pointer pt-0.5"
+              className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brass hover:underline w-fit cursor-pointer py-2"
             >
               <span>Launch ASK ARKA</span>
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -256,7 +256,7 @@ function CorporateCard({ className, contactInfo }: { className?: string; contact
 }
 
 const inputBase =
-  "w-full rounded-xl border border-hairline bg-background px-3 py-2.5 text-sm sm:px-4 sm:py-3 text-ink placeholder:text-muted-foreground/70 shadow-inner outline-none transition focus:border-ink/40 focus:ring-2 focus:ring-brass/30";
+  "w-full rounded-xl border border-hairline bg-background px-3 py-2.5 text-base sm:text-sm sm:px-4 sm:py-3 text-ink placeholder:text-muted-foreground/70 shadow-inner outline-none transition focus:border-ink/40 focus:ring-2 focus:ring-brass/30";
 
 const labelBase =
   "text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground";
@@ -379,7 +379,7 @@ function InquiryCard({ className }: { className?: string }) {
     <CardShell eyebrow="Enquiry" title="Send us a request" className={className}>
       {(search.product || search.category) && (
         <div className="mb-6 rounded-2xl border border-brass/40 bg-gradient-to-br from-brass/15 via-brass/5 to-surface p-4 sm:p-5 shadow-2xs">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <div className="flex items-center gap-3 sm:gap-3.5 min-w-0">
               <div className="grid h-9 w-9 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl bg-brass/10 backdrop-blur-md border border-brass/20 shadow-sm text-brass font-bold">
                 <Sparkles className="h-4.5 w-4.5 sm:h-5 sm:w-5" strokeWidth={1.5} />
@@ -389,9 +389,9 @@ function InquiryCard({ className }: { className?: string }) {
                   Quotation Request Attached
                 </div>
                 <div className="mt-0.5 font-display text-base sm:text-lg font-bold text-ink flex flex-wrap items-center gap-2">
-                  <span className="truncate">{search.product || search.category}</span>
+                  <span className="break-words min-w-0">{search.product || search.category}</span>
                   {(search.category || productDetail?.category.name) && (
-                    <span className="rounded-full border border-brass/30 bg-brass/15 px-2.5 py-0.5 text-[11px] font-semibold text-ink whitespace-nowrap">
+                    <span className="rounded-full border border-brass/30 bg-brass/15 px-2.5 py-0.5 text-[11px] font-semibold text-ink">
                       {search.category || productDetail?.category.name}
                     </span>
                   )}
@@ -424,6 +424,7 @@ function InquiryCard({ className }: { className?: string }) {
               required
               maxLength={100}
               placeholder="Full name"
+              autoComplete="name"
               className={`mt-2 ${inputBase}`}
             />
           </div>
@@ -438,6 +439,10 @@ function InquiryCard({ className }: { className?: string }) {
               required
               maxLength={255}
               placeholder="you@company.com"
+              autoComplete="email"
+              inputMode="email"
+              autoCapitalize="none"
+              spellCheck={false}
               className={`mt-2 ${inputBase}`}
             />
           </div>
@@ -544,7 +549,7 @@ function FollowCard({ className }: { className?: string }) {
             target="_blank"
             rel="noreferrer"
             aria-label={label}
-            className="group relative flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3 overflow-hidden rounded-xl sm:rounded-2xl border border-hairline bg-background p-2.5 sm:px-5 sm:py-3 text-[9px] sm:text-sm font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/50 hover:shadow-lg hover:shadow-brass/10"
+            className="group relative flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3 overflow-hidden rounded-xl sm:rounded-2xl border border-hairline bg-background p-2.5 sm:px-5 sm:py-3 text-[11px] sm:text-sm font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/50 hover:shadow-lg hover:shadow-brass/10"
           >
             <span
               aria-hidden
@@ -615,6 +620,8 @@ function NewsletterCard({ className = "" }: { className?: string }) {
             label="Email"
             hint="We will not share your email with anyone."
             placeholder="you@company.com"
+            autoComplete="email"
+            inputMode="email"
             tooltip="Receive product updates and offers."
             maxLength={255}
           />

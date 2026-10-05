@@ -183,7 +183,7 @@ export function IndustriesTab({ industries, session, onUpdate }: IndustriesTabPr
       </div>
 
       {/* Grid of Sector Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {industries.map((sector, index) => {
           const itemKey = sector.id || sector.slug;
           const previewUrl = selectedPreviews[itemKey];
@@ -194,7 +194,7 @@ export function IndustriesTab({ industries, session, onUpdate }: IndustriesTabPr
             <GlowCard key={itemKey} className="overflow-hidden border border-hairline bg-surface flex flex-col justify-between">
               <div>
                 {/* Sector Card Header */}
-                <div className="flex items-center justify-between pb-3 mb-3 border-b border-hairline/60">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-hairline/60">
                   <div className="flex items-center gap-2">
                     <span className="bg-primary/10 text-primary text-xs font-black px-2.5 py-1 rounded-full uppercase tracking-wider">
                       Sector {String(index + 1).padStart(2, "0")}
@@ -324,7 +324,7 @@ export function IndustriesTab({ industries, session, onUpdate }: IndustriesTabPr
 
           {editFormData && (
             <form onSubmit={handleSaveSectorDetails} className="space-y-4 py-2">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     Industry Name
@@ -370,7 +370,7 @@ export function IndustriesTab({ industries, session, onUpdate }: IndustriesTabPr
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     Duty Window

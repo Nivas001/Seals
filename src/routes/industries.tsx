@@ -210,13 +210,22 @@ function IndustriesPage() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-2">
-                {["Food", "Chemical", "Beverages", "Breweries", "Plastics", "Pharma", "Oil & Gas", "Dye"].map((t) => (
+                {([
+                  ["Food", "Food Processing"],
+                  ["Chemical", "Chemical"],
+                  ["Beverages", "Beverages"],
+                  ["Breweries", "Breweries"],
+                  ["Plastics", "Plastics"],
+                  ["Pharma", "Pharma"],
+                  ["Oil & Gas", "Oil & Gas"],
+                  ["Dye", "Dye Manufacturing"],
+                ] as const).map(([label, sectorName]) => (
                   <a
-                    key={t}
-                    href={`#sector-${t.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-                    className="rounded-full border border-hairline bg-surface px-3.5 py-1.5 text-[12px] font-medium text-ink/80 transition hover:bg-white hover:text-ink"
+                    key={label}
+                    href={`#sector-${sectorName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                    className="rounded-full border border-hairline bg-surface px-3.5 py-2.5 text-[12px] font-medium text-ink/80 transition hover:bg-white hover:text-ink"
                   >
-                    {t}
+                    {label}
                   </a>
                 ))}
               </div>
@@ -266,9 +275,9 @@ function IndustriesPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-4 md:grid-cols-6 md:grid-rows-2">
+          <div className="mt-10 grid gap-4 md:grid-cols-6 md:grid-rows-3">
             {/* Big feature */}
-            <div className="relative overflow-hidden rounded-3xl border border-hairline bg-surface md:col-span-3 md:row-span-2">
+            <div className="relative overflow-hidden rounded-3xl border border-hairline bg-surface md:col-span-3 md:row-span-3">
               <img
                 src={qualityImg}
                 alt="Engineer inspecting a precision stainless steel component"
@@ -303,12 +312,14 @@ function IndustriesPage() {
               icon={<Gauge className="h-5 w-5" />}
               title="Application-matched sizing"
               body="Tell us the duty. We recommend the material, class and geometry that will actually survive it."
+              className="md:col-span-3"
             />
             <FeatureTile
               icon={<Truck className="h-5 w-5" />}
               title="Ready to dispatch"
               body="Fast-moving SKUs stocked in Hosur — rapid pick and dispatch worldwide with service available globally."
               accent
+              className="md:col-span-3"
             />
           </div>
 
@@ -495,7 +506,7 @@ function SectorCard({ sector, index }: { sector: Sector; index: number }) {
   return (
     <article
       id={anchor}
-      className="group relative flex flex-col overflow-hidden rounded-3xl border border-hairline bg-surface transition hover:shadow-lift"
+      className="group relative flex scroll-mt-28 flex-col overflow-hidden rounded-3xl border border-hairline bg-surface transition hover:shadow-lift"
     >
       <div className="relative h-48 w-full overflow-hidden sm:h-56">
         <img
@@ -570,7 +581,7 @@ function SectorCard({ sector, index }: { sector: Sector; index: number }) {
                 <Link
                   key={p.name}
                   to={href}
-                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-background px-3 py-1.5 text-[12px] font-medium text-ink/85 transition hover:border-ink hover:text-ink"
+                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-background px-3 py-2.5 text-[12px] font-medium text-ink/85 transition hover:border-ink hover:text-ink"
                 >
                   {p.name}
                   <ArrowUpRight className="h-3 w-3" />

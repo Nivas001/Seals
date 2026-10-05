@@ -22,7 +22,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 export const COLUMNS = ['Active', 'In Progress', 'Completed'];
 
-function SortableInquiryCard({ inquiry }: { inquiry: any }) {
+function SortableInquiryCard({ inquiry, onStatusChange }: { inquiry: any, onStatusChange: (id: string, newStatus: string) => void }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: inquiry.id });
   
   const style = {
@@ -43,15 +43,28 @@ function SortableInquiryCard({ inquiry }: { inquiry: any }) {
         <div className="text-xs font-medium text-foreground">{inquiry.name}</div>
         <div className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{inquiry.category || 'General'}</div>
       </div>
+      {/* Touch-friendly alternative to drag-and-drop */}
+      <select
+        aria-label="Change status"
+        value={inquiry.status || 'Active'}
+        onChange={(e) => onStatusChange(inquiry.id, e.target.value)}
+        onPointerDown={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+        className="mt-3 h-11 w-full rounded-lg border border-border bg-surface px-2 text-base text-foreground"
+      >
+        {COLUMNS.map((c) => (
+          <option key={c} value={c}>{c}</option>
+        ))}
+      </select>
     </div>
   );
 }
 
-function KanbanColumn({ column, items }: { column: string, items: any[] }) {
+function KanbanColumn({ column, items, onStatusChange }: { column: string, items: any[], onStatusChange: (id: string, newStatus: string) => void }) {
   const { setNodeRef, isOver } = useDroppable({ id: column });
 
   return (
-    <div className={`bg-surface border ${isOver ? 'border-primary' : 'border-border'} rounded-2xl p-4 flex flex-col h-[65vh] overflow-hidden transition-colors`}>
+    <div className={`bg-surface border ${isOver ? 'border-primary' : 'border-border'} rounded-2xl p-4 flex flex-col max-h-[60dvh] md:h-[65vh] overflow-hidden transition-colors`}>
       <div className="flex items-center justify-between mb-4 px-2">
         <h3 className="font-bold text-sm text-foreground uppercase tracking-wider">{column}</h3>
         <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full font-bold">{items.length}</span>
@@ -60,7 +73,7 @@ function KanbanColumn({ column, items }: { column: string, items: any[] }) {
         <SortableContext items={items.map(i => i.id)} strategy={verticalListSortingStrategy}>
           <div className="space-y-3 min-h-[150px] h-full">
             {items.map(inquiry => (
-              <SortableInquiryCard key={inquiry.id} inquiry={inquiry} />
+              <SortableInquiryCard key={inquiry.id} inquiry={inquiry} onStatusChange={onStatusChange} />
             ))}
           </div>
         </SortableContext>
@@ -147,17 +160,17 @@ export function InquiriesKanban({ inquiries, onStatusChange }: { inquiries: any[
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {COLUMNS.map(column => {
           const columnItems = items.filter(i => (i.status || 'Active') === column);
           return (
-            <KanbanColumn key={column} column={column} items={columnItems} />
+            <KanbanColumn key={column} column={column} items={columnItems} onStatusChange={onStatusChange} />
           );
         })}
       </div>
       <DragOverlay>
         {activeItem ? (
-          <div className="bg-background border border-primary p-4 rounded-xl shadow-xl opacity-90 scale-105 rotate-2 cursor-grabbing w-[300px]">
+          <div className="bg-background border border-primary p-4 rounded-xl shadow-xl opacity-90 scale-105 rotate-2 cursor-grabbing w-[min(300px,calc(100vw-3rem))]">
             <div className="flex justify-between items-start mb-2">
               <h4 className="font-bold text-sm text-foreground">{activeItem.subject}</h4>
               <div className="text-[10px] text-muted-foreground">{new Date(activeItem.createdAt).toLocaleDateString()}</div>

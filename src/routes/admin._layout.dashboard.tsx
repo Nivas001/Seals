@@ -61,9 +61,9 @@ function DashboardPage() {
               ].map(({ label, value, icon: Icon, color, bg, caption }) => (
                 <div 
                   key={label}
-                  className="group rounded-2xl border border-border bg-surface p-5 flex flex-col justify-center gap-3 hover:border-border/80 transition-all hover:shadow-lg"
+                  className="group min-w-0 rounded-2xl border border-border bg-surface p-4 sm:p-5 flex flex-col justify-center gap-3 hover:border-border/80 transition-all hover:shadow-lg"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
                     <div className={`p-3 rounded-xl ${bg}`}>
                       <Icon className={`h-5 w-5 ${color}`} />
                     </div>

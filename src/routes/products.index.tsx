@@ -30,7 +30,7 @@ function ProductsPage() {
       <Navbar />
       <main className="pt-32 sm:pt-40">
         <section className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="flex items-end justify-between gap-6 flex-col sm:flex-row">
+          <div className="flex items-start sm:items-end justify-between gap-6 flex-col sm:flex-row">
             <div>
               <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 <span className="h-1.5 w-1.5 rounded-full bg-brass" />
@@ -49,7 +49,7 @@ function ProductsPage() {
                 components sourced for process reliability.
               </p>
             </div>
-            <div className="rounded-2xl border border-hairline bg-surface px-5 py-4 text-right">
+            <div className="rounded-2xl border border-hairline bg-surface px-5 py-4 text-left sm:text-right">
               <div className="font-display text-3xl font-black text-ink">
                 {categories.length}
               </div>
@@ -109,7 +109,7 @@ function ProductsPage() {
         </section>
 
         <section className="mx-auto mt-20 mb-20 max-w-4xl px-5 sm:px-8 text-center">
-          <div className="rounded-3xl border border-hairline bg-surface p-10 sm:p-14 flex flex-col items-center shadow-soft">
+          <div className="rounded-3xl border border-hairline bg-surface p-6 sm:p-10 md:p-14 flex flex-col items-center shadow-soft">
             <h2 className="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink mb-4">
               Looking for our complete inventory?
             </h2>
@@ -118,9 +118,9 @@ function ProductsPage() {
             </p>
             <Link
               to="/catalog"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-8 py-4 text-sm font-bold uppercase tracking-wider text-background hover:bg-ink/90 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-xs sm:px-8 sm:py-4 sm:text-sm font-bold uppercase tracking-wider text-background hover:bg-ink/90 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
             >
-              View Full Catalog Collection
+              View Full Catalog
             </Link>
           </div>
         </section>

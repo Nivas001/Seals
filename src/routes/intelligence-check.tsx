@@ -92,7 +92,7 @@ function IntelligenceCheck() {
                     type="text" 
                     value={mathAnswer}
                     onChange={(e) => setMathAnswer(e.target.value)}
-                    className="flex-1 border-2 border-zinc-300 rounded px-4 py-2 text-xl font-bold"
+                    className="min-w-0 flex-1 border-2 border-zinc-300 rounded px-4 py-2 text-xl font-bold"
                   />
                   <button 
                     onClick={() => {

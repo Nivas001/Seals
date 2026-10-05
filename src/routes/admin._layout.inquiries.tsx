@@ -53,7 +53,7 @@ function AdminInquiriesPage() {
           <p className="mt-1 text-sm text-muted-foreground">Manage messages from the contact form.</p>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground bg-muted px-3 py-1.5 rounded-lg">
             {inquiries.filter(i => (i.status || "Active") === "Active").length} Active
           </span>

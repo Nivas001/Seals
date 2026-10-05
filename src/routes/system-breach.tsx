@@ -251,7 +251,7 @@ function SystemBreach() {
                   <h2 className="text-2xl font-black text-red-500 mb-2 uppercase tracking-widest">Bank Security Compromised</h2>
                   <p className="text-red-400 mb-6">Transferring Corporate Funds to Offshore Account [Cayman Islands]</p>
                   
-                  <div className="text-5xl md:text-7xl font-black text-red-600 flex items-center justify-center font-mono tracking-tighter">
+                  <div className="text-3xl sm:text-5xl md:text-7xl font-black text-red-600 flex items-center justify-center font-mono tracking-tighter">
                     <DollarSign className="w-12 h-12 md:w-16 md:h-16" />
                     {bankAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </div>

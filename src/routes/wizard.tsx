@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowLeft, CheckCircle2, Factory, Droplets, Flame, Thermometer, Wind, RefreshCw, Zap, FlaskConical, Waves } from "lucide-react";
 import { createServerFn } from "@tanstack/react-start";
@@ -61,8 +61,11 @@ function WizardPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selections, setSelections] = useState<Record<string, string>>({});
   const [isCalculating, setIsCalculating] = useState(false);
+  const advancing = useRef(false);
 
   const handleSelect = (stepId: string, optionId: string) => {
+    if (advancing.current) return;
+    advancing.current = true;
     setSelections(prev => ({ ...prev, [stepId]: optionId }));
     
     // Auto-advance after a short delay
@@ -75,6 +78,7 @@ function WizardPage() {
         setIsCalculating(true);
         setTimeout(() => setIsCalculating(false), 2000); // Simulate calculation
       }
+      advancing.current = false;
     }, 400);
   };
 
@@ -88,24 +92,24 @@ function WizardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white selection:bg-brass selection:text-black flex flex-col">
+    <div className="min-h-dvh bg-zinc-950 text-white selection:bg-brass selection:text-black flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-zinc-950/80 backdrop-blur-xl">
-        <div className="container mx-auto flex h-20 items-center justify-between px-6 lg:px-12">
-          <Link to="/" className="flex items-center gap-3 group">
+        <div className="container mx-auto flex h-16 sm:h-20 items-center justify-between px-6 lg:px-12">
+          <Link to="/" aria-label="Back to home" className="flex items-center gap-3 group">
             <div className="h-10 w-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-brass/50 transition-colors">
               <ArrowLeft className="h-5 w-5 text-zinc-400 group-hover:text-brass transition-colors" />
             </div>
-            <span className="font-bold tracking-widest uppercase text-sm">Back to Home</span>
+            <span className="hidden sm:inline font-bold tracking-widest uppercase text-sm">Back to Home</span>
           </Link>
-          <div className="text-zinc-500 font-medium text-xs tracking-widest uppercase">
+          <div className="hidden sm:block text-zinc-500 font-medium text-xs tracking-widest uppercase">
             Product Finder Wizard
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 relative overflow-hidden">
+      <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-12 relative overflow-hidden">
         {/* Background Gradients */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-brass/10 rounded-full blur-[120px] opacity-50" />
@@ -116,7 +120,7 @@ function WizardPage() {
           
           {/* Progress Indicator */}
           {currentStep < steps.length && (
-            <div className="mb-12">
+            <div className="mb-6 sm:mb-12">
               <div className="flex items-center justify-center gap-2 mb-4">
                 {steps.map((_, index) => (
                   <div key={index} className="flex items-center gap-2">
@@ -146,10 +150,10 @@ function WizardPage() {
                   transition={{ duration: 0.4, ease: "easeOut" }}
                   className="w-full flex flex-col items-center text-center"
                 >
-                  <h1 className="text-4xl lg:text-5xl font-black tracking-tight mb-4">{steps[currentStep].title}</h1>
-                  <p className="text-zinc-400 text-lg mb-12 max-w-xl">{steps[currentStep].subtitle}</p>
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-4">{steps[currentStep].title}</h1>
+                  <p className="text-zinc-400 text-base sm:text-lg mb-6 sm:mb-12 max-w-xl">{steps[currentStep].subtitle}</p>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 w-full max-w-3xl">
                     {steps[currentStep].options.map((option) => {
                       const Icon = option.icon;
                       const isSelected = selections[steps[currentStep].id] === option.id;
@@ -158,7 +162,7 @@ function WizardPage() {
                         <button
                           key={option.id}
                           onClick={() => handleSelect(steps[currentStep].id, option.id)}
-                          className={`group relative flex items-center gap-4 p-6 rounded-2xl border transition-all duration-300 text-left overflow-hidden ${
+                          className={`group relative flex items-center gap-4 p-4 sm:p-6 pr-10 rounded-2xl border transition-all duration-300 text-left overflow-hidden ${
                             isSelected 
                               ? 'border-brass bg-brass/10 shadow-[0_0_30px_rgba(220,177,110,0.15)]' 
                               : 'border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-700'
@@ -189,6 +193,7 @@ function WizardPage() {
                       );
                     })}
                   </div>
+                  {currentStep > 0 && (<button type="button" onClick={handleBack} className="mt-6 inline-flex items-center gap-2 rounded-full px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white"><ArrowLeft className="h-4 w-4" /> Back</button>)}
                 </motion.div>
               )}
 
@@ -232,7 +237,7 @@ function WizardPage() {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
                     {recommendations.products.map((product: any, idx: number) => (
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}

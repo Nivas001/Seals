@@ -37,7 +37,7 @@ export default function CreditCard({
   return (
     <div
       className={cn(
-        "relative flex w-full max-w-[340px] flex-col justify-between rounded-2xl p-6 transition-transform duration-500 hover:scale-[1.02] sm:max-w-[380px] h-[220px] sm:h-[240px]",
+        "relative flex w-full max-w-[340px] flex-col justify-between rounded-2xl p-6 transition-transform duration-500 hover:scale-[1.02] sm:max-w-[380px] min-h-[200px] sm:min-h-[240px]",
         typeStyles[type],
         className
       )}
@@ -84,7 +84,7 @@ export default function CreditCard({
 
       {/* Bottom section: Details */}
       <div className="relative z-10 mt-auto flex flex-col gap-3">
-        <div className="font-mono text-xl tracking-[0.15em] opacity-90 sm:text-2xl">
+        <div className="font-mono whitespace-nowrap text-base tracking-[0.1em] opacity-90 min-[360px]:text-xl min-[360px]:tracking-[0.15em] sm:text-2xl">
           {cardNumber}
         </div>
         <div className="flex items-end justify-between opacity-70">

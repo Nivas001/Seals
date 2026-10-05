@@ -35,7 +35,7 @@ const BENTO_SLOT_CLASSES: string[] = [
   "sm:col-span-2",               // Slot 4: Middle Row 3
   "sm:col-span-4",               // Slot 5: Bottom Row Wide
   "sm:col-span-2",               // Slot 6: Bottom Row Right
-  "sm:col-span-2",               // Slot 7: Extra
+  "sm:col-span-6",               // Slot 7: Extra
 ];
 
 const BENTO_LAYOUT: Record<string, string> = {
@@ -159,7 +159,7 @@ function FloatingActions() {
             exit={{ opacity: 0, scale: 0.7 }}
             transition={{ duration: 0.2 }}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="grid h-10 w-10 place-items-center rounded-full border border-hairline bg-background shadow-lift text-ink/70 transition hover:text-ink hover:-translate-y-0.5"
+            className="grid h-11 w-11 place-items-center rounded-full border border-hairline bg-background shadow-lift text-ink/70 transition hover:text-ink hover:-translate-y-0.5"
             aria-label="Scroll to top"
           >
             <ChevronUp className="h-4 w-4" />
@@ -180,7 +180,7 @@ function FloatingActions() {
         <span className="max-w-0 overflow-hidden pl-0 text-[12px] sm:text-[13px] font-semibold text-white transition-all duration-300 group-hover:max-w-[140px] group-hover:pl-3 sm:group-hover:pl-4 whitespace-nowrap">
           Chat with us
         </span>
-        <span className="grid h-10 w-10 sm:h-12 sm:w-12 shrink-0 place-items-center">
+        <span className="grid h-11 w-11 sm:h-12 sm:w-12 shrink-0 place-items-center">
           <svg className="h-5 w-5 sm:h-6 sm:w-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
           </svg>
@@ -222,7 +222,7 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
   }, [emblaApi]);
 
   return (
-    <section id="hero" className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
+    <section id="hero" className="scroll-mt-28 relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[560px] opacity-[0.35]">
         <div className="grid-lines absolute inset-0" />
         <div
@@ -320,11 +320,11 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="relative"
           >
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-hairline bg-surface shadow-lift">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] sm:aspect-[4/3] lg:aspect-[4/5] border border-hairline bg-surface shadow-lift">
               {images.length > 0 ? (
                 <div className="relative h-full w-full">
                   <div className="overflow-hidden h-full w-full" ref={emblaRef}>
-                    <div className="flex h-full">
+                    <div className="flex h-full touch-pan-y touch-pinch-zoom">
                       {images.map((img, idx) => (
                         <div className="flex-[0_0_100%] min-w-0 relative h-full" key={img.id}>
                           <img
@@ -341,22 +341,22 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
                   </div>
                   
                   {/* Navigation Buttons */}
-                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-between px-4 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                    <button onClick={scrollPrev} className="bg-background/80 backdrop-blur border border-hairline text-ink hover:bg-brass hover:text-white p-2 rounded-full transition-colors shadow-sm">
+                  <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-between px-4 opacity-100 md:opacity-0 md:hover:opacity-100 transition-opacity duration-300">
+                    <button onClick={scrollPrev} aria-label="Previous slide" className="pointer-events-auto bg-background/80 backdrop-blur border border-hairline text-ink hover:bg-brass hover:text-white p-2.5 rounded-full transition-colors shadow-sm">
                       <ChevronLeft className="w-5 h-5" />
                     </button>
-                    <button onClick={scrollNext} className="bg-background/80 backdrop-blur border border-hairline text-ink hover:bg-brass hover:text-white p-2 rounded-full transition-colors shadow-sm">
+                    <button onClick={scrollNext} aria-label="Next slide" className="pointer-events-auto bg-background/80 backdrop-blur border border-hairline text-ink hover:bg-brass hover:text-white p-2.5 rounded-full transition-colors shadow-sm">
                       <ChevronRight className="w-5 h-5" />
                     </button>
                   </div>
 
                   {/* Indicators */}
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                  <div className="absolute bottom-28 left-1/2 -translate-x-1/2 flex items-center gap-2">
                     {images.map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => scrollTo(idx)}
-                        className={`transition-all duration-300 rounded-full ${
+                        className={`relative after:absolute after:-inset-x-1 after:-inset-y-3 after:content-[''] transition-all duration-300 rounded-full ${
                           idx === selectedIndex 
                             ? "w-6 h-1.5 bg-brass" 
                             : "w-1.5 h-1.5 bg-white/50 hover:bg-white/80"
@@ -504,7 +504,7 @@ function TrustStrip() {
 /* ─── ABOUT PREVIEW ─── */
 function AboutPreview() {
   return (
-    <section id="about" className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+    <section id="about" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
         <div>
           <Eyebrow>About the company</Eyebrow>
@@ -543,7 +543,7 @@ function AboutPreview() {
             <p className="mt-4 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">
               &ldquo;{COMPANY.motto}&rdquo;
             </p>
-            <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
               {[
                 { k: "Improve", v: "Response time on every query" },
                 { k: "Accuracy", v: "Right part, first time" },
@@ -570,7 +570,7 @@ function AboutPreview() {
 /* ─── PRODUCTS BENTO ─── */
 function ProductsBento({ featured }: { featured: Array<{ slug: string; name: string; short: string; description: string; image: string; count: number }> }) {
   return (
-    <section id="catalog" className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+    <section id="catalog" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
         <div>
           <Eyebrow>What we supply</Eyebrow>
@@ -603,7 +603,7 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
               <Link
                 to="/products/$category"
                 params={{ category: cat.slug }}
-                className="group relative flex h-full w-full flex-col justify-between overflow-hidden p-5"
+                className="group relative flex h-full w-full flex-col justify-between overflow-hidden p-4 sm:p-5"
               >
                 {cat.image ? (
                   <img
@@ -634,7 +634,7 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
                   </span>
                 </div>
                 <div className="relative">
-                  <h3 className="font-display text-lg font-black tracking-tight text-white sm:text-2xl">
+                  <h3 className="font-display text-base font-black tracking-tight text-white sm:text-2xl">
                     {cat.name}
                   </h3>
                   <p className="mt-1 hidden max-w-xs text-[13px] leading-snug text-white/85 sm:block">
@@ -662,7 +662,7 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
 /* ─── INDUSTRIES ─── */
 function Industries() {
   return (
-    <section id="industries" className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+    <section id="industries" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
         <div>
           <Eyebrow>Industries we serve</Eyebrow>
@@ -684,7 +684,7 @@ function Industries() {
               key={s.name}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={{ once: true, margin: "0px 0px -60px 0px" }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
               className={`group relative overflow-hidden rounded-2xl border border-hairline bg-surface p-4 transition hover:border-ink/25 hover:shadow-soft ${i >= 4 ? "hidden sm:block" : ""}`}
             >
@@ -747,7 +747,7 @@ function WhyUs() {
     },
   ];
   return (
-    <section id="why-us" className="relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+    <section id="why-us" className="scroll-mt-28 relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="grid-background pointer-events-none opacity-40" />
       <div className="relative z-10">
         <Eyebrow>Why AARRKKAA</Eyebrow>
@@ -760,13 +760,13 @@ function WhyUs() {
         </div>
       </div>
 
-      <div className="relative z-10 mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-4">
+      <div className="relative z-10 mt-8 grid grid-cols-1 min-[400px]:grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-4">
         {pillars.map((p, i) => (
           <motion.div
             key={p.title}
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
+            viewport={{ once: true, margin: "0px 0px -60px 0px" }}
             transition={{ duration: 0.45, delay: i * 0.07 }}
             className="h-full"
           >
@@ -833,7 +833,7 @@ function Testimonials() {
   };
 
   return (
-    <section id="testimonials" className="relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+    <section id="testimonials" className="scroll-mt-28 relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       {/* Background accent */}
       <div
         aria-hidden
@@ -852,16 +852,16 @@ function Testimonials() {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="mt-10 flex snap-x snap-mandatory scroll-pl-5 sm:scroll-pl-0 overflow-x-auto pb-4 gap-4 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0 sm:pb-0"
+          className="mt-10 flex snap-x snap-mandatory scroll-pl-5 lg:scroll-pl-0 overflow-x-auto pb-4 gap-4 lg:grid lg:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 lg:mx-0 lg:px-0 lg:pb-0"
         >
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={{ once: true, margin: "0px 0px -60px 0px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="snap-start shrink-0 w-[80%] sm:w-auto flex"
+              className="snap-start shrink-0 w-[80%] md:w-[45%] lg:w-auto flex"
             >
               <GlowCard className="flex w-full flex-col justify-between">
                 <div>
@@ -885,7 +885,7 @@ function Testimonials() {
         </div>
 
         {/* Mobile Indicator Dots */}
-        <div className="mt-4 flex items-center justify-center gap-2 sm:hidden">
+        <div className="mt-4 flex items-center justify-center gap-2 lg:hidden">
           {TESTIMONIALS.map((_, i) => (
             <div
               key={i}
@@ -934,7 +934,7 @@ function Process() {
   };
 
   return (
-    <section id="process" className="relative mx-auto mt-24 max-w-7xl overflow-hidden px-5 sm:mt-32 sm:px-8">
+    <section id="process" className="scroll-mt-28 relative mx-auto mt-24 max-w-7xl overflow-hidden px-5 sm:mt-32 sm:px-8">
       <div
         className="relative overflow-hidden rounded-[2rem] border border-hairline bg-surface p-6 sm:p-10 lg:p-14"
       >
@@ -964,7 +964,7 @@ function Process() {
               key={s.k}
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={{ once: true, margin: "0px 0px -60px 0px" }}
               transition={{ duration: 0.45, delay: i * 0.1 }}
               className="snap-start shrink-0 w-[80%] md:w-auto relative flex flex-col rounded-2xl border border-hairline bg-background p-6 md:rounded-none md:border-0 md:border-r md:last:border-r-0 md:bg-transparent md:border-hairline"
             >
@@ -1042,7 +1042,7 @@ function CTABand() {
           <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-col">
             <a
               href="tel:+917806936475"
-              className="glass-strong col-span-1 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
+              className="glass-strong col-span-2 sm:col-span-1 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
             >
               <div>
                 <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -1058,7 +1058,7 @@ function CTABand() {
               href="https://wa.me/917806936475"
               target="_blank"
               rel="noopener noreferrer"
-              className="glass-strong col-span-1 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
+              className="glass-strong col-span-2 sm:col-span-1 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
             >
               <div>
                 <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -1076,7 +1076,7 @@ function CTABand() {
               href="mailto:aarrkkaainternational@gmail.com"
               className="glass-strong col-span-2 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
             >
-              <div className="min-w-0">
+              <div className="w-full min-w-0">
                 <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   Email
                 </div>
@@ -1111,7 +1111,7 @@ function CTABand() {
 /* ─── CONTACT PREVIEW — polished cards, no amateur SVG art ─── */
 function ContactPreview() {
   return (
-    <section id="find-us" className="mx-auto mt-24 max-w-7xl px-5 sm:px-8 hidden sm:block">
+    <section id="find-us" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:px-8 hidden sm:block">
       <Eyebrow>Find us</Eyebrow>
       <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
         Get in touch.
@@ -1122,7 +1122,7 @@ function ContactPreview() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
+          viewport={{ once: true, margin: "0px 0px -60px 0px" }}
           transition={{ duration: 0.5 }}
           className="lg:col-span-2 relative overflow-hidden rounded-2xl border border-hairline bg-surface p-6 sm:p-8 transition-shadow duration-300 hover:shadow-lift"
         >
@@ -1156,7 +1156,7 @@ function ContactPreview() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
+          viewport={{ once: true, margin: "0px 0px -60px 0px" }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="flex flex-col gap-4"
         >

@@ -28,7 +28,7 @@ function AdminSubscribersPage() {
   );
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 p-6">
+    <div className="mx-auto max-w-4xl space-y-6 p-2 sm:p-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Subscribers</h1>
@@ -47,7 +47,7 @@ function AdminSubscribersPage() {
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">No subscribers yet</p>
         </div>
       ) : (
-        <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-sm">
+        <div className="rounded-2xl border border-border bg-surface overflow-x-auto shadow-sm">
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead className="border-b border-border bg-muted/50">
               <tr>

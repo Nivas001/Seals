@@ -41,7 +41,7 @@ export function Footer() {
         style={{ background: "var(--surface)", filter: "blur(80px)" }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-16">
+      <div className="relative mx-auto max-w-7xl px-5 pb-24 pt-8 sm:px-8 sm:py-16">
         {/* Catalog download CTA */}
         <div className="mb-14 hidden flex-col items-start justify-between gap-5 rounded-3xl border border-hairline bg-background p-6 backdrop-blur-sm sm:flex sm:flex-row sm:items-center sm:p-8">
           <div className="flex items-start gap-4">
@@ -138,13 +138,13 @@ export function Footer() {
               {phones.map((p: string) => (
                 <li key={p} className="flex items-center gap-2">
                   <Phone className="h-3.5 w-3.5 shrink-0 text-brass" />
-                  <a href={`tel:${p.replace(/\s/g, "")}`} className="transition-colors hover:text-ink">{p}</a>
+                  <a href={`tel:${p.replace(/\s/g, "")}`} className="inline-block py-2 transition-colors hover:text-ink">{p}</a>
                 </li>
               ))}
               {emails.map((e: string) => (
                 <li key={e} className="flex items-center gap-2">
                   <Mail className="h-3.5 w-3.5 shrink-0 text-brass" />
-                  <a href={`mailto:${e}`} className="transition-colors hover:text-ink">{e}</a>
+                  <a href={`mailto:${e}`} className="inline-block min-w-0 break-all py-2 transition-colors hover:text-ink">{e}</a>
                 </li>
               ))}
               <li className="flex items-start gap-2">
@@ -160,7 +160,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col items-center justify-center gap-3 text-xs text-muted-foreground sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:border-t sm:border-hairline sm:pt-6">
+        <div className="flex flex-col items-center justify-center mt-8 gap-3 text-xs text-muted-foreground sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:border-t sm:border-hairline sm:pt-6">
           <p><Link to="/override" className="cursor-default hover:text-red-500/20 transition-colors duration-1000">©</Link> {new Date().getFullYear()} AARRKKAA International. All rights reserved.</p>
           <p className="hidden sm:block">Head office in Hosur · Service available globally</p>
         </div>

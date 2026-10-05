@@ -2,12 +2,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { AlertCircle } from "lucide-react";
+import { DesktopOnly } from "@/components/site/DesktopOnly";
 
 export const Route = createFileRoute("/forklift-sim")({
   head: () => ({
     meta: [{ title: "Forklift Simulator | AARRKKAA" }, { name: "robots", content: "noindex" }],
   }),
-  component: ForkliftSim,
+  component: () => (
+    <DesktopOnly>
+      <ForkliftSim />
+    </DesktopOnly>
+  ),
 });
 
 type Box = { id: number; x: number; y: number; vx: number; vy: number; rotation: number };

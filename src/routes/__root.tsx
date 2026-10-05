@@ -60,7 +60,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, interactive-widget=resizes-content" },
       { title: "AARRKKAA International — Industrial Pumps, Seals & Precision Components" },
       { name: "description", content: "Supplier & distributor of pumps, mechanical seals, elastomers, stainless steel, hoses and precision components worldwide with service available globally." },
       { name: "author", content: "AARRKKAA International" },
@@ -155,6 +155,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 import { Toaster } from "@/components/ui/sonner";
 import { AIChatbot } from "@/components/site/AIChatbot";
+import { CHATBOT_PATHS } from "@/data/chatbotState";
 import { useLocation } from "@tanstack/react-router";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
@@ -162,7 +163,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
-  const isHomepage = location.pathname === "/";
+  const hasChatbot = CHATBOT_PATHS.includes(location.pathname);
 
   // Custom Analytics Tracker using non-blocking background task
   useEffect(() => {
@@ -190,8 +191,8 @@ function RootComponent() {
       <RoutePendingIndicator />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
-      {isHomepage && <AIChatbot />}
-      <Toaster position="top-center" closeButton />
+      {hasChatbot && <AIChatbot />}
+      <Toaster position="top-center" offset={84} mobileOffset={84} closeButton />
       <Analytics />
       <SpeedInsights />
     </QueryClientProvider>

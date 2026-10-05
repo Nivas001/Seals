@@ -44,7 +44,7 @@ function PaymentsPage() {
                 />
               </div>
               
-              <div className="relative transform transition-all duration-700 hover:translate-y-2 hover:-rotate-1 -mt-16 sm:-mt-24 z-20 w-full flex justify-center sm:ml-20">
+              <div className="relative transform transition-all duration-700 hover:translate-y-2 hover:-rotate-1 -mt-8 sm:-mt-12 z-20 w-full flex justify-center sm:translate-x-10">
                 <CreditCard
                   type="apple-titanium"
                   company="Titanium"

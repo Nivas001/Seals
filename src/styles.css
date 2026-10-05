@@ -120,6 +120,9 @@
   * {
     border-color: var(--color-border);
   }
+  html, body {
+    overflow-x: clip;
+  }
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -253,8 +256,10 @@
     transform: translateX(-120%);
     opacity: 0;
   }
-  &:hover::after {
-    animation: glass-shimmer 900ms ease-out;
+  @media (hover: hover) {
+    &:hover::after {
+      animation: glass-shimmer 900ms ease-out;
+    }
   }
 }
 
@@ -304,9 +309,11 @@
 }
 
 @utility bento-tile-hover {
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lift);
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lift);
+    }
   }
 }
 
@@ -357,5 +364,6 @@
 @media (prefers-reduced-motion: reduce) {
   .art-float, .art-float-slow, .art-drift { animation: none !important; }
   .glass-shimmer:hover::after { animation: none !important; }
+  .marquee-track, .marquee-track-reverse { animation: none !important; }
 }
 

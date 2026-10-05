@@ -1,5 +1,8 @@
 import { useSyncExternalStore } from "react";
 
+// Pages where <AIChatbot /> is mounted; any "Launch ASK ARKA" button must only show on these.
+export const CHATBOT_PATHS = ["/", "/contact"];
+
 let isOpen = false;
 let pendingQuery: string | null = null;
 const listeners = new Set<() => void>();

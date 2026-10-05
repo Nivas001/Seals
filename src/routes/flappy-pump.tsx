@@ -136,9 +136,8 @@ function FlappyPump() {
 
       <div 
         ref={gameAreaRef}
-        className="w-full max-w-[800px] h-[600px] bg-zinc-800 relative overflow-hidden rounded-xl border-4 border-zinc-700 shadow-2xl cursor-pointer"
-        onMouseDown={jump}
-        onTouchStart={jump}
+        className="w-full max-w-[800px] h-[600px] bg-zinc-800 relative overflow-hidden rounded-xl border-4 border-zinc-700 shadow-2xl cursor-pointer touch-none"
+        onPointerDown={jump}
       >
         {/* Background Grid */}
         <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'linear-gradient(#52525b 1px, transparent 1px), linear-gradient(90deg, #52525b 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
