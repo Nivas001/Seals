@@ -1,3 +1,4 @@
+import { IndustriesShowcase, GlobalReach, WhyUsBento, ProcessTimeline } from "@/components/home/HomeSections";
 import { CLIENTS, BRANDS } from "@/data/clients";
 import { ClientLogo } from "@/components/site/ClientLogo";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -112,6 +113,7 @@ function Home() {
     { id: "about", label: "About Us" },
     { id: "catalog", label: "Products" },
     { id: "industries", label: "Industries" },
+    { id: "global", label: "Global Reach" },
     { id: "why-us", label: "Why AARRKKAA" },
     { id: "testimonials", label: "Reviews" },
     { id: "process", label: "How We Work" },
@@ -124,13 +126,15 @@ function Home() {
       <LineSidebar sections={sidebarSections} />
       <main>
         <Hero images={heroImages} />
+        <StatsBand />
         <TrustStrip />
         <AboutPreview />
         <ProductsBento featured={featured} />
-        <Industries />
-        <WhyUs />
+        <IndustriesShowcase />
+        <GlobalReach />
+        <WhyUsBento />
         <Testimonials />
-        <Process />
+        <ProcessTimeline />
         <CTABand />
         <ContactPreview />
       </main>
@@ -273,10 +277,7 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
               transition={{ duration: 0.5, delay: 0.15 }}
               className="mt-6 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg"
             >
-              AARRKKAA International supplies pumps, mechanical seals,
-              stainless steel, elastomers and specialty components to food,
-              pharma, chemical and process plants worldwide with service available globally — matched
-              accurately, shipped on time.
+              Pumps, mechanical seals, stainless steel and elastomers for process plants. Matched accurately, shipped on time, anywhere.
             </motion.p>
 
             <motion.div
@@ -293,26 +294,13 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
                 <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-3 text-sm font-semibold text-ink backdrop-blur transition hover:bg-white"
-              >
-                Request a quote
-              </Link>
-              <Link
                 to="/wizard"
                 className="inline-flex items-center gap-2 rounded-full border border-brass/50 bg-brass/10 px-5 py-3 text-sm font-bold text-brass transition hover:bg-brass hover:text-white"
               >
-                Find My Seal Wizard
+                Find my seal
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </motion.div>
-
-            {/* Animated stats */}
-            <div className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-hairline pt-6">
-              <StatItem target={12} suffix="+" label="Product categories" />
-              <StatItem target={8} suffix="" label="Sectors served" />
-              <StatItem target={100} suffix="+" label="SKU lines stocked" />
-            </div>
           </div>
 
           {/* Hero bento */}
@@ -322,7 +310,7 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="relative"
           >
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] sm:aspect-[4/3] lg:aspect-[4/5] border border-hairline bg-surface shadow-lift">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] sm:aspect-[4/3] lg:aspect-auto lg:h-[min(34rem,calc(100dvh-11rem))] border border-hairline bg-surface shadow-lift">
               {images.length > 0 ? (
                 <div className="relative h-full w-full">
                   <div className="overflow-hidden h-full w-full" ref={emblaRef}>
@@ -449,6 +437,19 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
   );
 }
 
+/* ─── STATS BAND ─── */
+function StatsBand() {
+  return (
+    <section className="mx-auto mt-10 max-w-7xl px-5 sm:mt-14 sm:px-8">
+      <div className="grid grid-cols-3 gap-4 rounded-3xl border border-hairline bg-surface px-5 py-6 sm:gap-8 sm:px-10 sm:py-8">
+        <StatItem target={12} suffix="+" label="Product categories" />
+        <StatItem target={8} suffix="" label="Sectors served" />
+        <StatItem target={100} suffix="+" label="SKU lines stocked" />
+      </div>
+    </section>
+  );
+}
+
 /* ─── TRUST STRIP ─── */
 function TrustStrip() {
   const items = CLIENTS;
@@ -497,7 +498,6 @@ function AboutPreview() {
     <section id="about" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
         <div>
-          <Eyebrow>About the company</Eyebrow>
           <h2 className="mt-4 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
             A trusted partner for
             <br />
@@ -527,6 +527,7 @@ function AboutPreview() {
             className="relative overflow-hidden rounded-[2rem] border border-hairline p-8 sm:p-10"
             style={{ background: "var(--gradient-brand)" }}
           >
+            <img src={factoryImg} alt="" loading="lazy" decoding="async" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25 mix-blend-luminosity" />
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
               Our motto
             </span>
@@ -563,7 +564,6 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
     <section id="catalog" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
         <div>
-          <Eyebrow>What we supply</Eyebrow>
           <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
             A catalog built for
             <br />
@@ -650,147 +650,6 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
 }
 
 /* ─── INDUSTRIES ─── */
-function Industries() {
-  return (
-    <section id="industries" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
-      <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
-        <div>
-          <Eyebrow>Industries we serve</Eyebrow>
-          <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
-            Eight sectors.
-            <br />
-            One reliable
-            <span className="italic text-brass"> partner.</span>
-          </h2>
-          <p className="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">
-            Our components meet the hygienic, chemical and mechanical demands
-            of some of India&rsquo;s most process-critical industries.
-          </p>
-        </div>
-
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {SECTORS.map((s, i) => (
-            <motion.li
-              key={s.name}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-              transition={{ duration: 0.4, delay: i * 0.04 }}
-              className={`group relative overflow-hidden rounded-2xl border border-hairline bg-surface p-4 transition hover:border-ink/25 hover:shadow-soft ${i >= 4 ? "hidden sm:block" : ""}`}
-            >
-              <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brass">
-                Sector 0{i + 1}
-              </div>
-              <div className="mt-2 font-display text-lg font-black tracking-tight text-ink">
-                {s.name}
-              </div>
-              <p className="mt-1 text-xs leading-snug text-muted-foreground">
-                {s.desc}
-              </p>
-            </motion.li>
-          ))}
-        </ul>
-
-        <div className="mt-2 flex justify-center sm:hidden">
-          <Link
-            to="/industries"
-            className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-2.5 text-sm font-semibold text-ink backdrop-blur transition hover:bg-white"
-          >
-            View all industries <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── WHY US — redesigned with large accent numbers ─── */
-function WhyUs() {
-  const pillars = [
-    {
-      num: "01",
-      icon: ShieldCheck,
-      title: "Quality first",
-      body: "Genuine bearings, certified elastomers and traceable stainless steel — no compromises on materials or sourcing.",
-      accent: "oklch(0.5 0.15 245)",
-    },
-    {
-      num: "02",
-      icon: Truck,
-      title: "Timely delivery",
-      body: "Regional stock and disciplined logistics keep your production line running when critical parts run out.",
-      accent: "oklch(0.74 0.14 75)",
-    },
-    {
-      num: "03",
-      icon: MessagesSquare,
-      title: "Fast response",
-      body: "Improved response time on every technical query, quote request and follow-up — no long wait times.",
-      accent: "oklch(0.5 0.15 245)",
-    },
-    {
-      num: "04",
-      icon: CheckCircle2,
-      title: "Feedback loop",
-      body: "We collect customer feedback to continuously sharpen matching accuracy and order reliability.",
-      accent: "oklch(0.74 0.14 75)",
-    },
-  ];
-  return (
-    <section id="why-us" className="scroll-mt-28 relative mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
-      <div className="grid-background pointer-events-none opacity-40" />
-      <div className="relative z-10">
-        <Eyebrow>Why AARRKKAA</Eyebrow>
-        <div className="mt-3 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <h2 className="max-w-xl font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
-            Committed to convenience,
-            <br />
-            accuracy and delivery.
-          </h2>
-        </div>
-      </div>
-
-      <div className="relative z-10 mt-8 grid grid-cols-1 min-[400px]:grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-4">
-        {pillars.map((p, i) => (
-          <motion.div
-            key={p.title}
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-            transition={{ duration: 0.45, delay: i * 0.07 }}
-            className="h-full"
-          >
-            <GlowCard className="h-full">
-              {/* Large background number */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute -right-2 -top-3 font-display text-[4rem] font-black leading-none tracking-tighter select-none transition-transform duration-500 group-hover:scale-110 sm:-right-3 sm:-top-4 sm:text-[5.5rem]"
-                style={{ color: p.accent, opacity: 0.07 }}
-              >
-                {p.num}
-              </span>
-
-              <span
-                aria-hidden
-                className="relative grid h-9 w-9 place-items-center rounded-xl text-primary-foreground shadow-soft sm:h-11 sm:w-11"
-                style={{ background: "var(--gradient-brand)" }}
-              >
-                <p.icon className="h-4 w-4 sm:h-5 sm:w-5" />
-              </span>
-              <h3 className="relative mt-4 font-display text-[15px] font-bold leading-tight tracking-tight text-ink sm:mt-5 sm:text-lg">
-                {p.title}
-              </h3>
-              <p className="relative mt-1.5 text-xs leading-relaxed text-muted-foreground sm:mt-2 sm:text-sm">
-                {p.body}
-              </p>
-            </GlowCard>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 /* ─── TESTIMONIALS ─── */
 const TESTIMONIALS = [
   {
@@ -832,7 +691,6 @@ function Testimonials() {
       />
 
       <div className="relative">
-        <Eyebrow>What our customers say</Eyebrow>
         <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
           Trusted by process plants
           <br />
@@ -877,115 +735,6 @@ function Testimonials() {
         {/* Mobile Indicator Dots */}
         <div className="mt-4 flex items-center justify-center gap-2 lg:hidden">
           {TESTIMONIALS.map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === activeIndex ? "w-4 bg-brass" : "w-1.5 bg-ink/20"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── PROCESS — redesigned with gradient step indicators ─── */
-function Process() {
-  const steps = [
-    {
-      k: "01",
-      t: "Enquire",
-      d: "Send a spec, a drawing, or even a photograph of the worn part. We identify it accurately.",
-      icon: MessagesSquare,
-    },
-    {
-      k: "02",
-      t: "Match",
-      d: "We recommend the correct grade, material or brand — from our stocked programme or sourced direct.",
-      icon: ShieldCheck,
-    },
-    {
-      k: "03",
-      t: "Deliver",
-      d: "Dispatched from our Hosur HQ or regional branch, on the timeline you need. No delays.",
-      icon: Truck,
-    },
-  ];
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const scrollLeft = scrollRef.current.scrollLeft;
-    const itemWidth = scrollRef.current.children[0]?.clientWidth || 300;
-    const index = Math.round(scrollLeft / (itemWidth + 16));
-    setActiveIndex(Math.min(Math.max(index, 0), steps.length - 1));
-  };
-
-  return (
-    <section id="process" className="scroll-mt-28 relative mx-auto mt-24 max-w-7xl overflow-hidden px-5 sm:mt-32 sm:px-8">
-      <div
-        className="relative overflow-hidden rounded-[2rem] border border-hairline bg-surface p-6 sm:p-10 lg:p-14"
-      >
-        <div className="grid-background-bottom pointer-events-none opacity-50" />
-        <div className="relative z-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-brass" />
-              How we work
-            </div>
-            <h2 className="mt-3 font-display text-3xl font-black leading-[1.02] tracking-tight text-ink sm:text-4xl">
-              Assist &amp; deliver — in three steps.
-            </h2>
-          </div>
-          <span className="text-xs text-muted-foreground">
-            From first query to dispatched crate.
-          </span>
-        </div>
-
-        <ol
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="relative z-10 mt-10 flex snap-x snap-mandatory scroll-pl-5 overflow-x-auto pb-4 gap-4 md:grid md:gap-px md:grid-cols-3 md:overflow-visible md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 md:mx-0 md:px-0"
-        >
-          {steps.map((s, i) => (
-            <motion.li
-              key={s.k}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-              transition={{ duration: 0.45, delay: i * 0.1 }}
-              className="snap-start shrink-0 w-[80%] md:w-auto relative flex flex-col rounded-2xl border border-hairline bg-background p-6 md:rounded-none md:border-0 md:border-r md:last:border-r-0 md:bg-transparent md:border-hairline"
-            >
-              {/* Large step number */}
-              <span
-                className="font-display text-5xl font-black italic leading-none"
-                style={{ backgroundImage: "var(--gradient-brass)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
-              >
-                {s.k}
-              </span>
-              <div className="mt-3 flex items-center gap-2">
-                <span
-                  aria-hidden
-                  className="grid h-8 w-8 place-items-center rounded-lg border border-hairline bg-surface"
-                >
-                  <s.icon className="h-4 w-4 text-ink" />
-                </span>
-                <h3 className="font-display text-xl font-bold tracking-tight text-ink">
-                  {s.t}
-                </h3>
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:pr-8">
-                {s.d}
-              </p>
-            </motion.li>
-          ))}
-        </ol>
-
-        {/* Mobile Indicator Dots */}
-        <div className="mt-4 flex items-center justify-center gap-2 md:hidden">
-          {steps.map((_, i) => (
             <div
               key={i}
               className={`h-1.5 rounded-full transition-all duration-300 ${
@@ -1102,7 +851,6 @@ function CTABand() {
 function ContactPreview() {
   return (
     <section id="find-us" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:px-8 hidden sm:block">
-      <Eyebrow>Find us</Eyebrow>
       <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
         Get in touch.
       </h2>
@@ -1117,12 +865,17 @@ function ContactPreview() {
           className="lg:col-span-2 relative overflow-hidden rounded-2xl border border-hairline bg-surface p-6 sm:p-8 transition-shadow duration-300 hover:shadow-lift"
         >
           <div className="grid-background pointer-events-none opacity-[0.15]" />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-8 -top-8 h-48 w-48 rounded-full opacity-40"
-            style={{ background: "var(--gradient-brand)", filter: "blur(48px)" }}
-          />
-          <div className="relative z-10">
+          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] overflow-hidden lg:block [mask-image:linear-gradient(to_right,transparent,black_28%)]">
+            <iframe
+              title="Hosur head office map"
+              src="https://maps.google.com/maps?q=Arasanatti%20Hosur%20Tamil%20Nadu%20635126&t=&z=12&ie=UTF8&iwloc=&output=embed"
+              className="h-full w-full border-0 opacity-90 grayscale-[35%]"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              tabIndex={-1}
+            />
+          </div>
+          <div className="relative z-10 lg:max-w-[52%]">
             <span
               aria-hidden
               className="grid h-10 w-10 place-items-center rounded-xl text-primary-foreground"

@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Menu, X, Phone, Download, Sparkles, Home, Package, Building2, Info, Mail } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { DownloadCatalog } from "@/components/site/DownloadCatalog";
 import { chatbotState, CHATBOT_PATHS } from "@/data/chatbotState";
 
@@ -20,6 +20,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4 });
   const currentLabel = useMemo(() => {
     if (pathname === "/") return "Home";
     for (const item of NAV) {
@@ -49,6 +51,7 @@ export function Navbar() {
 
   return (
     <>
+      <motion.div aria-hidden style={{ scaleX: progress }} className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-brass" />
       <div className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:pt-5">
         <nav
           className={`pointer-events-auto flex w-full max-w-6xl items-center justify-between gap-4 rounded-full px-3 py-2 sm:px-4 ${
