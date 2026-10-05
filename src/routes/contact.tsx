@@ -16,6 +16,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { FaqSection } from "@/components/site/FaqSection";
 import { TrustPoints } from "@/components/site/TrustPoints";
+import { QuickContact, WhatHappensNext } from "@/components/contact/ContactExtras";
 import { VerifiedSupplierBadge } from "@/components/site/VerifiedSupplierBadge";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { Input } from "@/components/base/input/input";
@@ -95,6 +96,8 @@ function ContactPage() {
             </div>
           </div>
 
+          <div className="mt-10"><QuickContact /></div>
+
           {/* Bento grid */}
           <div className="mt-12 grid gap-5 lg:grid-cols-2">
             <CorporateCard className="order-2 lg:order-1 h-full" contactInfo={contactInfo} />
@@ -136,6 +139,7 @@ function ContactPage() {
           </div>
         </section>
       </main>
+      <WhatHappensNext />
       <FaqSection className="mt-20 sm:mt-28 mb-8" />
       <Footer />
     </div>

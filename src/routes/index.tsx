@@ -1,4 +1,4 @@
-import { IndustriesShowcase, GlobalReach, WhyUsBento, ProcessTimeline } from "@/components/home/HomeSections";
+import { FinderBand, IndustriesShowcase, GlobalReach, WhyUsBento, ProcessTimeline } from "@/components/home/HomeSections";
 import { CLIENTS, BRANDS } from "@/data/clients";
 import { ClientLogo } from "@/components/site/ClientLogo";
 import { FaqSection } from "@/components/site/FaqSection";
@@ -132,6 +132,7 @@ function Home() {
         <TrustStrip />
         <AboutPreview />
         <ProductsBento featured={featured} />
+        <FinderBand />
         <IndustriesShowcase />
         <GlobalReach />
         <WhyUsBento />
@@ -379,32 +380,7 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
                 }}
               />
 
-              {/* Floating cards */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="glass-strong absolute left-4 top-4 max-w-[85%] sm:max-w-[78%] rounded-2xl p-3.5"
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    aria-hidden
-                    className="grid h-8 w-8 place-items-center rounded-lg text-primary-foreground shrink-0"
-                    style={{ background: "var(--gradient-brass)" }}
-                  >
-                    <Sparkles className="h-4 w-4" />
-                  </span>
-                  <div className="leading-tight">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                      Process Equipment Spares
-                    </div>
-                    <div className="text-xs sm:text-sm font-bold text-ink leading-snug mt-0.5">
-                      Mechanical Seal · Bearing · Elastomer · Spring · Valve
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
+              {/* Head office card */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}

@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { CATEGORIES, COMPANY } from "@/data/catalog";
-import { ArrowUpRight, CheckCircle2, ShieldCheck, Factory, Gauge, Truck, Layers } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, ArrowUpRight, CheckCircle2, Gauge, Thermometer, Ruler, ShieldCheck, Camera, Phone, MessageCircle } from "lucide-react";
 
 import heroImg from "@/assets/industries-hero.jpg";
 import qualityImg from "@/assets/industries-quality.jpg";
@@ -165,6 +166,7 @@ const SECTORS: Sector[] = [
 
 function IndustriesPage() {
   const { industries } = Route.useLoaderData();
+  const [active, setActive] = useState(0);
 
   const displaySectors: Sector[] = SECTORS.map((defaultSec) => {
     const slug = defaultSec.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -182,233 +184,277 @@ function IndustriesPage() {
     };
   });
 
+  // Keep the active sector in sync with #sector-... links (home page, chips).
+  useEffect(() => {
+    const sync = () => {
+      const h = window.location.hash.replace("#sector-", "");
+      const i = displaySectors.findIndex((x) => slugOf(x.name) === h);
+      if (i >= 0) {
+        setActive(i);
+        document.getElementById("sectors")?.scrollIntoView({ block: "start" });
+      }
+    };
+    sync();
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const pick = (i: number) => {
+    setActive(i);
+    document.getElementById("sectors")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  // Which product categories fit which sector, built from the sector data.
+  const matrixSlugs = Array.from(new Set(displaySectors.flatMap((x) => x.products.map((p) => p.slug))));
+  const matrixRows = matrixSlugs.map((slug) => ({ slug, name: CATEGORIES.find((c) => c.slug === slug)?.name ?? slug }));
+  const short = (n: string) => (n === "Oil & Gas" ? n : n.split(" ")[0]);
+
+  const checklist = [
+    { icon: Thermometer, t: "Fluid and temperature", d: "What runs through the line, and how hot it gets." },
+    { icon: Gauge, t: "Pressure and speed", d: "Working pressure and shaft speed." },
+    { icon: Ruler, t: "Size and standard", d: "Shaft or port size, plus any DIN or brand reference." },
+    { icon: ShieldCheck, t: "Industry and compliance", d: "Food contact, hygiene or chemical resistance needs." },
+    { icon: Camera, t: "A photo or drawing", d: "Even a picture of the worn part is enough to start." },
+  ];
+
+  const steps = [
+    { t: "Share the duty", d: "Send us the drawing, fluid, temperature, pressure and speed, or just a photo of the failed part." },
+    { t: "We spec the part", d: "We recommend the correct material class, brand and geometry." },
+    { t: "Quote and confirm", d: "Clear pricing with lead time, usually ex-stock for fast-moving items." },
+    { t: "Dispatch and support", d: "Packed, dispatched and backed by after-sales support if anything needs adjusting." },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-ink font-sans">
       <Navbar />
-      <main className="overflow-x-clip pt-28 sm:pt-36">
+      <main className="overflow-x-clip pt-28 sm:pt-32">
         {/* Hero */}
         <section className="mx-auto max-w-7xl px-4 sm:px-8">
-          <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-end">
-            <div className="min-w-0">
-              <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                <span className="h-1.5 w-1.5 rounded-full bg-brass" /> Industries we serve
-              </div>
-              <h1
-                className="mt-4 font-display font-black leading-[0.95] tracking-[-0.035em] text-ink text-balance"
-                style={{ fontSize: "clamp(2.25rem, 6.2vw, 5rem)" }}
-              >
-                Eight sectors.
+          <div className="relative overflow-hidden rounded-[2rem] bg-[#0a1020] text-white">
+            <img src={heroImg} alt="" width={1600} height={900} loading="eager" fetchPriority="high" decoding="async" className="absolute inset-0 h-full w-full object-cover opacity-50" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0a1020] via-[#0a1020]/80 to-[#0a1020]/20" />
+            <div className="relative px-6 py-14 sm:px-12 sm:py-20 lg:py-24">
+              <h1 className="max-w-3xl text-balance font-display font-black leading-[0.97] tracking-[-0.035em]" style={{ fontSize: "clamp(2.25rem, 5.6vw, 4.5rem)" }}>
+                Eight industries.
                 <br />
-                Every part matched to
-                <span className="italic text-brass"> the duty.</span>
+                Every part matched to <span className="italic text-sky-300">the duty.</span>
               </h1>
-              <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-                From hygienic food processing to abrasive chemical service, our
-                components are specified for the pressures, temperatures and
-                compliance each industry demands — and shipped from stock so your
-                line stays running.
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-200 sm:text-lg">
+                From hygienic food lines to abrasive chemical service, we supply pumps, seals, elastomers and precision components specified for the temperatures, pressures and compliance your plant runs on.
               </p>
-
-              <div className="mt-8 flex flex-wrap gap-2">
-                {([
-                  ["Food", "Food Processing"],
-                  ["Chemical", "Chemical"],
-                  ["Beverages", "Beverages"],
-                  ["Breweries", "Breweries"],
-                  ["Plastics", "Plastics"],
-                  ["Pharma", "Pharma"],
-                  ["Oil & Gas", "Oil & Gas"],
-                  ["Dye", "Dye Manufacturing"],
-                ] as const).map(([label, sectorName]) => (
-                  <a
-                    key={label}
-                    href={`#sector-${sectorName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-                    className="rounded-full border border-hairline bg-surface px-3.5 py-2.5 text-[12px] font-medium text-ink/80 transition hover:bg-white hover:text-ink"
-                  >
-                    {label}
-                  </a>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link to="/wizard" className="inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-[#0a1020] transition hover:bg-slate-100">
+                  Find my seal <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link to="/contact" className="inline-flex h-12 items-center rounded-full border border-white/30 px-6 text-sm font-semibold text-white transition hover:bg-white/10">
+                  Request a quote
+                </Link>
+              </div>
+              <div className="mt-10 flex flex-wrap gap-2">
+                {displaySectors.map((x, i) => (
+                  <button key={x.name} type="button" onClick={() => pick(i)} className="rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white backdrop-blur transition hover:bg-white hover:text-[#0a1020]">
+                    {short(x.name)}
+                  </button>
                 ))}
               </div>
             </div>
-
-            <div className="relative">
-              <div className="relative overflow-hidden rounded-3xl border border-hairline shadow-lift">
-                <img
-                  src={heroImg}
-                  alt="Industrial processing facility with stainless steel piping and machinery"
-                  width={1600}
-                  height={900}
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="async"
-                  className="h-[280px] w-full object-cover sm:h-[380px] lg:h-[440px]"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent p-5 sm:p-6">
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/80">
-                    Trusted supply chain
-                  </div>
-                  <p className="mt-1 text-sm font-medium text-white sm:text-base">
-                    500+ SKUs across 12 categories — dispatched from Hosur, Tamil Nadu.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 
-        {/* About / Why us bento */}
-        <section className="mx-auto mt-16 max-w-7xl px-4 sm:mt-24 sm:px-8">
-          <div className="max-w-2xl">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass">
-              Why teams pick AARRKKAA
-            </div>
-            <h2
-              className="mt-3 font-display font-black leading-[1] tracking-[-0.03em]"
-              style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)" }}
-            >
-              A supply partner, not just a supplier.
-            </h2>
-            <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
-              We combine deep application know-how with a wide, ready-to-ship
-              inventory so procurement and maintenance teams get the right part —
-              specified correctly, on time, backed by service.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-4 md:grid-cols-6 md:grid-rows-3">
-            {/* Big feature */}
-            <div className="relative overflow-hidden rounded-3xl border border-hairline bg-surface md:col-span-3 md:row-span-3">
-              <img
-                src={qualityImg}
-                alt="Engineer inspecting a precision stainless steel component"
-                width={1200}
-                height={1200}
-                loading="lazy"
-                decoding="async"
-                className="h-64 w-full object-cover md:h-full"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur">
-                  <ShieldCheck className="h-3.5 w-3.5" /> Quality first
-                </div>
-                <h3 className="mt-4 font-display text-2xl font-black text-white sm:text-3xl">
-                  Every part checked before it ships.
-                </h3>
-                <p className="mt-2 max-w-md text-sm text-white/85">
-                  Materials verified, geometries measured, brands authenticated — no
-                  surprises when the part reaches your line.
-                </p>
-              </div>
-            </div>
-
-            <FeatureTile
-              icon={<Layers className="h-5 w-5" />}
-              title="12 categories in one PO"
-              body="Pumps, seals, elastomers, hoses, bearings, valves, springs and more — consolidated to save procurement cycles."
-              className="md:col-span-3"
-            />
-            <FeatureTile
-              icon={<Gauge className="h-5 w-5" />}
-              title="Application-matched sizing"
-              body="Tell us the duty. We recommend the material, class and geometry that will actually survive it."
-              className="md:col-span-3"
-            />
-            <FeatureTile
-              icon={<Truck className="h-5 w-5" />}
-              title="Ready to dispatch"
-              body="Fast-moving SKUs stocked in Hosur — rapid pick and dispatch worldwide with service available globally."
-              accent
-              className="md:col-span-3"
-            />
-          </div>
-
-          {/* Stats strip */}
-          <div className="mt-10 grid grid-cols-2 gap-3 rounded-3xl border border-hairline bg-surface p-4 sm:grid-cols-4 sm:gap-6 sm:p-8">
-            {[
-              { k: "12", v: "product categories" },
-              { k: "500+", v: "line-ready SKUs" },
-              { k: "8", v: "industries served" },
-              { k: "20+", v: "trusted OEM brands" },
-            ].map((s) => (
-              <div key={s.v} className="min-w-0">
-                <div className="font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                  {s.k}
-                </div>
-                <div className="mt-1 text-[12px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {s.v}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Sector cards */}
+        {/* What to send us */}
         <section className="mx-auto mt-20 max-w-7xl px-4 sm:mt-28 sm:px-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
             <div>
-              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass">
-                Sector deep dive
-              </div>
-              <h2
-                className="mt-3 font-display font-black leading-[1] tracking-[-0.03em]"
-                style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)" }}
-              >
-                Eight industries. One catalogue.
+              <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl">
+                The right part starts with the duty.
               </h2>
+              <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
+                A seal or elastomer that suits one line can fail on another. Share these five things and we will recommend a part that survives your conditions.
+              </p>
+              <Link to="/contact" className="mt-7 inline-flex h-12 items-center gap-2 rounded-full bg-ink px-6 text-sm font-semibold text-background transition hover:bg-ink/85">
+                Send your duty details <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
-            <p className="max-w-md text-sm text-muted-foreground">
-              Each sector below lists the duty conditions, typical applications and
-              the AARRKKAA parts that fit them — jump straight to the product page
-              from any card.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-5 lg:grid-cols-2">
-            {displaySectors.map((s, i) => (
-              <SectorCard key={s.name} sector={s} index={i} />
-            ))}
+            <ol className="divide-y divide-hairline rounded-3xl border border-hairline bg-surface">
+              {checklist.map((c, i) => (
+                <li key={c.t} className="flex items-start gap-4 p-5 sm:p-6">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brass/10 text-brass">
+                    <c.icon className="h-5 w-5" />
+                  </span>
+                  <div className="min-w-0">
+                    <div className="font-display text-lg font-bold tracking-tight text-ink">
+                      <span className="mr-2 text-brass">{i + 1}.</span>
+                      {c.t}
+                    </div>
+                    <p className="mt-1 text-sm text-muted-foreground">{c.d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
-        {/* Process / How we work */}
+        {/* Sector explorer */}
+        <section id="sectors" className="mx-auto mt-20 max-w-7xl scroll-mt-24 px-4 sm:mt-28 sm:px-8">
+          <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl">
+            Pick your industry.
+          </h2>
+          <p className="mt-4 max-w-xl text-base text-muted-foreground">
+            See the duty window, typical applications and the parts we recommend for each sector.
+          </p>
+
+          <div className="mt-8 grid gap-6 lg:grid-cols-[300px_1fr] lg:gap-10">
+            {/* Selector: chips on phones, list on desktop */}
+            <div role="tablist" aria-label="Industries" className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] lg:sticky lg:top-28 lg:mx-0 lg:flex-col lg:gap-1 lg:self-start lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden">
+              {displaySectors.map((x, i) => {
+                const on = i === active;
+                return (
+                  <button
+                    key={x.name}
+                    type="button"
+                    role="tab"
+                    aria-selected={on}
+                    onClick={() => setActive(i)}
+                    className={`group shrink-0 whitespace-nowrap rounded-full border px-4 py-3 text-left text-sm font-semibold transition lg:flex lg:items-center lg:justify-between lg:gap-3 lg:whitespace-normal lg:rounded-2xl lg:px-4 lg:py-3.5 ${on ? "border-brass bg-brass text-white lg:shadow-soft" : "border-hairline bg-surface text-ink/80 hover:border-ink/25 hover:text-ink"}`}
+                  >
+                    <span className="flex items-center gap-3">
+                      <span className={`hidden font-mono text-xs lg:inline ${on ? "text-white/70" : "text-muted-foreground"}`}>{String(i + 1).padStart(2, "0")}</span>
+                      {x.name}
+                    </span>
+                    <ArrowRight className={`hidden h-4 w-4 transition lg:block ${on ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-60"}`} />
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Panels (all in the page, one visible) */}
+            <div className="min-w-0">
+              {displaySectors.map((x, i) => (
+                <article
+                  key={x.name}
+                  id={`sector-${slugOf(x.name)}`}
+                  role="tabpanel"
+                  hidden={i !== active}
+                  className="overflow-hidden rounded-3xl border border-hairline bg-surface [animation:sector-in_0.5s_ease-out]"
+                >
+                  <div className="relative h-56 sm:h-72">
+                    <img src={x.image} alt={`${x.name} industry application`} loading={i === 0 ? "eager" : "lazy"} decoding="async" className="h-full w-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                      <h3 className="font-display text-3xl font-black tracking-tight text-white sm:text-4xl">{x.name}</h3>
+                      <p className="mt-1 text-sm font-medium text-white/85 sm:text-base">{x.tagline}</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-7 p-6 sm:p-8">
+                    <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">{x.desc}</p>
+
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <div className="rounded-2xl border border-hairline bg-background p-4">
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Duty window</div>
+                        <div className="mt-1.5 font-display text-lg font-bold text-ink">{x.duty}</div>
+                      </div>
+                      {x.compliance && (
+                        <div className="rounded-2xl border border-hairline bg-background p-4">
+                          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Compliance</div>
+                          <div className="mt-1.5 font-display text-lg font-bold text-ink">{x.compliance}</div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Typical applications</div>
+                      <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                        {x.applications.map((a) => (
+                          <li key={a} className="flex items-start gap-2.5 text-sm text-ink/85">
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brass" />
+                            {a}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="border-t border-hairline pt-6">
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Recommended products</div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {x.products.map((p) => {
+                          const exists = CATEGORIES.some((c) => c.slug === p.slug);
+                          return (
+                            <Link key={p.name} to={exists ? "/products/$category" : "/products"} params={exists ? { category: p.slug } : undefined} className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-background px-4 py-2.5 text-sm font-medium text-ink/85 transition hover:border-ink/25 hover:text-ink">
+                              {p.name}
+                              <ArrowUpRight className="h-3.5 w-3.5" />
+                            </Link>
+                          );
+                        })}
+                      </div>
+                      <Link to="/contact" search={{ category: x.name }} className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-ink px-6 text-sm font-semibold text-background transition hover:bg-ink/85">
+                        Get a quote for {short(x.name)} <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Which parts fit which industry */}
         <section className="mx-auto mt-20 max-w-7xl px-4 sm:mt-28 sm:px-8">
-          <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+          <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl">
+            Which parts fit which industry.
+          </h2>
+          <p className="mt-4 max-w-xl text-base text-muted-foreground">
+            A quick view of the product families we recommend for each sector.
+          </p>
+          <div className="mt-8 overflow-x-auto rounded-3xl border border-hairline bg-surface [scrollbar-width:thin]">
+            <table className="w-full min-w-[720px] border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-hairline text-left">
+                  <th className="sticky left-0 z-10 bg-surface px-5 py-4 font-display text-base font-black">Product family</th>
+                  {displaySectors.map((x) => (
+                    <th key={x.name} className="px-3 py-4 text-center text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">{short(x.name)}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {matrixRows.map((r) => (
+                  <tr key={r.slug} className="border-b border-hairline/70 last:border-0">
+                    <th scope="row" className="sticky left-0 z-10 bg-surface px-5 py-3.5 text-left font-semibold text-ink">
+                      <Link to={CATEGORIES.some((c) => c.slug === r.slug) ? "/products/$category" : "/products"} params={CATEGORIES.some((c) => c.slug === r.slug) ? { category: r.slug } : undefined} className="hover:text-brass">{r.name}</Link>
+                    </th>
+                    {displaySectors.map((x) => {
+                      const hit = x.products.some((p) => p.slug === r.slug);
+                      return (
+                        <td key={x.name} className="px-3 py-3.5 text-center">
+                          {hit ? <CheckCircle2 className="mx-auto h-5 w-5 text-brass" aria-label="Recommended" /> : <span className="text-hairline" aria-hidden>-</span>}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* How we work */}
+        <section className="mx-auto mt-20 max-w-7xl px-4 sm:mt-28 sm:px-8">
+          <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-14">
             <div className="relative overflow-hidden rounded-3xl border border-hairline">
-              <img
-                src={inventoryImg}
-                alt="Warehouse of neatly organised industrial parts and components"
-                width={1200}
-                height={900}
-                loading="lazy"
-                decoding="async"
-                className="h-64 w-full object-cover sm:h-96"
-              />
+              <img src={inventoryImg} alt="Warehouse of organised industrial parts" width={1200} height={900} loading="lazy" decoding="async" className="h-64 w-full object-cover sm:h-[26rem]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass">
-                How we work
-              </div>
-              <h2
-                className="mt-3 font-display font-black leading-[1] tracking-[-0.03em]"
-                style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)" }}
-              >
-                From enquiry to line-ready — in four steps.
+              <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl">
+                From enquiry to line-ready in four steps.
               </h2>
-              <ol className="mt-6 space-y-4">
-                {[
-                  { t: "Share the duty", d: "Send us the drawing, fluid, temperature, pressure and speed — or just a photo of the failed part." },
-                  { t: "We spec the part", d: "Our application engineers recommend the correct material class, brand and geometry." },
-                  { t: "Quote & confirm", d: "Transparent pricing with lead-time — usually ex-stock for fast-moving items." },
-                  { t: "Dispatch & support", d: "Packed, dispatched and backed by after-sales support if anything needs adjustment." },
-                ].map((step, i) => (
-                  <li key={step.t} className="flex gap-4">
-                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ink font-display text-sm font-black text-background">
-                      {i + 1}
-                    </div>
+              <ol className="mt-8 space-y-5">
+                {steps.map((st, i) => (
+                  <li key={st.t} className="flex gap-4">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ink font-display text-sm font-black text-background">{i + 1}</div>
                     <div className="min-w-0">
-                      <div className="font-semibold text-ink">{step.t}</div>
-                      <p className="mt-1 text-sm text-muted-foreground">{step.d}</p>
+                      <div className="font-display text-lg font-bold text-ink">{st.t}</div>
+                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground sm:text-base">{st.d}</p>
                     </div>
                   </li>
                 ))}
@@ -419,33 +465,24 @@ function IndustriesPage() {
 
         {/* CTA */}
         <section className="mx-auto mt-20 max-w-7xl px-4 pb-20 sm:mt-28 sm:px-8 sm:pb-28">
-          <div className="group relative overflow-hidden rounded-3xl border border-hairline bg-ink p-8 text-background transition-colors duration-500 lg:hover:bg-white lg:hover:text-ink lg:hover:border-ink/20 sm:p-12 lg:hover:shadow-xl">
-            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brass/25 blur-3xl transition-opacity duration-500 lg:group-hover:opacity-40" />
-            <div className="relative grid gap-6 sm:grid-cols-[1.4fr_1fr] sm:items-center">
-              <div className="min-w-0">
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-background/85 transition-colors duration-500 lg:group-hover:bg-ink/5 lg:group-hover:text-ink/80">
-                  <Factory className="h-3.5 w-3.5" /> Talk to an application engineer
-                </div>
-                <h3 className="mt-4 font-display text-2xl font-black leading-tight sm:text-4xl transition-colors duration-500">
-                  Not sure which part fits your line?
-                </h3>
-                <p className="mt-3 max-w-lg text-sm text-background/75 transition-colors duration-500 lg:group-hover:text-ink/75 sm:text-base">
-                  Share your duty conditions and we'll come back with the right
-                  specification, brand options and delivery timeline.
+          <div className="relative overflow-hidden rounded-[2rem] bg-[#0a1020] p-8 text-white sm:p-12">
+            <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-sky-500/25 blur-3xl" />
+            <div className="relative grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+              <div>
+                <h2 className="font-display text-3xl font-black leading-tight sm:text-5xl">Not sure which part fits your line?</h2>
+                <p className="mt-4 max-w-lg text-base text-slate-300">
+                  Share your duty conditions and we will come back with the right specification, brand options and delivery timeline.
                 </p>
               </div>
-              <div className="flex flex-col gap-3 sm:items-end">
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-brass px-6 py-3 text-sm font-semibold text-ink transition-all duration-500 lg:group-hover:bg-ink lg:group-hover:text-white"
-                >
-                  Request a quote <ArrowUpRight className="h-4 w-4" />
+              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+                <Link to="/contact" className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-[#0a1020] transition hover:bg-slate-100">
+                  Request a quote <ArrowRight className="h-4 w-4" />
                 </Link>
-                <a
-                  href={`tel:${COMPANY.phones[0].replace(/\s+/g, "")}`}
-                  className="text-sm font-medium text-background/85 underline-offset-4 transition-colors duration-500 hover:underline lg:group-hover:text-ink/80"
-                >
-                  or call {COMPANY.phones[0]}
+                <a href="https://wa.me/917806936475" target="_blank" rel="noopener noreferrer" className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/30 px-6 text-sm font-semibold text-white transition hover:bg-white/10">
+                  <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
+                </a>
+                <a href="tel:+917806936475" className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/30 px-6 text-sm font-semibold text-white transition hover:bg-white/10">
+                  <Phone className="h-4 w-4" /> +91 78069 36475
                 </a>
               </div>
             </div>
@@ -457,140 +494,4 @@ function IndustriesPage() {
   );
 }
 
-function FeatureTile({
-  icon,
-  title,
-  body,
-  className = "",
-  accent = false,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  body: string;
-  className?: string;
-  accent?: boolean;
-}) {
-  return (
-    <div
-      className={`relative overflow-hidden rounded-3xl border p-6 sm:p-7 ${
-        accent
-          ? "border-brass/30 bg-gradient-to-br from-brass/15 via-surface to-surface text-ink"
-          : "border-hairline bg-surface text-ink"
-      } ${className}`}
-    >
-      {accent && (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-brass/25 blur-3xl"
-        />
-      )}
-      <div
-        className={`relative inline-grid h-10 w-10 place-items-center rounded-xl ${
-          accent ? "bg-brass text-ink" : "bg-ink text-background"
-        }`}
-      >
-        {icon}
-      </div>
-      <h3 className="relative mt-4 font-display text-lg font-black tracking-tight sm:text-xl">
-        {title}
-      </h3>
-      <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
-        {body}
-      </p>
-    </div>
-  );
-}
-
-function SectorCard({ sector, index }: { sector: Sector; index: number }) {
-  const anchor = `sector-${sector.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-  return (
-    <article
-      id={anchor}
-      className="group relative flex scroll-mt-28 flex-col overflow-hidden rounded-3xl border border-hairline bg-surface transition hover:shadow-lift"
-    >
-      <div className="relative h-48 w-full overflow-hidden sm:h-56">
-        <img
-          src={sector.image}
-          alt={`${sector.name} industry application`}
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-        <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-ink backdrop-blur">
-          <span className="h-1.5 w-1.5 rounded-full bg-brass" />
-          Sector {String(index + 1).padStart(2, "0")}
-        </div>
-        <div className="absolute inset-x-0 bottom-0 p-5">
-          <h3 className="font-display text-2xl font-black leading-tight text-white sm:text-3xl">
-            {sector.name}
-          </h3>
-          <p className="mt-1 text-[13px] font-medium text-white/85">
-            {sector.tagline}
-          </p>
-        </div>
-      </div>
-
-      <div className="flex flex-1 flex-col gap-5 p-5 sm:p-6">
-        <p className="text-[14px] leading-relaxed text-muted-foreground">
-          {sector.desc}
-        </p>
-
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border border-hairline bg-background p-3">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              Duty window
-            </div>
-            <div className="mt-1 text-sm font-semibold text-ink">{sector.duty}</div>
-          </div>
-          {sector.compliance && (
-            <div className="rounded-2xl border border-hairline bg-background p-3">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Compliance
-              </div>
-              <div className="mt-1 text-sm font-semibold text-ink">
-                {sector.compliance}
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-            Typical applications
-          </div>
-          <ul className="mt-2 grid grid-cols-1 gap-x-4 gap-y-1.5 sm:grid-cols-2">
-            {sector.applications.map((a) => (
-              <li key={a} className="flex items-start gap-2 text-[13px] text-ink/85">
-                <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brass" />
-                {a}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="mt-auto border-t border-hairline pt-4">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-            Recommended products
-          </div>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {sector.products.map((p) => {
-              const exists = CATEGORIES.some((c) => c.slug === p.slug);
-              const href = exists ? `/products/${p.slug}` : "/products";
-              return (
-                <Link
-                  key={p.name}
-                  to={href}
-                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-background px-3 py-2.5 text-[12px] font-medium text-ink/85 transition hover:border-ink hover:text-ink"
-                >
-                  {p.name}
-                  <ArrowUpRight className="h-3 w-3" />
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </article>
-  );
-}
+const slugOf = (n: string) => n.toLowerCase().replace(/[^a-z0-9]+/g, "-");

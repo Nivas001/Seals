@@ -29,6 +29,54 @@ import inventoryImg from "@/assets/industries-inventory.jpg";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
+/* ───────────────────────── SEAL FINDER BAND ───────────────────────── */
+// Shows the first question of the /wizard finder with its real answer options.
+const FINDER_OPTIONS = ["Chemical Processing", "Food & Beverage", "Water & Wastewater", "General Industrial"];
+
+export function FinderBand() {
+  return (
+    <section className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+      <div className="relative overflow-hidden rounded-[2rem] p-7 text-white sm:p-12 lg:p-14" style={{ background: "var(--gradient-brand)" }}>
+        <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/15 blur-3xl" />
+        <div className="relative grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-16">
+          <div>
+            <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl">
+              Not sure which seal you need?
+            </h2>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
+              Answer three quick questions about your industry and duty. We point you to the products that fit.
+            </p>
+            <Link
+              to="/wizard"
+              className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-ink transition hover:bg-white/90"
+            >
+              Find my seal <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="rounded-3xl bg-white p-5 text-ink shadow-lift sm:p-7">
+            <div className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Question 1 of 3</div>
+            <div className="mt-2 font-display text-2xl font-black tracking-tight">What is your primary industry?</div>
+            <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
+              {FINDER_OPTIONS.map((o) => (
+                <li key={o}>
+                  <Link
+                    to="/wizard"
+                    className="flex min-h-12 items-center justify-between gap-2 rounded-xl border border-hairline bg-background px-4 py-3 text-sm font-semibold transition hover:border-brass hover:bg-brass/5"
+                  >
+                    {o}
+                    <ArrowRight className="h-4 w-4 text-brass" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ───────────────────────── INDUSTRIES (photo accordion) ───────────────────────── */
 const SECTOR_IMAGES: Record<string, string> = {
   Food: silicone,

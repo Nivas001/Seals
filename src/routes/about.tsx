@@ -1,5 +1,6 @@
 import { CLIENTS, BRANDS } from "@/data/clients";
 import { ClientLogo } from "@/components/site/ClientLogo";
+import { AboutFacts, WhatWeDo, BusinessFlow, WhoWeServe } from "@/components/about/AboutSections";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -58,11 +59,16 @@ function AboutPage() {
           </p>
         </section>
 
+        <AboutFacts />
+
         <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
           <div className="overflow-hidden rounded-[2rem] border border-hairline">
             <img src={factoryImg} alt="Industrial processing plant with stainless steel tanks and piping" width={1600} height={900} loading="lazy" decoding="async" className="h-full w-full object-cover" />
           </div>
         </section>
+
+        <WhatWeDo />
+        <BusinessFlow />
 
         <section className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-10 px-5 sm:mt-24 sm:px-8 lg:grid-cols-3">
           <div className="lg:col-span-1 flex flex-col justify-center">
@@ -99,6 +105,8 @@ function AboutPage() {
             </div>
           </div>
         </section>
+
+        <WhoWeServe />
 
         <section className="mx-auto mt-16 max-w-7xl overflow-hidden px-5 sm:mt-24 sm:px-8">
           <div className="text-center">
