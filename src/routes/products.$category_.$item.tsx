@@ -360,6 +360,23 @@ function ItemPage() {
           </div>
         </section>
       </main>
+      {/* Sticky quote bar on phones */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline bg-background/90 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-md lg:hidden">
+        <div className="mx-auto flex max-w-xl items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">{c.name}</div>
+            <div className="truncate font-display text-base font-black text-ink">{d.name}</div>
+          </div>
+          <Link
+            to="/contact"
+            search={{ category: c.name, product: d.name }}
+            className="inline-flex h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-ink px-5 text-sm font-semibold text-background transition active:scale-95"
+          >
+            Get quote <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+      <div aria-hidden className="h-20 lg:hidden" />
       <Footer />
     </div>
   );

@@ -7,12 +7,12 @@ import { useRef, useEffect, useState } from "react";
 
 import {
   ArrowUpRight, Phone, Mail, MapPin, ArrowRight,
-  CheckCircle2, Sparkles, Truck, MessagesSquare, ShieldCheck,
+  Sparkles,
   ChevronUp, Star, ChevronLeft, ChevronRight
 } from "lucide-react";
 import heroImg from "@/assets/hero-pump.jpg";
 import factoryImg from "@/assets/factory.jpg";
-import { CATEGORIES, SECTORS, COMPANY } from "@/data/catalog";
+import { CATEGORIES, COMPANY } from "@/data/catalog";
 import { getHeroImages, getAllCategoriesWithProducts } from "@/lib/catalog";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -951,15 +951,5 @@ function ContactPreview() {
         </Link>
       </div>
     </section>
-  );
-}
-
-/* ─── UTIL ─── */
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-      <span className="h-1.5 w-1.5 rounded-full bg-brass" />
-      {children}
-    </div>
   );
 }
