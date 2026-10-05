@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Phone, Mail } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { TrustPoints } from "@/components/site/TrustPoints";
 import { getProductPageData, getCategories, getContactInfo } from "@/lib/catalog";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 import { CreativePoster } from "@/components/ui/CreativePoster";
@@ -190,6 +191,10 @@ function ItemPage() {
               </div>
             </div>
           </div>
+        </section>
+
+        <section className="mx-auto mt-10 max-w-7xl px-5 sm:px-8">
+          <TrustPoints />
         </section>
 
         {/* Bento: specs + benefits + applications */}

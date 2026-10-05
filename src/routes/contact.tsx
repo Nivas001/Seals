@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { FaqSection } from "@/components/site/FaqSection";
+import { TrustPoints } from "@/components/site/TrustPoints";
 import { VerifiedSupplierBadge } from "@/components/site/VerifiedSupplierBadge";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { Input } from "@/components/base/input/input";
@@ -100,6 +102,7 @@ function ContactPage() {
             <FollowCard className="order-3 h-full" />
             <NewsletterCard className="order-4 h-full" />
           </div>
+          <TrustPoints className="mt-5" />
         </section>
 
         {/* Map */}
@@ -133,6 +136,7 @@ function ContactPage() {
           </div>
         </section>
       </main>
+      <FaqSection className="mt-20 sm:mt-28 mb-8" />
       <Footer />
     </div>
   );

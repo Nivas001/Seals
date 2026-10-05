@@ -1,6 +1,7 @@
 import { IndustriesShowcase, GlobalReach, WhyUsBento, ProcessTimeline } from "@/components/home/HomeSections";
 import { CLIENTS, BRANDS } from "@/data/clients";
 import { ClientLogo } from "@/components/site/ClientLogo";
+import { FaqSection } from "@/components/site/FaqSection";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
@@ -117,6 +118,7 @@ function Home() {
     { id: "why-us", label: "Why AARRKKAA" },
     { id: "testimonials", label: "Reviews" },
     { id: "process", label: "How We Work" },
+    { id: "faq", label: "FAQ" },
     { id: "find-us", label: "Location" },
   ];
 
@@ -135,6 +137,7 @@ function Home() {
         <WhyUsBento />
         <Testimonials />
         <ProcessTimeline />
+        <FaqSection className="mt-24 sm:mt-32" />
         <CTABand />
         <ContactPreview />
       </main>

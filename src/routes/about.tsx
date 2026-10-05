@@ -1,4 +1,4 @@
-import { CLIENTS } from "@/data/clients";
+import { CLIENTS, BRANDS } from "@/data/clients";
 import { ClientLogo } from "@/components/site/ClientLogo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
@@ -173,6 +173,22 @@ function AboutPage() {
               </div>
             </div>
           </div>
+        </section>
+
+        <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
+          <h2 className="font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
+            Brands we supply
+          </h2>
+          <p className="mt-3 max-w-xl text-base text-muted-foreground">
+            Genuine parts from the manufacturers your plant already trusts.
+          </p>
+          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
+            {BRANDS.map((b) => (
+              <li key={b.name} className="grid h-24 place-items-center rounded-2xl border border-hairline bg-surface p-4">
+                <ClientLogo client={b} size="lg" />
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">

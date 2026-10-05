@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { SECTORS } from "@/data/catalog";
 import { TradeLanes } from "@/components/site/TradeLanes";
-import { PortScene } from "@/components/site/PortScene";
+import { BRANDS } from "@/data/clients";
 
 import silicone from "@/assets/cat-silicone.jpg";
 import elastomers from "@/assets/cat-elastomers.jpg";
@@ -147,26 +147,34 @@ export function IndustriesShowcase() {
   );
 }
 
-/* ───────────────────────── GLOBAL REACH (animated trade lanes) ───────────────────────── */
+/* ───────────────────────── GLOBAL REACH (trade network map) ───────────────────────── */
+const SOURCE_BRANDS = [
+  { country: "Sweden", brands: ["SKF"] },
+  { country: "Germany", brands: ["FAG", "INA"] },
+  { country: "France", brands: ["Schneider Electric"] },
+  { country: "Japan", brands: ["NTN"] },
+];
+
 export function GlobalReach() {
   const reduce = useReducedMotion();
-  const facts = [
-    { icon: Warehouse, title: "Stocked in Hosur", body: "Fast-moving lines held at head office, ready to pick." },
-    { icon: PackageCheck, title: "Packed to travel", body: "Parts checked, labelled and crated for export." },
-    { icon: Globe2, title: "Dispatched worldwide", body: "Service available globally, on the timeline you need." },
+  const logoFor = (name: string) => BRANDS.find((b) => b.name === name);
+  const points = [
+    { icon: Warehouse, title: "Sourced at the source", body: "Genuine parts from leading brands in Europe and Asia, bought in volume to keep prices sharp." },
+    { icon: PackageCheck, title: "Stocked in Hosur", body: "Fast-moving lines held at head office, checked, labelled and packed for export." },
+    { icon: Globe2, title: "Delivered worldwide", body: "Shipped to plants in every region, on the timeline you need." },
   ];
 
   return (
     <section id="global" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
-      {/* This panel stays dark in light and dark mode so the map and sea read clearly. */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-[#0a1020] px-5 pt-10 text-white sm:px-10 sm:pt-14 lg:px-14">
+      {/* This panel stays dark in light and dark mode so the map reads clearly. */}
+      <div className="relative overflow-hidden rounded-[2rem] bg-[#0a1020] px-5 py-10 text-white sm:px-10 sm:py-14 lg:px-14">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-70"
-          style={{ background: "radial-gradient(60% 50% at 70% 10%, rgba(14,165,233,0.22), transparent 70%)" }}
+          style={{ background: "radial-gradient(60% 50% at 70% 5%, rgba(14,165,233,0.22), transparent 70%)" }}
         />
 
-        <div className="relative z-10 grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-end">
+        <div className="relative z-10 grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-end">
           <motion.h2
             initial={reduce ? false : { opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -174,22 +182,53 @@ export function GlobalReach() {
             transition={{ duration: 0.6, ease }}
             className="font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl"
           >
-            From Hosur
+            Sourced from the best.
             <br />
-            to your <span className="italic text-sky-300">plant floor.</span>
+            Delivered to <span className="italic text-sky-300">every market.</span>
           </motion.h2>
           <p className="max-w-md text-base leading-relaxed text-slate-300 lg:justify-self-end">
-            We hold stock, match the part and ship it to process plants around the world.
+            We buy genuine parts from leading brands in their home countries and ship them to process plants around the world at competitive prices.
           </p>
         </div>
 
-        <div className="relative z-10 mt-8 overflow-hidden sm:mt-12">
+        <div className="relative z-10 mt-8 overflow-hidden sm:mt-10">
           <TradeLanes />
-          <p className="mt-1 text-right text-[11px] text-slate-500">Illustrative trade lanes</p>
         </div>
 
+        {/* Legend */}
+        <div className="relative z-10 mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-slate-400">
+          <span className="inline-flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-amber-400" /> Sourced from brand home countries
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-sky-300" /> Delivered from Hosur worldwide
+          </span>
+          <span className="sm:ml-auto text-slate-500">Routes shown are illustrative</span>
+        </div>
+
+        {/* Source countries with the brands we supply from them */}
+        <ul className="relative z-10 mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {SOURCE_BRANDS.map((s) => (
+            <li key={s.country} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">{s.country}</div>
+              <div className="mt-3 flex h-10 items-center gap-4">
+                {s.brands.map((b) => {
+                  const logo = logoFor(b);
+                  return logo?.logo ? (
+                    <span key={b} className="grid h-9 place-items-center rounded-lg bg-white px-3">
+                      <img src={logo.logo} alt={b} className="h-5 w-auto max-w-[6rem] object-contain" />
+                    </span>
+                  ) : (
+                    <span key={b} className="text-sm font-bold">{b}</span>
+                  );
+                })}
+              </div>
+            </li>
+          ))}
+        </ul>
+
         <ul className="relative z-10 mt-8 grid gap-6 border-t border-white/10 pt-8 sm:grid-cols-3">
-          {facts.map((f) => (
+          {points.map((f) => (
             <li key={f.title} className="flex gap-4">
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/5 text-sky-300">
                 <f.icon className="h-5 w-5" />
@@ -201,11 +240,6 @@ export function GlobalReach() {
             </li>
           ))}
         </ul>
-
-        {/* Port scene bleeds off the bottom edge of the panel */}
-        <div className="relative z-10 -mx-5 mt-8 sm:-mx-10 lg:-mx-14">
-          <PortScene />
-        </div>
       </div>
     </section>
   );
