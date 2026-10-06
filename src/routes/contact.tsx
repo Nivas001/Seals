@@ -160,7 +160,7 @@ function CardShell({
   className?: string;
 }) {
   return (
-    <GlowCard className={className}>
+    <GlowCard containerClassName={className}>
       <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass">
         {eyebrow}
       </div>
@@ -199,7 +199,7 @@ function InfoRow({
 }
 
 function CorporateCard({ className, contactInfo }: { className?: string; contactInfo?: any }) {
-  const defaultPhones = ["+91 78069 36475", "+91 91086 24470"];
+  const defaultPhones = ["+91 78069 36475", "+91 99945 37470"];
   const defaultEmails = ["aarrkkaainternational@gmail.com", "salesaarrkkaa@gmail.com"];
   const phones = contactInfo?.phones?.length ? contactInfo.phones : defaultPhones;
   const emails = contactInfo?.emails?.length ? contactInfo.emails : defaultEmails;

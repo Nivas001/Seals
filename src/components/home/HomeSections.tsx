@@ -199,7 +199,6 @@ export function IndustriesShowcase() {
 const SOURCE_BRANDS = [
   { country: "Sweden", brands: ["SKF"] },
   { country: "Germany", brands: ["FAG", "INA"] },
-  { country: "France", brands: ["Schneider Electric"] },
   { country: "Japan", brands: ["NTN"] },
 ];
 
@@ -255,7 +254,7 @@ export function GlobalReach() {
         </div>
 
         {/* Source countries with the brands we supply from them */}
-        <ul className="relative z-10 mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <ul className="relative z-10 mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
           {SOURCE_BRANDS.map((s) => (
             <li key={s.country} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
               <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">{s.country}</div>
@@ -264,7 +263,7 @@ export function GlobalReach() {
                   const logo = logoFor(b);
                   return logo?.logo ? (
                     <span key={b} className="grid h-9 place-items-center rounded-lg bg-white px-3">
-                      <img src={logo.logo} alt={b} className="h-5 w-auto max-w-[6rem] object-contain" />
+                      <img src={logo.logo} alt={b} className={`w-auto max-w-[6rem] object-contain ${logo.square ? "h-7" : "h-5"}`} />
                     </span>
                   ) : (
                     <span key={b} className="text-sm font-bold">{b}</span>

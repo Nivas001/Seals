@@ -257,7 +257,7 @@ export const COMPANY = {
   tagline: "Integrated technology support",
   motto:
     "To provide quality products and support to our valuable customers with a timely approach.",
-  phones: ["+91 78069 36475", "+91 91086 24470"],
+  phones: ["+91 78069 36475", "+91 99945 37470"],
   emails: ["aarrkkaainternational@gmail.com", "salesaarrkkaa@gmail.com"],
   address: {
     line1: "#3/334, 11C, Surya Nagar",

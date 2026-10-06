@@ -13,7 +13,6 @@ const HUB = { name: "Hosur", ...px(77.83, 12.74) };
 const SOURCES = [
   { name: "Sweden", ...px(11.97, 57.7) },
   { name: "Germany", ...px(10.2, 50.05) },
-  { name: "France", ...px(2.2, 48.9) },
   { name: "Japan", ...px(135.5, 34.7) },
 ];
 
@@ -58,7 +57,7 @@ export function TradeLanes() {
       viewBox={`0 0 ${WORLD.w} ${WORLD.h}`}
       className="h-auto w-[182%] max-w-none -ml-[76%] sm:ml-0 sm:w-full"
       role="img"
-      aria-label="World map showing parts sourced from Sweden, Germany, France and Japan into Hosur, and delivered from Hosur to markets worldwide"
+      aria-label="World map showing parts sourced from Sweden, Germany and Japan into Hosur, and delivered from Hosur to markets worldwide"
     >
       <defs>
         <radialGradient id={`${uid}-glow`}>

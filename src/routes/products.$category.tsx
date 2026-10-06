@@ -22,12 +22,15 @@ export const Route = createFileRoute("/products/$category")({
       return { meta: [{ title: "Category not found — AARRKKAA International" }, { name: "robots", content: "noindex" }] };
     }
     const c = loaderData.category;
+    // Location in the title and description targets searches like "mechanical seals supplier in Hosur / Tamil Nadu / India".
+    const title = `${c.name} Supplier in Hosur, Tamil Nadu, India | AARRKKAA International`;
+    const description = `${c.description ? c.description.replace(/\.?\s*$/, ". ") : ""}${c.name} supplied by AARRKKAA International, Hosur, Tamil Nadu, to plants across India and worldwide.`;
     return {
       meta: [
-        { title: `${c.name} — AARRKKAA International` },
-        { name: "description", content: c.description },
-        { property: "og:title", content: `${c.name} — AARRKKAA International` },
-        { property: "og:description", content: c.description },
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
       ],
     };
   },

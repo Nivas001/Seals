@@ -1,9 +1,11 @@
 // Client list shown on the home page and About page. Drop a logo file in public/clients/
 // and set `logo` to show it; clients without one fall back to a monogram badge.
-export type Client = { name: string; logo?: string };
+// `square` marks near-square emblems (FAG, INA) so they render taller and match wide wordmarks visually.
+export type Client = { name: string; logo?: string; square?: boolean };
 
 export const CLIENTS: Client[] = [
   { name: "Tata Electronics", logo: "/clients/tata-electronics.svg" },
+  { name: "Schneider Electric", logo: "/clients/schneider-electric.svg" },
   { name: "Thermax Onsite Energy Solutions" },
   { name: "Anthem Biosciences" },
   { name: "Werner Finley" },
@@ -21,12 +23,11 @@ export const CLIENTS: Client[] = [
   { name: "Essae Gears & Transmissions" },
 ];
 
-// Brands we supply (logos in public/brands/).
+// Manufacturers whose genuine products we supply (logos in public/brands/).
+// Companies we deliver to belong in CLIENTS above, not here.
 export const BRANDS: Client[] = [
   { name: "SKF", logo: "/brands/skf.svg" },
-  { name: "FAG", logo: "/brands/fag.png" },
-  { name: "INA", logo: "/brands/ina.svg" },
+  { name: "FAG", logo: "/brands/fag.png", square: true },
+  { name: "INA", logo: "/brands/ina.svg", square: true },
   { name: "NTN", logo: "/brands/ntn.svg" },
-  { name: "Schneider Electric", logo: "/brands/schneider-electric.svg" },
-  { name: "Tata", logo: "/brands/tata.svg" },
 ];

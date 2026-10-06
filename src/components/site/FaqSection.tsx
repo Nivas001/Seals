@@ -5,7 +5,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const FAQS = [
   {
     q: "How do I get a quote?",
-    a: "Send a spec sheet, drawing, model number or a photo of the worn part through the enquiry form, WhatsApp or phone. We reply with the exact grade, brand and dispatch timeline, within 24 hours on business days.",
+    a: "Send a spec sheet, drawing, model number or a photo of the worn part through the enquiry form, WhatsApp or phone. We reply with the exact grade, brand and dispatch timeline, within one working day.",
   },
   {
     q: "Can you identify a part from a photo?",
@@ -17,7 +17,7 @@ const FAQS = [
   },
   {
     q: "Are the parts genuine?",
-    a: "We supply genuine bearings, certified elastomers and traceable stainless steel, sourced from leading brands such as SKF, FAG, INA, NTN and Schneider Electric.",
+    a: "We supply genuine bearings, certified elastomers and traceable stainless steel, sourced from leading brands such as SKF, FAG, INA and NTN.",
   },
   {
     q: "Which industries do you supply?",
@@ -30,16 +30,28 @@ const FAQS = [
   },
 ] as const;
 
+// FAQPage structured data lets Google show these answers directly in search results.
+const FAQ_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+});
+
 export function FaqSection({ className = "" }: { className?: string }) {
   return (
     <section id="faq" className={`scroll-mt-28 mx-auto max-w-7xl px-5 sm:px-8 ${className}`}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_JSON_LD }} />
       <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
         <div>
           <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
             Questions buyers ask.
           </h2>
           <p className="mt-4 max-w-sm text-base leading-relaxed text-muted-foreground">
-            Cannot find your answer? Send us the part details and we will reply the same working day.
+            Can't find your answer? Send us the part details and we'll reply within one working day.
           </p>
           <Link
             to="/contact"

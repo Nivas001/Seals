@@ -6,8 +6,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { getContactInfo } from "@/lib/catalog";
 import factoryImg from "@/assets/factory.jpg";
-import { GlowCard } from "@/components/ui/GlowCard";
-import { Clock, MousePointerClick, HeartHandshake, Star, MapPin, Globe2 } from "lucide-react";
+import { Clock, MousePointerClick, HeartHandshake, MapPin, Globe2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 
@@ -26,6 +25,12 @@ export const Route = createFileRoute("/about")({
   },
   component: AboutPage,
 });
+
+const VALUES = [
+  { k: "Response", d: "Fast, clear answers on every enquiry, quote and technical query.", icon: Clock },
+  { k: "Convenience", d: "Easy ordering, with the right part matched accurately the first time.", icon: MousePointerClick },
+  { k: "Feedback", d: "We act on every customer's feedback to build long-term partnerships.", icon: HeartHandshake },
+];
 
 function AboutPage() {
   const contactInfo = Route.useLoaderData();
@@ -70,39 +75,39 @@ function AboutPage() {
         <WhatWeDo />
         <BusinessFlow />
 
-        <section className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-10 px-5 sm:mt-24 sm:px-8 lg:grid-cols-3">
-          <div className="lg:col-span-1 flex flex-col justify-center">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
-              Our motto
+        <section className="mx-auto mt-20 max-w-6xl px-5 sm:mt-28 sm:px-8">
+          <div className="grid gap-4 lg:grid-cols-[1.05fr_1fr] lg:gap-5">
+            <div
+              className="relative flex flex-col justify-between overflow-hidden rounded-[2rem] p-8 text-white sm:p-10"
+              style={{ background: "var(--gradient-brand)" }}
+            >
+              <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
+              <div className="relative text-[11px] font-semibold uppercase tracking-[0.18em] text-white/75">Our motto</div>
+              <blockquote className="relative mt-6 font-display text-[1.75rem] font-black leading-[1.12] tracking-tight sm:text-4xl">
+                &ldquo;{motto}&rdquo;
+              </blockquote>
+              <div className="relative mt-8 text-sm font-semibold text-white/80">— AARRKKAA International</div>
             </div>
-            <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
-              &ldquo;{motto}&rdquo;
-            </h2>
-          </div>
-          <div className="lg:col-span-2 relative min-w-0">
-            <div className="flex snap-x snap-mandatory overflow-x-auto pb-4 gap-4 sm:grid sm:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 sm:mx-0 sm:px-0">
-              {[
-                { k: "Response", d: "Improve response time on every customer query.", icon: Clock },
-                { k: "Convenience", d: "Convenient ordering with accurate matching, first time.", icon: MousePointerClick },
-                { k: "Feedback", d: "Continuous feedback creates a strong long-term bond.", icon: HeartHandshake },
-              ].map((x) => (
-                <div key={x.k} className="snap-center shrink-0 w-[85%] sm:w-auto flex">
-                  <GlowCard className="flex w-full flex-col justify-between group">
-                    <div>
-                      <span
-                        aria-hidden
-                        className="relative grid h-10 w-10 place-items-center rounded-xl text-primary-foreground shadow-soft transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
-                        style={{ background: "var(--gradient-brand)" }}
-                      >
-                        <x.icon className="h-5 w-5" />
-                      </span>
-                      <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-ink">{x.k}</h3>
-                    </div>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{x.d}</p>
-                  </GlowCard>
-                </div>
+            <ul className="grid gap-4">
+              {VALUES.map((x, i) => (
+                <motion.li
+                  key={x.k}
+                  initial={{ opacity: 0, x: 16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+                  transition={{ duration: 0.45, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  className="group flex items-start gap-5 rounded-3xl border border-hairline bg-surface p-6 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-brass/40 hover:shadow-[0_16px_32px_-20px_rgba(2,132,199,0.45)] sm:p-7"
+                >
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brass/10 text-brass transition-colors duration-300 group-hover:bg-brass group-hover:text-white">
+                    <x.icon className="h-5 w-5" />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="font-display text-xl font-black tracking-tight text-ink">{x.k}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground sm:text-base">{x.d}</p>
+                  </div>
+                </motion.li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
 
@@ -111,13 +116,13 @@ function AboutPage() {
         <section className="mx-auto mt-16 max-w-7xl overflow-hidden px-5 sm:mt-24 sm:px-8">
           <div className="text-center">
             <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
-              Our Clients &amp; Partners
+              Our clients
             </div>
             <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
-              Trusted by industry leaders worldwide
+              Companies we deliver to
             </h2>
             <p className="mt-4 mx-auto max-w-2xl text-base text-muted-foreground">
-              We are proud to supply and support premier organizations across pharmaceuticals, biotechnology, food processing, chemicals, energy, and precision engineering.
+              We supply and support plants across electronics, electrical equipment, pharmaceuticals, biotechnology, food processing, chemicals, energy and precision engineering.
             </p>
           </div>
           <div className="mt-12 relative flex flex-col gap-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
@@ -188,11 +193,11 @@ function AboutPage() {
             Brands we supply
           </h2>
           <p className="mt-3 max-w-xl text-base text-muted-foreground">
-            Genuine parts from the manufacturers your plant already trusts.
+            Genuine bearings from the manufacturers your plant already trusts, sourced and supplied by us.
           </p>
-          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
+          <ul className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {BRANDS.map((b) => (
-              <li key={b.name} className="grid h-24 place-items-center rounded-2xl border border-hairline bg-surface p-4">
+              <li key={b.name} className="grid h-24 place-items-center rounded-2xl border border-hairline bg-surface p-4 transition hover:border-brass/40 hover:shadow-soft sm:h-28">
                 <ClientLogo client={b} size="lg" />
               </li>
             ))}
@@ -241,14 +246,11 @@ function AboutPage() {
             </div>
           </div>
         </section>
-        <section className="mx-auto mt-16 flex justify-center pb-16 pt-8 max-w-6xl px-5 sm:px-8">
-          <Link
-            to="/admin"
-            className="inline-flex items-center gap-2 rounded-full border border-ink/20 bg-transparent px-6 py-3 text-sm font-semibold tracking-tight text-ink transition-all hover:bg-ink/5"
-          >
-            Admin Dashboard &rarr;
+        <div className="mx-auto flex max-w-6xl justify-center px-5 pb-12 pt-14 sm:px-8">
+          <Link to="/admin" rel="nofollow" className="text-xs font-medium text-muted-foreground/70 transition hover:text-ink">
+            Staff login
           </Link>
-        </section>
+        </div>
       </main>
       <Footer />
     </div>

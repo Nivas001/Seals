@@ -13,6 +13,7 @@ import { Route as WizardRouteImport } from './routes/wizard'
 import { Route as WhackALeakRouteImport } from './routes/whack-a-leak'
 import { Route as SystemBreachRouteImport } from './routes/system-breach'
 import { Route as StressTestRouteImport } from './routes/stress-test'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SealDefenderRouteImport } from './routes/seal-defender'
 import { Route as RogueAiRouteImport } from './routes/rogue-ai'
 import { Route as OverrideRouteImport } from './routes/override'
@@ -64,6 +65,11 @@ const SystemBreachRoute = SystemBreachRouteImport.update({
 const StressTestRoute = StressTestRouteImport.update({
   id: '/stress-test',
   path: '/stress-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SealDefenderRoute = SealDefenderRouteImport.update({
@@ -244,6 +250,7 @@ export interface FileRoutesByFullPath {
   '/override': typeof OverrideRoute
   '/rogue-ai': typeof RogueAiRoute
   '/seal-defender': typeof SealDefenderRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stress-test': typeof StressTestRoute
   '/system-breach': typeof SystemBreachRoute
   '/whack-a-leak': typeof WhackALeakRoute
@@ -280,6 +287,7 @@ export interface FileRoutesByTo {
   '/override': typeof OverrideRoute
   '/rogue-ai': typeof RogueAiRoute
   '/seal-defender': typeof SealDefenderRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stress-test': typeof StressTestRoute
   '/system-breach': typeof SystemBreachRoute
   '/whack-a-leak': typeof WhackALeakRoute
@@ -318,6 +326,7 @@ export interface FileRoutesById {
   '/override': typeof OverrideRoute
   '/rogue-ai': typeof RogueAiRoute
   '/seal-defender': typeof SealDefenderRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stress-test': typeof StressTestRoute
   '/system-breach': typeof SystemBreachRoute
   '/whack-a-leak': typeof WhackALeakRoute
@@ -358,6 +367,7 @@ export interface FileRouteTypes {
     | '/override'
     | '/rogue-ai'
     | '/seal-defender'
+    | '/sitemap.xml'
     | '/stress-test'
     | '/system-breach'
     | '/whack-a-leak'
@@ -394,6 +404,7 @@ export interface FileRouteTypes {
     | '/override'
     | '/rogue-ai'
     | '/seal-defender'
+    | '/sitemap.xml'
     | '/stress-test'
     | '/system-breach'
     | '/whack-a-leak'
@@ -431,6 +442,7 @@ export interface FileRouteTypes {
     | '/override'
     | '/rogue-ai'
     | '/seal-defender'
+    | '/sitemap.xml'
     | '/stress-test'
     | '/system-breach'
     | '/whack-a-leak'
@@ -470,6 +482,7 @@ export interface RootRouteChildren {
   OverrideRoute: typeof OverrideRoute
   RogueAiRoute: typeof RogueAiRoute
   SealDefenderRoute: typeof SealDefenderRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StressTestRoute: typeof StressTestRoute
   SystemBreachRoute: typeof SystemBreachRoute
   WhackALeakRoute: typeof WhackALeakRoute
@@ -508,6 +521,13 @@ declare module '@tanstack/react-router' {
       path: '/stress-test'
       fullPath: '/stress-test'
       preLoaderRoute: typeof StressTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/seal-defender': {
@@ -795,6 +815,7 @@ const rootRouteChildren: RootRouteChildren = {
   OverrideRoute: OverrideRoute,
   RogueAiRoute: RogueAiRoute,
   SealDefenderRoute: SealDefenderRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   StressTestRoute: StressTestRoute,
   SystemBreachRoute: SystemBreachRoute,
   WhackALeakRoute: WhackALeakRoute,

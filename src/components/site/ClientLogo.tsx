@@ -7,7 +7,9 @@ function initials(name: string) {
 
 /** Real logo when available, otherwise a monogram badge with the company name. */
 export function ClientLogo({ client, size = "md" }: { client: Client; size?: "md" | "lg" }) {
-  const h = size === "lg" ? "h-9 sm:h-10" : "h-7 sm:h-8";
+  const h = client.square
+    ? size === "lg" ? "h-14 sm:h-16" : "h-9 sm:h-10"
+    : size === "lg" ? "h-9 sm:h-10" : "h-7 sm:h-8";
   if (client.logo) {
     return (
       <img

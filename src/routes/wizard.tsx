@@ -17,6 +17,12 @@ const getRecommendations = createServerFn({ method: "GET" }).handler(async () =>
 });
 
 export const Route = createFileRoute("/wizard")({
+  head: () => ({
+    meta: [
+      { title: "Seal & Product Finder — AARRKKAA International" },
+      { name: "description", content: "Answer three quick questions about your industry and duty, and get the mechanical seals, pumps and elastomers that fit — from AARRKKAA International, Hosur." },
+    ],
+  }),
   component: WizardPage,
   loader: () => getRecommendations(),
 });
@@ -105,7 +111,7 @@ function WizardPage() {
           </Link>
           <div className="flex items-center gap-3">
             <span className="hidden sm:block text-zinc-500 font-medium text-xs tracking-widest uppercase">Product Finder Wizard</span>
-            <span className="rounded-xl bg-white px-2 py-1"><ArkaLogo size={32} variant="full" /></span>
+            <span className="rounded-xl bg-white px-2 py-1"><ArkaLogo size={32} /></span>
           </div>
         </div>
       </header>

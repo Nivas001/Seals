@@ -87,11 +87,11 @@ export function VerifiedSupplierBadge() {
               <span>AARRKKAA INTERNATIONAL</span>
             </div>
             <div className="text-[11px] font-bold tracking-wider uppercase text-brass mt-0.5">
-              Verified Industrial Partner
+              Industrial Supply Partner
             </div>
             <div className="flex items-center gap-1.5 mt-1 text-[10px] text-muted-foreground font-semibold">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Active Supplier ID #AK-2026</span>
+              <span>Hosur, Tamil Nadu · Serving plants worldwide</span>
             </div>
           </div>
         </div>
@@ -101,7 +101,7 @@ export function VerifiedSupplierBadge() {
           <div className="flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-brass shrink-0" />
             <span className="text-xs font-bold text-ink uppercase tracking-wide">
-              ISO 9001 Compliant
+              Genuine, traceable parts
             </span>
           </div>
           <Sparkles className="h-3.5 w-3.5 text-brass animate-spin" style={{ animationDuration: "8s" }} />
@@ -112,9 +112,9 @@ export function VerifiedSupplierBadge() {
           <div className="flex items-start gap-2.5">
             <Cpu className="h-4 w-4 text-brass shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold text-ink">70+ Precision Categories</span>
+              <span className="font-bold text-ink">13 Product Categories</span>
               <p className="text-[11px] text-muted-foreground mt-0.5">
-                Process pumps, mechanical seals, silicone tubing & SS316 fittings.
+                Pumps, mechanical seals, bearings, elastomers, hoses & stainless steel.
               </p>
             </div>
           </div>
@@ -122,9 +122,9 @@ export function VerifiedSupplierBadge() {
           <div className="flex items-start gap-2.5">
             <Award className="h-4 w-4 text-brass shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold text-ink">Severe Duty Engineered</span>
+              <span className="font-bold text-ink">Genuine Brands</span>
               <p className="text-[11px] text-muted-foreground mt-0.5">
-                Rated for 400°C temperatures, 60 Bar pressure & aggressive chemicals.
+                SKF, FAG, INA and NTN bearings, sourced from their home countries.
               </p>
             </div>
           </div>
@@ -132,9 +132,9 @@ export function VerifiedSupplierBadge() {
           <div className="flex items-start gap-2.5">
             <Zap className="h-4 w-4 text-brass shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold text-ink">Rapid Response Guarantee</span>
+              <span className="font-bold text-ink">Fast Response</span>
               <p className="text-[11px] text-muted-foreground mt-0.5">
-                Immediate sizing, metallurgical matching & worldwide dispatch.
+                Quote within one working day, matched accurately, dispatched worldwide.
               </p>
             </div>
           </div>
@@ -152,8 +152,8 @@ export function VerifiedSupplierBadge() {
 
         {/* Footer Hologram stamp */}
         <div className="relative z-10 mt-6 flex items-center justify-between border-t border-hairline pt-3.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-          <span>AARRKKAA TECH CORP</span>
-          <span className="text-brass">★ AUTHORIZED ★</span>
+          <span>AARRKKAA INTERNATIONAL</span>
+          <span className="text-brass">★ Trusted supplier ★</span>
         </div>
       </motion.div>
     </div>

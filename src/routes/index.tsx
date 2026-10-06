@@ -9,7 +9,7 @@ import { useRef, useEffect, useState } from "react";
 import {
   ArrowUpRight, Phone, Mail, MapPin, ArrowRight,
   Sparkles,
-  ChevronUp, Star, ChevronLeft, ChevronRight
+  ChevronUp, Star, ChevronLeft, ChevronRight, CheckCircle2
 } from "lucide-react";
 import heroImg from "@/assets/hero-pump.jpg";
 import factoryImg from "@/assets/factory.jpg";
@@ -30,6 +30,9 @@ export const Route = createFileRoute("/")({
     return { heroImages, dbCategories };
   }
 });
+
+// Client logos shown in the hero trust row (only clients with a real logo file).
+const HERO_CLIENTS = CLIENTS.filter((c): c is { name: string; logo: string } => Boolean(c.logo));
 
 const BENTO_SLOT_CLASSES: string[] = [
   "sm:col-span-4 sm:row-span-2", // Slot 0: Top Left Large
@@ -128,7 +131,7 @@ function Home() {
       <LineSidebar sections={sidebarSections} />
       <main>
         <Hero images={heroImages} />
-        <StatsBand />
+        <StatsBand categoryCount={dbCategories?.length || CATEGORIES.length} />
         <TrustStrip />
         <AboutPreview />
         <ProductsBento featured={featured} />
@@ -138,6 +141,7 @@ function Home() {
         <WhyUsBento />
         <Testimonials />
         <ProcessTimeline />
+        <LocalSupplier />
         <FaqSection className="mt-24 sm:mt-32" />
         <CTABand />
         <ContactPreview />
@@ -251,24 +255,25 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex w-fit items-center gap-2 rounded-full border border-hairline bg-white/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground backdrop-blur"
+              className="inline-flex w-fit items-center gap-2 rounded-full border border-hairline bg-white/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground backdrop-blur"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-brass" />
-              Integrated technology support
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500/60 motion-reduce:animate-none" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              AARRKKAA International · Hosur, India
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.05 }}
-              className="mt-5 text-balance font-display font-black leading-[0.95] tracking-[-0.035em] text-ink"
-              style={{ fontSize: "clamp(2.5rem, 6.2vw, 5.25rem)" }}
+              className="mt-5 text-balance font-display font-black leading-[0.98] tracking-[-0.035em] text-ink"
+              style={{ fontSize: "clamp(2.4rem, 5.6vw, 4.75rem)" }}
             >
-              Precision parts for
-              <br />
-              industry that
+              Precision parts for plants that{" "}
               <span
-                className="inline-block bg-clip-text px-2 italic text-transparent"
+                className="bg-clip-text pr-1 italic text-transparent"
                 style={{ backgroundImage: "var(--gradient-brand)" }}
               >
                 can&rsquo;t stop.
@@ -279,9 +284,9 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="mt-6 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg"
+              className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
             >
-              Pumps, mechanical seals, stainless steel and elastomers for process plants. Matched accurately, shipped on time, anywhere.
+              Genuine pumps, mechanical seals, bearings, elastomers and stainless steel for process plants. Send us a part number, drawing or photo, and we match it accurately and ship it on time, anywhere.
             </motion.p>
 
             <motion.div
@@ -291,19 +296,64 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
               className="mt-8 flex flex-wrap items-center gap-3"
             >
               <Link
-                to="/products"
-                className="group inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background transition hover:bg-ink/85"
+                to="/contact"
+                className="group inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background shadow-lift transition hover:bg-ink/85"
               >
-                Explore the catalog
+                Get a quote
                 <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <Link
+                to="/products"
+                className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/70 px-5 py-3 text-sm font-semibold text-ink backdrop-blur transition hover:bg-white"
+              >
+                Explore the catalog
+              </Link>
+              <Link
                 to="/wizard"
-                className="inline-flex items-center gap-2 rounded-full border border-brass/50 bg-brass/10 px-5 py-3 text-sm font-bold text-brass transition hover:bg-brass hover:text-white"
+                className="inline-flex items-center gap-1.5 px-2 py-3 text-sm font-bold text-brass underline-offset-4 transition hover:underline"
               >
                 Find my seal
                 <ArrowRight className="h-4 w-4" />
               </Link>
+            </motion.div>
+
+            <motion.ul
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-medium text-ink/75"
+            >
+              {["Genuine, traceable parts", "Quote within one working day", "Dispatch worldwide"].map((t) => (
+                <li key={t} className="inline-flex items-center gap-1.5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  {t}
+                </li>
+              ))}
+            </motion.ul>
+
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.45 }}
+              className="mt-8 grid gap-4 border-t border-hairline pt-6 sm:grid-cols-2 sm:gap-6"
+            >
+              <div>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Trusted by</div>
+                <div className="mt-2.5 flex flex-wrap items-center gap-x-5 gap-y-2">
+                  {HERO_CLIENTS.map((c) => (
+                    <img key={c.name} src={c.logo} alt={c.name} decoding="async" className="h-5 w-auto max-w-[8.5rem] object-contain sm:h-6" />
+                  ))}
+                  <span className="text-xs font-semibold text-muted-foreground">+{CLIENTS.length - HERO_CLIENTS.length} more plants</span>
+                </div>
+              </div>
+              <div>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Genuine brands we supply</div>
+                <div className="mt-2.5 flex flex-wrap items-center gap-x-5 gap-y-2">
+                  {BRANDS.map((b) => (
+                    <img key={b.name} src={b.logo} alt={b.name} decoding="async" className={`w-auto max-w-[4.5rem] object-contain ${b.square ? "h-8 sm:h-9" : "h-5 sm:h-6"}`} />
+                  ))}
+                </div>
+              </div>
             </motion.div>
           </div>
 
@@ -417,11 +467,11 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
 }
 
 /* ─── STATS BAND ─── */
-function StatsBand() {
+function StatsBand({ categoryCount }: { categoryCount: number }) {
   return (
     <section className="mx-auto mt-10 max-w-7xl px-5 sm:mt-14 sm:px-8">
       <div className="grid grid-cols-3 gap-4 rounded-3xl border border-hairline bg-surface px-5 py-6 sm:gap-8 sm:px-10 sm:py-8">
-        <StatItem target={12} suffix="+" label="Product categories" />
+        <StatItem target={categoryCount} suffix="" label="Product categories" />
         <StatItem target={8} suffix="" label="Sectors served" />
         <StatItem target={100} suffix="+" label="SKU lines stocked" />
       </div>
@@ -430,42 +480,34 @@ function StatsBand() {
 }
 
 /* ─── TRUST STRIP ─── */
+// Two clearly labelled rows: companies we deliver to, and manufacturers whose genuine parts we supply.
 function TrustStrip() {
-  const items = CLIENTS;
+  const rows = [
+    { label: "Our clients", items: [...CLIENTS, ...CLIENTS], size: "md" as const, track: "marquee-track" },
+    { label: "Genuine brands we supply", items: [...BRANDS, ...BRANDS, ...BRANDS, ...BRANDS], size: "md" as const, track: "marquee-track-reverse" },
+  ];
   return (
-    <section className="mt-20 border-y border-hairline bg-surface py-6 sm:mt-28">
-      <div className="mx-auto flex max-w-7xl items-center gap-6 overflow-hidden px-5 sm:px-8">
-        <span className="hidden shrink-0 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:block">
-          Trusted by industry leaders
-        </span>
-        <div className="relative flex-1 overflow-hidden">
-          <div className="marquee-track flex w-max gap-10">
-            {[...items, ...items].map((x, i) => (
-              <span key={i} className="flex items-center gap-10">
-                <ClientLogo client={x} />
-                <span aria-hidden className="h-1 w-1 rounded-full bg-brass/60" />
-              </span>
-            ))}
+    <section className="mt-12 border-y border-hairline bg-surface py-6 sm:mt-16">
+      <div className="mx-auto max-w-7xl space-y-5 px-5 sm:px-8">
+        {rows.map((row) => (
+          <div key={row.label} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+            <span className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:w-44">
+              {row.label}
+            </span>
+            <div className="relative min-w-0 flex-1 overflow-hidden">
+              <div className={`${row.track} flex w-max items-center gap-10`}>
+                {row.items.map((x, i) => (
+                  <span key={i} className="flex items-center gap-10">
+                    <ClientLogo client={x} size={row.size} />
+                    <span aria-hidden className="h-1 w-1 rounded-full bg-brass/60" />
+                  </span>
+                ))}
+              </div>
+              <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-12" style={{ background: "linear-gradient(to right, var(--surface), transparent)" }} />
+              <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-12" style={{ background: "linear-gradient(to left, var(--surface), transparent)" }} />
+            </div>
           </div>
-          <div className="marquee-track-reverse mt-4 flex w-max gap-10">
-            {[...BRANDS, ...BRANDS, ...BRANDS, ...BRANDS].map((x, i) => (
-              <span key={i} className="flex items-center gap-10">
-                <ClientLogo client={x} size="lg" />
-                <span aria-hidden className="h-1 w-1 rounded-full bg-brass/60" />
-              </span>
-            ))}
-          </div>
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0 left-0 w-16"
-            style={{ background: "linear-gradient(to right, var(--surface), transparent)" }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0 right-0 w-16"
-            style={{ background: "linear-gradient(to left, var(--surface), transparent)" }}
-          />
-        </div>
+        ))}
       </div>
     </section>
   );
@@ -515,9 +557,9 @@ function AboutPreview() {
             </p>
             <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
               {[
-                { k: "Improve", v: "Response time on every query" },
-                { k: "Accuracy", v: "Right part, first time" },
-                { k: "Feedback", v: "Loop that builds trust" },
+                { k: "Response", v: "Fast answers on every query" },
+                { k: "Convenience", v: "Right part, first time" },
+                { k: "Feedback", v: "Long-term partnerships" },
               ].map((x) => (
                 <div key={x.k} className="rounded-xl bg-white/10 p-4 backdrop-blur">
                   <div className="text-sm font-bold text-white">{x.k}</div>
@@ -679,7 +721,7 @@ function Testimonials() {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="mt-10 flex snap-x snap-mandatory scroll-pl-5 lg:scroll-pl-0 overflow-x-auto pb-4 gap-4 lg:grid lg:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 lg:mx-0 lg:px-0 lg:pb-0"
+          className="mt-10 flex snap-x snap-mandatory scroll-pl-5 lg:scroll-pl-0 overflow-x-auto pb-4 gap-4 lg:grid lg:grid-cols-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-5 px-5 pt-2 lg:mx-0 lg:px-0 lg:pb-0 lg:overflow-visible"
         >
           {TESTIMONIALS.map((t, i) => (
             <motion.div
@@ -690,7 +732,7 @@ function Testimonials() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="snap-start shrink-0 w-[80%] md:w-[45%] lg:w-auto flex"
             >
-              <GlowCard className="flex w-full flex-col justify-between">
+              <GlowCard className="flex w-full flex-col justify-between" containerClassName="hover:-translate-y-1">
                 <div>
                   {/* Stars */}
                   <div className="flex gap-0.5 mb-4">
@@ -721,6 +763,50 @@ function Testimonials() {
               }`}
             />
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── LOCAL SUPPLIER (who we are, where we serve — plain text for search engines and buyers) ─── */
+const SERVICE_AREAS = ["Hosur", "Krishnagiri", "Bengaluru", "Chennai", "Coimbatore", "Tamil Nadu", "Karnataka", "Across India", "Worldwide"];
+
+function LocalSupplier() {
+  return (
+    <section id="local" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+      <div className="grid gap-8 rounded-[2rem] border border-hairline bg-surface p-7 sm:p-12 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
+        <div>
+          <h2 className="font-display text-3xl font-black leading-[1.05] tracking-tight text-ink sm:text-4xl">
+            Mechanical seal and pump spares supplier in Hosur, Tamil Nadu.
+          </h2>
+          <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+            AARRKKAA International supplies mechanical seals (single-spring, cartridge, agitator and rotary union seals),
+            O-rings, gaskets, oil seals, pumps and pump spares, bearings, elastomers, silicone products, hoses and
+            stainless steel fittings from our head office in Hosur, Tamil Nadu. We serve process plants in the
+            Hosur&ndash;Bengaluru industrial belt, across Tamil Nadu and India, and export worldwide.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link to="/products/$category" params={{ category: "mechanical-seals" }} className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background transition hover:bg-ink/85">
+              Mechanical seals <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link to="/contact" className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-5 py-3 text-sm font-semibold text-ink transition hover:bg-white">
+              Get a quote
+            </Link>
+          </div>
+        </div>
+        <div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Areas we serve</div>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {SERVICE_AREAS.map((a) => (
+              <li key={a} className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-background px-4 py-2 text-sm font-semibold text-ink/80">
+                <MapPin className="h-3.5 w-3.5 text-brass" /> {a}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+            Head office: {COMPANY.address.line1}, {COMPANY.address.line2}, {COMPANY.address.city}, {COMPANY.address.state} {COMPANY.address.pincode}.
+          </p>
         </div>
       </div>
     </section>

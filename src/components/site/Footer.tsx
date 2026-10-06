@@ -2,24 +2,35 @@ import { Link } from "@tanstack/react-router";
 import { Mail, Phone, MapPin, FileDown, ArrowUpRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getCategories, getContactInfo } from "@/lib/catalog";
+import { CATEGORIES, COMPANY } from "@/data/catalog";
+import { useEffect, useState } from "react";
 import { DownloadCatalog } from "@/components/site/DownloadCatalog";
 
 import { ArkaLogo } from "@/components/ui/ArkaLogo";
 
 export function Footer() {
-  const { data: categories = [] } = useQuery({
+  // The server render has no query data, but the client cache can be filled (e.g. by the chatbot)
+  // before this lazily loaded route hydrates. Render the static fallbacks until mounted so the
+  // first client render matches the server HTML, then switch to the live admin data.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  const { data: dbCategories } = useQuery({
     queryKey: ["categories"],
     queryFn: () => getCategories(),
   });
-  
-  const { data: contactInfo } = useQuery({
+
+  const { data: dbContactInfo } = useQuery({
     queryKey: ["contactInfo"],
     queryFn: () => getContactInfo(),
   });
 
-  const phones = contactInfo?.phones?.length ? contactInfo.phones : ["+91 78069 36475"];
-  const emails = contactInfo?.emails?.length ? contactInfo.emails : ["aarrkkaainternational@gmail.com"];
-  const address = contactInfo?.address || { line1: "#3/334, 11C, Surya Nagar", line2: "5th Cross, Arasanatti", city: "Hosur", district: "Krishnagiri Dist.", state: "Tamil Nadu", pincode: "635 126" };
+  const categories: Array<{ slug: string; name: string }> =
+    mounted && dbCategories?.length ? dbCategories : CATEGORIES;
+  const contactInfo = mounted ? dbContactInfo : undefined;
+  const phones = contactInfo?.phones?.length ? contactInfo.phones : COMPANY.phones;
+  const emails = contactInfo?.emails?.length ? contactInfo.emails : COMPANY.emails;
+  const address = (contactInfo?.address as typeof COMPANY.address | undefined) || COMPANY.address;
 
   return (
     <footer className="mt-24 relative overflow-hidden border-t border-hairline bg-surface">
@@ -71,13 +82,8 @@ export function Footer() {
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.5fr]">
           {/* Brand column */}
           <div>
-            <div className="flex items-center">
-              <ArkaLogo size={46} variant="full" />
-            </div>
-            <div className="mt-4 font-display font-bold text-base tracking-tight text-ink">
-              AARRKKAA International
-            </div>
-            <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
+            <ArkaLogo size={48} variant="full" />
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Supplier and distributor of pumps, mechanical seals, elastomers,
               stainless steel and precision components for food, pharma,
               chemical and process industries worldwide with service available globally.
@@ -102,7 +108,7 @@ export function Footer() {
               Products
             </h4>
             <ul className="mt-4 space-y-2.5 text-sm">
-              {categories.slice(0, 6).map((c: any) => (
+              {categories.slice(0, 6).map((c) => (
                 <li key={c.slug}>
                   <Link
                     to="/products/$category"

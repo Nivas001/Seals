@@ -13,6 +13,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 import { logTraffic } from "@/lib/admin";
 import appCss from "../styles.css?url";
+import { COMPANY } from "@/data/catalog";
 
 function NotFoundComponent() {
   return <CreativeNotFound />;
@@ -56,25 +57,119 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const SITE_URL = "https://www.aarrkkaa.com";
+
+// Business details must match the Contact page and Google Business Profile exactly (same NAP everywhere).
+// alternateName tells Google that "ARKA" and spaced spellings refer to this brand.
+const SITE_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "AARRKKAA International",
+      legalName: "AARRKKAA INTERNATIONAL",
+      alternateName: ["AARRKKAA", "Aarrkkaa International", "ARKA", "ARKA International", "AARRKKAA Hosur"],
+      url: `${SITE_URL}/`,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo-full.png`, width: 817, height: 724 },
+      image: `${SITE_URL}/og-image.jpg`,
+      slogan: COMPANY.tagline,
+      description:
+        "Supplier and distributor of pumps, mechanical seals, bearings, elastomers and precision components for food, pharma, chemical and process industries worldwide.",
+      email: COMPANY.emails[0],
+      telephone: "+91-78069-36475",
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: "+91-78069-36475",
+          contactType: "sales",
+          email: COMPANY.emails[1],
+          areaServed: "Worldwide",
+          availableLanguage: ["English", "Tamil", "Hindi"],
+        },
+        {
+          "@type": "ContactPoint",
+          telephone: "+91-99945-37470",
+          contactType: "customer service",
+          email: COMPANY.emails[0],
+          areaServed: "Worldwide",
+          availableLanguage: ["English", "Tamil", "Hindi"],
+        },
+      ],
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": `${SITE_URL}/#localbusiness`,
+      name: "AARRKKAA International",
+      alternateName: "ARKA",
+      url: `${SITE_URL}/`,
+      image: `${SITE_URL}/og-image.jpg`,
+      logo: `${SITE_URL}/logo-full.png`,
+      parentOrganization: { "@id": `${SITE_URL}/#organization` },
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: `${COMPANY.address.line1}, ${COMPANY.address.line2}`,
+        addressLocality: COMPANY.address.city,
+        addressRegion: COMPANY.address.state,
+        postalCode: COMPANY.address.pincode.replace(/\s/g, ""),
+        addressCountry: "IN",
+      },
+      telephone: "+91-78069-36475",
+      email: COMPANY.emails[0],
+      priceRange: "₹₹",
+      areaServed: [
+        { "@type": "City", name: "Hosur" },
+        { "@type": "City", name: "Krishnagiri" },
+        { "@type": "City", name: "Bengaluru" },
+        { "@type": "City", name: "Chennai" },
+        { "@type": "City", name: "Coimbatore" },
+        { "@type": "State", name: "Tamil Nadu" },
+        { "@type": "State", name: "Karnataka" },
+        { "@type": "Country", name: "India" },
+        "Worldwide",
+      ],
+      knowsAbout: [
+        "Mechanical seals", "Cartridge seals", "Agitator seals", "O-rings", "Gaskets", "Oil seals",
+        "Industrial pumps", "Pump spares", "Bearings", "Elastomers", "Silicone products", "Industrial hoses", "Stainless steel fittings",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: `${SITE_URL}/`,
+      name: "AARRKKAA International",
+      alternateName: ["AARRKKAA", "ARKA"],
+      inLanguage: "en-IN",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
+});
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, interactive-widget=resizes-content" },
-      { title: "AARRKKAA International — Industrial Pumps, Seals & Precision Components" },
-      { name: "description", content: "Supplier & distributor of pumps, mechanical seals, elastomers, stainless steel, hoses and precision components worldwide with service available globally." },
+      { title: "AARRKKAA International — Mechanical Seals, Pumps & Spares Supplier in Hosur, Tamil Nadu, India" },
+      { name: "description", content: "AARRKKAA International (ARKA) is a mechanical seal, pump and industrial spares supplier in Hosur, Tamil Nadu, India. Seals, O-rings, gaskets, bearings, elastomers, hoses and stainless steel for process plants across India and worldwide." },
       { name: "author", content: "AARRKKAA International" },
-      { property: "og:title", content: "AARRKKAA International — Integrated technology support" },
-      { property: "og:description", content: "Pumps, mechanical seals, elastomers, stainless steel and precision components for process industries. Head office in Hosur, Tamil Nadu." },
+      { name: "theme-color", content: "#113447" },
+      { property: "og:site_name", content: "AARRKKAA International" },
+      { property: "og:title", content: "AARRKKAA International — Industrial Pumps, Seals & Precision Components" },
+      { property: "og:description", content: "Pumps, mechanical seals, bearings, elastomers, stainless steel and precision components for process industries. Head office in Hosur, Tamil Nadu." },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "en_IN" },
+      { property: "og:image", content: `${SITE_URL}/og-image.jpg` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "AARRKKAA International logo" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:image", content: "/og-image.jpg" },
+      { name: "twitter:image", content: `${SITE_URL}/og-image.jpg` },
     ],
     links: [
       { rel: "stylesheet", href: appCss, type: "text/css" },
-      { rel: "icon", href: "/logo.png?v=20260731", type: "image/png" },
-      { rel: "shortcut icon", href: "/logo.png?v=20260731", type: "image/png" },
-      { rel: "apple-touch-icon", href: "/logo.png?v=20260731" },
+      { rel: "icon", href: "/favicon.png?v=20261006", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png?v=20261006" },
     ],
   }),
   shellComponent: RootShell,
@@ -84,66 +179,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  // One canonical URL per page on the www host (aarrkkaa.com redirects there), without query strings.
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const canonical = SITE_URL + (pathname === "/" ? "/" : pathname.replace(/\/+$/, ""));
   return (
     <html lang="en" className="antialiased">
       <head>
         <HeadContent />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Organization",
-                  "@id": "https://aarrkkaa.com/#organization",
-                  "name": "AARRKKAA International",
-                  "url": "https://aarrkkaa.com",
-                  "logo": "https://aarrkkaa.com/logo.png",
-                  "description": "Supplier and distributor of pumps, mechanical seals, elastomers, and precision components for food, pharma, chemical, and process industries worldwide.",
-                  "sameAs": [
-                    "https://www.linkedin.com/company/aarrkkaa",
-                    "https://twitter.com/aarrkkaa",
-                    "https://www.facebook.com/aarrkkaa"
-                  ],
-                  "contactPoint": {
-                    "@type": "ContactPoint",
-                    "telephone": "+91-78069-36475",
-                    "contactType": "customer service",
-                    "email": "sales.aarrkkaa@gmail.com",
-                    "availableLanguage": ["English", "Tamil", "Hindi"]
-                  }
-                },
-                {
-                  "@type": "LocalBusiness",
-                  "@id": "https://aarrkkaa.com/#localbusiness",
-                  "name": "AARRKKAA International",
-                  "parentOrganization": {
-                    "@id": "https://aarrkkaa.com/#organization"
-                  },
-                  "address": {
-                    "@type": "PostalAddress",
-                    "streetAddress": "100/4, 11C, Surya Nagar, 5th Cross, Arasanatti",
-                    "addressLocality": "Hosur",
-                    "addressRegion": "Tamil Nadu",
-                    "postalCode": "635126",
-                    "addressCountry": "IN"
-                  },
-                  "telephone": "+91-91084-34478"
-                },
-                {
-                  "@type": "WebSite",
-                  "@id": "https://aarrkkaa.com/#website",
-                  "url": "https://aarrkkaa.com",
-                  "name": "AARRKKAA International",
-                  "publisher": {
-                    "@id": "https://aarrkkaa.com/#organization"
-                  }
-                }
-              ]
-            })
-          }}
-        />
+        <link rel="canonical" href={canonical} />
+        <meta property="og:url" content={canonical} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: SITE_JSON_LD }} />
       </head>
       <body className="min-h-screen bg-background text-foreground selection:bg-accent/20 selection:text-ink">
         {children}

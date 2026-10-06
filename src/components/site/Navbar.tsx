@@ -1,10 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { Menu, X, Phone, Download, Sparkles, Home, Package, Building2, Info, Mail } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu, X, Phone, Sparkles, Home, Package, Building2, Info, Mail } from "lucide-react";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { DownloadCatalog } from "@/components/site/DownloadCatalog";
 import { chatbotState, CHATBOT_PATHS } from "@/data/chatbotState";
-
+import { ArkaLogo } from "@/components/ui/ArkaLogo";
 
 const NAV = [
   { to: "/", label: "Home", icon: Home },
@@ -14,7 +14,6 @@ const NAV = [
   { to: "/contact", label: "Contact", icon: Mail },
 ] as const;
 
-import { ArkaLogo } from "@/components/ui/ArkaLogo";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -22,14 +21,7 @@ export function Navbar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4 });
-  const currentLabel = useMemo(() => {
-    if (pathname === "/") return "Home";
-    for (const item of NAV) {
-      if (item.to !== "/" && pathname.startsWith(item.to)) return item.label;
-    }
-    const seg = pathname.split("/").filter(Boolean)[0];
-    return seg ? seg.charAt(0).toUpperCase() + seg.slice(1) : "Home";
-  }, [pathname]);
+  const [hovered, setHovered] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -54,43 +46,46 @@ export function Navbar() {
       <motion.div aria-hidden style={{ scaleX: progress }} className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-brass" />
       <div className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:pt-5">
         <nav
-          className={`pointer-events-auto flex w-full max-w-6xl items-center justify-between gap-4 rounded-full px-3 py-2 sm:px-4 ${
-            scrolled ? "glass-liquid-strong" : "glass-liquid"
+          className={`glass-nav pointer-events-auto flex w-full max-w-6xl items-center justify-between gap-3 rounded-full py-1.5 pl-2.5 pr-2 sm:gap-4 sm:pl-3.5 ${
+            scrolled ? "glass-nav-scrolled" : ""
           }`}
           aria-label="Primary"
         >
           <Link
             to="/"
-            className="group flex items-center rounded-full pl-1 pr-2 py-1 transition-transform duration-300 hover:scale-[1.01]"
+            className="flex min-w-0 items-center rounded-full py-0.5 pr-2 transition-opacity duration-300 hover:opacity-90"
             aria-label="AARRKKAA International — home"
           >
-            <ArkaLogo size={42} variant="full" />
+            <ArkaLogo size={40} variant="full" className="[&>span]:hidden min-[380px]:[&>span]:flex" />
           </Link>
 
-          <ul className="hidden items-center gap-0.5 md:flex">
-            {NAV.map((item) => (
-              <li key={item.to}>
-                <Link
-                  to={item.to}
-                  className="glass-shimmer relative overflow-hidden rounded-full px-4 py-1.5 text-[15px] font-medium text-ink/75 transition-colors duration-300 hover:text-ink"
-                  activeOptions={{ exact: item.to === "/" }}
-                  activeProps={{
-                    className:
-                      "glass-pill-active relative overflow-hidden rounded-full px-4 py-1.5 text-[15px] font-semibold text-ink",
-                  }}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+          <ul className="hidden items-center gap-0.5 md:flex" onMouseLeave={() => setHovered(null)}>
+            {NAV.map((item) => {
+              const isActive = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+              const showPill = hovered ? hovered === item.to : isActive;
+              return (
+                <li key={item.to} className="relative" onMouseEnter={() => setHovered(item.to)}>
+                  {showPill && (
+                    <motion.span
+                      layoutId="nav-glass-pill"
+                      aria-hidden
+                      className="glass-nav-pill absolute inset-0 rounded-full"
+                      transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.7 }}
+                    />
+                  )}
+                  <Link
+                    to={item.to}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`relative z-10 block rounded-full px-4 py-2 text-[15px] transition-colors duration-200 ${
+                      isActive ? "font-semibold text-brass" : "font-medium text-ink/75 hover:text-ink"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
-
-          {/* Mobile: current page label */}
-          <div className="flex flex-1 items-center justify-center md:hidden">
-            <span className="glass-pill-active inline-flex items-center rounded-full px-3 py-1 text-[13px] font-semibold tracking-tight text-ink">
-              {currentLabel}
-            </span>
-          </div>
 
           <div className="flex items-center gap-2">
             <div className="hidden lg:block">
