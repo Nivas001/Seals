@@ -75,7 +75,7 @@ const SITE_JSON_LD = JSON.stringify({
       image: `${SITE_URL}/og-image.jpg`,
       slogan: COMPANY.tagline,
       description:
-        "Supplier and distributor of pumps, mechanical seals, bearings, elastomers and precision components for food, pharma, chemical and process industries worldwide.",
+        "Industrial trading company in Hosur, Tamil Nadu: we source pumps, mechanical seals, bearings, elastomers and precision components from trusted manufacturers and sellers, and supply them to process plants in India and worldwide at competitive prices.",
       email: COMPANY.emails[0],
       telephone: "+91-78069-36475",
       contactPoint: [

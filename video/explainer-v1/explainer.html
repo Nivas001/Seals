@@ -1,0 +1,362 @@
+<!doctype html>
+<!--
+  AARRKKAA International — "How we work" explainer, classic version (90 s, 16:9).
+  Calmer companion to ../explainer (v2). Open in Chrome to preview, or add ?t=42 to freeze at 42 s.
+  Scene timeline: 0 intro · 9 problem · 19 enquire · 31 source · 47 price · 59 pack · 69 deliver · 81 outro · 90 end
+  Cuts: iris at 9, 31, 59, 81 · brand wipe at 19, 47, 69
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AARRKKAA International — How we work (classic)</title>
+<script src="icons.js"></script>
+<script src="world.js"></script>
+<style>
+  @font-face {
+    font-family: "Inter";
+    src: url("../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2") format("woff2");
+    font-weight: 100 900;
+  }
+  :root {
+    --navy: #113447; --ink: #0b1220; --blue: #0a6ae6; --blue-2: #2f8cf5; --sky: #7cc4ff; --amber: #fbbf24;
+    --green: #16a34a; --red: #e5484d; --muted: #5b6475; --hair: #e4e6ea; --paper: #f6f7f9;
+    --brand: linear-gradient(135deg, #0d2f6b 0%, #0f5bc4 52%, #2b97e8 100%);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: var(--paper); }
+  body { font-family: "Inter", system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  #stage { position: relative; width: 1280px; height: 720px; overflow: hidden; background: var(--paper); }
+  .icon svg { width: 100%; height: 100%; display: block; }
+
+  .a-up   { opacity: 0; animation: up   var(--t, .8s) cubic-bezier(.2,.8,.2,1) var(--d) both; }
+  .a-in   { opacity: 0; animation: fade var(--t, .8s) ease var(--d) both; }
+  .a-pop  { opacity: 0; animation: pop  var(--t, .6s) cubic-bezier(.3,1.5,.5,1) var(--d) both; }
+  .a-left { opacity: 0; animation: left var(--t, .8s) cubic-bezier(.2,.8,.2,1) var(--d) both; }
+  .a-right{ opacity: 0; animation: right var(--t, .8s) cubic-bezier(.2,.8,.2,1) var(--d) both; }
+  .a-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw var(--t, 1.4s) ease-in-out var(--d) both; }
+  .a-growx{ transform-origin: left center; animation: growx var(--t, 1s) cubic-bezier(.2,.8,.2,1) var(--d) both; }
+  .a-growy{ transform-origin: center bottom; animation: growy var(--t, 1.2s) cubic-bezier(.2,.8,.2,1) var(--d) both; }
+  @keyframes up    { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @keyframes fade  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pop   { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+  @keyframes left  { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: none; } }
+  @keyframes right { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: none; } }
+  @keyframes draw  { to { stroke-dashoffset: 0; } }
+  @keyframes growx { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes growy { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+  .scene { position: absolute; inset: 0; opacity: 0;
+    animation: sIn .05s linear var(--s) both, sOut .05s linear var(--e) forwards, drift calc(var(--e) - var(--s)) linear var(--s) both; }
+  .scene.iris { opacity: 1; clip-path: circle(0% at 50% 50%);
+    animation: iris 1s cubic-bezier(.75,0,.25,1) var(--s) both, sOut .05s linear var(--e) forwards, drift calc(var(--e) - var(--s)) linear var(--s) both; }
+  @keyframes iris { from { clip-path: circle(0% at 50% 50%); } to { clip-path: circle(85% at 50% 50%); } }
+  @keyframes drift { from { transform: scale(1.035); } to { transform: scale(1); } }
+  @keyframes sIn  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes sOut { from { opacity: 1; } to { opacity: 0; } }
+  .wipe { position: absolute; top: -10%; bottom: -10%; left: -30%; width: 160%; transform: translateX(130%) skewX(-14deg); z-index: 9;
+    animation: wipeIn .5s cubic-bezier(.7,0,.3,1) calc(var(--b) - .5s) both, wipeOut .55s cubic-bezier(.7,0,.3,1) var(--b) forwards; }
+  .wipe.w2 { animation-delay: calc(var(--b) - .42s), calc(var(--b) + .08s); }
+  @keyframes wipeIn  { from { transform: translateX(130%) skewX(-14deg); } to { transform: translateX(0) skewX(-14deg); } }
+  @keyframes wipeOut { from { transform: translateX(0) skewX(-14deg); } to { transform: translateX(-130%) skewX(-14deg); } }
+  .kb { position: absolute; inset: 0; background-size: cover; background-position: center; animation: kb var(--t, 10s) linear var(--d) both; }
+  @keyframes kb { from { transform: scale(1.04); } to { transform: scale(1.14); } }
+
+  #chrome { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
+  .brandmark { position: absolute; left: 36px; top: 26px; display: flex; align-items: center; gap: 10px; padding: 6px 14px 6px 8px; border-radius: 999px;
+    background: rgba(255,255,255,.92); box-shadow: 0 0 0 1px rgba(17,52,71,.08), 0 8px 20px -12px rgba(0,0,0,.4);
+    opacity: 0; animation: fade .6s ease 9s both, sOut .6s ease 80.4s forwards; }
+  .brandmark img { height: 34px; }
+  .brandmark b { display: block; font-size: 15px; font-weight: 900; letter-spacing: .02em; color: var(--navy); line-height: 1; }
+  .brandmark small { display: block; margin-top: 3px; font-size: 8.5px; font-weight: 700; letter-spacing: .28em; color: var(--navy); opacity: .75; }
+  .steps { position: absolute; right: 40px; top: 32px; display: flex; gap: 8px; opacity: 0; animation: fade .6s ease 19s both, sOut .6s ease 80.4s forwards; }
+  .chip { display: flex; align-items: center; gap: 7px; padding: 7px 13px 7px 8px; border-radius: 999px; font-size: 13px; font-weight: 700; color: #6b7385; background: rgba(255,255,255,.85);
+    box-shadow: 0 0 0 1px rgba(17,52,71,.1), 0 6px 16px -10px rgba(17,52,71,.35); animation: chipOn .4s ease var(--on) both, chipOff .4s ease var(--off) forwards; }
+  .chip i { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 999px; font-style: normal; font-size: 11px; font-weight: 900; background: #e9edf3; color: #6b7385; }
+  @keyframes chipOn  { from { background: rgba(255,255,255,.85); color: #6b7385; } to { background: #0a6ae6; color: #fff; } }
+  @keyframes chipOff { from { background: #0a6ae6; color: #fff; } to { background: rgba(255,255,255,.85); color: #0b1220; } }
+  #progress { position: absolute; left: 0; bottom: 0; height: 5px; width: 100%; background: var(--brand); transform-origin: left; animation: growx 90s linear 0s both; }
+
+  .eyebrow { font-size: 15px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--blue); }
+  .h1 { font-size: 64px; font-weight: 900; line-height: 1.02; letter-spacing: -.035em; }
+  .h2 { font-size: 52px; font-weight: 900; line-height: 1.04; letter-spacing: -.03em; }
+  .lead { font-size: 24px; line-height: 1.45; color: var(--muted); font-weight: 500; }
+  .accent { color: var(--blue); font-style: italic; }
+  .card { background: #fff; border-radius: 24px; box-shadow: 0 0 0 1px rgba(17,52,71,.08), 0 24px 50px -28px rgba(17,52,71,.45); }
+  .pill { display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 999px; background: #fff; font-size: 18px; font-weight: 700;
+    box-shadow: 0 0 0 1px rgba(17,52,71,.1), 0 12px 24px -16px rgba(17,52,71,.4); }
+  .pill .icon { width: 22px; height: 22px; color: var(--blue); }
+  .ico { display: grid; place-items: center; border-radius: 16px; }
+  .dark-pill { background: rgba(255,255,255,.08); color: #fff; box-shadow: 0 0 0 1px rgba(255,255,255,.18); }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- 1 · INTRO (0–9) -->
+  <section class="scene" style="--s:0s; --e:10s; background: radial-gradient(80% 90% at 50% 40%, #ffffff 0%, #eef2f7 70%, #e5ebf3 100%);">
+    <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+      <img class="a-pop" style="--d:.4s; --t:.9s; height:190px;" src="../../public/logo-mark.png" alt="" />
+      <div class="a-up" style="--d:1.3s; margin-top:26px; font-size:54px; font-weight:900; letter-spacing:.02em; color:var(--navy); line-height:1;">AARRKKAA</div>
+      <div class="a-up" style="--d:1.6s; margin-top:10px; font-size:18px; font-weight:700; letter-spacing:.42em; color:var(--navy); opacity:.8;">INTERNATIONAL</div>
+      <div class="a-growx" style="--d:2.3s; margin:30px auto 0; width:120px; height:4px; border-radius:4px; background:var(--brand);"></div>
+      <div class="a-up lead" style="--d:2.8s; margin-top:26px; font-size:30px; color:var(--ink); font-weight:700;">Industrial trading, done right.</div>
+      <div class="a-up lead" style="--d:3.6s; margin-top:10px;">Genuine parts · Lower prices · Delivered on time</div>
+      <div class="a-in" style="--d:4.6s; margin-top:34px; display:flex; gap:12px; justify-content:center;">
+        <span class="pill"><span class="icon" data-icon="Warehouse"></span>Hosur, Tamil Nadu</span>
+        <span class="pill"><span class="icon" data-icon="Globe2"></span>Supplying plants worldwide</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · PROBLEM (9–19) -->
+  <section class="scene iris" style="--s:9s; --e:20s; background:#0b1220;">
+    <div class="kb" style="--d:9s; --t:11s; background-image:url('../../src/assets/factory.jpg');"></div>
+    <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(8,13,26,.94) 0%, rgba(8,13,26,.8) 48%, rgba(8,13,26,.35) 100%);"></div>
+    <div style="position:absolute; left:90px; top:150px; width:660px; color:#fff;">
+      <div class="a-in eyebrow" style="--d:9.6s; color:#ff8f93;">The problem</div>
+      <div class="a-up h1" style="--d:10s; margin-top:18px;">When one part fails,<br/>the whole line stops.</div>
+      <div class="a-up lead" style="--d:11.4s; margin-top:24px; color:#c9d2e3;">A worn seal, a seized bearing, a leaking gasket. Production waits, and every hour of downtime costs money.</div>
+      <div class="a-up" style="--d:13.4s; margin-top:34px; display:flex; gap:12px;">
+        <span class="pill dark-pill"><span class="icon" style="color:#ff8f93" data-icon="Clock"></span>Parts are hard to find</span>
+        <span class="pill dark-pill"><span class="icon" style="color:#ff8f93" data-icon="Tag"></span>Prices vary a lot</span>
+      </div>
+    </div>
+    <div class="a-pop" style="--d:11s; position:absolute; right:110px; top:250px; width:300px; padding:26px; border-radius:24px; background:rgba(229,72,77,.14); box-shadow:0 0 0 1px rgba(255,143,147,.45); color:#fff; text-align:center; backdrop-filter:blur(8px);">
+      <div class="alarm" style="width:86px; height:86px; margin:0 auto; border-radius:999px; display:grid; place-items:center; background:var(--red);">
+        <span class="icon" style="width:44px; height:44px;" data-icon="AlertTriangle"></span>
+      </div>
+      <div style="margin-top:18px; font-size:26px; font-weight:900; letter-spacing:.06em;">LINE STOPPED</div>
+      <div style="margin-top:6px; font-size:16px; color:#ffc9cb;">Waiting for a spare part…</div>
+    </div>
+    <style>.alarm { animation: alarm 1s ease-in-out 11s 8 both; } @keyframes alarm { 0%,100% { box-shadow: 0 0 0 0 rgba(229,72,77,.7); } 50% { box-shadow: 0 0 0 22px rgba(229,72,77,0); } }</style>
+    <div class="a-up" style="--d:16s; position:absolute; left:90px; bottom:70px; font-size:30px; font-weight:800; color:#fff;">That is where <span style="color:var(--sky);">AARRKKAA</span> comes in.</div>
+  </section>
+
+  <!-- 3 · STEP 1 ENQUIRE (19–31) -->
+  <section class="scene" style="--s:19s; --e:32s;">
+    <div style="position:absolute; left:90px; top:150px; width:520px;">
+      <div class="a-in eyebrow" style="--d:19.5s;">Step 1 · You ask</div>
+      <div class="a-up h2" style="--d:19.8s; margin-top:16px;">Tell us what<br/>you <span class="accent">need.</span></div>
+      <div class="a-up lead" style="--d:21s; margin-top:22px;">Send a part number, a drawing or simply a photo of the worn part. By WhatsApp, phone or email.</div>
+      <div style="margin-top:30px; display:flex; flex-wrap:wrap; gap:12px;">
+        <span class="pill a-left" style="--d:22.2s;"><span class="icon" style="color:#16a34a" data-icon="MessageCircle"></span>WhatsApp</span>
+        <span class="pill a-left" style="--d:22.5s;"><span class="icon" data-icon="Phone"></span>Phone</span>
+        <span class="pill a-left" style="--d:22.8s;"><span class="icon" data-icon="Mail"></span>Email</span>
+      </div>
+    </div>
+    <div class="card a-right" style="--d:20.4s; position:absolute; right:90px; top:120px; width:520px; padding:26px; border-radius:30px;">
+      <div style="display:flex; align-items:center; gap:12px; padding-bottom:16px; border-bottom:1px solid var(--hair);">
+        <img src="../../public/logo-mark.png" style="height:36px;" alt="" />
+        <div><div style="font-weight:900; font-size:17px; color:var(--navy);">AARRKKAA International</div><div style="font-size:13px; color:var(--green); font-weight:700;">● Online</div></div>
+      </div>
+      <div class="a-up" style="--d:23.4s; margin-top:18px; margin-left:auto; width:330px; padding:12px; border-radius:18px 18px 4px 18px; background:#dcf8c6;">
+        <img src="../../src/assets/cat-seals.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:12px;" alt="" />
+        <div style="margin-top:10px; font-size:16px; line-height:1.4;">Need this mechanical seal, 45 mm shaft. Qty 4. Urgent please!</div>
+      </div>
+      <div class="a-up" style="--d:25.6s; margin-top:14px; width:330px; padding:14px 16px; border-radius:18px 18px 18px 4px; background:#eef3fb; font-size:16px; line-height:1.45;">Got it. We have matched the seal and will send you the best price and dispatch date.</div>
+      <div class="a-pop" style="--d:27.4s; margin-top:16px; display:flex; align-items:center; gap:10px; padding:14px 16px; border-radius:16px; background:#e9f8ef; color:#0f7a3a; font-weight:800; font-size:17px;">
+        <span class="icon" style="width:24px; height:24px;" data-icon="CheckCircle2"></span> Quote within one working day
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · STEP 2 SOURCE (31–47) -->
+  <section class="scene iris" style="--s:31s; --e:48s; background:#0a1020;">
+    <div style="position:absolute; inset:0; background:radial-gradient(60% 60% at 70% 30%, rgba(14,165,233,.22), transparent 70%);"></div>
+    <svg viewBox="170 10 160 90" style="position:absolute; inset:0; width:1280px; height:720px;">
+      <defs>
+        <linearGradient id="land" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2b49"/><stop offset="1" stop-color="#121c31"/></linearGradient>
+        <radialGradient id="glowA"><stop offset="0" stop-color="#fbbf24" stop-opacity=".6"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient>
+        <radialGradient id="glowB"><stop offset="0" stop-color="#38bdf8" stop-opacity=".7"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient>
+      </defs>
+      <path id="countries" fill="url(#land)" stroke="#4b6492" stroke-opacity=".55" stroke-width=".18" stroke-linejoin="round" />
+      <g id="lanes"></g>
+    </svg>
+    <div style="position:absolute; left:0; bottom:0; width:760px; height:340px; background:radial-gradient(90% 100% at 0% 100%, rgba(10,16,32,.92) 30%, rgba(10,16,32,0) 75%);"></div>
+    <div style="position:absolute; left:80px; top:430px; width:540px; color:#fff;">
+      <div class="a-in eyebrow" style="--d:31.5s; color:var(--amber);">Step 2 · We source</div>
+      <div class="a-up h2" style="--d:31.8s; margin-top:14px;">We find the <span style="color:var(--sky); font-style:italic;">best source.</span></div>
+      <div class="a-up lead" style="--d:33s; margin-top:16px; color:#c4cee0;">We buy genuine parts from manufacturers and trusted sellers, in India and abroad.</div>
+    </div>
+    <div class="a-pop" style="--d:35s; position:absolute; left:196px; top:76px; display:flex; gap:8px; align-items:center;">
+      <span style="background:#fff; border-radius:10px; padding:6px 10px;"><img src="../../public/brands/skf.svg" style="height:18px; display:block;" alt="SKF" /></span><span style="color:#fde68a; font-weight:800; font-size:15px;">Sweden</span></div>
+    <div class="a-pop" style="--d:35.6s; position:absolute; left:188px; top:150px; display:flex; gap:6px; align-items:center;">
+      <span style="background:#fff; border-radius:10px; padding:4px 8px;"><img src="../../public/brands/fag.png" style="height:26px; display:block;" alt="FAG" /></span>
+      <span style="background:#fff; border-radius:10px; padding:4px 8px;"><img src="../../public/brands/ina.svg" style="height:26px; display:block;" alt="INA" /></span><span style="color:#fde68a; font-weight:800; font-size:15px; margin-left:4px;">Germany</span></div>
+    <div class="a-pop" style="--d:36.2s; position:absolute; left:1106px; top:300px; display:flex; flex-direction:column; align-items:center; gap:6px;">
+      <span style="background:#fff; border-radius:10px; padding:6px 10px;"><img src="../../public/brands/ntn.svg" style="height:18px; display:block;" alt="NTN" /></span><span style="color:#fde68a; font-weight:800; font-size:15px;">Japan</span></div>
+    <div class="a-in" style="--d:38.2s; position:absolute; left:762px; top:488px; color:#fde68a; font-weight:800; font-size:16px; line-height:1.3;">+ Trusted sellers<br/>across India</div>
+    <div class="a-pop" style="--d:39.6s; position:absolute; left:722px; top:446px; color:#fff; font-weight:900; font-size:22px;">Hosur</div>
+    <div style="position:absolute; right:80px; bottom:80px; display:flex; flex-direction:column; gap:12px; align-items:flex-end;">
+      <span class="pill dark-pill a-up" style="--d:41s;"><span class="icon" style="color:var(--amber)" data-icon="Scale"></span>Compare sellers</span>
+      <span class="pill dark-pill a-up" style="--d:41.6s;"><span class="icon" style="color:var(--amber)" data-icon="BadgeCheck"></span>Genuine parts only</span>
+      <span class="pill dark-pill a-up" style="--d:42.2s;"><span class="icon" style="color:var(--amber)" data-icon="Search"></span>Right grade and size</span>
+    </div>
+  </section>
+
+  <!-- 5 · STEP 3 PRICE (47–59) -->
+  <section class="scene" style="--s:47s; --e:60s;">
+    <div style="position:absolute; left:90px; top:150px; width:520px;">
+      <div class="a-in eyebrow" style="--d:47.5s;">Step 3 · Best price</div>
+      <div class="a-up h2" style="--d:47.8s; margin-top:16px;">We buy right,<br/>so you <span class="accent">pay less.</span></div>
+      <div class="a-up lead" style="--d:49s; margin-top:22px;">Trading is what we do. We compare sellers and buy in volume, then pass the saving on to you.</div>
+      <div style="margin-top:28px; display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
+        <span class="pill a-left" style="--d:50.4s;"><span class="icon" data-icon="Scale"></span>Compare many sellers</span>
+        <span class="pill a-left" style="--d:50.9s;"><span class="icon" data-icon="Package"></span>Buy in volume</span>
+        <span class="pill a-left" style="--d:51.4s;"><span class="icon" data-icon="TrendingDown"></span>Lower price than the market</span>
+      </div>
+    </div>
+    <div class="card a-right" style="--d:48.4s; position:absolute; right:90px; top:130px; width:500px; height:470px; padding:34px 40px;">
+      <div style="font-size:15px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--muted);">Price for the same part</div>
+      <div style="position:absolute; left:60px; right:60px; bottom:96px; height:280px; display:flex; align-items:flex-end; justify-content:space-around; border-bottom:2px solid var(--hair);">
+        <div style="width:130px; height:100%; display:flex; align-items:flex-end;"><div class="a-growy" style="--d:51s; width:100%; height:100%; border-radius:14px 14px 0 0; background:linear-gradient(180deg,#c7ccd6,#aab1be);"></div></div>
+        <div style="width:130px; height:100%; display:flex; align-items:flex-end; position:relative;">
+          <div class="a-pop" style="--d:54.2s; position:absolute; top:42px; left:50%; margin-left:-66px; width:132px; text-align:center; padding:8px 0; border-radius:999px; background:#e9f8ef; color:#0f7a3a; font-weight:900; font-size:17px;">You save</div>
+          <div class="a-growy" style="--d:52.4s; width:100%; height:64%; border-radius:14px 14px 0 0; background:var(--brand);"></div>
+        </div>
+      </div>
+      <div style="position:absolute; left:60px; right:60px; bottom:40px; display:flex; justify-content:space-around; text-align:center; font-weight:800; font-size:17px;">
+        <div style="width:150px; color:var(--muted);">Typical market price</div><div style="width:150px; color:var(--blue);">AARRKKAA price</div>
+      </div>
+      <div style="position:absolute; right:22px; bottom:12px; font-size:11px; color:#9aa2b1;">Illustration</div>
+    </div>
+  </section>
+
+  <!-- 6 · STEP 4 CHECK & PACK (59–69) -->
+  <section class="scene iris" style="--s:59s; --e:70s; background:var(--paper);">
+    <div class="a-right" style="--d:59.4s; position:absolute; right:90px; top:110px; width:560px; height:500px; border-radius:30px; overflow:hidden; box-shadow:0 30px 60px -30px rgba(17,52,71,.6);">
+      <div class="kb" style="--d:59s; --t:10s; background-image:url('../../src/assets/industries-inventory.jpg');"></div>
+      <div style="position:absolute; left:20px; bottom:20px; display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:16px; background:rgba(255,255,255,.92); font-weight:800; font-size:17px;">
+        <span class="icon" style="width:24px; height:24px; color:var(--blue);" data-icon="Warehouse"></span> Our stock in Hosur</div>
+    </div>
+    <div style="position:absolute; left:90px; top:130px; width:520px;">
+      <div class="a-in eyebrow" style="--d:59.5s;">Step 4 · Check and pack</div>
+      <div class="a-up h2" style="--d:59.8s; margin-top:16px;">Checked and<br/>packed in <span class="accent">Hosur.</span></div>
+      <ul style="list-style:none; margin-top:30px; display:flex; flex-direction:column; gap:14px;">
+        <li class="a-left chk" style="--d:61.2s;"><span class="ico"><span class="icon" data-icon="Check"></span></span>Matched to your spec</li>
+        <li class="a-left chk" style="--d:62.1s;"><span class="ico"><span class="icon" data-icon="Check"></span></span>Checked for quality</li>
+        <li class="a-left chk" style="--d:63s;"><span class="ico"><span class="icon" data-icon="Check"></span></span>Labelled and packed safely</li>
+        <li class="a-left chk" style="--d:63.9s;"><span class="ico"><span class="icon" data-icon="Check"></span></span>Invoice and documents ready</li>
+      </ul>
+      <style>.chk { display: flex; align-items: center; gap: 14px; font-size: 22px; font-weight: 700; } .chk .ico { width: 42px; height: 42px; background: #e9f8ef; color: var(--green); } .chk .ico .icon { width: 24px; height: 24px; }</style>
+    </div>
+  </section>
+
+  <!-- 7 · STEP 5 DELIVER (69–81) -->
+  <section class="scene" style="--s:69s; --e:82s; background:var(--paper);">
+    <div style="position:absolute; left:90px; top:110px; width:700px;">
+      <div class="a-in eyebrow" style="--d:69.5s;">Step 5 · Delivery</div>
+      <div class="a-up h2" style="--d:69.8s; margin-top:16px;">Delivered where<br/>you <span class="accent">need it.</span></div>
+    </div>
+    <svg viewBox="0 0 1280 720" style="position:absolute; inset:0;">
+      <path d="M190 560 C 420 560, 520 470, 700 500 S 980 590, 1090 540" fill="none" stroke="#d9dee6" stroke-width="26" stroke-linecap="round" />
+      <path class="a-draw" pathLength="1" style="--d:71s; --t:1.6s;" d="M190 560 C 420 560, 520 470, 700 500 S 980 590, 1090 540" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+      <path d="M190 560 C 420 560, 520 470, 700 500 S 980 590, 1090 540" fill="none" stroke="#9aa6b8" stroke-width="2.5" stroke-dasharray="14 14" />
+      <path class="a-draw" pathLength="1" style="--d:75.2s; --t:1.6s;" d="M200 520 Q 640 260 1090 330" fill="none" stroke="#7cc4ff" stroke-width="3" stroke-linecap="round" />
+      <g opacity="0">
+        <set attributeName="opacity" to="1" begin="72.2s" fill="freeze" />
+        <animateMotion dur="5s" begin="72.2s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".45 0 .4 1" path="M190 560 C 420 560, 520 470, 700 500 S 980 590, 1090 540" />
+        <g transform="translate(-34 -46)"><rect x="0" y="0" width="68" height="46" rx="12" fill="#0a6ae6" />
+          <g transform="translate(10 4) scale(2)" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-icon-g="Truck"></g></g>
+      </g>
+      <g opacity="0">
+        <set attributeName="opacity" to="1" begin="75.6s" fill="freeze" />
+        <animateMotion dur="3.6s" begin="75.6s" fill="freeze" rotate="auto" calcMode="spline" keyTimes="0;1" keySplines=".45 0 .4 1" path="M200 520 Q 640 260 1090 330" />
+        <g transform="translate(-22 -22) rotate(45 22 22)"><circle cx="22" cy="22" r="24" fill="#0b1220" />
+          <g transform="translate(8 8) scale(1.15)" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-icon-g="Plane"></g></g>
+      </g>
+    </svg>
+    <div class="a-pop" style="--d:70.6s; position:absolute; left:110px; top:590px; display:flex; align-items:center; gap:12px;">
+      <span class="ico" style="width:58px; height:58px; background:var(--navy); color:#fff;"><span class="icon" style="width:30px; height:30px;" data-icon="Warehouse"></span></span>
+      <div><div style="font-weight:900; font-size:20px;">AARRKKAA</div><div style="font-size:15px; color:var(--muted); font-weight:600;">Hosur</div></div></div>
+    <div class="a-pop" style="--d:71.4s; position:absolute; left:1010px; top:570px; display:flex; align-items:center; gap:12px;">
+      <span class="ico" style="width:58px; height:58px; background:var(--blue); color:#fff;"><span class="icon" style="width:30px; height:30px;" data-icon="Factory"></span></span>
+      <div><div style="font-weight:900; font-size:20px;">Your plant</div><div style="font-size:15px; color:var(--muted); font-weight:600;">On time</div></div></div>
+    <div style="position:absolute; left:90px; top:262px; display:flex; gap:12px;">
+      <span class="pill a-up" style="--d:72.6s;"><span class="icon" data-icon="Truck"></span>By road, across India</span>
+      <span class="pill a-up" style="--d:75.6s;"><span class="icon" data-icon="Plane"></span>By air, for urgent orders</span>
+      <span class="pill a-up" style="--d:76.6s;"><span class="icon" data-icon="Ship"></span>By sea, for exports</span>
+    </div>
+    <div class="a-pop" style="--d:77.4s; position:absolute; left:1040px; top:262px; display:flex; align-items:center; gap:8px; padding:10px 14px; border-radius:14px; background:#0b1220; color:#fff; font-weight:800; font-size:16px;">
+      <span class="icon" style="width:20px; height:20px; color:var(--sky);" data-icon="Globe2"></span> Worldwide</div>
+  </section>
+
+  <!-- 8 · OUTRO (81–90) -->
+  <section class="scene iris" style="--s:81s; --e:999s; background:var(--brand);">
+    <div style="position:absolute; right:-160px; top:-160px; width:520px; height:520px; border-radius:999px; background:rgba(255,255,255,.12); filter:blur(30px);"></div>
+    <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#fff;">
+      <div class="a-up h1" style="--d:81.4s;">Your line keeps running.</div>
+      <div class="a-up lead" style="--d:82.2s; margin-top:16px; color:rgba(255,255,255,.85);">Genuine parts, sourced smart, at a lower cost, delivered on time.</div>
+      <div class="a-up" style="--d:83.2s; margin-top:34px; display:flex; align-items:center; gap:18px; padding:16px 24px; border-radius:20px; background:#fff;">
+        <span style="font-size:12px; font-weight:800; letter-spacing:.16em; color:var(--muted);">TRUSTED BY</span>
+        <img src="../../public/clients/tata-electronics.svg" style="height:24px;" alt="Tata Electronics" />
+        <img src="../../public/clients/schneider-electric.svg" style="height:30px;" alt="Schneider Electric" />
+        <span style="font-size:15px; font-weight:800; color:var(--muted);">+ 15 more plants</span>
+      </div>
+      <div class="a-up" style="--d:84.6s; margin-top:40px; display:flex; align-items:center; gap:16px;">
+        <span style="display:grid; place-items:center; width:84px; height:84px; border-radius:22px; background:#fff;"><img src="../../public/logo-mark.png" style="height:56px;" alt="" /></span>
+        <div style="text-align:left;"><div style="font-size:32px; font-weight:900; letter-spacing:.02em; line-height:1;">AARRKKAA</div>
+          <div style="margin-top:4px; font-size:12px; font-weight:700; letter-spacing:.36em; opacity:.85;">INTERNATIONAL</div></div>
+      </div>
+      <div class="a-up" style="--d:85.6s; margin-top:30px; display:flex; gap:12px;">
+        <span class="pill" style="color:var(--ink);"><span class="icon" data-icon="Globe2"></span>www.aarrkkaa.com</span>
+        <span class="pill" style="color:var(--ink);"><span class="icon" style="color:#16a34a" data-icon="MessageCircle"></span>+91 78069 36475</span>
+      </div>
+      <div class="a-in" style="--d:86.8s; margin-top:22px; font-size:20px; font-weight:800;">Send us your part. We&rsquo;ll match it.</div>
+    </div>
+  </section>
+
+  <div class="wipe" style="--b:19s; background:#113447;"></div><div class="wipe w2" style="--b:19s; background:linear-gradient(90deg,#0a6ae6,#2b97e8);"></div>
+  <div class="wipe" style="--b:47s; background:#113447;"></div><div class="wipe w2" style="--b:47s; background:linear-gradient(90deg,#0a6ae6,#2b97e8);"></div>
+  <div class="wipe" style="--b:69s; background:#113447;"></div><div class="wipe w2" style="--b:69s; background:linear-gradient(90deg,#0a6ae6,#2b97e8);"></div>
+
+  <div id="chrome">
+    <div class="brandmark"><img src="../../public/logo-mark.png" alt="" /><span><b>AARRKKAA</b><small>INTERNATIONAL</small></span></div>
+    <div class="steps">
+      <span class="chip" style="--on:19s; --off:30.6s;"><i>1</i>Ask</span>
+      <span class="chip" style="--on:31s; --off:46.6s;"><i>2</i>Source</span>
+      <span class="chip" style="--on:47s; --off:58.6s;"><i>3</i>Best price</span>
+      <span class="chip" style="--on:59s; --off:68.6s;"><i>4</i>Pack</span>
+      <span class="chip" style="--on:69s; --off:80.6s;"><i>5</i>Deliver</span>
+    </div>
+    <div id="progress"></div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll("[data-icon]").forEach((el) => { el.classList.add("icon"); el.innerHTML = ICONS[el.dataset.icon]; });
+  document.querySelectorAll("[data-icon-g]").forEach((g) => { g.innerHTML = ICONS[g.dataset.iconG].replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, ""); });
+
+  document.getElementById("countries").setAttribute("d", WORLD_PATH);
+  const px = (lon, lat) => ({ x: lon + 180, y: 80 - lat });
+  const HUB = px(77.83, 12.74);
+  const NS = "http://www.w3.org/2000/svg";
+  const lanes = document.getElementById("lanes");
+  const mk = (tag, attrs, parent = lanes) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+  [ { ...px(11.97, 57.7), d: 34.2 }, { ...px(10.2, 50.05), d: 34.8 }, { ...px(135.5, 34.7), d: 35.4 },
+    { ...px(72.88, 19.08), d: 37.0, local: 1 }, { ...px(77.2, 28.6), d: 37.3, local: 1 }, { ...px(88.36, 22.57), d: 37.6, local: 1 }, { ...px(72.57, 23.0), d: 37.9, local: 1 },
+  ].forEach((s) => {
+    const dist = Math.hypot(HUB.x - s.x, HUB.y - s.y);
+    const d = `M${s.x} ${s.y} Q${(s.x + HUB.x) / 2} ${(s.y + HUB.y) / 2 - Math.max(2, dist * 0.22)} ${HUB.x} ${HUB.y}`;
+    mk("circle", { cx: s.x, cy: s.y, r: s.local ? 2.4 : 3.6, fill: "url(#glowA)", class: "a-pop", style: `--d:${s.d}s; transform-box: fill-box; transform-origin: center;` });
+    mk("circle", { cx: s.x, cy: s.y, r: s.local ? 0.55 : 0.8, fill: "#fbbf24", class: "a-pop", style: `--d:${s.d}s; transform-box: fill-box; transform-origin: center;` });
+    mk("path", { d, pathLength: 1, fill: "none", stroke: "#fbbf24", "stroke-opacity": .8, "stroke-width": s.local ? .22 : .3, "stroke-linecap": "round", class: "a-draw", style: `--d:${s.d + .3}s; --t:1.6s;` });
+    for (let k = 0; k < 2; k++) {
+      const dot = mk("circle", { r: s.local ? .45 : .65, fill: "#fff7d6", opacity: 0 });
+      const begin = s.d + 2 + k * 1.6;
+      mk("set", { attributeName: "opacity", to: 1, begin: begin + "s", fill: "freeze" }, dot);
+      mk("animateMotion", { dur: s.local ? "1.8s" : "3.2s", begin: begin + "s", repeatCount: "indefinite", path: d }, dot);
+    }
+  });
+  mk("circle", { cx: HUB.x, cy: HUB.y, r: 6, fill: "url(#glowB)", class: "a-pop", style: "--d:39.4s; transform-box: fill-box; transform-origin: center;" });
+  mk("circle", { cx: HUB.x, cy: HUB.y, r: 1.2, fill: "#38bdf8", stroke: "#f0f9ff", "stroke-width": .35, class: "a-pop", style: "--d:39.4s; transform-box: fill-box; transform-origin: center;" });
+
+  window.seek = (t) => {
+    for (const a of document.getAnimations()) { a.pause(); a.currentTime = t * 1000; }
+    for (const svg of document.querySelectorAll("svg")) { if (svg.ownerSVGElement === null && svg.pauseAnimations) { svg.pauseAnimations(); svg.setCurrentTime(t); } }
+  };
+  const q = new URLSearchParams(location.search).get("t");
+  if (q !== null) document.fonts.ready.then(() => seek(parseFloat(q)));
+</script>
+</body>
+</html>

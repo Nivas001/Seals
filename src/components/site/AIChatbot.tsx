@@ -227,7 +227,7 @@ export function AIChatbot() {
       const products = findProducts(hitKws.length > 0 ? hitKws : ["pump"], 3);
       return {
         reply:
-          "AARRKKAA manufactures and supplies heavy-duty process pumps for chemical, food processing, pharma, and utility duties. Here are top recommendations matching your inquiry:",
+          "AARRKKAA sources and supplies heavy-duty process pumps for chemical, food processing, pharma, and utility duties. Here are top recommendations matching your inquiry:",
         products,
       };
     }

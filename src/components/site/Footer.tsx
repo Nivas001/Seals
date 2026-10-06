@@ -84,9 +84,7 @@ export function Footer() {
           <div>
             <ArkaLogo size={48} variant="full" />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Supplier and distributor of pumps, mechanical seals, elastomers,
-              stainless steel and precision components for food, pharma,
-              chemical and process industries worldwide with service available globally.
+              Industrial trading company in Hosur, Tamil Nadu. We source genuine pumps, mechanical seals, bearings, elastomers and precision components and supply process plants worldwide at a lower cost.
             </p>
             {/* WhatsApp link in footer */}
             <a

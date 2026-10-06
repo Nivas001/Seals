@@ -18,18 +18,19 @@ import nozzles from "@/assets/cat-nozzles.jpg";
 import silicone from "@/assets/cat-silicone.jpg";
 import valves from "@/assets/cat-valves.jpg";
 
-import { getIndustries } from "@/lib/catalog";
+import { getIndustries, getCategories } from "@/lib/catalog";
 
 export const Route = createFileRoute("/industries")({
   loader: async () => {
-    try {
-      const dbIndustries = await getIndustries();
-      return {
-        industries: dbIndustries && dbIndustries.length > 0 ? dbIndustries : null,
-      };
-    } catch {
-      return { industries: null };
-    }
+    // Categories come from the admin so product links only point at pages that exist.
+    const [dbIndustries, dbCategories] = await Promise.all([
+      getIndustries().catch(() => null),
+      getCategories().catch(() => null),
+    ]);
+    return {
+      industries: dbIndustries && dbIndustries.length > 0 ? dbIndustries : null,
+      categories: dbCategories && dbCategories.length > 0 ? dbCategories.map((c: any) => ({ slug: c.slug, name: c.name })) : null,
+    };
   },
   head: () => ({
     meta: [
@@ -117,7 +118,7 @@ const SECTORS: Sector[] = [
     applications: ["Injection moulding", "Extrusion", "Masterbatch dosing", "Pellet handling"],
     products: [
       { name: "Tungsten Carbide Nozzle", slug: "nozzles" },
-      { name: "Nylatron Rod", slug: "other" },
+      { name: "Nylatron Rod", slug: "rods" },
       { name: "Wave Spring", slug: "springs" },
     ],
   },
@@ -144,7 +145,7 @@ const SECTORS: Sector[] = [
     applications: ["Wellhead sealing", "Refinery valves", "Pipeline maintenance", "Explosive zones"],
     products: [
       { name: "Metal Bellow Seal", slug: "mechanical-seals" },
-      { name: "Non-Sparking Tools", slug: "other" },
+      { name: "Non-Sparking Tools", slug: "additional-products" },
       { name: "Flange End Ball Valve", slug: "valves" },
     ],
     compliance: "Non-sparking tools & HNBR / FFKM elastomers",
@@ -165,7 +166,9 @@ const SECTORS: Sector[] = [
 ];
 
 function IndustriesPage() {
-  const { industries } = Route.useLoaderData();
+  const { industries, categories } = Route.useLoaderData();
+  const liveCats: { slug: string; name: string }[] = categories ?? CATEGORIES;
+  const catExists = (slug: string) => liveCats.some((c) => c.slug === slug);
   const [active, setActive] = useState(0);
 
   const displaySectors: Sector[] = SECTORS.map((defaultSec) => {
@@ -207,7 +210,7 @@ function IndustriesPage() {
 
   // Which product categories fit which sector, built from the sector data.
   const matrixSlugs = Array.from(new Set(displaySectors.flatMap((x) => x.products.map((p) => p.slug))));
-  const matrixRows = matrixSlugs.map((slug) => ({ slug, name: CATEGORIES.find((c) => c.slug === slug)?.name ?? slug }));
+  const matrixRows = matrixSlugs.filter(catExists).map((slug) => ({ slug, name: liveCats.find((c) => c.slug === slug)?.name ?? slug }));
   const short = (n: string) => (n === "Oil & Gas" ? n : n.split(" ")[0]);
 
   const checklist = [
@@ -379,7 +382,7 @@ function IndustriesPage() {
                       <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Recommended products</div>
                       <div className="mt-3 flex flex-wrap gap-2">
                         {x.products.map((p) => {
-                          const exists = CATEGORIES.some((c) => c.slug === p.slug);
+                          const exists = catExists(p.slug);
                           return (
                             <Link key={p.name} to={exists ? "/products/$category" : "/products"} params={exists ? { category: p.slug } : undefined} className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-background px-4 py-2.5 text-sm font-medium text-ink/85 transition hover:border-ink/25 hover:text-ink">
                               {p.name}
@@ -421,7 +424,7 @@ function IndustriesPage() {
                 {matrixRows.map((r) => (
                   <tr key={r.slug} className="border-b border-hairline/70 last:border-0">
                     <th scope="row" className="sticky left-0 z-10 bg-surface px-5 py-3.5 text-left font-semibold text-ink">
-                      <Link to={CATEGORIES.some((c) => c.slug === r.slug) ? "/products/$category" : "/products"} params={CATEGORIES.some((c) => c.slug === r.slug) ? { category: r.slug } : undefined} className="hover:text-brass">{r.name}</Link>
+                      <Link to="/products/$category" params={{ category: r.slug }} className="hover:text-brass">{r.name}</Link>
                     </th>
                     {displaySectors.map((x) => {
                       const hit = x.products.some((p) => p.slug === r.slug);

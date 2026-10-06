@@ -1,0 +1,72 @@
+[
+ {
+  "file": "vo0.wav",
+  "start": 1.3,
+  "dur": 3.37,
+  "room": 6.2,
+  "speed": 1.06
+ },
+ {
+  "file": "vo1.wav",
+  "start": 8.9,
+  "dur": 3.67,
+  "room": 6.0,
+  "speed": 1.06
+ },
+ {
+  "file": "vo2.wav",
+  "start": 15.2,
+  "dur": 1.17,
+  "room": 2.6,
+  "speed": 1.06
+ },
+ {
+  "file": "vo3.wav",
+  "start": 18.9,
+  "dur": 7.72,
+  "room": 10.4,
+  "speed": 1.06
+ },
+ {
+  "file": "vo4.wav",
+  "start": 30.9,
+  "dur": 12.76,
+  "room": 13.9,
+  "speed": 1.06
+ },
+ {
+  "file": "vo5.wav",
+  "start": 45.6,
+  "dur": 7.66,
+  "room": 10.8,
+  "speed": 1.06
+ },
+ {
+  "file": "vo6.wav",
+  "start": 57.7,
+  "dur": 5.76,
+  "room": 8.8,
+  "speed": 1.06
+ },
+ {
+  "file": "vo7.wav",
+  "start": 67.7,
+  "dur": 5.82,
+  "room": 8.6,
+  "speed": 1.06
+ },
+ {
+  "file": "vo8.wav",
+  "start": 76.7,
+  "dur": 1.3,
+  "room": 2.8,
+  "speed": 1.06
+ },
+ {
+  "file": "vo9.wav",
+  "start": 81.0,
+  "dur": 5.53,
+  "room": 8.4,
+  "speed": 1.06
+ }
+]

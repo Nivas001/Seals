@@ -526,12 +526,11 @@ function AboutPreview() {
             <span className="italic text-brass"> keep running.</span>
           </h2>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground">
-            AARRKKAA International is a supplier and distributor of pumps,
-            pump spares, stainless steel flanges, clamps, silicone products,
-            gaskets, seals, hoses, non-sparking tools and precision springs.
-            Our head office is in Hosur, Tamil Nadu, with service available
-            globally — enabling fast response and worldwide delivery for
-            plants that can&rsquo;t afford downtime.
+            AARRKKAA International is an industrial trading company in Hosur,
+            Tamil Nadu. We buy pumps, pump spares, seals, bearings, gaskets,
+            hoses, stainless steel and precision parts from trusted
+            manufacturers and sellers, and supply them to plants when they
+            need them, at a lower cost than the market, anywhere in the world.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -781,9 +780,9 @@ function LocalSupplier() {
             Mechanical seal and pump spares supplier in Hosur, Tamil Nadu.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-            AARRKKAA International supplies mechanical seals (single-spring, cartridge, agitator and rotary union seals),
+            AARRKKAA International is an industrial trading company. We source and supply mechanical seals (single-spring, cartridge, agitator and rotary union seals),
             O-rings, gaskets, oil seals, pumps and pump spares, bearings, elastomers, silicone products, hoses and
-            stainless steel fittings from our head office in Hosur, Tamil Nadu. We serve process plants in the
+            stainless steel fittings from trusted manufacturers and sellers, through our head office in Hosur, Tamil Nadu, at prices below the market. We serve process plants in the
             Hosur&ndash;Bengaluru industrial belt, across Tamil Nadu and India, and export worldwide.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
