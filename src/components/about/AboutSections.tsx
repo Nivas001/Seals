@@ -268,7 +268,10 @@ export function HowWeWorkVideo() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: VIDEO_JSON_LD }} />
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">See how we work.</h2>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass">Our process</div>
+          <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
+            See how we <span className="italic text-brass">work.</span>
+          </h2>
           <p className="mt-3 max-w-md text-base leading-relaxed text-muted-foreground">
             From your enquiry to delivery at your plant, in 90 seconds. Pick a version.
           </p>
@@ -297,7 +300,9 @@ export function HowWeWorkVideo() {
         </div>
       </div>
 
-      <div className="relative mt-8 overflow-hidden rounded-[2rem] border border-hairline bg-ink shadow-lift">
+      <div className="relative mt-8">
+      <div aria-hidden className="pointer-events-none absolute -inset-x-6 -inset-y-8 -z-10 rounded-[3rem] opacity-60 blur-3xl" style={{ background: "var(--gradient-brand)", opacity: 0.18 }} />
+      <div className="relative overflow-hidden rounded-[2rem] border-4 border-white bg-ink shadow-lift ring-1 ring-hairline">
         <video
           key={v.id}
           ref={videoRef}
@@ -316,18 +321,21 @@ export function HowWeWorkVideo() {
           <button
             type="button"
             onClick={play}
-            className="group absolute inset-0 flex items-end justify-start bg-gradient-to-t from-ink/20 via-transparent to-transparent p-4 transition hover:from-ink/10 sm:p-7"
+            className="group absolute inset-0 flex items-center justify-center bg-gradient-to-t from-ink/35 via-ink/5 to-transparent p-4 transition hover:from-ink/20 sm:p-7"
             aria-label={`Play the ${v.label.toLowerCase()} video: how we work`}
           >
-            <span className="flex items-center gap-3 rounded-full bg-white py-2.5 pl-2.5 pr-6 text-sm font-bold text-ink shadow-lift transition group-hover:scale-105 sm:text-base">
-              <span className="relative grid h-11 w-11 place-items-center rounded-full bg-brass text-white sm:h-12 sm:w-12">
-                <span className="absolute inset-0 animate-ping rounded-full bg-brass/40 motion-reduce:animate-none" />
-                <Play className="relative ml-0.5 h-5 w-5 fill-current" />
+            <span className="flex flex-col items-center gap-3">
+              <span className="relative grid h-20 w-20 place-items-center rounded-full bg-white text-brass shadow-lift transition group-hover:scale-110 sm:h-24 sm:w-24">
+                <span className="absolute inset-0 animate-ping rounded-full bg-white/50 motion-reduce:animate-none" />
+                <Play className="relative ml-1 h-8 w-8 fill-current sm:h-9 sm:w-9" />
               </span>
-              Watch · 1:30 · with sound
+              <span className="rounded-full bg-ink/60 px-4 py-1.5 text-xs font-bold text-white backdrop-blur sm:text-sm">
+                Watch · 1:30 · with sound
+              </span>
             </span>
           </button>
         )}
+      </div>
       </div>
 
       <details className="group mt-4 rounded-2xl border border-hairline bg-surface px-5 py-4 text-sm">
@@ -342,38 +350,30 @@ export function HowWeWorkVideo() {
   );
 }
 
-/* Hero photo collage: three of the site's own product photos, gently floating. */
+/* Hero visual: one clean mechanical seal photo, gently floating. */
 export function AboutHeroCollage() {
-  const tiles = [
-    { src: "/images/cat-seals.jpg", cls: "left-[8%] top-0 w-[58%] -rotate-[4deg]", d: 0 },
-    { src: "/images/cat-bearings.jpg", cls: "right-0 top-[24%] w-[52%] rotate-[5deg]", d: 0.12 },
-    { src: "/images/cat-pumps.jpg", cls: "left-0 bottom-[2%] w-[54%] rotate-[3deg]", d: 0.24 },
-  ];
   return (
     <div className="relative mx-auto aspect-square w-full max-w-[460px]" aria-hidden>
-      <div className="absolute inset-[12%] rounded-full bg-brass/15 blur-3xl" />
-      {tiles.map((t) => (
+      <div className="absolute inset-[8%] rounded-full bg-brass/20 blur-3xl" />
+      <motion.div
+        initial={{ opacity: 0, y: 30, scale: 0.94 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.2, ease }}
+        className="absolute inset-[4%]"
+      >
         <motion.div
-          key={t.src}
-          initial={{ opacity: 0, y: 30, scale: 0.94 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 + t.d, ease }}
-          className={`absolute ${t.cls}`}
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="h-full w-full overflow-hidden rounded-[2.5rem] border-4 border-white bg-white shadow-lift"
         >
-          <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 6, delay: t.d * 8, repeat: Infinity, ease: "easeInOut" }}
-            className="overflow-hidden rounded-3xl border-4 border-white bg-white shadow-lift"
-          >
-            <img src={t.src} alt="" className="aspect-[4/3] w-full object-cover" decoding="async" />
-          </motion.div>
+          <img src="/images/double-cartridge-seal.jpg" alt="" className="h-full w-full object-cover" decoding="async" />
         </motion.div>
-      ))}
+      </motion.div>
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, delay: 0.7, ease }}
-        className="absolute bottom-[16%] right-[2%] flex items-center gap-3 rounded-2xl bg-white/95 px-4 py-3 shadow-lift backdrop-blur"
+        className="absolute bottom-[2%] right-[6%] z-10 flex items-center gap-3 rounded-2xl bg-white/95 px-4 py-3 shadow-lift backdrop-blur"
       >
         <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-500/10 text-emerald-600">
           <PackageCheck className="h-5 w-5" />
