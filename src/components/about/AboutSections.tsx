@@ -366,7 +366,7 @@ export function AboutHeroCollage() {
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           className="h-full w-full overflow-hidden rounded-[2.5rem] border-4 border-white bg-white shadow-lift"
         >
-          <img src="/images/double-cartridge-seal.jpg" alt="" className="h-full w-full object-cover" decoding="async" />
+          <img src="/images/about-cartridge-seals.jpg" alt="" className="h-full w-full object-cover" decoding="async" />
         </motion.div>
       </motion.div>
       <motion.div
