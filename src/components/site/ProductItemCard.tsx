@@ -15,13 +15,15 @@ export function ProductItemCard({
 }) {
   const itemSlug = product.slug;
   const detail = product;
+  const image = product.image || category.image;
+  const imageAlt = product.image ? product.name : `${category.name} — representative category image`;
 
   const previewSpecs = detail?.specs
     ? detail.specs
         .filter(
           (s: any) =>
             !["Type", "Product", "Configuration", "Component", "Product Type"].includes(s.label) &&
-            s.value.toLowerCase() !== product.name.toLowerCase()
+            String(s.value).toLowerCase() !== product.name.toLowerCase()
         )
         .slice(0, 2)
     : [];
@@ -31,10 +33,10 @@ export function ProductItemCard({
       <div className="group relative flex flex-col rounded-[20px] border border-hairline bg-surface overflow-hidden shadow-sm hover:shadow-md hover:border-brass/40 transition-all h-full">
         {/* Photo Area - full cover */}
         <div className="absolute inset-0 bg-zinc-100 overflow-hidden z-0">
-          {product.image ? (
+          {image ? (
             <img
-              src={product.image}
-              alt={product.name}
+              src={image}
+              alt={imageAlt}
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 absolute inset-0"
@@ -72,10 +74,10 @@ export function ProductItemCard({
       <div>
         {/* Product photo */}
         <div className="-mx-5 -mt-5 mb-4 aspect-[16/10] overflow-hidden bg-zinc-100 sm:-mx-6 sm:-mt-6">
-          {product.image ? (
+          {image ? (
             <img
-              src={product.image}
-              alt={product.name}
+              src={image}
+              alt={imageAlt}
               width={640}
               height={400}
               loading="lazy"

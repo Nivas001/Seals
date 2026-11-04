@@ -221,8 +221,8 @@ function WizardPage() {
                       <Zap className="h-8 w-8 text-brass animate-pulse" />
                     </div>
                   </div>
-                  <h2 className="text-3xl font-black tracking-tight mb-2">Analyzing Requirements...</h2>
-                  <p className="text-zinc-400">Finding the perfect sealing solution for your application.</p>
+                  <h2 className="text-3xl font-black tracking-tight mb-2">Preparing product suggestions</h2>
+                  <p className="text-zinc-400">Gathering catalog options for your enquiry.</p>
                 </motion.div>
               )}
 
@@ -239,9 +239,9 @@ function WizardPage() {
                     <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-emerald-500/10 text-emerald-500 mb-6">
                       <CheckCircle2 className="h-8 w-8" />
                     </div>
-                    <h2 className="text-4xl lg:text-5xl font-black tracking-tight mb-4">Matches Found!</h2>
+                    <h2 className="text-4xl lg:text-5xl font-black tracking-tight mb-4">Products to discuss with our team</h2>
                     <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-                      Based on your requirements, here are our top recommended products engineered for your exact specifications.
+                      Explore these catalog products. Our team will confirm the correct seal using your equipment and operating conditions.
                     </p>
                   </div>
 
@@ -259,12 +259,12 @@ function WizardPage() {
                         >
                           <div className="aspect-[4/3] bg-zinc-950 relative overflow-hidden">
                             <img 
-                              src={product.image || "/placeholder.svg"} 
+                              src={product.image || product.category?.image || "/placeholder.svg"}
                               alt={product.name}
                               className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                             />
                             <div className="absolute top-4 left-4 bg-brass text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
-                              Best Match
+                              Catalog product
                             </div>
                           </div>
                           <div className="p-6 flex flex-col flex-1">

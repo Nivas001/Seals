@@ -424,3 +424,7 @@
 
 @keyframes sector-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion: reduce){[role="tabpanel"]{animation:none !important}}
+
+:where(a,button,input,select,textarea):focus-visible { outline: 3px solid var(--ring); outline-offset: 4px; }
+button,select { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
