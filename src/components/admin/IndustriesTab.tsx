@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { updateIndustryImage, upsertIndustry } from "@/lib/admin";
-import { compressImage } from "@/lib/image-utils";
+import { uploadImage } from "@/lib/image-utils";
 import type { IndustrySector } from "@/data/defaultIndustries";
 
 interface IndustriesTabProps {
@@ -88,7 +88,7 @@ export function IndustriesTab({ industries, session, onUpdate }: IndustriesTabPr
     setBusyId(sector.id || sector.slug);
     try {
       // Compress with high quality suitable for responsive industry cards
-      const compressedBase64 = await compressImage(file, 1600, 0.85);
+      const compressedBase64 = await uploadImage(file, "industries", 1600, 0.85);
 
       await updateIndustryImage({
         data: {

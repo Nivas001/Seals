@@ -70,6 +70,25 @@ export function ProductItemCard({
   return (
     <div className="group relative flex flex-col justify-between rounded-2xl border border-hairline bg-surface p-5 sm:p-6 transition-all duration-300 hover:border-ink/25 hover:shadow-soft overflow-hidden h-full">
       <div>
+        {/* Product photo */}
+        <div className="-mx-5 -mt-5 mb-4 aspect-[16/10] overflow-hidden bg-zinc-100 sm:-mx-6 sm:-mt-6">
+          {product.image ? (
+            <img
+              src={product.image}
+              alt={product.name}
+              width={640}
+              height={400}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="grid h-full w-full place-items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40">
+              {product.name}
+            </div>
+          )}
+        </div>
+
         {/* Top bar: Item number and specs count */}
         <div className="flex items-center justify-between gap-3 mb-3">
           <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-brass">

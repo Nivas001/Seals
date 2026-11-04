@@ -115,9 +115,9 @@ export function CategoriesTab({ categories, token, onUpdate }: { categories: any
         return;
       }
       try {
-        const { compressImage } = await import("@/lib/image-utils");
-        const base64 = await compressImage(file);
-        setFormData({ ...formData, image: base64 });
+        const { uploadImage } = await import("@/lib/image-utils");
+        const image = await uploadImage(file, "categories");
+        setFormData({ ...formData, image });
       } catch (error) {
         toast.error("Failed to process image");
       }

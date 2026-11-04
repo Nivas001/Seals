@@ -9,142 +9,47 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WizardRouteImport } from './routes/wizard'
-import { Route as WhackALeakRouteImport } from './routes/whack-a-leak'
-import { Route as SystemBreachRouteImport } from './routes/system-breach'
-import { Route as StressTestRouteImport } from './routes/stress-test'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SealDefenderRouteImport } from './routes/seal-defender'
-import { Route as RogueAiRouteImport } from './routes/rogue-ai'
-import { Route as OverrideRouteImport } from './routes/override'
-import { Route as MatrixRouteImport } from './routes/matrix'
-import { Route as IntelligenceCheckRouteImport } from './routes/intelligence-check'
-import { Route as IndustriesRouteImport } from './routes/industries'
-import { Route as GitBlameRouteImport } from './routes/git-blame'
-import { Route as Funny_url_listRouteImport } from './routes/funny_url_list'
-import { Route as ForkliftSimRouteImport } from './routes/forklift-sim'
-import { Route as FlappyPumpRouteImport } from './routes/flappy-pump'
-import { Route as DoNotPushRouteImport } from './routes/do-not-push'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CatalogRouteImport } from './routes/catalog'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as R418RouteImport } from './routes/418'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProductsIndexRouteImport } from './routes/products.index'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as ProductsCategoryRouteImport } from './routes/products.$category'
-import { Route as AdminLayoutRouteImport } from './routes/admin._layout'
+import { Route as R418RouteImport } from './routes/418'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as CatalogRouteImport } from './routes/catalog'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DoNotPushRouteImport } from './routes/do-not-push'
+import { Route as FlappyPumpRouteImport } from './routes/flappy-pump'
+import { Route as ForkliftSimRouteImport } from './routes/forklift-sim'
+import { Route as Funny_url_listRouteImport } from './routes/funny_url_list'
+import { Route as GitBlameRouteImport } from './routes/git-blame'
+import { Route as IndustriesRouteImport } from './routes/industries'
+import { Route as IntelligenceCheckRouteImport } from './routes/intelligence-check'
+import { Route as MatrixRouteImport } from './routes/matrix'
+import { Route as OverrideRouteImport } from './routes/override'
+import { Route as RogueAiRouteImport } from './routes/rogue-ai'
+import { Route as SealDefenderRouteImport } from './routes/seal-defender'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as StressTestRouteImport } from './routes/stress-test'
+import { Route as SystemBreachRouteImport } from './routes/system-breach'
+import { Route as WhackALeakRouteImport } from './routes/whack-a-leak'
+import { Route as WizardRouteImport } from './routes/wizard'
 import { Route as AboutPaymentsRouteImport } from './routes/about_.payments'
-import { Route as ProductsCategoryItemRouteImport } from './routes/products.$category_.$item'
-import { Route as AdminLayoutSubscribersRouteImport } from './routes/admin._layout.subscribers'
-import { Route as AdminLayoutProductsRouteImport } from './routes/admin._layout.products'
-import { Route as AdminLayoutInquiriesRouteImport } from './routes/admin._layout.inquiries'
-import { Route as AdminLayoutIndustriesRouteImport } from './routes/admin._layout.industries'
-import { Route as AdminLayoutHeroRouteImport } from './routes/admin._layout.hero'
-import { Route as AdminLayoutDashboardRouteImport } from './routes/admin._layout.dashboard'
-import { Route as AdminLayoutContactRouteImport } from './routes/admin._layout.contact'
-import { Route as AdminLayoutCategoriesRouteImport } from './routes/admin._layout.categories'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminLayoutRouteImport } from './routes/admin._layout'
+import { Route as ProductsIndexRouteImport } from './routes/products.index'
+import { Route as ProductsCategoryRouteImport } from './routes/products.$category'
 import { Route as AdminLayoutAnalyticsRouteImport } from './routes/admin._layout.analytics'
+import { Route as AdminLayoutCategoriesRouteImport } from './routes/admin._layout.categories'
+import { Route as AdminLayoutContactRouteImport } from './routes/admin._layout.contact'
+import { Route as AdminLayoutDashboardRouteImport } from './routes/admin._layout.dashboard'
+import { Route as AdminLayoutHeroRouteImport } from './routes/admin._layout.hero'
+import { Route as AdminLayoutIndustriesRouteImport } from './routes/admin._layout.industries'
+import { Route as AdminLayoutInquiriesRouteImport } from './routes/admin._layout.inquiries'
+import { Route as AdminLayoutProductsRouteImport } from './routes/admin._layout.products'
+import { Route as AdminLayoutSubscribersRouteImport } from './routes/admin._layout.subscribers'
+import { Route as ProductsCategoryItemRouteImport } from './routes/products.$category_.$item'
 
-const WizardRoute = WizardRouteImport.update({
-  id: '/wizard',
-  path: '/wizard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WhackALeakRoute = WhackALeakRouteImport.update({
-  id: '/whack-a-leak',
-  path: '/whack-a-leak',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SystemBreachRoute = SystemBreachRouteImport.update({
-  id: '/system-breach',
-  path: '/system-breach',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StressTestRoute = StressTestRouteImport.update({
-  id: '/stress-test',
-  path: '/stress-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SealDefenderRoute = SealDefenderRouteImport.update({
-  id: '/seal-defender',
-  path: '/seal-defender',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RogueAiRoute = RogueAiRouteImport.update({
-  id: '/rogue-ai',
-  path: '/rogue-ai',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OverrideRoute = OverrideRouteImport.update({
-  id: '/override',
-  path: '/override',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MatrixRoute = MatrixRouteImport.update({
-  id: '/matrix',
-  path: '/matrix',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IntelligenceCheckRoute = IntelligenceCheckRouteImport.update({
-  id: '/intelligence-check',
-  path: '/intelligence-check',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndustriesRoute = IndustriesRouteImport.update({
-  id: '/industries',
-  path: '/industries',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GitBlameRoute = GitBlameRouteImport.update({
-  id: '/git-blame',
-  path: '/git-blame',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Funny_url_listRoute = Funny_url_listRouteImport.update({
-  id: '/funny_url_list',
-  path: '/funny_url_list',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForkliftSimRoute = ForkliftSimRouteImport.update({
-  id: '/forklift-sim',
-  path: '/forklift-sim',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FlappyPumpRoute = FlappyPumpRouteImport.update({
-  id: '/flappy-pump',
-  path: '/flappy-pump',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DoNotPushRoute = DoNotPushRouteImport.update({
-  id: '/do-not-push',
-  path: '/do-not-push',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CatalogRoute = CatalogRouteImport.update({
-  id: '/catalog',
-  path: '/catalog',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const R418Route = R418RouteImport.update({
@@ -152,14 +57,109 @@ const R418Route = R418RouteImport.update({
   path: '/418',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsIndexRoute = ProductsIndexRouteImport.update({
-  id: '/products/',
-  path: '/products/',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CatalogRoute = CatalogRouteImport.update({
+  id: '/catalog',
+  path: '/catalog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DoNotPushRoute = DoNotPushRouteImport.update({
+  id: '/do-not-push',
+  path: '/do-not-push',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlappyPumpRoute = FlappyPumpRouteImport.update({
+  id: '/flappy-pump',
+  path: '/flappy-pump',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForkliftSimRoute = ForkliftSimRouteImport.update({
+  id: '/forklift-sim',
+  path: '/forklift-sim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Funny_url_listRoute = Funny_url_listRouteImport.update({
+  id: '/funny_url_list',
+  path: '/funny_url_list',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GitBlameRoute = GitBlameRouteImport.update({
+  id: '/git-blame',
+  path: '/git-blame',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriesRoute = IndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntelligenceCheckRoute = IntelligenceCheckRouteImport.update({
+  id: '/intelligence-check',
+  path: '/intelligence-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MatrixRoute = MatrixRouteImport.update({
+  id: '/matrix',
+  path: '/matrix',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OverrideRoute = OverrideRouteImport.update({
+  id: '/override',
+  path: '/override',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RogueAiRoute = RogueAiRouteImport.update({
+  id: '/rogue-ai',
+  path: '/rogue-ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SealDefenderRoute = SealDefenderRouteImport.update({
+  id: '/seal-defender',
+  path: '/seal-defender',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StressTestRoute = StressTestRouteImport.update({
+  id: '/stress-test',
+  path: '/stress-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SystemBreachRoute = SystemBreachRouteImport.update({
+  id: '/system-breach',
+  path: '/system-breach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WhackALeakRoute = WhackALeakRouteImport.update({
+  id: '/whack-a-leak',
+  path: '/whack-a-leak',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WizardRoute = WizardRouteImport.update({
+  id: '/wizard',
+  path: '/wizard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutPaymentsRoute = AboutPaymentsRouteImport.update({
+  id: '/about_/payments',
+  path: '/about/payments',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -167,58 +167,23 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminLayoutRoute = AdminLayoutRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsCategoryRoute = ProductsCategoryRouteImport.update({
   id: '/products/$category',
   path: '/products/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminLayoutRoute = AdminLayoutRouteImport.update({
-  id: '/_layout',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AboutPaymentsRoute = AboutPaymentsRouteImport.update({
-  id: '/about_/payments',
-  path: '/about/payments',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductsCategoryItemRoute = ProductsCategoryItemRouteImport.update({
-  id: '/products/$category_/$item',
-  path: '/products/$category/$item',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminLayoutSubscribersRoute = AdminLayoutSubscribersRouteImport.update({
-  id: '/subscribers',
-  path: '/subscribers',
-  getParentRoute: () => AdminLayoutRoute,
-} as any)
-const AdminLayoutProductsRoute = AdminLayoutProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
-  getParentRoute: () => AdminLayoutRoute,
-} as any)
-const AdminLayoutInquiriesRoute = AdminLayoutInquiriesRouteImport.update({
-  id: '/inquiries',
-  path: '/inquiries',
-  getParentRoute: () => AdminLayoutRoute,
-} as any)
-const AdminLayoutIndustriesRoute = AdminLayoutIndustriesRouteImport.update({
-  id: '/industries',
-  path: '/industries',
-  getParentRoute: () => AdminLayoutRoute,
-} as any)
-const AdminLayoutHeroRoute = AdminLayoutHeroRouteImport.update({
-  id: '/hero',
-  path: '/hero',
-  getParentRoute: () => AdminLayoutRoute,
-} as any)
-const AdminLayoutDashboardRoute = AdminLayoutDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AdminLayoutRoute,
-} as any)
-const AdminLayoutContactRoute = AdminLayoutContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const AdminLayoutAnalyticsRoute = AdminLayoutAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
   getParentRoute: () => AdminLayoutRoute,
 } as any)
 const AdminLayoutCategoriesRoute = AdminLayoutCategoriesRouteImport.update({
@@ -226,10 +191,45 @@ const AdminLayoutCategoriesRoute = AdminLayoutCategoriesRouteImport.update({
   path: '/categories',
   getParentRoute: () => AdminLayoutRoute,
 } as any)
-const AdminLayoutAnalyticsRoute = AdminLayoutAnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
+const AdminLayoutContactRoute = AdminLayoutContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutDashboardRoute = AdminLayoutDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutHeroRoute = AdminLayoutHeroRouteImport.update({
+  id: '/hero',
+  path: '/hero',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutIndustriesRoute = AdminLayoutIndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutInquiriesRoute = AdminLayoutInquiriesRouteImport.update({
+  id: '/inquiries',
+  path: '/inquiries',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutProductsRoute = AdminLayoutProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const AdminLayoutSubscribersRoute = AdminLayoutSubscribersRouteImport.update({
+  id: '/subscribers',
+  path: '/subscribers',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+const ProductsCategoryItemRoute = ProductsCategoryItemRouteImport.update({
+  id: '/products/$category_/$item',
+  path: '/products/$category/$item',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -495,144 +495,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/wizard': {
-      id: '/wizard'
-      path: '/wizard'
-      fullPath: '/wizard'
-      preLoaderRoute: typeof WizardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/whack-a-leak': {
-      id: '/whack-a-leak'
-      path: '/whack-a-leak'
-      fullPath: '/whack-a-leak'
-      preLoaderRoute: typeof WhackALeakRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/system-breach': {
-      id: '/system-breach'
-      path: '/system-breach'
-      fullPath: '/system-breach'
-      preLoaderRoute: typeof SystemBreachRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/stress-test': {
-      id: '/stress-test'
-      path: '/stress-test'
-      fullPath: '/stress-test'
-      preLoaderRoute: typeof StressTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/seal-defender': {
-      id: '/seal-defender'
-      path: '/seal-defender'
-      fullPath: '/seal-defender'
-      preLoaderRoute: typeof SealDefenderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/rogue-ai': {
-      id: '/rogue-ai'
-      path: '/rogue-ai'
-      fullPath: '/rogue-ai'
-      preLoaderRoute: typeof RogueAiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/override': {
-      id: '/override'
-      path: '/override'
-      fullPath: '/override'
-      preLoaderRoute: typeof OverrideRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/matrix': {
-      id: '/matrix'
-      path: '/matrix'
-      fullPath: '/matrix'
-      preLoaderRoute: typeof MatrixRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/intelligence-check': {
-      id: '/intelligence-check'
-      path: '/intelligence-check'
-      fullPath: '/intelligence-check'
-      preLoaderRoute: typeof IntelligenceCheckRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/industries': {
-      id: '/industries'
-      path: '/industries'
-      fullPath: '/industries'
-      preLoaderRoute: typeof IndustriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/git-blame': {
-      id: '/git-blame'
-      path: '/git-blame'
-      fullPath: '/git-blame'
-      preLoaderRoute: typeof GitBlameRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/funny_url_list': {
-      id: '/funny_url_list'
-      path: '/funny_url_list'
-      fullPath: '/funny_url_list'
-      preLoaderRoute: typeof Funny_url_listRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forklift-sim': {
-      id: '/forklift-sim'
-      path: '/forklift-sim'
-      fullPath: '/forklift-sim'
-      preLoaderRoute: typeof ForkliftSimRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/flappy-pump': {
-      id: '/flappy-pump'
-      path: '/flappy-pump'
-      fullPath: '/flappy-pump'
-      preLoaderRoute: typeof FlappyPumpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/do-not-push': {
-      id: '/do-not-push'
-      path: '/do-not-push'
-      fullPath: '/do-not-push'
-      preLoaderRoute: typeof DoNotPushRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/catalog': {
-      id: '/catalog'
-      path: '/catalog'
-      fullPath: '/catalog'
-      preLoaderRoute: typeof CatalogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/418': {
@@ -642,18 +509,151 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof R418RouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products/': {
-      id: '/products/'
-      path: '/products'
-      fullPath: '/products/'
-      preLoaderRoute: typeof ProductsIndexRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catalog': {
+      id: '/catalog'
+      path: '/catalog'
+      fullPath: '/catalog'
+      preLoaderRoute: typeof CatalogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/do-not-push': {
+      id: '/do-not-push'
+      path: '/do-not-push'
+      fullPath: '/do-not-push'
+      preLoaderRoute: typeof DoNotPushRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flappy-pump': {
+      id: '/flappy-pump'
+      path: '/flappy-pump'
+      fullPath: '/flappy-pump'
+      preLoaderRoute: typeof FlappyPumpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forklift-sim': {
+      id: '/forklift-sim'
+      path: '/forklift-sim'
+      fullPath: '/forklift-sim'
+      preLoaderRoute: typeof ForkliftSimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/funny_url_list': {
+      id: '/funny_url_list'
+      path: '/funny_url_list'
+      fullPath: '/funny_url_list'
+      preLoaderRoute: typeof Funny_url_listRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/git-blame': {
+      id: '/git-blame'
+      path: '/git-blame'
+      fullPath: '/git-blame'
+      preLoaderRoute: typeof GitBlameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industries': {
+      id: '/industries'
+      path: '/industries'
+      fullPath: '/industries'
+      preLoaderRoute: typeof IndustriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intelligence-check': {
+      id: '/intelligence-check'
+      path: '/intelligence-check'
+      fullPath: '/intelligence-check'
+      preLoaderRoute: typeof IntelligenceCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/matrix': {
+      id: '/matrix'
+      path: '/matrix'
+      fullPath: '/matrix'
+      preLoaderRoute: typeof MatrixRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/override': {
+      id: '/override'
+      path: '/override'
+      fullPath: '/override'
+      preLoaderRoute: typeof OverrideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rogue-ai': {
+      id: '/rogue-ai'
+      path: '/rogue-ai'
+      fullPath: '/rogue-ai'
+      preLoaderRoute: typeof RogueAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seal-defender': {
+      id: '/seal-defender'
+      path: '/seal-defender'
+      fullPath: '/seal-defender'
+      preLoaderRoute: typeof SealDefenderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stress-test': {
+      id: '/stress-test'
+      path: '/stress-test'
+      fullPath: '/stress-test'
+      preLoaderRoute: typeof StressTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/system-breach': {
+      id: '/system-breach'
+      path: '/system-breach'
+      fullPath: '/system-breach'
+      preLoaderRoute: typeof SystemBreachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/whack-a-leak': {
+      id: '/whack-a-leak'
+      path: '/whack-a-leak'
+      fullPath: '/whack-a-leak'
+      preLoaderRoute: typeof WhackALeakRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wizard': {
+      id: '/wizard'
+      path: '/wizard'
+      fullPath: '/wizard'
+      preLoaderRoute: typeof WizardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about_/payments': {
+      id: '/about_/payments'
+      path: '/about/payments'
+      fullPath: '/about/payments'
+      preLoaderRoute: typeof AboutPaymentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -663,13 +663,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/products/$category': {
-      id: '/products/$category'
-      path: '/products/$category'
-      fullPath: '/products/$category'
-      preLoaderRoute: typeof ProductsCategoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/_layout': {
       id: '/admin/_layout'
       path: ''
@@ -677,67 +670,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/about_/payments': {
-      id: '/about_/payments'
-      path: '/about/payments'
-      fullPath: '/about/payments'
-      preLoaderRoute: typeof AboutPaymentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/products/$category_/$item': {
-      id: '/products/$category_/$item'
-      path: '/products/$category/$item'
-      fullPath: '/products/$category/$item'
-      preLoaderRoute: typeof ProductsCategoryItemRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/_layout/subscribers': {
-      id: '/admin/_layout/subscribers'
-      path: '/subscribers'
-      fullPath: '/admin/subscribers'
-      preLoaderRoute: typeof AdminLayoutSubscribersRouteImport
-      parentRoute: typeof AdminLayoutRoute
-    }
-    '/admin/_layout/products': {
-      id: '/admin/_layout/products'
+    '/products/': {
+      id: '/products/'
       path: '/products'
-      fullPath: '/admin/products'
-      preLoaderRoute: typeof AdminLayoutProductsRouteImport
-      parentRoute: typeof AdminLayoutRoute
+      fullPath: '/products/'
+      preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/_layout/inquiries': {
-      id: '/admin/_layout/inquiries'
-      path: '/inquiries'
-      fullPath: '/admin/inquiries'
-      preLoaderRoute: typeof AdminLayoutInquiriesRouteImport
-      parentRoute: typeof AdminLayoutRoute
+    '/products/$category': {
+      id: '/products/$category'
+      path: '/products/$category'
+      fullPath: '/products/$category'
+      preLoaderRoute: typeof ProductsCategoryRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/_layout/industries': {
-      id: '/admin/_layout/industries'
-      path: '/industries'
-      fullPath: '/admin/industries'
-      preLoaderRoute: typeof AdminLayoutIndustriesRouteImport
-      parentRoute: typeof AdminLayoutRoute
-    }
-    '/admin/_layout/hero': {
-      id: '/admin/_layout/hero'
-      path: '/hero'
-      fullPath: '/admin/hero'
-      preLoaderRoute: typeof AdminLayoutHeroRouteImport
-      parentRoute: typeof AdminLayoutRoute
-    }
-    '/admin/_layout/dashboard': {
-      id: '/admin/_layout/dashboard'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AdminLayoutDashboardRouteImport
-      parentRoute: typeof AdminLayoutRoute
-    }
-    '/admin/_layout/contact': {
-      id: '/admin/_layout/contact'
-      path: '/contact'
-      fullPath: '/admin/contact'
-      preLoaderRoute: typeof AdminLayoutContactRouteImport
+    '/admin/_layout/analytics': {
+      id: '/admin/_layout/analytics'
+      path: '/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminLayoutAnalyticsRouteImport
       parentRoute: typeof AdminLayoutRoute
     }
     '/admin/_layout/categories': {
@@ -747,12 +698,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutCategoriesRouteImport
       parentRoute: typeof AdminLayoutRoute
     }
-    '/admin/_layout/analytics': {
-      id: '/admin/_layout/analytics'
-      path: '/analytics'
-      fullPath: '/admin/analytics'
-      preLoaderRoute: typeof AdminLayoutAnalyticsRouteImport
+    '/admin/_layout/contact': {
+      id: '/admin/_layout/contact'
+      path: '/contact'
+      fullPath: '/admin/contact'
+      preLoaderRoute: typeof AdminLayoutContactRouteImport
       parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/dashboard': {
+      id: '/admin/_layout/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminLayoutDashboardRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/hero': {
+      id: '/admin/_layout/hero'
+      path: '/hero'
+      fullPath: '/admin/hero'
+      preLoaderRoute: typeof AdminLayoutHeroRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/industries': {
+      id: '/admin/_layout/industries'
+      path: '/industries'
+      fullPath: '/admin/industries'
+      preLoaderRoute: typeof AdminLayoutIndustriesRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/inquiries': {
+      id: '/admin/_layout/inquiries'
+      path: '/inquiries'
+      fullPath: '/admin/inquiries'
+      preLoaderRoute: typeof AdminLayoutInquiriesRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/products': {
+      id: '/admin/_layout/products'
+      path: '/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminLayoutProductsRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/admin/_layout/subscribers': {
+      id: '/admin/_layout/subscribers'
+      path: '/subscribers'
+      fullPath: '/admin/subscribers'
+      preLoaderRoute: typeof AdminLayoutSubscribersRouteImport
+      parentRoute: typeof AdminLayoutRoute
+    }
+    '/products/$category_/$item': {
+      id: '/products/$category_/$item'
+      path: '/products/$category/$item'
+      fullPath: '/products/$category/$item'
+      preLoaderRoute: typeof ProductsCategoryItemRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Trash2, Plus, Image as ImageIcon, ChevronUp, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { upsertHeroImage, deleteHeroImage } from "@/lib/admin";
-import { compressImage } from "@/lib/image-utils";
+import { uploadImage } from "@/lib/image-utils";
 
 export function HeroCarouselTab({ data, session, onUpdate }: { data: any, session: any, onUpdate: () => void }) {
   const [busy, setBusy] = useState(false);
@@ -35,7 +35,7 @@ export function HeroCarouselTab({ data, session, onUpdate }: { data: any, sessio
     setBusy(true);
     try {
       // Use higher resolution and quality for hero images (1920px width, 90% quality)
-      const url = await compressImage(newImage, 1920, 0.9);
+      const url = await uploadImage(newImage, "hero", 1920, 0.88);
       await upsertHeroImage({
         data: {
           token: session.access_token,

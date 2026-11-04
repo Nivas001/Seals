@@ -321,15 +321,15 @@ export function HowWeWorkVideo() {
           <button
             type="button"
             onClick={play}
-            className="group absolute inset-0 flex items-center justify-center bg-gradient-to-t from-ink/35 via-ink/5 to-transparent p-4 transition hover:from-ink/20 sm:p-7"
+            className="group absolute inset-0 flex items-end justify-start bg-gradient-to-t from-ink/35 via-transparent to-transparent p-4 transition hover:from-ink/20 sm:p-7"
             aria-label={`Play the ${v.label.toLowerCase()} video: how we work`}
           >
-            <span className="flex flex-col items-center gap-3">
-              <span className="relative grid h-20 w-20 place-items-center rounded-full bg-white text-brass shadow-lift transition group-hover:scale-110 sm:h-24 sm:w-24">
-                <span className="absolute inset-0 animate-ping rounded-full bg-white/50 motion-reduce:animate-none" />
-                <Play className="relative ml-1 h-8 w-8 fill-current sm:h-9 sm:w-9" />
+            <span className="flex items-center gap-3 rounded-full bg-white py-2 pl-2 pr-5 shadow-lift transition group-hover:scale-105">
+              <span className="relative grid h-11 w-11 place-items-center rounded-full bg-brass text-white sm:h-12 sm:w-12">
+                <span className="absolute inset-0 animate-ping rounded-full bg-brass/40 motion-reduce:animate-none" />
+                <Play className="relative ml-0.5 h-5 w-5 fill-current" />
               </span>
-              <span className="rounded-full bg-ink/60 px-4 py-1.5 text-xs font-bold text-white backdrop-blur sm:text-sm">
+              <span className="text-sm font-bold text-ink sm:text-base">
                 Watch · 1:30 · with sound
               </span>
             </span>

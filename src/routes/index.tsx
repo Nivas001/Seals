@@ -14,7 +14,7 @@ import {
 import heroImg from "@/assets/hero-pump.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import { CATEGORIES, COMPANY } from "@/data/catalog";
-import { getHeroImages, getAllCategoriesWithProducts } from "@/lib/catalog";
+import { getHeroImages, getHomeCategories } from "@/lib/catalog";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { GlowCard } from "@/components/ui/GlowCard";
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
   loader: async () => {
     const [heroImages, dbCategories] = await Promise.all([
       getHeroImages(),
-      getAllCategoriesWithProducts(),
+      getHomeCategories(),
     ]);
     return { heroImages, dbCategories };
   }
@@ -107,7 +107,7 @@ function Home() {
           short: cat.short || staticMatch?.short || "",
           description: cat.description || staticMatch?.description || "",
           image: cat.image || staticMatch?.image || "",
-          count: cat.products?.length || staticMatch?.count || 0,
+          count: cat._count?.products || staticMatch?.count || 0,
         };
       })
     : CATEGORIES.slice(0, 8);

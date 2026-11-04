@@ -1,6 +1,6 @@
-import { CLIENTS, BRANDS } from "@/data/clients";
+import { BRANDS } from "@/data/clients";
 import { ClientLogo } from "@/components/site/ClientLogo";
-import { AboutFacts, WhatWeDo, BusinessFlow, WhoWeServe, HowWeWorkVideo, AboutHeroCollage } from "@/components/about/AboutSections";
+import { AboutFacts, BusinessFlow, HowWeWorkVideo, AboutHeroCollage } from "@/components/about/AboutSections";
 import { WhereWeAre, PaymentsBand } from "@/components/about/AboutExtras";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
@@ -85,7 +85,6 @@ function AboutPage() {
 
         <HowWeWorkVideo />
 
-        <WhatWeDo categories={categories} />
         <BusinessFlow />
 
         <section className="mx-auto mt-20 max-w-6xl px-5 sm:mt-28 sm:px-8">
@@ -124,46 +123,6 @@ function AboutPage() {
           </div>
         </section>
 
-        <WhoWeServe />
-
-        <section className="mx-auto mt-16 max-w-7xl overflow-hidden px-5 sm:mt-24 sm:px-8">
-          <div className="text-center">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">
-              Our clients
-            </div>
-            <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
-              Companies we deliver to
-            </h2>
-            <p className="mt-4 mx-auto max-w-2xl text-base text-muted-foreground">
-              We supply and support plants across electronics, electrical equipment, pharmaceuticals, biotechnology, food processing, chemicals, energy and precision engineering.
-            </p>
-          </div>
-          <div className="mt-12 relative flex flex-col gap-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-            <div className="marquee-track flex w-max gap-4 hover:[animation-play-state:paused]">
-              {[...CLIENTS.slice(0, 8), ...CLIENTS.slice(0, 8)].map((client, i) => (
-                <div
-                  key={`${client.name}-${i}`}
-                  className="glass-shimmer flex items-center justify-center rounded-full border border-hairline bg-surface/50 px-6 py-3 transition-all duration-300 hover:-translate-y-1 hover:border-ink/20 hover:bg-white hover:shadow-soft cursor-pointer whitespace-nowrap"
-                >
-                  <ClientLogo client={client} />
-                </div>
-              ))}
-            </div>
-            <div className="marquee-track-reverse flex w-max gap-4 hover:[animation-play-state:paused]">
-              {[...CLIENTS.slice(8), ...CLIENTS.slice(8)].map((client, i) => (
-                <div
-                  key={`${client.name}-${i}`}
-                  className="glass-shimmer flex items-center justify-center rounded-full border border-hairline bg-surface/50 px-6 py-3 transition-all duration-300 hover:-translate-y-1 hover:border-ink/20 hover:bg-white hover:shadow-soft cursor-pointer whitespace-nowrap"
-                >
-                  <ClientLogo client={client} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-
-
         <PaymentsBand />
 
         <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
@@ -183,6 +142,33 @@ function AboutPage() {
         </section>
 
         <WhereWeAre address={address as { line1: string; line2: string; city: string; district?: string; state: string; pincode: string }} phones={contactInfo?.phones} emails={contactInfo?.emails} />
+
+        <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
+          <div
+            className="relative overflow-hidden rounded-[2rem] p-8 text-white sm:p-12"
+            style={{ background: "var(--gradient-brand)" }}
+          >
+            <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
+            <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+              <div className="max-w-xl">
+                <h2 className="font-display text-3xl font-black leading-[1.05] tracking-tight sm:text-4xl">
+                  Send us the part. We&rsquo;ll match it.
+                </h2>
+                <p className="mt-3 text-base text-white/80">
+                  A part number, a drawing or a photo of the worn part is enough to get a quote within one working day.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link to="/contact" className="inline-flex h-12 items-center rounded-full bg-white px-6 text-sm font-semibold text-ink shadow-lift transition hover:bg-white/90">
+                  Get a quote
+                </Link>
+                <Link to="/catalog" className="inline-flex h-12 items-center gap-2 rounded-full border border-white/40 px-6 text-sm font-semibold text-white transition hover:bg-white/10">
+                  Browse {categories?.length ?? 13} product families
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="mx-auto flex max-w-6xl justify-center px-5 pb-12 pt-14 sm:px-8">
           <Link to="/admin" rel="nofollow" className="text-xs font-medium text-muted-foreground/70 transition hover:text-ink">

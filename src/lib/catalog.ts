@@ -179,6 +179,25 @@ export const getContactInfo = createServerFn({ method: "GET" })
     );
   });
 
+// Lean list for the home page: no product rows, just the count per category.
+export const getHomeCategories = createServerFn({ method: "GET" })
+  .handler(async () => {
+    return await getCached("homeCategories", () =>
+      db.category.findMany({
+        where: { isDeleted: false, isHidden: false },
+        orderBy: { priority: "asc" },
+        select: {
+          slug: true,
+          name: true,
+          short: true,
+          description: true,
+          image: true,
+          _count: { select: { products: { where: { isDeleted: false, isHidden: false } } } },
+        },
+      })
+    );
+  });
+
 export const getAllCategoriesWithProducts = createServerFn({ method: "GET" })
   .handler(async () => {
     return await getCached("allCategoriesWithProducts", () =>
