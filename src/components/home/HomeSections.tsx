@@ -6,11 +6,8 @@ import {
   ArrowUpRight,
   CheckCircle2,
   MessagesSquare,
-  PackageCheck,
   ShieldCheck,
   Truck,
-  Warehouse,
-  Globe2,
 } from "lucide-react";
 import { SECTORS } from "@/data/catalog";
 import { TradeLanes } from "@/components/site/TradeLanes";
@@ -205,11 +202,6 @@ const SOURCE_BRANDS = [
 export function GlobalReach() {
   const reduce = useReducedMotion();
   const logoFor = (name: string) => BRANDS.find((b) => b.name === name);
-  const points = [
-    { icon: Warehouse, title: "Sourced at the source", body: "Genuine parts from leading brands in Europe and Asia, bought in volume to keep prices sharp." },
-    { icon: PackageCheck, title: "Stocked in Hosur", body: "Fast-moving lines held at head office, checked, labelled and packed for export." },
-    { icon: Globe2, title: "Delivered worldwide", body: "Shipped to plants in every region, on the timeline you need." },
-  ];
 
   return (
     <section id="global" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
@@ -274,19 +266,6 @@ export function GlobalReach() {
           ))}
         </ul>
 
-        <ul className="relative z-10 mt-8 grid gap-6 border-t border-white/10 pt-8 sm:grid-cols-3">
-          {points.map((f) => (
-            <li key={f.title} className="flex gap-4">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/5 text-sky-300">
-                <f.icon className="h-5 w-5" />
-              </span>
-              <div>
-                <div className="font-display text-lg font-bold tracking-tight">{f.title}</div>
-                <p className="mt-1 text-sm leading-relaxed text-slate-400">{f.body}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );

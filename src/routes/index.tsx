@@ -1,9 +1,11 @@
 import { FinderBand, IndustriesShowcase, GlobalReach, WhyUsBento, ProcessTimeline } from "@/components/home/HomeSections";
 import { CLIENTS, BRANDS } from "@/data/clients";
-import { ClientLogo } from "@/components/site/ClientLogo";
 import { FaqSection } from "@/components/site/FaqSection";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { Reveal, WordReveal, CountUp, SPRING_SOFT, EASE_OUT } from "@/lib/motion";
+import { SealAssembly } from "@/components/illustrations/SealAssembly";
+import { PartIllustration } from "@/components/illustrations/PartIllustration";
 import { useRef, useEffect, useState } from "react";
 
 import {
@@ -60,35 +62,10 @@ const BENTO_LAYOUT: Record<string, string> = {
   other: "sm:col-span-2",
 };
 
-function useCountUp(target: number, duration = 1500) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  useEffect(() => {
-    if (!inView) return;
-    let start = 0;
-    const step = target / (duration / 16);
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [inView, target, duration]);
-  return { count, ref };
-}
-
 function StatItem({ target, suffix, label }: { target: number; suffix: string; label: string }) {
-  const { count, ref } = useCountUp(target);
   return (
-    <div ref={ref} className="relative">
-      <div className="font-display text-2xl font-black tracking-tight text-ink sm:text-3xl">
-        {count}{suffix}
-      </div>
+    <div className="relative">
+      <CountUp target={target} suffix={suffix} className="block font-display text-2xl font-black tabular-nums tracking-tight text-ink sm:text-3xl" />
       <div className="mt-1 text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
         {label}
       </div>
@@ -116,13 +93,14 @@ function Home() {
     { id: "hero", label: "Overview" },
     { id: "about", label: "About Us" },
     { id: "catalog", label: "Products" },
+    { id: "anatomy", label: "Inside a seal" },
     { id: "industries", label: "Industries" },
     { id: "global", label: "Global Reach" },
     { id: "why-us", label: "Why AARRKKAA" },
     { id: "testimonials", label: "Reviews" },
     { id: "process", label: "How We Work" },
     { id: "faq", label: "FAQ" },
-    { id: "find-us", label: "Location" },
+    { id: "contact", label: "Contact" },
   ];
 
   return (
@@ -132,9 +110,9 @@ function Home() {
       <main>
         <Hero images={heroImages} />
         <StatsBand categoryCount={dbCategories?.length || CATEGORIES.length} />
-        <TrustStrip />
         <AboutPreview />
         <ProductsBento featured={featured} />
+        <SealAssembly />
         <FinderBand />
         <IndustriesShowcase />
         <GlobalReach />
@@ -144,7 +122,6 @@ function Home() {
         <LocalSupplier />
         <FaqSection className="mt-24 sm:mt-32" />
         <CTABand />
-        <ContactPreview />
       </main>
       <Footer />
       <FloatingActions />
@@ -212,6 +189,10 @@ import { useCallback } from "react";
 function Hero({ images }: { images: { id: string, url: string }[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 4000, stopOnInteraction: false })]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const mediaScale = useTransform(heroProgress, [0, 1], [1, 1.08]);
+  const mediaY = useTransform(heroProgress, [0, 1], [0, 40]);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -236,7 +217,7 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
   }, [emblaApi]);
 
   return (
-    <section id="hero" className="scroll-mt-28 relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
+    <section ref={heroRef} id="hero" className="scroll-mt-28 relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[560px] opacity-[0.35]">
         <div className="grid-lines absolute inset-0" />
         <div
@@ -264,26 +245,26 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
               AARRKKAA International · Hosur, India
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.05 }}
+            <h1
               className="mt-5 text-balance font-display font-black leading-[0.98] tracking-[-0.035em] text-ink"
               style={{ fontSize: "clamp(2.4rem, 5.6vw, 4.75rem)" }}
             >
-              Precision parts for plants that{" "}
-              <span
-                className="bg-clip-text pr-1 italic text-transparent"
+              <WordReveal text="Precision parts for plants that" delay={0.05} />{" "}
+              <motion.span
+                initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ ...SPRING_SOFT, delay: 0.45, opacity: { duration: 0.5, delay: 0.45 }, filter: { duration: 0.6, delay: 0.45 } }}
+                className="inline-block bg-clip-text pr-1 italic text-transparent"
                 style={{ backgroundImage: "var(--gradient-brand)" }}
               >
                 can&rsquo;t stop.
-              </span>
-            </motion.h1>
+              </motion.span>
+            </h1>
 
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
+              transition={{ duration: 0.6, delay: 0.5, ease: EASE_OUT }}
               className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
             >
               Genuine pumps, mechanical seals, bearings, elastomers and stainless steel for process plants. Send us a part number, drawing or photo, and we match it accurately and ship it on time, anywhere.
@@ -292,19 +273,19 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
+              transition={{ duration: 0.6, delay: 0.6, ease: EASE_OUT }}
               className="mt-8 flex flex-wrap items-center gap-3"
             >
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background shadow-lift transition hover:bg-ink/85"
+                className="press group inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background shadow-lift hover:bg-ink/85"
               >
                 Get a quote
                 <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <Link
                 to="/products"
-                className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/70 px-5 py-3 text-sm font-semibold text-ink backdrop-blur transition hover:bg-white"
+                className="press inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/70 px-5 py-3 text-sm font-semibold text-ink backdrop-blur hover:bg-white"
               >
                 Explore the catalog
               </Link>
@@ -320,7 +301,7 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
             <motion.ul
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
               className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-medium text-ink/75"
             >
               {["Genuine, traceable parts", "Quote within one working day", "Dispatch worldwide"].map((t) => (
@@ -334,7 +315,7 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.45 }}
+              transition={{ duration: 0.6, delay: 0.8, ease: EASE_OUT }}
               className="mt-8 grid gap-4 border-t border-hairline pt-6 sm:grid-cols-2 sm:gap-6"
             >
               <div>
@@ -359,9 +340,10 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
 
           {/* Hero bento */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
+            initial={{ opacity: 0, scale: 0.94, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ ...SPRING_SOFT, delay: 0.15, opacity: { duration: 0.6, delay: 0.15 } }}
+            style={{ y: mediaY }}
             className="relative"
           >
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] sm:aspect-[4/3] lg:aspect-auto lg:h-[min(34rem,calc(100dvh-11rem))] border border-hairline bg-surface shadow-lift">
@@ -371,7 +353,8 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
                     <div className="flex h-full touch-pan-y touch-pinch-zoom">
                       {images.map((img, idx) => (
                         <div className="flex-[0_0_100%] min-w-0 relative h-full" key={img.id}>
-                          <img
+                          <motion.img
+                            style={{ scale: mediaScale }}
                             src={img.url}
                             alt="Hero product showcase"
                             loading={idx === 0 ? "eager" : "lazy"}
@@ -432,9 +415,9 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
 
               {/* Head office card */}
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.65 }}
+                initial={{ opacity: 0, y: 16, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ ...SPRING_SOFT, delay: 0.75 }}
                 className="glass-strong absolute bottom-4 left-4 right-4 rounded-2xl p-4"
               >
                 <div className="flex items-center justify-between gap-3">
@@ -479,46 +462,12 @@ function StatsBand({ categoryCount }: { categoryCount: number }) {
   );
 }
 
-/* ─── TRUST STRIP ─── */
-// Two clearly labelled rows: companies we deliver to, and manufacturers whose genuine parts we supply.
-function TrustStrip() {
-  const rows = [
-    { label: "Our clients", items: [...CLIENTS, ...CLIENTS], size: "md" as const, track: "marquee-track" },
-    { label: "Genuine brands we supply", items: [...BRANDS, ...BRANDS, ...BRANDS, ...BRANDS], size: "md" as const, track: "marquee-track-reverse" },
-  ];
-  return (
-    <section className="mt-12 border-y border-hairline bg-surface py-6 sm:mt-16">
-      <div className="mx-auto max-w-7xl space-y-5 px-5 sm:px-8">
-        {rows.map((row) => (
-          <div key={row.label} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
-            <span className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:w-44">
-              {row.label}
-            </span>
-            <div className="relative min-w-0 flex-1 overflow-hidden">
-              <div className={`${row.track} flex w-max items-center gap-10`}>
-                {row.items.map((x, i) => (
-                  <span key={i} className="flex items-center gap-10">
-                    <ClientLogo client={x} size={row.size} />
-                    <span aria-hidden className="h-1 w-1 rounded-full bg-brass/60" />
-                  </span>
-                ))}
-              </div>
-              <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-12" style={{ background: "linear-gradient(to right, var(--surface), transparent)" }} />
-              <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-12" style={{ background: "linear-gradient(to left, var(--surface), transparent)" }} />
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 /* ─── ABOUT PREVIEW ─── */
 function AboutPreview() {
   return (
     <section id="about" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-        <div>
+        <Reveal>
           <h2 className="mt-4 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
             A trusted partner for
             <br />
@@ -527,10 +476,9 @@ function AboutPreview() {
           </h2>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground">
             AARRKKAA International is an industrial trading company in Hosur,
-            Tamil Nadu. We buy pumps, pump spares, seals, bearings, gaskets,
-            hoses, stainless steel and precision parts from trusted
-            manufacturers and sellers, and supply them to plants when they
-            need them, at a lower cost than the market, anywhere in the world.
+            Tamil Nadu. We buy from manufacturers and trusted sellers, compare
+            prices for you, and deliver the parts your plant needs at a lower
+            cost than the market.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -540,9 +488,9 @@ function AboutPreview() {
               Our story <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="relative">
+        <Reveal className="relative" delay={0.12}>
           <div
             className="relative overflow-hidden rounded-[2rem] border border-hairline p-8 sm:p-10"
             style={{ background: "var(--gradient-brand)" }}
@@ -554,25 +502,13 @@ function AboutPreview() {
             <p className="mt-4 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">
               &ldquo;{COMPANY.motto}&rdquo;
             </p>
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
-              {[
-                { k: "Response", v: "Fast answers on every query" },
-                { k: "Convenience", v: "Right part, first time" },
-                { k: "Feedback", v: "Long-term partnerships" },
-              ].map((x) => (
-                <div key={x.k} className="rounded-xl bg-white/10 p-4 backdrop-blur">
-                  <div className="text-sm font-bold text-white">{x.k}</div>
-                  <div className="mt-1 text-xs leading-snug text-white/70">{x.v}</div>
-                </div>
-              ))}
-            </div>
             <div
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-40"
               style={{ background: "var(--gradient-brass)", filter: "blur(60px)" }}
             />
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -583,13 +519,13 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
   return (
     <section id="catalog" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
       <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-        <div>
+        <Reveal>
           <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
             A catalog built for
             <br />
             process reliability.
           </h2>
-        </div>
+        </Reveal>
         <Link
           to="/products"
           className="hidden sm:inline-flex items-center gap-2 self-start rounded-full border border-ink/15 bg-white/60 px-4 py-2 text-sm font-semibold text-ink backdrop-blur hover:bg-white sm:self-end"
@@ -604,10 +540,10 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
           return (
             <motion.div
               key={cat.slug}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 36, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: i * 0.04 }}
+              transition={{ ...SPRING_SOFT, delay: i * 0.06, opacity: { duration: 0.5, delay: i * 0.06 } }}
               className={`bento-tile bento-tile-hover ${i >= 4 ? "hidden sm:block" : ""} ${slotClass}`}
             >
               <Link
@@ -622,7 +558,8 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
                     loading={i < 2 ? "eager" : "lazy"}
                     fetchPriority={i < 2 ? "high" : "auto"}
                     decoding="async"
-                    className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
+                    style={{ viewTransitionName: `cat-${cat.slug}` }}
+                    className="media-zoom pointer-events-none absolute inset-0 h-full w-full object-cover opacity-90 group-hover:scale-[1.06]"
                   />
                 ) : (
                   <div className="pointer-events-none absolute inset-0 bg-neutral-900" />
@@ -644,6 +581,7 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
                   </span>
                 </div>
                 <div className="relative">
+                  <PartIllustration slug={cat.slug} className="mb-2 hidden h-9 w-9 text-white/90 transition-transform duration-500 group-hover:-translate-y-0.5 sm:block [&_*]:[stroke:currentColor]" />
                   <h3 className="font-display text-base font-black tracking-tight text-white sm:text-2xl">
                     {cat.name}
                   </h3>
@@ -711,11 +649,13 @@ function Testimonials() {
       />
 
       <div className="relative">
-        <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
-          Trusted by process plants
-          <br />
-          <span className="italic text-brass">and available globally.</span>
-        </h2>
+        <Reveal>
+          <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
+            What plant teams
+            <br />
+            <span className="italic text-brass">say about us.</span>
+          </h2>
+        </Reveal>
 
         <div
           ref={scrollRef}
@@ -774,16 +714,15 @@ const SERVICE_AREAS = ["Hosur", "Krishnagiri", "Bengaluru", "Chennai", "Coimbato
 function LocalSupplier() {
   return (
     <section id="local" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
-      <div className="grid gap-8 rounded-[2rem] border border-hairline bg-surface p-7 sm:p-12 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
+      <Reveal className="grid gap-8 rounded-[2rem] border border-hairline bg-surface p-7 sm:p-12 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
         <div>
           <h2 className="font-display text-3xl font-black leading-[1.05] tracking-tight text-ink sm:text-4xl">
             Mechanical seal and pump spares supplier in Hosur, Tamil Nadu.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-            AARRKKAA International is an industrial trading company. We source and supply mechanical seals (single-spring, cartridge, agitator and rotary union seals),
-            O-rings, gaskets, oil seals, pumps and pump spares, bearings, elastomers, silicone products, hoses and
-            stainless steel fittings from trusted manufacturers and sellers, through our head office in Hosur, Tamil Nadu, at prices below the market. We serve process plants in the
-            Hosur&ndash;Bengaluru industrial belt, across Tamil Nadu and India, and export worldwide.
+            Single-spring, cartridge, agitator and rotary union seals, plus the O-rings, gaskets, oil seals and
+            pump spares that go with them. Plants in the Hosur&ndash;Bengaluru industrial belt can get fast-moving
+            lines straight from our stock; the rest of India and export orders ship by road, air or sea.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link to="/products/$category" params={{ category: "mechanical-seals" }} className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background transition hover:bg-ink/85">
@@ -807,7 +746,7 @@ function LocalSupplier() {
             Head office: {COMPANY.address.line1}, {COMPANY.address.line2}, {COMPANY.address.city}, {COMPANY.address.state} {COMPANY.address.pincode}.
           </p>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -815,11 +754,9 @@ function LocalSupplier() {
 /* ─── CTA BAND ─── */
 function CTABand() {
   return (
-    <section className="mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
-      <div
-        className="relative overflow-hidden rounded-[2rem] p-8 sm:p-14"
-        style={{ background: "var(--gradient-brand)" }}
-      >
+    <section id="contact" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
+      <Reveal className="relative overflow-hidden rounded-[2rem] p-8 sm:p-14">
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "var(--gradient-brand)" }} />
         <img
           src={factoryImg}
           alt=""
@@ -845,7 +782,7 @@ function CTABand() {
           <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-col">
             <a
               href="tel:+917806936475"
-              className="glass-strong col-span-2 sm:col-span-1 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
+              className="press glass-strong col-span-2 sm:col-span-1 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
             >
               <div>
                 <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -861,7 +798,7 @@ function CTABand() {
               href="https://wa.me/917806936475"
               target="_blank"
               rel="noopener noreferrer"
-              className="glass-strong col-span-2 sm:col-span-1 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
+              className="press glass-strong col-span-2 sm:col-span-1 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
             >
               <div>
                 <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -877,7 +814,7 @@ function CTABand() {
             </a>
             <a
               href="mailto:aarrkkaainternational@gmail.com"
-              className="glass-strong col-span-2 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
+              className="press glass-strong col-span-2 flex flex-col items-start justify-between gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-0 sm:px-5 sm:py-4"
             >
               <div className="w-full min-w-0">
                 <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -906,114 +843,7 @@ function CTABand() {
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── CONTACT PREVIEW — polished cards, no amateur SVG art ─── */
-function ContactPreview() {
-  return (
-    <section id="find-us" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:px-8 hidden sm:block">
-      <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
-        Get in touch.
-      </h2>
-
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {/* Head office — full-width on mobile, spans 2 cols on lg */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-          transition={{ duration: 0.5 }}
-          className="lg:col-span-2 relative overflow-hidden rounded-2xl border border-hairline bg-surface p-6 sm:p-8 transition-shadow duration-300 hover:shadow-lift"
-        >
-          <div className="grid-background pointer-events-none opacity-[0.15]" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] overflow-hidden lg:block [mask-image:linear-gradient(to_right,transparent,black_28%)]">
-            <iframe
-              title="Hosur head office map"
-              src="https://maps.google.com/maps?q=Arasanatti%20Hosur%20Tamil%20Nadu%20635126&t=&z=12&ie=UTF8&iwloc=&output=embed"
-              className="h-full w-full border-0 opacity-90 grayscale-[35%]"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              tabIndex={-1}
-            />
-          </div>
-          <div className="relative z-10 lg:max-w-[52%]">
-            <span
-              aria-hidden
-              className="grid h-10 w-10 place-items-center rounded-xl text-primary-foreground"
-              style={{ background: "var(--gradient-brand)" }}
-            >
-              <MapPin className="h-5 w-5" />
-            </span>
-            <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Head office</div>
-            <div className="mt-2 font-display text-2xl font-black tracking-tight text-ink">Hosur, Tamil Nadu</div>
-            <p className="mt-2 text-sm leading-relaxed text-ink/70">
-              {COMPANY.address.line1}, {COMPANY.address.line2},<br />
-              {COMPANY.address.city}, {COMPANY.address.state} — {COMPANY.address.pincode}
-            </p>
-            <div className="mt-4 text-[12px] text-muted-foreground">
-              Service available globally · Rapid dispatch worldwide
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Phones */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="flex flex-col gap-4"
-        >
-          <div className="flex-1 rounded-2xl border border-hairline bg-surface p-6 transition-shadow duration-300 hover:shadow-lift">
-            <span
-              aria-hidden
-              className="grid h-10 w-10 place-items-center rounded-xl"
-              style={{ background: "var(--gradient-brass)" }}
-            >
-              <Phone className="h-5 w-5 text-white" />
-            </span>
-            <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Phone</div>
-            <div className="mt-2 space-y-1">
-              {COMPANY.phones.map((p) => (
-                <a key={p} href={`tel:${p.replace(/\s/g, "")}`} className="block font-display text-lg font-bold text-ink hover:text-brass transition-colors">
-                  {p}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex-1 rounded-2xl border border-hairline bg-surface p-6 transition-shadow duration-300 hover:shadow-lift">
-            <span
-              aria-hidden
-              className="grid h-10 w-10 place-items-center rounded-xl"
-              style={{ background: "var(--gradient-brand)" }}
-            >
-              <Mail className="h-5 w-5 text-white" />
-            </span>
-            <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Email</div>
-            <div className="mt-2 space-y-1">
-              {COMPANY.emails.map((e) => (
-                <a key={e} href={`mailto:${e}`} className="block break-all text-sm font-semibold text-ink hover:text-brass transition-colors">
-                  {e}
-                </a>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Link to full contact page */}
-      <div className="mt-6 text-center">
-        <Link
-          to="/contact"
-          className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-6 py-3 text-sm font-semibold text-ink backdrop-blur transition hover:bg-white"
-        >
-          Full contact details & enquiry form <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
+      </Reveal>
     </section>
   );
 }

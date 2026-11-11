@@ -1,15 +1,9 @@
-import { BRANDS } from "@/data/clients";
-import { ClientLogo } from "@/components/site/ClientLogo";
-import { AboutFacts, BusinessFlow, HowWeWorkVideo, AboutHeroCollage } from "@/components/about/AboutSections";
-import { WhereWeAre, PaymentsBand } from "@/components/about/AboutExtras";
+import { AboutFacts, WhyTrader, BrandsAndClients, WorkingWithUs, HowWeWorkVideo, AboutHeroCollage } from "@/components/about/AboutSections";
+import { WhereWeAre } from "@/components/about/AboutExtras";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { getContactInfo, getCategories } from "@/lib/catalog";
-import { Clock, MousePointerClick, HeartHandshake } from "lucide-react";
-import { motion } from "framer-motion";
-
-
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -30,12 +24,6 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
 });
 
-const VALUES = [
-  { k: "Response", d: "Fast, clear answers on every enquiry, quote and technical query.", icon: Clock },
-  { k: "Convenience", d: "Easy ordering, with the right part matched accurately the first time.", icon: MousePointerClick },
-  { k: "Feedback", d: "We act on every customer's feedback to build long-term partnerships.", icon: HeartHandshake },
-];
-
 function AboutPage() {
   const { contactInfo, categories } = Route.useLoaderData();
   const address = contactInfo?.address || { line1: "#3/334, 11C, Surya Nagar", line2: "5th Cross, Arasanatti", city: "Hosur", district: "Krishnagiri Dist.", state: "Tamil Nadu", pincode: "635 126" };
@@ -54,18 +42,16 @@ function AboutPage() {
             className="mt-4 font-display font-black leading-[0.95] tracking-[-0.035em] text-ink text-balance"
             style={{ fontSize: "clamp(2.6rem, 5.4vw, 4.6rem)" }}
           >
-            Built to keep
+            We do the sourcing.
             <br />
-            process plants
-            <span className="italic text-brass"> running.</span>
+            <span className="italic text-brass">You keep running.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            AARRKKAA International is an industrial trading company based in
-            Hosur, Tamil Nadu. We buy genuine pumps, pump spares, mechanical
-            seals, bearings, gaskets, oil seals, O-rings, hoses, silicone
-            products, SS flanges, clamps, nozzles, springs and more from
-            trusted manufacturers and sellers, and supply them to plants
-            exactly when they are needed, at a lower cost than the market.
+            AARRKKAA International is an industrial trading company in Hosur,
+            Tamil Nadu. We don&rsquo;t manufacture. We buy genuine pumps, seals,
+            bearings and process spares from manufacturers and trusted sellers
+            in India and abroad, and get them to your plant on time, for less
+            than the market price.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link to="/contact" className="inline-flex h-12 items-center rounded-full bg-ink px-6 text-sm font-semibold text-background shadow-lift transition hover:bg-ink/85">
@@ -83,63 +69,13 @@ function AboutPage() {
 
         <AboutFacts categoryCount={categories?.length} />
 
+        <WhyTrader />
+
         <HowWeWorkVideo />
 
-        <BusinessFlow />
+        <BrandsAndClients />
 
-        <section className="mx-auto mt-20 max-w-6xl px-5 sm:mt-28 sm:px-8">
-          <div className="grid gap-4 lg:grid-cols-[1.05fr_1fr] lg:gap-5">
-            <div
-              className="relative flex flex-col justify-between overflow-hidden rounded-[2rem] p-8 text-white sm:p-10"
-              style={{ background: "var(--gradient-brand)" }}
-            >
-              <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
-              <div className="relative text-[11px] font-semibold uppercase tracking-[0.18em] text-white/75">Our motto</div>
-              <blockquote className="relative mt-6 font-display text-[1.75rem] font-black leading-[1.12] tracking-tight sm:text-4xl">
-                &ldquo;{motto}&rdquo;
-              </blockquote>
-              <div className="relative mt-8 text-sm font-semibold text-white/80">— AARRKKAA International</div>
-            </div>
-            <ul className="grid gap-4">
-              {VALUES.map((x, i) => (
-                <motion.li
-                  key={x.k}
-                  initial={{ opacity: 0, x: 16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "0px 0px -40px 0px" }}
-                  transition={{ duration: 0.45, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                  className="group flex items-start gap-5 rounded-3xl border border-hairline bg-surface p-6 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-brass/40 hover:shadow-[0_16px_32px_-20px_rgba(2,132,199,0.45)] sm:p-7"
-                >
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brass/10 text-brass transition-colors duration-300 group-hover:bg-brass group-hover:text-white">
-                    <x.icon className="h-5 w-5" />
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="font-display text-xl font-black tracking-tight text-ink">{x.k}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground sm:text-base">{x.d}</p>
-                  </div>
-                </motion.li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <PaymentsBand />
-
-        <section className="mx-auto mt-16 max-w-6xl px-5 sm:mt-24 sm:px-8">
-          <h2 className="font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
-            Brands we supply
-          </h2>
-          <p className="mt-3 max-w-xl text-base text-muted-foreground">
-            Genuine bearings from the manufacturers your plant already trusts, sourced and supplied by us.
-          </p>
-          <ul className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            {BRANDS.map((b) => (
-              <li key={b.name} className="grid h-24 place-items-center rounded-2xl border border-hairline bg-surface p-4 transition hover:border-brass/40 hover:shadow-soft sm:h-28">
-                <ClientLogo client={b} size="lg" />
-              </li>
-            ))}
-          </ul>
-        </section>
+        <WorkingWithUs motto={motto} />
 
         <WhereWeAre address={address as { line1: string; line2: string; city: string; district?: string; state: string; pincode: string }} phones={contactInfo?.phones} emails={contactInfo?.emails} />
 
@@ -152,10 +88,10 @@ function AboutPage() {
             <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <div className="max-w-xl">
                 <h2 className="font-display text-3xl font-black leading-[1.05] tracking-tight sm:text-4xl">
-                  Send us the part. We&rsquo;ll match it.
+                  Have a part to replace?
                 </h2>
                 <p className="mt-3 text-base text-white/80">
-                  A part number, a drawing or a photo of the worn part is enough to get a quote within one working day.
+                  Tell us what you need. You&rsquo;ll get a price, a brand and a dispatch date within one working day.
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">

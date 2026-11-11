@@ -86,9 +86,8 @@ function ContactPage() {
                 <span className="italic text-brass">We&rsquo;ll match the part.</span>
               </h1>
               <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-                Share a spec sheet, drawing, model number or a photograph of the
-                worn component. Our sales team responds with the exact grade,
-                brand recommendation and dispatch timeline.
+                Call, WhatsApp or email us directly, or fill in the enquiry form
+                below. Attach whatever you have: a part number, a drawing or a photo.
               </p>
             </div>
             <div className="hidden sm:flex lg:col-span-5 justify-center lg:justify-end">

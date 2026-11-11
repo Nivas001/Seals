@@ -44,7 +44,7 @@ export function Navbar() {
   return (
     <>
       <motion.div aria-hidden style={{ scaleX: progress }} className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-brass" />
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:pt-5">
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:pt-5" style={{ viewTransitionName: "site-nav" }}>
         <nav
           className={`glass-nav pointer-events-auto flex w-full max-w-6xl items-center justify-between gap-3 rounded-full py-1.5 pl-2.5 pr-2 sm:gap-4 sm:pl-3.5 ${
             scrolled ? "glass-nav-scrolled" : ""

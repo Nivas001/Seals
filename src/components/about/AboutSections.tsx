@@ -1,32 +1,34 @@
 import { Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ArrowUpRight, Globe2, Package, PackageCheck, Play, Search, Warehouse } from "lucide-react";
-import { CATEGORIES } from "@/data/catalog";
-import inventoryImg from "@/assets/industries-inventory.jpg";
+import {
+  ArrowRight,
+  Boxes,
+  CreditCard,
+  MapPinned,
+  MessageCircle,
+  PackageCheck,
+  Play,
+  Scale,
+  ScanSearch,
+  Timer,
+  Truck,
+  Warehouse,
+  Layers,
+} from "lucide-react";
+import { CATEGORIES, COMPANY, SECTORS } from "@/data/catalog";
+import { BRANDS, CLIENTS } from "@/data/clients";
+import { ClientLogo } from "@/components/site/ClientLogo";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const SECTOR_LINKS = [
-  { name: "Food Processing", anchor: "sector-food-processing" },
-  { name: "Chemical", anchor: "sector-chemical" },
-  { name: "Beverages", anchor: "sector-beverages" },
-  { name: "Breweries", anchor: "sector-breweries" },
-  { name: "Plastics", anchor: "sector-plastics" },
-  { name: "Pharma", anchor: "sector-pharma" },
-  { name: "Oil & Gas", anchor: "sector-oil-gas" },
-  { name: "Dye Manufacturing", anchor: "sector-dye-manufacturing" },
-];
-
-/* Quick facts, all derived from data already on the site. */
-export type AboutCategory = { slug: string; name: string; image?: string | null };
-
+/* Quick facts, every number counted from data already on the site. */
 export function AboutFacts({ categoryCount = CATEGORIES.length }: { categoryCount?: number }) {
   const facts = [
     { k: String(categoryCount), v: "product families" },
-    { k: String(SECTOR_LINKS.length), v: "industries served" },
-    { k: "Hosur", v: "head office, Tamil Nadu" },
-    { k: "Global", v: "service and dispatch" },
+    { k: String(SECTORS.length), v: "industries served" },
+    { k: `${CLIENTS.length}+`, v: "client companies" },
+    { k: String(BRANDS.length), v: "genuine bearing brands" },
   ];
   return (
     <section className="mx-auto mt-12 max-w-6xl px-5 sm:mt-16 sm:px-8">
@@ -42,153 +44,155 @@ export function AboutFacts({ categoryCount = CATEGORIES.length }: { categoryCoun
   );
 }
 
-// Column span for the closing tile so it exactly fills the last row at 2, 3 and 4 columns.
-const BASE_SPAN = ["col-span-2", "col-span-1"];
-const SM_SPAN = ["sm:col-span-3", "sm:col-span-2", "sm:col-span-1"];
-const LG_SPAN = ["lg:col-span-4", "lg:col-span-3", "lg:col-span-2", "lg:col-span-1"];
-const fillSpan = (n: number) => `${BASE_SPAN[n % 2]} ${SM_SPAN[n % 3]} ${LG_SPAN[n % 4]}`;
-
-/* What we supply: every live product family (from the admin), with a photo. */
-export function WhatWeDo({ categories }: { categories?: AboutCategory[] | null }) {
-  const list: AboutCategory[] = categories?.length ? categories : CATEGORIES;
+/* Why a plant would buy through a trading company instead of from each manufacturer. */
+export function WhyTrader() {
+  const points = [
+    {
+      icon: Layers,
+      t: "One supplier, many makers",
+      d: "Seals, bearings, hoses, fittings and pump spares from different manufacturers on a single quote, instead of chasing a separate vendor for each.",
+    },
+    {
+      icon: Scale,
+      t: "Prices compared for you",
+      d: "We check several manufacturers and sellers for each line and buy in volume, so the price you pay is below the market.",
+    },
+    {
+      icon: ScanSearch,
+      t: "No part number needed",
+      d: "A drawing or a photo of the worn part is enough. We identify it and tell you the right size, grade and material.",
+    },
+    {
+      icon: Boxes,
+      t: "Advice that is brand-neutral",
+      d: "We do not make the parts, so we are not pushing our own. We recommend the brand and material that suits your duty.",
+    },
+  ];
   return (
     <section className="mx-auto mt-20 max-w-6xl px-5 sm:mt-28 sm:px-8">
       <div className="max-w-2xl">
-        <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
-          What we do.
+        <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass">Why a trading company</div>
+        <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
+          What you get by buying through us.
         </h2>
         <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
-          We source and supply spares and components for process plants: pumps and pump spares, mechanical seals, bearings, elastomers, silicone products, hoses, stainless steel fittings, valves, rods and more. One trading partner for the parts your line depends on.
+          Going direct to every manufacturer means many vendors, many minimum orders and many follow-ups. We take that work off your purchase team.
         </p>
       </div>
-
-      <ul className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
-        {list.map((c, i) => (
+      <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+        {points.map((p, i) => (
           <motion.li
-            key={c.slug}
-            initial={{ opacity: 0, y: 14 }}
+            key={p.t}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-            transition={{ duration: 0.45, delay: (i % 4) * 0.06, ease }}
+            transition={{ duration: 0.45, delay: (i % 2) * 0.08, ease }}
+            className="flex gap-5 rounded-3xl border border-hairline bg-surface p-6 sm:p-7"
           >
-            <Link
-              to="/products/$category"
-              params={{ category: c.slug }}
-              className="group relative block aspect-[4/3] overflow-hidden rounded-2xl border border-hairline bg-ink"
-            >
-              {c.image ? (
-                <img src={c.image} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-              ) : null}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3.5 sm:p-4">
-                <span className="font-display text-base font-black leading-tight text-white sm:text-lg">{c.name}</span>
-                <ArrowUpRight className="h-4 w-4 shrink-0 text-white/80 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </div>
-            </Link>
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brass/10 text-brass">
+              <p.icon className="h-5 w-5" />
+            </span>
+            <div className="min-w-0">
+              <h3 className="font-display text-xl font-black tracking-tight text-ink">{p.t}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground sm:text-base">{p.d}</p>
+            </div>
           </motion.li>
         ))}
-        {/* closing tile fills the last row so the grid never ends on a lonely card */}
-        <li className={fillSpan(list.length)}>
-          <Link
-            to="/contact"
-            className="group flex h-full min-h-[8rem] flex-col justify-between rounded-2xl border border-dashed border-brass/40 bg-brass/5 p-4 transition hover:border-brass hover:bg-brass/10 sm:p-5"
-          >
-            <span className="font-display text-lg font-black leading-tight text-ink">Need something not listed?</span>
-            <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-brass">
-              Send us the part <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-            </span>
-          </Link>
-        </li>
       </ul>
     </section>
   );
 }
 
-/* How the business runs, from sourcing to delivery. */
-export function BusinessFlow() {
-  const steps = [
-    { icon: Globe2, t: "Source", d: "We buy genuine parts from manufacturers and trusted sellers in India and abroad, comparing prices so quality and cost are right from the start." },
-    { icon: Warehouse, t: "Stock", d: "Fast-moving lines are held at our Hosur head office, checked, labelled and ready to pick." },
-    { icon: Search, t: "Match", d: "Send a spec, a drawing or a photo of the worn part. We identify it and recommend the correct grade, material or brand." },
-    { icon: PackageCheck, t: "Deliver", d: "We pack and dispatch from Hosur or a regional branch, to plants worldwide, on the timeline you need." },
-  ];
+/* Where the brands come from, and the companies we deliver to. */
+const BRAND_ORIGIN: Record<string, string> = { SKF: "Sweden", FAG: "Germany", INA: "Germany", NTN: "Japan" };
 
+export function BrandsAndClients() {
   return (
     <section className="mx-auto mt-20 max-w-6xl px-5 sm:mt-28 sm:px-8">
-      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-        <div className="lg:sticky lg:top-28 lg:self-start">
-          <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
-            How our business works.
-          </h2>
-          <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
-            We are traders: we buy parts where they are made best and priced right, and sell them to plants that cannot afford downtime, for less than the market.
-          </p>
-          <div className="relative mt-8 overflow-hidden rounded-3xl border border-hairline">
-            <img src={inventoryImg} alt="Warehouse of organised industrial parts" width={1200} height={900} loading="lazy" decoding="async" className="h-56 w-full object-cover sm:h-72" />
-          </div>
+      <h2 className="max-w-2xl font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
+        Brands we buy. <span className="italic text-brass">Companies we supply.</span>
+      </h2>
+      <div className="mt-10 grid gap-5 lg:grid-cols-[1fr_1.4fr]">
+        <div className="rounded-3xl border border-hairline bg-surface p-6 sm:p-8">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Genuine bearings, from the source</div>
+          <ul className="mt-5 grid grid-cols-2 gap-3">
+            {BRANDS.map((b) => (
+              <li key={b.name} className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-hairline bg-background p-4">
+                <span className="grid h-16 place-items-center">
+                  <ClientLogo client={b} size="lg" />
+                </span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{BRAND_ORIGIN[b.name] ?? ""}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-
-        <ol className="relative space-y-4">
-          <div aria-hidden className="absolute bottom-8 left-[27px] top-8 w-px bg-gradient-to-b from-brass via-brass/40 to-transparent" />
-          {steps.map((s, i) => (
-            <motion.li
-              key={s.t}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease }}
-              className="relative flex gap-5 rounded-3xl border border-hairline bg-surface p-5 sm:p-6"
-            >
-              <span className="relative z-10 grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brass/10 text-brass">
-                <s.icon className="h-6 w-6" />
-              </span>
-              <div className="min-w-0">
-                <div className="font-display text-2xl font-black tracking-tight text-ink">
-                  <span className="mr-2 text-brass">{i + 1}.</span>
-                  {s.t}
-                </div>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground sm:text-base">{s.d}</p>
-              </div>
-            </motion.li>
-          ))}
-        </ol>
+        <div className="rounded-3xl border border-hairline bg-surface p-6 sm:p-8">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            Some of the {CLIENTS.length} companies we supply
+          </div>
+          <ul className="mt-5 flex flex-wrap gap-2">
+            {CLIENTS.map((c) => (
+              <li key={c.name} className="rounded-full border border-hairline bg-background px-3.5 py-2 text-[13px] font-semibold text-ink/80">
+                {c.name}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+            Electronics, energy, pharma, food, coatings, oilfield and engineering companies.
+          </p>
+        </div>
       </div>
     </section>
   );
 }
 
-/* Who we serve: links into the industries page. */
-export function WhoWeServe() {
+/* The practical answers a buyer needs before placing an order. */
+export function WorkingWithUs({ motto = COMPANY.motto }: { motto?: string }) {
+  const items = [
+    { icon: MessageCircle, t: "How to enquire", d: "WhatsApp, phone, email or the enquiry form. Whatever is quickest for you.", link: { to: "/contact", label: "Contact options" } },
+    { icon: Timer, t: "When you get a quote", d: "Within one working day, with price, brand and dispatch date." },
+    { icon: Warehouse, t: "What we keep in stock", d: "Fast-moving lines are held at our Hosur office, checked and labelled, ready to pick." },
+    { icon: Truck, t: "How it ships", d: "By road across India, by air for urgent orders and by sea for export." },
+    { icon: CreditCard, t: "How you pay", d: "Bank transfer or SWIFT, UPI, and Visa, MasterCard or Amex cards.", link: { to: "/about/payments", label: "Payment options" } },
+    { icon: MapPinned, t: "Where we deliver", d: "The Hosur–Bengaluru belt, the rest of Tamil Nadu and Karnataka, all of India, and export." },
+  ] as const;
   return (
     <section className="mx-auto mt-20 max-w-6xl px-5 sm:mt-28 sm:px-8">
-      <div className="relative overflow-hidden rounded-[2rem] border border-hairline bg-surface p-7 sm:p-12">
-        <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-          <div>
-            <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
-              Who we serve.
-            </h2>
-            <p className="mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
-              Process plants where hygiene, chemistry and uptime matter. Pick your industry to see the duty window and the parts we recommend.
-            </p>
-            <Link to="/industries" className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-ink px-6 text-sm font-semibold text-background transition hover:bg-ink/85">
-              Explore industries <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <ul className="flex flex-wrap gap-2.5">
-            {SECTOR_LINKS.map((s) => (
-              <li key={s.name}>
-                <Link
-                  to="/industries"
-                  hash={s.anchor}
-                  className="inline-flex items-center gap-2 rounded-full border border-hairline bg-background px-5 py-3 text-sm font-semibold text-ink/85 transition hover:border-ink/25 hover:bg-white hover:text-ink"
-                >
-                  <Package className="h-4 w-4 text-brass" />
-                  {s.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+      <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brass">Working with us</div>
+          <h2 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-ink sm:text-5xl">
+            The practical details.
+          </h2>
+          <figure className="relative mt-8 overflow-hidden rounded-3xl p-7 text-white sm:p-8" style={{ background: "var(--gradient-brand)" }}>
+            <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/15 blur-3xl" />
+            <figcaption className="relative text-[11px] font-semibold uppercase tracking-[0.18em] text-white/75">Our motto</figcaption>
+            <blockquote className="relative mt-4 font-display text-2xl font-black leading-[1.15] tracking-tight">&ldquo;{motto}&rdquo;</blockquote>
+          </figure>
         </div>
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {items.map((it, i) => (
+            <motion.li
+              key={it.t}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+              transition={{ duration: 0.4, delay: (i % 2) * 0.06, ease }}
+              className="flex flex-col rounded-3xl border border-hairline bg-surface p-6"
+            >
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-brass/10 text-brass">
+                <it.icon className="h-5 w-5" />
+              </span>
+              <h3 className="mt-4 font-display text-lg font-black tracking-tight text-ink">{it.t}</h3>
+              <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">{it.d}</p>
+              {"link" in it && (
+                <Link to={it.link.to} className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-brass hover:underline">
+                  {it.link.label} <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
+            </motion.li>
+          ))}
+        </ul>
       </div>
     </section>
   );

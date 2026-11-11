@@ -1,4 +1,5 @@
 import { Hexagon, Settings, Zap, Cpu, Activity, CircleDashed } from "lucide-react";
+import { PartIllustration } from "@/components/illustrations/PartIllustration";
 
 const ICONS = [Hexagon, Settings, Zap, Cpu, Activity, CircleDashed];
 const GRADIENTS = [
@@ -10,7 +11,7 @@ const GRADIENTS = [
   "from-zinc-500/20 via-slate-500/10 to-transparent",
 ];
 
-export function CreativePoster({ title, className = "" }: { title: string; className?: string }) {
+export function CreativePoster({ title, slug, className = "" }: { title: string; slug?: string; className?: string }) {
   // Use a simple hash of the title to deterministically pick an icon and gradient
   const hash = title.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
   
@@ -30,7 +31,7 @@ export function CreativePoster({ title, className = "" }: { title: string; class
 
       <div className="relative z-10 flex flex-col items-center text-center p-4">
         <div className="mb-3 rounded-xl border border-hairline bg-background/50 p-3 shadow-sm backdrop-blur-sm">
-          <Icon className="h-8 w-8 text-brass/70" />
+          {slug ? <PartIllustration slug={slug} animated className="h-12 w-12 text-ink/70" /> : <Icon className="h-8 w-8 text-brass/70" />}
         </div>
         
         <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">

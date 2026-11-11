@@ -17,6 +17,8 @@ export const getRouter = () => {
     routeTree,
     context: { queryClient },
     scrollRestoration: true,
+    // Cross-fade between pages with the browser's View Transitions API (no-op where unsupported).
+    defaultViewTransition: true,
     defaultPreload: 'intent',
     defaultPreloadDelay: 30, // Trigger preload within 30ms of hover
     defaultStaleTime: 1000 * 60 * 5, // Cache route loaders for 5 minutes

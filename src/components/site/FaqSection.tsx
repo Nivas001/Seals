@@ -1,31 +1,27 @@
 import { Link } from "@tanstack/react-router";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-// Answers use only facts already stated elsewhere on the site.
+// Answers use only facts stated elsewhere on the site (About, payments page, video).
 const FAQS = [
   {
     q: "How do I get a quote?",
-    a: "Send a spec sheet, drawing, model number or a photo of the worn part through the enquiry form, WhatsApp or phone. We reply with the exact grade, brand and dispatch timeline, within one working day.",
+    a: "Send a part number, spec sheet, drawing or just a photo of the worn part through the enquiry form, WhatsApp or phone. We identify it and reply with the exact grade, brand and dispatch timeline within one working day.",
   },
   {
-    q: "Can you identify a part from a photo?",
-    a: "Yes. Share a photograph or drawing and we identify the part and match it accurately, from our stocked range or sourced direct.",
-  },
-  {
-    q: "Do you deliver internationally?",
-    a: "Yes. Service is available globally. We dispatch worldwide from our Hosur head office or a regional branch, on the timeline you need.",
+    q: "Do you manufacture the parts?",
+    a: "No. We are a trading company. We buy from manufacturers and trusted sellers in India and abroad, compare prices across them, and pass the saving on to you. That also means our advice is not tied to one brand.",
   },
   {
     q: "Are the parts genuine?",
-    a: "We supply genuine bearings, certified elastomers and traceable stainless steel, sourced from leading brands such as SKF, FAG, INA and NTN.",
+    a: "Yes. We supply genuine bearings from SKF, FAG, INA and NTN, certified elastomers and traceable stainless steel.",
   },
   {
-    q: "Which industries do you supply?",
-    a: "Food processing, chemical, beverages, breweries, plastics, pharma, oil and gas, and dye manufacturing.",
+    q: "How do you ship, and do you export?",
+    a: "By road across India, by air for urgent orders and by sea for export. Fast-moving lines ship straight from our Hosur stock.",
   },
   {
     q: "How can I pay?",
-    a: "Our payments page lists the accepted methods. Contact us if you need a different arrangement for a larger order.",
+    a: "Bank transfer or SWIFT, UPI, and international cards. Contact us if you need a different arrangement for a larger order.",
     link: { to: "/about/payments", label: "See payment options" },
   },
 ] as const;

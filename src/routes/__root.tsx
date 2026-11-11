@@ -235,7 +235,9 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <RoutePendingIndicator />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <MotionConfig reducedMotion="user">
+        <Outlet />
+      </MotionConfig>
       {hasChatbot && <AIChatbot />}
       <Toaster position="top-center" offset={84} mobileOffset={84} closeButton />
       <Analytics />
@@ -245,7 +247,7 @@ function RootComponent() {
 }
 
 import { useRouterState } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, MotionConfig } from "framer-motion";
 
 function RoutePendingIndicator() {
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });

@@ -7,7 +7,6 @@ import { ArrowRight, ArrowUpRight, CheckCircle2, Gauge, Thermometer, Ruler, Shie
 
 import heroImg from "@/assets/industries-hero.jpg";
 import qualityImg from "@/assets/industries-quality.jpg";
-import inventoryImg from "@/assets/industries-inventory.jpg";
 
 import pumps from "@/assets/cat-pumps.jpg";
 import seals from "@/assets/cat-seals.jpg";
@@ -221,13 +220,6 @@ function IndustriesPage() {
     { icon: Camera, t: "A photo or drawing", d: "Even a picture of the worn part is enough to start." },
   ];
 
-  const steps = [
-    { t: "Share the duty", d: "Send us the drawing, fluid, temperature, pressure and speed, or just a photo of the failed part." },
-    { t: "We spec the part", d: "We recommend the correct material class, brand and geometry." },
-    { t: "Quote and confirm", d: "Clear pricing with lead time, usually ex-stock for fast-moving items." },
-    { t: "Dispatch and support", d: "Packed, dispatched and backed by after-sales support if anything needs adjusting." },
-  ];
-
   return (
     <div className="min-h-screen bg-background text-ink font-sans">
       <Navbar />
@@ -438,31 +430,6 @@ function IndustriesPage() {
                 ))}
               </tbody>
             </table>
-          </div>
-        </section>
-
-        {/* How we work */}
-        <section className="mx-auto mt-20 max-w-7xl px-4 sm:mt-28 sm:px-8">
-          <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-14">
-            <div className="relative overflow-hidden rounded-3xl border border-hairline">
-              <img src={inventoryImg} alt="Warehouse of organised industrial parts" width={1200} height={900} loading="lazy" decoding="async" className="h-64 w-full object-cover sm:h-[26rem]" />
-            </div>
-            <div className="min-w-0">
-              <h2 className="font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl">
-                From enquiry to line-ready in four steps.
-              </h2>
-              <ol className="mt-8 space-y-5">
-                {steps.map((st, i) => (
-                  <li key={st.t} className="flex gap-4">
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ink font-display text-sm font-black text-background">{i + 1}</div>
-                    <div className="min-w-0">
-                      <div className="font-display text-lg font-bold text-ink">{st.t}</div>
-                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground sm:text-base">{st.d}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
           </div>
         </section>
 

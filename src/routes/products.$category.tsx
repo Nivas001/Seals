@@ -6,6 +6,9 @@ import { getCategoryWithProducts, getCategories, getContactInfo } from "@/lib/ca
 import { ProductItemCard } from "@/components/site/ProductItemCard";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 import { CreativePoster } from "@/components/ui/CreativePoster";
+import { motion } from "framer-motion";
+import { Reveal, WordReveal, SPRING_SOFT, EASE_OUT } from "@/lib/motion";
+import { PartIllustration } from "@/components/illustrations/PartIllustration";
 
 export const Route = createFileRoute("/products/$category")({
   loader: async ({ params }) => {
@@ -60,36 +63,51 @@ function CategoryPage() {
 
           <div className="mt-6 grid gap-8 lg:grid-cols-[1.3fr_1fr] lg:gap-14">
             <div>
-              <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                <span className="h-1.5 w-1.5 rounded-full bg-brass" />
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: EASE_OUT }}
+                className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground"
+              >
+                <PartIllustration slug={c.slug} animated className="h-7 w-7 text-ink/70" />
                 Category · {String(c.products?.length || 0).padStart(2, "0")} items
-              </div>
+              </motion.div>
               <h1
                 className="mt-3 font-display font-black leading-[0.98] tracking-[-0.03em] text-ink"
                 style={{ fontSize: "clamp(2.5rem, 6vw, 4.75rem)" }}
               >
-                {c.name}
+                <WordReveal key={c.slug} text={c.name} delay={0.05} />
               </h1>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
+              <motion.p
+                key={`d-${c.slug}`}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3, ease: EASE_OUT }}
+                className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground"
+              >
                 {c.description}
-              </p>
+              </motion.p>
 
-
-              <div className="mt-8 flex flex-wrap gap-3">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4, ease: EASE_OUT }}
+                className="mt-8 flex flex-wrap gap-3"
+              >
                 <Link
                   to="/contact"
                   search={{ category: c.name }}
-                  className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background hover:bg-ink/85"
+                  className="press inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background hover:bg-ink/85"
                 >
                   Request this product <ArrowRight className="h-4 w-4" />
                 </Link>
                 <a
                   href={`tel:${phone.replace(/\s/g, "")}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-3 text-sm font-semibold text-ink hover:bg-white"
+                  className="press inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-5 py-3 text-sm font-semibold text-ink hover:bg-white"
                 >
                   <Phone className="h-4 w-4" /> {phone}
                 </a>
-              </div>
+              </motion.div>
             </div>
 
             <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-hairline bg-surface shadow-lift">
@@ -97,6 +115,7 @@ function CategoryPage() {
                 <img
                   src={c.image}
                   alt={c.name}
+                  style={{ viewTransitionName: `cat-${c.slug}` }}
                   className="h-full w-full object-cover"
                   width={1200}
                   height={900}
@@ -105,7 +124,7 @@ function CategoryPage() {
                   decoding="async"
                 />
               ) : (
-                <CreativePoster title={c.name} />
+                <CreativePoster title={c.name} slug={c.slug} />
               )}
             </div>
           </div>
@@ -113,14 +132,14 @@ function CategoryPage() {
 
         {/* Bento list of items */}
         <section className="mx-auto mt-16 max-w-7xl px-5 sm:mt-24 sm:px-8">
-          <div className="flex items-end justify-between gap-4">
+          <Reveal className="flex items-end justify-between gap-4">
             <h2 className="font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
               In this range
             </h2>
             <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
               {c.products?.length || 0} products
             </span>
-          </div>
+          </Reveal>
           <ul className={`mt-8 grid gap-3 md:gap-4 items-stretch ${
              c.slug === "additional-products" 
                ? "grid-cols-2 md:grid-cols-4 auto-rows-[160px] md:auto-rows-[200px] grid-flow-dense" 
@@ -160,9 +179,16 @@ function CategoryPage() {
                }
                
                return (
-                 <li key={item.id} className={bentoClass}>
+                 <motion.li
+                   key={item.id}
+                   className={bentoClass}
+                   initial={{ opacity: 0, y: 28, scale: 0.97 }}
+                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                   viewport={{ once: true, margin: "-40px" }}
+                   transition={{ ...SPRING_SOFT, delay: (i % 3) * 0.06, opacity: { duration: 0.45, delay: (i % 3) * 0.06 } }}
+                 >
                    <ProductItemCard category={c} product={item} index={i} variant={c.slug === "additional-products" ? "bento" : "default"} />
-                 </li>
+                 </motion.li>
                );
             })}
           </ul>
@@ -170,25 +196,28 @@ function CategoryPage() {
 
         {/* Related */}
         <section className="mx-auto mt-20 max-w-7xl px-5 sm:mt-28 sm:px-8">
-          <h2 className="font-display text-2xl font-black tracking-tight text-ink sm:text-3xl">
-            Explore other categories
-          </h2>
+          <Reveal>
+            <h2 className="font-display text-2xl font-black tracking-tight text-ink sm:text-3xl">
+              Explore other categories
+            </h2>
+          </Reveal>
           <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
             {others.map((o) => (
               <Link
                 key={o.slug}
                 to="/products/$category"
                 params={{ category: o.slug }}
-                className="group overflow-hidden rounded-2xl border border-hairline bg-surface"
+                className="press group overflow-hidden rounded-2xl border border-hairline bg-surface transition-shadow duration-500 hover:-translate-y-1 hover:shadow-lift"
               >
                 <div className="relative aspect-[5/3] overflow-hidden">
                   {o.image ? (
-                    <img src={o.image} alt={o.name} loading="lazy" decoding="async" className="h-full w-full object-cover transition group-hover:scale-105" />
+                    <img src={o.image} alt={o.name} loading="lazy" decoding="async" style={{ viewTransitionName: `cat-${o.slug}` }} className="media-zoom h-full w-full object-cover group-hover:scale-[1.06]" />
                   ) : (
-                    <CreativePoster title={o.name} />
+                    <CreativePoster title={o.name} slug={o.slug} />
                   )}
                 </div>
-                <div className="p-4">
+                <div className="flex items-center gap-2.5 p-4">
+                  <PartIllustration slug={o.slug} className="h-7 w-7 shrink-0 text-ink/70" />
                   <div className="font-display text-base font-bold tracking-tight text-ink">
                     {o.name}
                   </div>
