@@ -221,3 +221,25 @@ export const getAllCategoriesWithProducts = createServerFn({ method: "GET" })
       })
     );
   });
+
+const finderSlugsSchema = z.object({
+  slugs: z.array(z.string().max(120)).max(24),
+});
+
+/** Lightweight product cards for the seal finder results, in the order requested. Hidden or deleted products are left out. */
+export const getFinderProducts = createServerFn({ method: "GET" })
+  .validator(finderSlugsSchema.parse)
+  .handler(async ({ data }) => {
+    const productsMap = await getOrLoadAllProductsMap();
+    return data.slugs
+      .map((slug) => productsMap.get(slug))
+      .filter(Boolean)
+      .map((p: any) => ({
+        slug: p.slug as string,
+        name: p.name as string,
+        tagline: p.tagline as string,
+        image: (p.image || p.category?.image || null) as string | null,
+        category: { slug: p.category?.slug as string, name: p.category?.name as string },
+        specs: ((p.specs ?? []) as { label: string; value: string }[]).slice(0, 6),
+      }));
+  });

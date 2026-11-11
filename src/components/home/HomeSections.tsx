@@ -27,8 +27,13 @@ import inventoryImg from "@/assets/industries-inventory.jpg";
 const ease = [0.16, 1, 0.3, 1] as const;
 
 /* ───────────────────────── SEAL FINDER BAND ───────────────────────── */
-// Shows the first question of the /wizard finder with its real answer options.
-const FINDER_OPTIONS = ["Chemical Processing", "Food & Beverage", "Water & Wastewater", "General Industrial"];
+// Shows a real question from the /wizard finder; each answer opens the finder with it preselected.
+const FINDER_OPTIONS = [
+  { id: "chemical", label: "Chemical processing" },
+  { id: "food", label: "Food, dairy & beverage" },
+  { id: "water", label: "Water & wastewater" },
+  { id: "general", label: "General engineering" },
+];
 
 export function FinderBand() {
   return (
@@ -41,7 +46,7 @@ export function FinderBand() {
               Not sure which seal you need?
             </h2>
             <p className="mt-5 max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
-              Answer three quick questions about your industry and duty. We point you to the products that fit.
+              Answer six quick questions about your equipment and duty. Get the seal type, materials and arrangement that fit, ready to quote.
             </p>
             <Link
               to="/wizard"
@@ -52,16 +57,17 @@ export function FinderBand() {
           </div>
 
           <div className="rounded-3xl bg-white p-5 text-ink shadow-lift sm:p-7">
-            <div className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Question 1 of 3</div>
-            <div className="mt-2 font-display text-2xl font-black tracking-tight">What is your primary industry?</div>
+            <div className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Find my seal · 6 questions</div>
+            <div className="mt-2 font-display text-2xl font-black tracking-tight">Which industry is it for?</div>
             <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
               {FINDER_OPTIONS.map((o) => (
-                <li key={o}>
+                <li key={o.id}>
                   <Link
                     to="/wizard"
+                    search={{ industry: o.id }}
                     className="flex min-h-12 items-center justify-between gap-2 rounded-xl border border-hairline bg-background px-4 py-3 text-sm font-semibold transition hover:border-brass hover:bg-brass/5"
                   >
-                    {o}
+                    {o.label}
                     <ArrowRight className="h-4 w-4 text-brass" />
                   </Link>
                 </li>
