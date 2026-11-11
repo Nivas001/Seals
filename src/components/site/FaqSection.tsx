@@ -4,6 +4,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 // Answers use only facts stated elsewhere on the site (About, payments page, video).
 const FAQS = [
   {
+    q: "Where can I buy mechanical seals and pumps in Hosur?",
+    a: "From AARRKKAA International, #3/334, 11C, Surya Nagar, 5th Cross, Arasanatti, Hosur, Tamil Nadu 635126. We supply mechanical seals, pumps, bearings, O-rings, gaskets and other industrial spares to plants in Hosur, Krishnagiri, Bengaluru and across India. Call or WhatsApp +91 78069 36475.",
+    link: { to: "/buy/$slug", params: { slug: "industrial-spares-supplier-in-hosur" }, label: "Buying in Hosur" },
+  },
+  {
     q: "How do I get a quote?",
     a: "Send a part number, spec sheet, drawing or just a photo of the worn part through the enquiry form, WhatsApp or phone. We identify it and reply with the exact grade, brand and dispatch timeline within one working day.",
   },
@@ -68,7 +73,7 @@ export function FaqSection({ className = "" }: { className?: string }) {
                 {"link" in f && (
                   <>
                     {" "}
-                    <Link to={f.link.to} className="font-semibold text-brass underline-offset-4 hover:underline">
+                    <Link to={f.link.to} params={"params" in f.link ? f.link.params : undefined} className="font-semibold text-brass underline-offset-4 hover:underline">
                       {f.link.label}
                     </Link>
                   </>

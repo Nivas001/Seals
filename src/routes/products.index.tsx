@@ -14,8 +14,8 @@ const HERO_PARTS = ["mechanical-seals", "pumps", "bearings", "valves", "springs"
 export const Route = createFileRoute("/products/")({
   head: () => ({
     meta: [
-      { title: "Product Catalog — AARRKKAA International" },
-      { name: "description", content: "Explore the full AARRKKAA product catalog: pumps, mechanical seals, elastomers, silicone, hoses, stainless steel, bearings, springs, valves, couplings and more." },
+      { title: "Products — Mechanical Seals, Pumps, Bearings & Spares | AARRKKAA Hosur" },
+      { name: "description", content: "Buy pumps, mechanical seals, O-rings, gaskets, silicone, hoses, stainless steel, bearings, springs, valves and couplings from AARRKKAA International, Hosur, Tamil Nadu. Supplied across India and worldwide." },
       { property: "og:title", content: "Product Catalog — AARRKKAA International" },
       { property: "og:description", content: "Pumps, seals, elastomers, stainless steel, hoses and precision components — organised into 12 categories." },
     ],

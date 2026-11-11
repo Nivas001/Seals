@@ -40,11 +40,11 @@ export const Route = createFileRoute("/contact")({
   }),
   head: () => ({
     meta: [
-      { title: "Contact — AARRKKAA International" },
+      { title: "Contact AARRKKAA International — Seals, Pumps & Spares Supplier in Hosur" },
       {
         name: "description",
         content:
-          "Send a spec, drawing or photo — we respond within 24 hours on business days with grade, brand and dispatch timeline.",
+          "Buy mechanical seals, pumps, bearings and industrial spares in Hosur, Tamil Nadu. Call +91 78069 36475 or send a spec, drawing or photo; we reply within one working day.",
       },
       { property: "og:title", content: "Contact AARRKKAA International" },
       {

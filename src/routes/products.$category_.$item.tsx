@@ -61,15 +61,31 @@ export const Route = createFileRoute("/products/$category_/$item")({
       };
     }
     const d = loaderData.detail!;
-    const title = `${d.name} — ${d.category.name} | AARRKKAA International`;
+    // "Buy ... in Hosur" matches local buying searches; the category name keeps the page specific.
+    const title = `Buy ${d.name} in Hosur — ${d.category.name} | AARRKKAA International`;
+    const description = `${d.description ? d.description.replace(/\.?\s*$/, ". ") : ""}Buy from AARRKKAA International, Hosur, Tamil Nadu. Supplied across India and worldwide.`;
+    const url = `https://www.aarrkkaa.com/products/${d.category.slug}/${d.slug}`;
     return {
       meta: [
         { title },
-        { name: "description", content: d.description },
+        { name: "description", content: description },
         { property: "og:title", content: title },
-        { property: "og:description", content: d.description },
+        { property: "og:description", content: description },
       ],
       scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.aarrkkaa.com/" },
+              { "@type": "ListItem", position: 2, name: "Products", item: "https://www.aarrkkaa.com/products" },
+              { "@type": "ListItem", position: 3, name: d.category.name, item: `https://www.aarrkkaa.com/products/${d.category.slug}` },
+              { "@type": "ListItem", position: 4, name: d.name, item: url },
+            ],
+          }),
+        },
         {
           type: "application/ld+json",
           children: JSON.stringify({
