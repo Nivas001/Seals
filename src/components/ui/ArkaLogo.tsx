@@ -27,18 +27,26 @@ export function ArkaLogo({ size = 36, className = "", variant = "mark" }: ArkaLo
     return <div className={`flex items-center justify-center ${className}`}>{mark}</div>;
   }
 
+  // Wordmark set in Montserrat to match the emblem's ARKA lettering. "International"
+  // sits between two hairlines, like the rules above and below ARKA in the emblem.
+  // Negative right margins cancel the trailing letter-spacing so both lines centre.
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
       {mark}
-      <span className="flex flex-col leading-none" style={{ color: "#113447" }}>
-        <span className="font-display font-black tracking-[0.02em]" style={{ fontSize: Math.round(size * 0.46) }}>
+      <span className="flex flex-col font-brand leading-none" style={{ color: "#113447" }}>
+        <span
+          className="mr-[-0.06em] font-extrabold tracking-[0.06em]"
+          style={{ fontSize: Math.round(size * 0.5) }}
+        >
           AARRKKAA
         </span>
         <span
-          className="mt-[3px] font-semibold uppercase tracking-[0.28em] opacity-80"
-          style={{ fontSize: Math.max(8, Math.round(size * 0.2)) }}
+          className="flex items-center gap-[0.5em] font-semibold uppercase"
+          style={{ fontSize: Math.max(8, size * 0.21), marginTop: Math.round(size * 0.11) }}
         >
-          International
+          <span aria-hidden className="h-px min-w-[0.5em] flex-1 bg-current opacity-40" />
+          <span className="mr-[-0.24em] tracking-[0.24em] opacity-85">International</span>
+          <span aria-hidden className="h-px min-w-[0.5em] flex-1 bg-current opacity-40" />
         </span>
       </span>
     </div>

@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import "@fontsource-variable/inter";
+import "@fontsource-variable/montserrat";
 import { ErrorBoundary } from "react-error-boundary";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 import { logTraffic } from "@/lib/admin";
