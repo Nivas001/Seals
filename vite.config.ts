@@ -13,7 +13,7 @@ export default defineConfig({
       preset: "vercel",
       // Public pages are cached at the Vercel edge for a minute and revalidated in the background.
       routeRules: Object.fromEntries(
-        ["/", "/about", "/catalog", "/contact", "/industries", "/products", "/products/**"].map((path) => [
+        ["/", "/about", "/catalog", "/contact", "/industries", "/products", "/products/**", "/buy/**"].map((path) => [
           path,
           { headers: { "cache-control": "public, max-age=0, s-maxage=60, stale-while-revalidate=600" } },
         ]),

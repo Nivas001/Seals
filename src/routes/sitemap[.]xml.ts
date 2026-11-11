@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { db } from "@/lib/db";
+import { SEO_PAGES } from "@/data/seoPages";
 
 // Live sitemap built from the admin database, so every product and category
 // added, renamed or hidden in the admin is reflected without a redeploy.
@@ -14,6 +15,8 @@ const STATIC_PAGES: Array<{ path: string; priority: string; changefreq: string }
   { path: "/contact", priority: "0.8", changefreq: "monthly" },
   { path: "/catalog", priority: "0.6", changefreq: "monthly" },
   { path: "/about/payments", priority: "0.4", changefreq: "yearly" },
+  // Local "buy X in Hosur" pages targeting buying searches.
+  ...SEO_PAGES.map((p) => ({ path: `/buy/${p.slug}`, priority: p.category ? "0.8" : "0.9", changefreq: "monthly" })),
 ];
 
 type Entry = { path: string; priority: string; changefreq: string; lastmod?: Date };

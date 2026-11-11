@@ -34,6 +34,7 @@ import { Route as WizardRouteImport } from './routes/wizard'
 import { Route as AboutPaymentsRouteImport } from './routes/about_.payments'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminLayoutRouteImport } from './routes/admin._layout'
+import { Route as BuySlugRouteImport } from './routes/buy.$slug'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsCategoryRouteImport } from './routes/products.$category'
 import { Route as AdminLayoutAnalyticsRouteImport } from './routes/admin._layout.analytics'
@@ -171,6 +172,11 @@ const AdminLayoutRoute = AdminLayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => AdminRoute,
 } as any)
+const BuySlugRoute = BuySlugRouteImport.update({
+  id: '/buy/$slug',
+  path: '/buy/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
@@ -256,6 +262,7 @@ export interface FileRoutesByFullPath {
   '/whack-a-leak': typeof WhackALeakRoute
   '/wizard': typeof WizardRoute
   '/about/payments': typeof AboutPaymentsRoute
+  '/buy/$slug': typeof BuySlugRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/admin/': typeof AdminIndexRoute
   '/products/': typeof ProductsIndexRoute
@@ -294,6 +301,7 @@ export interface FileRoutesByTo {
   '/wizard': typeof WizardRoute
   '/about/payments': typeof AboutPaymentsRoute
   '/admin': typeof AdminIndexRoute
+  '/buy/$slug': typeof BuySlugRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/products': typeof ProductsIndexRoute
   '/admin/analytics': typeof AdminLayoutAnalyticsRoute
@@ -333,6 +341,7 @@ export interface FileRoutesById {
   '/wizard': typeof WizardRoute
   '/about_/payments': typeof AboutPaymentsRoute
   '/admin/_layout': typeof AdminLayoutRouteWithChildren
+  '/buy/$slug': typeof BuySlugRoute
   '/products/$category': typeof ProductsCategoryRoute
   '/admin/': typeof AdminIndexRoute
   '/products/': typeof ProductsIndexRoute
@@ -373,6 +382,7 @@ export interface FileRouteTypes {
     | '/whack-a-leak'
     | '/wizard'
     | '/about/payments'
+    | '/buy/$slug'
     | '/products/$category'
     | '/admin/'
     | '/products/'
@@ -411,6 +421,7 @@ export interface FileRouteTypes {
     | '/wizard'
     | '/about/payments'
     | '/admin'
+    | '/buy/$slug'
     | '/products/$category'
     | '/products'
     | '/admin/analytics'
@@ -449,6 +460,7 @@ export interface FileRouteTypes {
     | '/wizard'
     | '/about_/payments'
     | '/admin/_layout'
+    | '/buy/$slug'
     | '/products/$category'
     | '/admin/'
     | '/products/'
@@ -488,6 +500,7 @@ export interface RootRouteChildren {
   WhackALeakRoute: typeof WhackALeakRoute
   WizardRoute: typeof WizardRoute
   AboutPaymentsRoute: typeof AboutPaymentsRoute
+  BuySlugRoute: typeof BuySlugRoute
   ProductsCategoryRoute: typeof ProductsCategoryRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   ProductsCategoryItemRoute: typeof ProductsCategoryItemRoute
@@ -670,6 +683,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/buy/$slug': {
+      id: '/buy/$slug'
+      path: '/buy/$slug'
+      fullPath: '/buy/$slug'
+      preLoaderRoute: typeof BuySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/': {
       id: '/products/'
       path: '/products'
@@ -821,6 +841,7 @@ const rootRouteChildren: RootRouteChildren = {
   WhackALeakRoute: WhackALeakRoute,
   WizardRoute: WizardRoute,
   AboutPaymentsRoute: AboutPaymentsRoute,
+  BuySlugRoute: BuySlugRoute,
   ProductsCategoryRoute: ProductsCategoryRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   ProductsCategoryItemRoute: ProductsCategoryItemRoute,

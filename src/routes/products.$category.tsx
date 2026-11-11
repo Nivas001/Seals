@@ -9,6 +9,7 @@ import { CreativePoster } from "@/components/ui/CreativePoster";
 import { motion } from "framer-motion";
 import { Reveal, WordReveal, SPRING_SOFT, EASE_OUT } from "@/lib/motion";
 import { PartIllustration } from "@/components/illustrations/PartIllustration";
+import { getSeoPageForCategory } from "@/data/seoPages";
 
 export const Route = createFileRoute("/products/$category")({
   loader: async ({ params }) => {
@@ -28,12 +29,27 @@ export const Route = createFileRoute("/products/$category")({
     // Location in the title and description targets searches like "mechanical seals supplier in Hosur / Tamil Nadu / India".
     const title = `${c.name} Supplier in Hosur, Tamil Nadu, India | AARRKKAA International`;
     const description = `${c.description ? c.description.replace(/\.?\s*$/, ". ") : ""}${c.name} supplied by AARRKKAA International, Hosur, Tamil Nadu, to plants across India and worldwide.`;
+    const url = `https://www.aarrkkaa.com/products/${c.slug}`;
     return {
       meta: [
         { title },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.aarrkkaa.com/" },
+              { "@type": "ListItem", position: 2, name: "Products", item: "https://www.aarrkkaa.com/products" },
+              { "@type": "ListItem", position: 3, name: c.name, item: url },
+            ],
+          }),
+        },
       ],
     };
   },
@@ -45,6 +61,7 @@ function CategoryPage() {
   const { category: c, allCategories, contactInfo } = Route.useLoaderData();
   const others = allCategories.filter((x: any) => x.slug !== c.slug).slice(0, 4);
   const phone = contactInfo?.phones?.[0] || "+91 78069 36475";
+  const localPage = getSeoPageForCategory(c.slug);
 
 
   return (
@@ -108,6 +125,14 @@ function CategoryPage() {
                   <Phone className="h-4 w-4" /> {phone}
                 </a>
               </motion.div>
+              {localPage && (
+                <p className="mt-5 text-sm text-muted-foreground">
+                  Buying near Hosur, Krishnagiri or Bengaluru?{" "}
+                  <Link to="/buy/$slug" params={{ slug: localPage.slug }} className="font-semibold text-brass underline-offset-4 hover:underline">
+                    Buy {localPage.product.toLowerCase()} in Hosur
+                  </Link>
+                </p>
+              )}
             </div>
 
             <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-hairline bg-surface shadow-lift">

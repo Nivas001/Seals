@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin, FileDown, ArrowUpRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getCategories, getContactInfo } from "@/lib/catalog";
 import { CATEGORIES, COMPANY } from "@/data/catalog";
+import { SEO_PAGES } from "@/data/seoPages";
 import { useEffect, useState } from "react";
 import { DownloadCatalog } from "@/components/site/DownloadCatalog";
 
@@ -162,6 +163,22 @@ export function Footer() {
             </ul>
           </div>
         </div>
+
+        {/* Local buying pages: crawlable links on every page for "buy X in Hosur" searches */}
+        <nav aria-label="Buy in Hosur" className="mt-8 border-t border-hairline pt-6 sm:mt-12">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            Buy in Hosur
+          </h4>
+          <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[13px]">
+            {SEO_PAGES.map((p) => (
+              <li key={p.slug}>
+                <Link to="/buy/$slug" params={{ slug: p.slug }} className="inline-block py-1.5 text-ink/60 transition-colors hover:text-ink">
+                  {p.product} in Hosur
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-center mt-8 gap-3 text-xs text-muted-foreground sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:border-t sm:border-hairline sm:pt-6">
