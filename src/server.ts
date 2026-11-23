@@ -2,9 +2,10 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { runWithDb } from "@/lib/db";
 
 type ServerEntry = {
-  fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
+  fetch: (request: Request) => Promise<Response> | Response;
 };
 
 let serverEntryPromise: Promise<ServerEntry> | undefined;
@@ -12,7 +13,7 @@ let serverEntryPromise: Promise<ServerEntry> | undefined;
 async function getServerEntry(): Promise<ServerEntry> {
   if (!serverEntryPromise) {
     serverEntryPromise = import("@tanstack/react-start/server-entry").then(
-      (m) => (m.default ?? m) as ServerEntry,
+      (module) => (module.default ?? module) as ServerEntry,
     );
   }
   return serverEntryPromise;
@@ -45,17 +46,25 @@ function isH3SwallowedErrorBody(body: string): boolean {
 }
 
 export default {
-  async fetch(request: Request, env: unknown, ctx: unknown) {
-    try {
-      const handler = await getServerEntry();
-      const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
-    } catch (error) {
-      console.error(error);
-      return new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      });
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.hostname === "aarrkkaa.com") {
+      url.hostname = "www.aarrkkaa.com";
+      return Response.redirect(url, 308);
     }
+
+    return await runWithDb(env.DATABASE_URL, async () => {
+      try {
+        const handler = await getServerEntry();
+        const response = await handler.fetch(request);
+        return await normalizeCatastrophicSsrResponse(response);
+      } catch (error) {
+        console.error(error);
+        return new Response(renderErrorPage(), {
+          status: 500,
+          headers: { "content-type": "text/html; charset=utf-8" },
+        });
+      }
+    });
   },
-};
+} satisfies ExportedHandler<Cloudflare.Env>;

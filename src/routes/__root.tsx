@@ -203,8 +203,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { AIChatbot } from "@/components/site/AIChatbot";
 import { CHATBOT_PATHS } from "@/data/chatbotState";
 import { useLocation } from "@tanstack/react-router";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
@@ -241,8 +239,6 @@ function RootComponent() {
       </MotionConfig>
       {hasChatbot && <AIChatbot />}
       <Toaster position="top-center" offset={84} mobileOffset={84} closeButton />
-      <Analytics />
-      <SpeedInsights />
     </QueryClientProvider>
   );
 }
