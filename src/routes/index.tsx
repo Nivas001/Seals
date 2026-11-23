@@ -1,4 +1,4 @@
-import { FinderBand, IndustriesShowcase, GlobalReach, WhyUsBento, ProcessTimeline } from "@/components/home/HomeSections";
+import { FinderBand, IndustriesShowcase, GlobalReach, WhyUsBento, ProcessTimeline, ClientMarquee } from "@/components/home/HomeSections";
 import { CLIENTS, BRANDS } from "@/data/clients";
 import { FaqSection } from "@/components/site/FaqSection";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { Reveal, WordReveal, CountUp, SPRING_SOFT, EASE_OUT, morphCategoryPhoto } from "@/lib/motion";
 import { SealAssembly } from "@/components/illustrations/SealAssembly";
 import { PartIllustration } from "@/components/illustrations/PartIllustration";
+import { IndustryIcon, type IndustryKey } from "@/components/illustrations/IndustryArt";
 import { useRef, useEffect, useState } from "react";
 
 import {
@@ -112,6 +113,7 @@ function Home() {
         <StatsBand categoryCount={dbCategories?.length || CATEGORIES.length} />
         <AboutPreview />
         <ProductsBento featured={featured} />
+        <ClientMarquee />
         <SealAssembly />
         <FinderBand />
         <IndustriesShowcase />
@@ -609,21 +611,28 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
 
 /* ─── INDUSTRIES ─── */
 /* ─── TESTIMONIALS ─── */
-const TESTIMONIALS = [
+// `client` is optional: set it to a name from CLIENTS (data/clients.ts) only once that company
+// has agreed to be named with its quote, and its logo replaces the industry icon on the card.
+type Testimonial = { quote: string; name: string; role: string; industry: IndustryKey; client?: string };
+
+const TESTIMONIALS: Testimonial[] = [
   {
     quote: "AARRKKAA consistently delivers the right mechanical seals on time. Their matching accuracy and fast response have kept our production lines running without interruption.",
     name: "Production Manager",
     role: "Food Processing Plant, Tamil Nadu",
+    industry: "food",
   },
   {
     quote: "We rely on AARRKKAA for all our pump spares and stainless steel fittings. Their team responds quickly to urgent requests and their components are always genuine.",
     name: "Maintenance Engineer",
     role: "Pharmaceutical Facility, Karnataka",
+    industry: "pharma",
   },
   {
     quote: "Sourcing PTFE and elastomeric components used to take weeks. With AARRKKAA, we get accurate quotes and fast dispatch from their regional stock. Outstanding service.",
     name: "Procurement Head",
     role: "Chemical Process Industry, Andhra Pradesh",
+    industry: "chemical",
   },
 ];
 
@@ -683,9 +692,26 @@ function Testimonials() {
                     &ldquo;{t.quote}&rdquo;
                   </p>
                 </div>
-                <div className="mt-5 border-t border-hairline pt-4">
-                  <div className="text-sm font-bold text-ink">{t.name}</div>
-                  <div className="mt-0.5 text-[12px] text-muted-foreground">{t.role}</div>
+                <div className="mt-5 flex items-center gap-3 border-t border-hairline pt-4">
+                  {(() => {
+                    const client = t.client ? CLIENTS.find((c) => c.name === t.client) : undefined;
+                    return client?.logo ? (
+                      <span className="grid h-11 min-w-11 shrink-0 place-items-center rounded-xl border border-hairline bg-white px-2">
+                        <img src={client.logo} alt={client.name} className="h-6 w-auto max-w-[5.5rem] object-contain" />
+                      </span>
+                    ) : (
+                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brass/[0.08] text-ink">
+                        <IndustryIcon kind={t.industry} className="h-7 w-7" />
+                      </span>
+                    );
+                  })()}
+                  <div className="min-w-0">
+                    <div className="text-sm font-bold text-ink">{t.name}</div>
+                    <div className="mt-0.5 text-[12px] text-muted-foreground">
+                      {t.client ? `${t.client} · ` : ""}
+                      {t.role}
+                    </div>
+                  </div>
                 </div>
               </GlowCard>
             </motion.div>

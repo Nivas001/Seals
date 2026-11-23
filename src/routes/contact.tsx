@@ -6,7 +6,6 @@ import {
   MapPin,
   Clock,
   Send,
-  Paperclip,
   Linkedin,
   Instagram,
   MessageCircle,
@@ -23,6 +22,7 @@ import { Input } from "@/components/base/input/input";
 import { toast } from "sonner";
 import { chatbotState } from "@/data/chatbotState";
 import { sendContactEmail } from "@/lib/email";
+import { PhotoAttach, toAttachments, type Picked } from "@/components/contact/PhotoAttach";
 import { subscribeToNewsletter } from "@/lib/newsletter";
 import { getCategories, getContactInfo } from "@/lib/catalog";
 
@@ -270,7 +270,7 @@ const labelBase =
 
 function InquiryCard({ className }: { className?: string }) {
   const [submitting, setSubmitting] = useState(false);
-  const [fileName, setFileName] = useState<string>("");
+  const [photos, setPhotos] = useState<Picked[]>([]);
   const search = Route.useSearch();
 
   const { categories } = Route.useLoaderData();
@@ -285,18 +285,6 @@ function InquiryCard({ className }: { className?: string }) {
   const defaultMessage = search.product
     ? `I would like to request a quotation for:\n\n• Product: ${search.product}\n• Category: ${defaultCategory || "General"}\n\n[Please specify required quantity, duty conditions, or operating parameters below]:\n`
     : "";
-
-  const getBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const base64Str = (reader.result as string).split(",")[1];
-        resolve(base64Str);
-      };
-      reader.onerror = (error) => reject(error);
-    });
-  };
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -323,26 +311,14 @@ function InquiryCard({ className }: { className?: string }) {
     const subject = String((data.get("subject") ?? defaultSubject) || "Enquiry");
     const category = String(data.get("category") ?? "");
 
-    // Process file attachment if exists
-    let attachmentData = undefined;
-    const fileInput = form.querySelector('input[type="file"]') as HTMLInputElement | null;
-    const file = fileInput?.files?.[0];
-
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error("File size exceeds the 10MB limit.");
-        setSubmitting(false);
-        return;
-      }
+    // Photos or drawings of the part (photos are resized in the browser first).
+    let attachments: { filename: string; content: string }[] | undefined;
+    if (photos.length) {
       try {
-        const base64Content = await getBase64(file);
-        attachmentData = {
-          filename: file.name,
-          content: base64Content,
-        };
+        attachments = await toAttachments(photos);
       } catch (err) {
-        console.error("Error reading file:", err);
-        toast.error("Failed to read file attachment. Please try again.");
+        console.error("Error reading attachment:", err);
+        toast.error(err instanceof Error ? err.message : "Couldn't read one of the files. Please try again.");
         setSubmitting(false);
         return;
       }
@@ -356,7 +332,7 @@ function InquiryCard({ className }: { className?: string }) {
           category,
           subject,
           message,
-          attachment: attachmentData,
+          attachments,
         }
       });
 
@@ -370,7 +346,7 @@ function InquiryCard({ className }: { className?: string }) {
           toast.info("Check server terminal to view the logged email body.");
         }
         form.reset();
-        setFileName("");
+        setPhotos([]);
       } else {
         toast.error(response.error || "Failed to send email. Please try again.");
       }
@@ -507,22 +483,7 @@ function InquiryCard({ className }: { className?: string }) {
           />
         </div>
 
-        <div>
-          <div className={labelBase}>Attachment (optional)</div>
-          <label className="mt-2 flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-ink/20 bg-background px-3 py-3 text-sm text-muted-foreground hover:border-ink/40">
-            <span className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-ink px-3 py-1.5 text-xs font-semibold text-background">
-              <Paperclip className="h-3.5 w-3.5" /> Browse
-            </span>
-            <span className="min-w-0 flex-1 truncate">
-              {fileName || "No file selected"}
-            </span>
-            <input
-              type="file"
-              className="hidden"
-              onChange={(e) => setFileName(e.target.files?.[0]?.name ?? "")}
-            />
-          </label>
-        </div>
+        <PhotoAttach value={photos} onChange={setPhotos} />
 
         <button
           type="submit"

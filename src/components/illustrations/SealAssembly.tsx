@@ -9,6 +9,8 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/lib/motion";
 
 /* Signature moment for the home page: an exploded single-spring mechanical seal that
@@ -509,7 +511,7 @@ function useSlide(p: Part, progress: MotionValue<number>) {
   return useTransform(progress, p.window, [p.dx, 0], { ease: easeInOut });
 }
 
-export function SealAssembly() {
+export function SealAssembly({ showMore = true }: { showMore?: boolean } = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
   const reduce = useReducedMotion();
@@ -892,6 +894,21 @@ export function SealAssembly() {
             </li>
           ))}
         </ol>
+
+        {showMore && (
+          <div className="relative mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl border border-hairline bg-background/70 p-5 sm:flex-row sm:items-center sm:p-6">
+            <div>
+              <div className="font-display text-lg font-black tracking-tight text-ink">How does a pump work? A valve? A bearing?</div>
+              <p className="mt-1 text-sm text-muted-foreground">See the other parts we supply explained the same way, one scroll at a time.</p>
+            </div>
+            <Link
+              to="/how-it-works"
+              className="group inline-flex h-11 shrink-0 items-center gap-2 rounded-full bg-ink px-5 text-sm font-semibold text-background transition hover:bg-ink/85"
+            >
+              See how things work <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

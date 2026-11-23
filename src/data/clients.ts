@@ -4,7 +4,7 @@
 export type Client = { name: string; logo?: string; square?: boolean };
 
 export const CLIENTS: Client[] = [
-  { name: "Tata Electronics", logo: "/clients/tata-electronics.svg" },
+  { name: "Tata", logo: "/clients/tata.svg" },
   { name: "Schneider Electric", logo: "/clients/schneider-electric.svg" },
   { name: "Thermax Onsite Energy Solutions" },
   { name: "Anthem Biosciences", logo: "/clients/anthem-biosciences.png" },

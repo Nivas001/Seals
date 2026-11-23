@@ -14,12 +14,26 @@ const contactSchema = z.object({
       content: z.string(), // base64 encoded string
     })
     .optional(),
+  // Photos or drawings of the part (the contact form sends up to three, resized in the browser).
+  attachments: z
+    .array(
+      z.object({
+        filename: z.string().min(1).max(200),
+        content: z.string().max(14_000_000), // base64, roughly 10 MB per file
+      }),
+    )
+    .max(3)
+    .optional(),
 });
+
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 export const sendContactEmail = createServerFn({ method: "POST" })
   .validator(contactSchema.parse)
   .handler(async ({ data }) => {
-    const { name, email, category, subject, message, attachment } = data;
+    const { name, email, category, subject, message, attachment, attachments } = data;
+    const files = [...(attachment ? [attachment] : []), ...(attachments ?? [])].slice(0, 4);
 
     const apiKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.RESEND_TO_EMAIL || "sales@aarrkkaa.com";
@@ -72,10 +86,16 @@ export const sendContactEmail = createServerFn({ method: "POST" })
               <div style="background-color: #fafafa; border-left: 3px solid #c5a880; padding: 20px; border-radius: 8px; margin-top: 12px; white-space: pre-wrap; font-size: 14px; color: #444444; border: 1px solid #f0f0f0; border-left-width: 4px;">${message}</div>
 
               ${
-                attachment
+                files.length
                   ? `
-                <div style="margin-top: 28px; padding: 14px 18px; background-color: #f7f9fa; border: 1px dashed #cfd8dc; border-radius: 8px; font-size: 13px; color: #455a64; display: flex; align-items: center; gap: 8px;">
-                  <strong>📎 Attachment Included:</strong> <span style="font-family: monospace; font-size: 12px; background: #eceff1; padding: 2px 6px; border-radius: 4px;">${attachment.filename}</span>
+                <div style="margin-top: 28px; padding: 14px 18px; background-color: #f7f9fa; border: 1px dashed #cfd8dc; border-radius: 8px; font-size: 13px; color: #455a64;">
+                  <strong>📎 ${files.length === 1 ? "Attachment" : `${files.length} attachments`} included:</strong>
+                  ${files
+                    .map(
+                      (f) =>
+                        `<span style="display: inline-block; margin: 6px 6px 0 0; font-family: monospace; font-size: 12px; background: #eceff1; padding: 2px 6px; border-radius: 4px;">${escapeHtml(f.filename)}</span>`,
+                    )
+                    .join("")}
                 </div>
               `
                   : ""
@@ -101,8 +121,8 @@ export const sendContactEmail = createServerFn({ method: "POST" })
       console.warn(`Category: ${category}`);
       console.warn(`Sender: ${name} <${email}>`);
       console.warn(`Message:\n${message}`);
-      if (attachment) {
-        console.warn(`Attachment: ${attachment.filename} (${attachment.content.length} bytes base64)`);
+      for (const f of files) {
+        console.warn(`Attachment: ${f.filename} (${f.content.length} bytes base64)`);
       }
       console.warn("==========================================================================");
 
@@ -125,14 +145,7 @@ export const sendContactEmail = createServerFn({ method: "POST" })
           to: toEmail,
           subject: `AARRKKAA Inquiry: ${subject}`,
           html: htmlContent,
-          attachments: attachment
-            ? [
-                {
-                  filename: attachment.filename,
-                  content: attachment.content,
-                },
-              ]
-            : undefined,
+          attachments: files.length ? files.map((f) => ({ filename: f.filename, content: f.content })) : undefined,
         }),
       });
 

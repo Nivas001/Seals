@@ -52,6 +52,8 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { getFinderProducts } from "@/lib/catalog";
 import { sendContactEmail } from "@/lib/email";
+import { PhotoAttach, toAttachments, type Picked } from "@/components/contact/PhotoAttach";
+import { SealSpecDiagram } from "@/components/illustrations/SealSpec";
 import { EASE_OUT } from "@/lib/motion";
 import {
   EMPTY_ANSWERS,
@@ -849,8 +851,8 @@ function DetailsStep({
       <div className="flex items-start gap-3 rounded-2xl border border-dashed border-hairline bg-background p-4 text-sm text-muted-foreground sm:col-span-2">
         <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-brass" />
         <span>
-          Have a photo of the old seal or a drawing? You can attach it on WhatsApp or by email after
-          you see your results. A photo next to a ruler is often all we need.
+          Have a photo of the old seal or a drawing? You can attach it to your quote request on the
+          results page. A photo next to a ruler is often all we need.
         </span>
       </div>
     </div>
@@ -1114,6 +1116,20 @@ function Results({
   const top = available[0];
   const alternatives = available.slice(1, 4);
   const spec = buildSpec(answers);
+  const specValue = (label: string) => spec.find((r) => r.label === label)?.value;
+  const seal =
+    top && top.product.category === "mechanical-seals" && specValue("Seal faces")
+      ? {
+          faces: specValue("Seal faces")!,
+          arrangement: specValue("Arrangement"),
+          markers: [
+            { n: 1, label: "Seal type", value: top.product.name },
+            { n: 2, label: "Seal faces", value: specValue("Seal faces")! },
+            { n: 3, label: "O-rings", value: specValue("Elastomer (O-rings)") ?? "To suit your fluid" },
+            { n: 4, label: "Metal parts", value: specValue("Metal parts") ?? "SS316" },
+          ],
+        }
+      : null;
   const tips = watchOuts(answers);
   const todo = checklist(answers);
   const shownCompanions = cards ? companions.filter((c) => cards[c.slug]) : companions;
@@ -1311,6 +1327,46 @@ function Results({
           </p>
         </motion.section>
       </div>
+
+      {/* The recommendation drawn on a seal, linked to the full explainer */}
+      {seal && (
+        <motion.section {...fade(0.18)} className="mt-14">
+          <SectionHead eyebrow="Your seal, explained" title="Where each choice goes" />
+          <div className="mt-6 grid gap-6 overflow-hidden rounded-[28px] border border-hairline bg-surface p-5 shadow-soft sm:p-7 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-center">
+            <figure>
+              <SealSpecDiagram faces={seal.faces} className="h-auto w-full" />
+              <figcaption className="mt-2 text-xs text-muted-foreground">
+                Shown as a typical single-spring seal. Your recommended type may use bellows, several springs or a cartridge instead; the faces, O-rings and metals sit in the same places.
+              </figcaption>
+            </figure>
+            <div>
+              <ol className="grid gap-3.5">
+                {seal.markers.map((m) => (
+                  <li key={m.n} className="flex gap-3">
+                    <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brass text-[11px] font-extrabold text-white">{m.n}</span>
+                    <div className="min-w-0">
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">{m.label}</div>
+                      <div className="text-[15px] font-semibold leading-snug text-ink">{m.value}</div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              {seal.arrangement && (
+                <p className="mt-4 rounded-xl bg-muted px-3.5 py-3 text-xs leading-relaxed text-muted-foreground">
+                  <span className="font-semibold text-ink">Arrangement:</span> {seal.arrangement}
+                </p>
+              )}
+              <Link
+                to="/how-it-works"
+                hash="anatomy"
+                className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brass hover:underline print:hidden"
+              >
+                How a mechanical seal works <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </motion.section>
+      )}
 
       {/* Alternatives */}
       {alternatives.length > 0 && (
@@ -1626,6 +1682,7 @@ function QuoteSection({
 }) {
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
+  const [photos, setPhotos] = useState<Picked[]>([]);
   const product = quoteFor ?? top.product.name;
   const spec = specText(answers, top);
   const waText = `Hi AARRKKAA, I used Find My Seal on your website.\n\n${spec}\n\nPlease quote for: ${product}`;
@@ -1657,6 +1714,7 @@ function QuoteSection({
 
     setSubmitting(true);
     try {
+      const attachments = photos.length ? await toAttachments(photos) : undefined;
       const res = await sendContactEmail({
         data: {
           name: name.slice(0, 100),
@@ -1664,6 +1722,7 @@ function QuoteSection({
           category: "Mechanical Seals",
           subject: `Find My Seal: ${product}`.slice(0, 140),
           message,
+          attachments,
         },
       });
       if (res.success) {
@@ -1828,6 +1887,7 @@ function QuoteSection({
                   className={`mt-2 resize-none ${inputBase}`}
                 />
               </label>
+              <PhotoAttach value={photos} onChange={setPhotos} />
               <details className="rounded-xl border border-hairline bg-background px-4 py-3 text-xs">
                 <summary className="cursor-pointer font-semibold text-muted-foreground">
                   Included with your request

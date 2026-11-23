@@ -10,6 +10,9 @@ import { motion } from "framer-motion";
 import { Reveal, WordReveal, SPRING_SOFT, EASE_OUT, morphCategoryPhoto, CATEGORY_MORPH } from "@/lib/motion";
 import { PartIllustration } from "@/components/illustrations/PartIllustration";
 import { getSeoPageForCategory } from "@/data/seoPages";
+import { HowItWorksPanel } from "@/components/site/HowItWorksPanel";
+import { TOPIC_FOR_CATEGORY } from "@/components/illustrations/HowItWorks";
+import { SealAssembly } from "@/components/illustrations/SealAssembly";
 
 const SITE_URL = "https://www.aarrkkaa.com";
 
@@ -290,6 +293,10 @@ function CategoryPage() {
             })}
           </ul>
         </section>
+
+        {/* How it works: an animated explainer for categories that have one */}
+        {TOPIC_FOR_CATEGORY[c.slug] && <HowItWorksPanel topic={TOPIC_FOR_CATEGORY[c.slug]} />}
+        {c.slug === "mechanical-seals" && <SealAssembly />}
 
         {/* Related */}
         <section className="mx-auto mt-20 max-w-7xl px-5 sm:mt-28 sm:px-8">

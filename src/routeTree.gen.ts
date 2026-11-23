@@ -20,6 +20,7 @@ import { Route as FlappyPumpRouteImport } from './routes/flappy-pump'
 import { Route as ForkliftSimRouteImport } from './routes/forklift-sim'
 import { Route as Funny_url_listRouteImport } from './routes/funny_url_list'
 import { Route as GitBlameRouteImport } from './routes/git-blame'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as IntelligenceCheckRouteImport } from './routes/intelligence-check'
 import { Route as MatrixRouteImport } from './routes/matrix'
@@ -102,6 +103,11 @@ const Funny_url_listRoute = Funny_url_listRouteImport.update({
 const GitBlameRoute = GitBlameRouteImport.update({
   id: '/git-blame',
   path: '/git-blame',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndustriesRoute = IndustriesRouteImport.update({
@@ -256,6 +262,7 @@ export interface FileRoutesByFullPath {
   '/forklift-sim': typeof ForkliftSimRoute
   '/funny_url_list': typeof Funny_url_listRoute
   '/git-blame': typeof GitBlameRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/industries': typeof IndustriesRoute
   '/intelligence-check': typeof IntelligenceCheckRoute
   '/matrix': typeof MatrixRoute
@@ -295,6 +302,7 @@ export interface FileRoutesByTo {
   '/forklift-sim': typeof ForkliftSimRoute
   '/funny_url_list': typeof Funny_url_listRoute
   '/git-blame': typeof GitBlameRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/industries': typeof IndustriesRoute
   '/intelligence-check': typeof IntelligenceCheckRoute
   '/matrix': typeof MatrixRoute
@@ -336,6 +344,7 @@ export interface FileRoutesById {
   '/forklift-sim': typeof ForkliftSimRoute
   '/funny_url_list': typeof Funny_url_listRoute
   '/git-blame': typeof GitBlameRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/industries': typeof IndustriesRoute
   '/intelligence-check': typeof IntelligenceCheckRoute
   '/matrix': typeof MatrixRoute
@@ -379,6 +388,7 @@ export interface FileRouteTypes {
     | '/forklift-sim'
     | '/funny_url_list'
     | '/git-blame'
+    | '/how-it-works'
     | '/industries'
     | '/intelligence-check'
     | '/matrix'
@@ -418,6 +428,7 @@ export interface FileRouteTypes {
     | '/forklift-sim'
     | '/funny_url_list'
     | '/git-blame'
+    | '/how-it-works'
     | '/industries'
     | '/intelligence-check'
     | '/matrix'
@@ -458,6 +469,7 @@ export interface FileRouteTypes {
     | '/forklift-sim'
     | '/funny_url_list'
     | '/git-blame'
+    | '/how-it-works'
     | '/industries'
     | '/intelligence-check'
     | '/matrix'
@@ -500,6 +512,7 @@ export interface RootRouteChildren {
   ForkliftSimRoute: typeof ForkliftSimRoute
   Funny_url_listRoute: typeof Funny_url_listRoute
   GitBlameRoute: typeof GitBlameRoute
+  HowItWorksRoute: typeof HowItWorksRoute
   IndustriesRoute: typeof IndustriesRoute
   IntelligenceCheckRoute: typeof IntelligenceCheckRoute
   MatrixRoute: typeof MatrixRoute
@@ -596,6 +609,13 @@ declare module '@tanstack/react-router' {
       path: '/git-blame'
       fullPath: '/git-blame'
       preLoaderRoute: typeof GitBlameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/industries': {
@@ -849,6 +869,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForkliftSimRoute: ForkliftSimRoute,
   Funny_url_listRoute: Funny_url_listRoute,
   GitBlameRoute: GitBlameRoute,
+  HowItWorksRoute: HowItWorksRoute,
   IndustriesRoute: IndustriesRoute,
   IntelligenceCheckRoute: IntelligenceCheckRoute,
   MatrixRoute: MatrixRoute,

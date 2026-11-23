@@ -11,7 +11,8 @@ import {
 } from "lucide-react";
 import { SECTORS } from "@/data/catalog";
 import { TradeLanes } from "@/components/site/TradeLanes";
-import { BRANDS } from "@/data/clients";
+import { BRANDS, CLIENTS } from "@/data/clients";
+import { ClientLogo } from "@/components/site/ClientLogo";
 
 import silicone from "@/assets/cat-silicone.jpg";
 import elastomers from "@/assets/cat-elastomers.jpg";
@@ -200,14 +201,31 @@ export function IndustriesShowcase() {
 
 /* ───────────────────────── GLOBAL REACH (trade network map) ───────────────────────── */
 const SOURCE_BRANDS = [
-  { country: "Sweden", brands: ["SKF"] },
-  { country: "Germany", brands: ["FAG", "INA"] },
-  { country: "Japan", brands: ["NTN"] },
+  { country: "Sweden", code: "SE", brands: ["SKF"] },
+  { country: "Germany", code: "DE", brands: ["FAG", "INA"] },
+  { country: "Japan", code: "JP", brands: ["NTN"] },
 ];
 
 export function GlobalReach() {
   const reduce = useReducedMotion();
+  const [focus, setFocus] = useState<string | null>(null);
   const logoFor = (name: string) => BRANDS.find((b) => b.name === name);
+  const brandCount = SOURCE_BRANDS.reduce((n, s) => n + s.brands.length, 0);
+  const facts = [
+    { value: String(SOURCE_BRANDS.length), label: "Source countries" },
+    { value: String(brandCount), label: "Global brands" },
+    { value: "1", label: "Dispatch hub" },
+  ];
+
+  const fadeUp = (delay = 0) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 18 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.4 },
+          transition: { duration: 0.6, ease, delay },
+        };
 
   return (
     <section id="global" className="scroll-mt-28 mx-auto mt-24 max-w-7xl px-5 sm:mt-32 sm:px-8">
@@ -215,63 +233,126 @@ export function GlobalReach() {
       <div className="relative overflow-hidden rounded-[2rem] bg-[#0a1020] px-5 py-10 text-white sm:px-10 sm:py-14 lg:px-14">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-70"
-          style={{ background: "radial-gradient(60% 50% at 70% 5%, rgba(14,165,233,0.22), transparent 70%)" }}
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(55% 45% at 72% 0%, rgba(14,165,233,0.20), transparent 70%), radial-gradient(40% 35% at 10% 100%, rgba(251,191,36,0.08), transparent 70%)",
+          }}
         />
 
-        <div className="relative z-10 grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-end">
-          <motion.h2
-            initial={reduce ? false : { opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.6, ease }}
-            className="font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl"
-          >
-            Sourced from the best.
-            <br />
-            Delivered to <span className="italic text-sky-300">every market.</span>
-          </motion.h2>
-          <p className="max-w-md text-base leading-relaxed text-slate-300 lg:justify-self-end">
-            We buy genuine parts from leading brands in their home countries and ship them to process plants around the world at competitive prices.
-          </p>
+        <div className="relative z-10 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-end">
+          <div>
+            <motion.span
+              {...fadeUp()}
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-200"
+            >
+              <span className="relative flex h-1.5 w-1.5">
+                {!reduce && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-300 opacity-75" />}
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-sky-300" />
+              </span>
+              Global supply network
+            </motion.span>
+            <motion.h2 {...fadeUp(0.05)} className="mt-5 font-display text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl">
+              Sourced from the best.
+              <br />
+              Delivered to <span className="italic text-sky-300">every market.</span>
+            </motion.h2>
+          </div>
+          <motion.div {...fadeUp(0.1)} className="lg:justify-self-end">
+            <p className="max-w-md text-base leading-relaxed text-slate-300">
+              We buy genuine parts from leading brands in their home countries and ship them to process plants around the world at competitive prices.
+            </p>
+            <dl className="mt-6 grid max-w-md grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/10 bg-white/[0.03]">
+              {facts.map((f) => (
+                <div key={f.label} className="px-4 py-3">
+                  <dt className="sr-only">{f.label}</dt>
+                  <dd className="font-display text-2xl font-black tracking-tight text-white">{f.value}</dd>
+                  <dd className="mt-0.5 text-[11px] font-medium leading-tight text-slate-400">{f.label}</dd>
+                </div>
+              ))}
+            </dl>
+          </motion.div>
         </div>
 
-        <div className="relative z-10 mt-8 overflow-hidden sm:mt-10">
-          <TradeLanes />
+        {/* Map, framed, with edges fading into the panel */}
+        <div className="relative z-10 mt-10 overflow-hidden rounded-3xl border border-white/[0.07] bg-[#0b1324]">
+          <div className="relative overflow-hidden">
+            <TradeLanes focus={focus} onFocus={setFocus} />
+            <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_60%_45%,transparent_55%,#0b1324_100%)]" />
+          </div>
+
+          {/* Legend: under the map on phones, overlaid on its lower edge from tablet up */}
+          <div className="relative flex flex-wrap items-center gap-x-5 gap-y-1.5 border-t border-white/[0.06] px-4 py-3 text-[11px] text-slate-300 sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-0 sm:bg-gradient-to-t sm:from-[#0b1324] sm:via-[#0b1324]/80 sm:to-transparent sm:px-6 sm:pb-4 sm:pt-8 sm:text-xs">
+            <span className="inline-flex items-center gap-2">
+              <span className="h-0.5 w-5 rounded-full bg-gradient-to-r from-amber-300 to-amber-300/20" /> Sourced from brand home countries
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span className="h-0.5 w-5 rounded-full bg-gradient-to-r from-sky-300 to-sky-300/20" /> Delivered from Hosur worldwide
+            </span>
+            <span className="text-slate-500 sm:ml-auto">Routes shown are illustrative</span>
+          </div>
         </div>
 
-        {/* Legend */}
-        <div className="relative z-10 mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-slate-400">
-          <span className="inline-flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-amber-400" /> Sourced from brand home countries
-          </span>
-          <span className="inline-flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-sky-300" /> Delivered from Hosur worldwide
-          </span>
-          <span className="sm:ml-auto text-slate-500">Routes shown are illustrative</span>
-        </div>
-
-        {/* Source countries with the brands we supply from them */}
-        <ul className="relative z-10 mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {SOURCE_BRANDS.map((s) => (
-            <li key={s.country} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">{s.country}</div>
-              <div className="mt-3 flex h-10 items-center gap-4">
+        {/* Supply chain: source countries and their brands, flowing into the Hosur hub */}
+        <ul className="relative z-10 mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {SOURCE_BRANDS.map((s, i) => (
+            <motion.li
+              key={s.country}
+              {...fadeUp(0.05 * i)}
+              tabIndex={0}
+              onMouseEnter={() => setFocus(s.country)}
+              onMouseLeave={() => setFocus(null)}
+              onFocus={() => setFocus(s.country)}
+              onBlur={() => setFocus(null)}
+              className={`group relative flex flex-col rounded-2xl border p-5 outline-none transition duration-300 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-amber-300/60 ${focus === s.country ? "-translate-y-0.5 border-amber-300/50 bg-white/[0.06]" : "border-white/10 bg-white/[0.03]"}`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="grid h-7 w-7 place-items-center rounded-md bg-amber-300/10 font-mono text-[10px] font-bold text-amber-300 ring-1 ring-amber-300/25">
+                    {s.code}
+                  </span>
+                  <span className="text-sm font-semibold text-white">{s.country}</span>
+                </div>
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-500 transition group-hover:text-amber-200">
+                  to Hosur <ArrowRight className="h-3 w-3" />
+                </span>
+              </div>
+              <div className="mt-5 flex flex-1 items-end gap-2.5">
                 {s.brands.map((b) => {
                   const logo = logoFor(b);
                   return logo?.logo ? (
-                    <span key={b} className="grid h-9 place-items-center rounded-lg bg-white px-3">
-                      <img src={logo.logo} alt={b} className={`w-auto max-w-[6rem] object-contain ${logo.square ? "h-7" : "h-5"}`} />
+                    <span key={b} className="grid h-12 min-w-[5.5rem] place-items-center rounded-xl bg-white px-4 shadow-[0_6px_20px_-8px_rgba(0,0,0,0.6)]">
+                      <img src={logo.logo} alt={b} loading="lazy" className={`w-auto max-w-[6.5rem] object-contain ${logo.square ? "h-8" : "h-6"}`} />
                     </span>
                   ) : (
                     <span key={b} className="text-sm font-bold">{b}</span>
                   );
                 })}
               </div>
-            </li>
+            </motion.li>
           ))}
-        </ul>
 
+          <motion.li
+            {...fadeUp(0.15)}
+            tabIndex={0}
+            onMouseEnter={() => setFocus("Hosur")}
+            onMouseLeave={() => setFocus(null)}
+            onFocus={() => setFocus("Hosur")}
+            onBlur={() => setFocus(null)}
+            className={`relative flex flex-col overflow-hidden rounded-2xl border bg-gradient-to-br from-sky-400/15 to-sky-400/[0.03] p-5 outline-none transition duration-300 focus-visible:ring-2 focus-visible:ring-sky-300/60 ${focus === "Hosur" ? "-translate-y-0.5 border-sky-300/60" : "border-sky-300/25"}`}
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="grid h-7 w-7 place-items-center rounded-md bg-sky-300/15 text-sky-200 ring-1 ring-sky-300/30">
+                <Truck className="h-3.5 w-3.5" />
+              </span>
+              <span className="text-sm font-semibold text-white">Hosur, India</span>
+            </div>
+            <p className="mt-4 text-sm leading-relaxed text-slate-300">
+              Our head office brings every order together and ships it to your plant, wherever it is.
+            </p>
+            <p className="mt-auto hidden pt-3 text-[11px] font-medium text-sky-200/70 lg:block">Hover a card to trace its route</p>
+          </motion.li>
+        </ul>
       </div>
     </section>
   );
@@ -401,6 +482,48 @@ export function ProcessTimeline() {
           </motion.li>
         ))}
       </ol>
+    </section>
+  );
+}
+
+/* ───────────────────────── CLIENT MARQUEE (companies we supply) ───────────────────────── */
+// Two rows of client companies drifting in opposite directions. Each row's list is rendered twice
+// so the -50% CSS loop is seamless; hovering pauses it, and reduced motion stops it (styles.css).
+export function ClientMarquee() {
+  const half = Math.ceil(CLIENTS.length / 2);
+  const rows = [CLIENTS.slice(0, half), CLIENTS.slice(half)];
+
+  return (
+    <section aria-labelledby="clients-heading" className="mt-24 sm:mt-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="flex flex-col items-center text-center">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">Trusted across industries</span>
+          <h2 id="clients-heading" className="mt-3 max-w-2xl font-display text-3xl font-black leading-[1.05] tracking-tight text-ink sm:text-4xl">
+            {CLIENTS.length}+ companies keep their plants running with our parts.
+          </h2>
+        </div>
+      </div>
+
+      <div className="relative mt-10 space-y-3 [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)] sm:space-y-4">
+        {rows.map((row, r) => (
+          <div key={r} className="group flex overflow-hidden">
+            <ul
+              className={`flex w-max shrink-0 gap-3 pr-3 group-hover:[animation-play-state:paused] sm:gap-4 sm:pr-4 ${r === 0 ? "marquee-track" : "marquee-track-reverse"}`}
+              style={{ animationDuration: `${row.length * 5}s` }}
+            >
+              {[...row, ...row].map((c, i) => (
+                <li
+                  key={`${c.name}-${i}`}
+                  aria-hidden={i >= row.length || undefined}
+                  className="flex h-16 shrink-0 items-center rounded-2xl border border-hairline bg-surface px-6 shadow-[0_1px_0_rgba(0,0,0,0.02)] sm:h-20 sm:px-8"
+                >
+                  <ClientLogo client={c} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

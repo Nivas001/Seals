@@ -79,6 +79,33 @@ export function Footer() {
           <DownloadCatalog variant="solid" label="Download catalog (PDF)" />
         </div>
 
+        {/* How things work: quick links into the explainer page */}
+        <div className="mb-10 flex flex-col gap-4 rounded-2xl border border-hairline bg-surface/60 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">How things work</div>
+            <p className="mt-1 text-sm text-muted-foreground">Scroll-through explainers of the parts we supply.</p>
+          </div>
+          <ul className="flex flex-wrap gap-2">
+            {[
+              { hash: "pump", label: "Pump" },
+              { hash: "anatomy", label: "Mechanical seal" },
+              { hash: "valve", label: "Ball valve" },
+              { hash: "o-ring", label: "O-ring" },
+              { hash: "bearing", label: "Bearing" },
+            ].map((t) => (
+              <li key={t.hash}>
+                <Link
+                  to="/how-it-works"
+                  hash={t.hash}
+                  className="inline-flex items-center rounded-full border border-hairline bg-background px-3.5 py-2 text-[13px] font-semibold text-ink/75 transition hover:border-brass/50 hover:text-ink"
+                >
+                  {t.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         {/* Main footer grid */}
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.5fr]">
           {/* Brand column */}
@@ -129,6 +156,7 @@ export function Footer() {
             <ul className="mt-4 space-y-2.5 text-sm">
               <li><Link to="/about" className="text-ink/60 transition-colors hover:text-ink">About us</Link></li>
               <li><Link to="/industries" className="text-ink/60 transition-colors hover:text-ink">Industries served</Link></li>
+              <li><Link to="/how-it-works" className="text-ink/60 transition-colors hover:text-ink">How things work</Link></li>
               <li><Link to="/products" className="text-ink/60 transition-colors hover:text-ink">Full catalog</Link></li>
               <li><Link to="/contact" className="text-ink/60 transition-colors hover:text-ink">Contact</Link></li>
             </ul>
