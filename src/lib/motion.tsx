@@ -1,5 +1,5 @@
 import { motion, useInView, useReducedMotion, animate, type Variants } from "framer-motion";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 
 /* Shared motion language for the public site.
    One easing curve and two springs, so every reveal, hover and transition feels like the same hand made it.
@@ -27,6 +27,30 @@ export const revealVariants: Variants = {
     },
   },
 };
+
+/** View-transition name shared by the tapped category photo and the category page header. */
+export const CATEGORY_MORPH = "cat-hero";
+
+/**
+ * onClick for a category card link: names only the tapped card's photo, so that one photo
+ * morphs into the category header while the rest of the page fades. Cards never carry the
+ * name otherwise; a list of named photos would all fly to the next page at once.
+ */
+export function morphCategoryPhoto(e: MouseEvent<HTMLElement>) {
+  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  document.querySelectorAll<HTMLElement>("[data-morph-source]").forEach((el) => {
+    el.style.viewTransitionName = "";
+    el.removeAttribute("data-morph-source");
+  });
+  // The header on the current category page also carries the name; drop it so the names stay unique.
+  document.querySelectorAll<HTMLElement>("[data-morph-target]").forEach((el) => {
+    el.style.viewTransitionName = "none";
+  });
+  const img = e.currentTarget.querySelector("img");
+  if (!img) return;
+  img.style.viewTransitionName = CATEGORY_MORPH;
+  img.setAttribute("data-morph-source", "");
+}
 
 export const staggerParent = (stagger = 0.07, delayChildren = 0): Variants => ({
   hidden: {},

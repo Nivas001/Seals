@@ -3,7 +3,7 @@ import { CLIENTS, BRANDS } from "@/data/clients";
 import { FaqSection } from "@/components/site/FaqSection";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { Reveal, WordReveal, CountUp, SPRING_SOFT, EASE_OUT } from "@/lib/motion";
+import { Reveal, WordReveal, CountUp, SPRING_SOFT, EASE_OUT, morphCategoryPhoto } from "@/lib/motion";
 import { SealAssembly } from "@/components/illustrations/SealAssembly";
 import { PartIllustration } from "@/components/illustrations/PartIllustration";
 import { useRef, useEffect, useState } from "react";
@@ -549,6 +549,7 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
               <Link
                 to="/products/$category"
                 params={{ category: cat.slug }}
+                onClick={morphCategoryPhoto}
                 className="group relative flex h-full w-full flex-col justify-between overflow-hidden p-4 sm:p-5"
               >
                 {cat.image ? (
@@ -558,7 +559,6 @@ function ProductsBento({ featured }: { featured: Array<{ slug: string; name: str
                     loading={i < 2 ? "eager" : "lazy"}
                     fetchPriority={i < 2 ? "high" : "auto"}
                     decoding="async"
-                    style={{ viewTransitionName: `cat-${cat.slug}` }}
                     className="media-zoom pointer-events-none absolute inset-0 h-full w-full object-cover opacity-90 group-hover:scale-[1.06]"
                   />
                 ) : (

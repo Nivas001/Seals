@@ -6,7 +6,7 @@ import { Footer } from "@/components/site/Footer";
 import { getCategories } from "@/lib/catalog";
 import { CreativePoster } from "@/components/ui/CreativePoster";
 import { PartIllustration } from "@/components/illustrations/PartIllustration";
-import { Reveal, WordReveal, CountUp, SPRING_SOFT, EASE_OUT } from "@/lib/motion";
+import { Reveal, WordReveal, CountUp, SPRING_SOFT, EASE_OUT, morphCategoryPhoto } from "@/lib/motion";
 
 // The hero line-up of parts, drawn in one after another.
 const HERO_PARTS = ["mechanical-seals", "pumps", "bearings", "valves", "springs", "hoses"];
@@ -111,6 +111,7 @@ function ProductsPage() {
                 <Link
                   to="/products/$category"
                   params={{ category: cat.slug }}
+                  onClick={morphCategoryPhoto}
                   className="press group block overflow-hidden rounded-2xl border border-hairline bg-surface transition-shadow duration-500 hover:shadow-lift"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
@@ -121,7 +122,6 @@ function ProductsPage() {
                         loading={i < 4 ? "eager" : "lazy"}
                         fetchPriority={i < 4 ? "high" : "auto"}
                         decoding="async"
-                        style={{ viewTransitionName: `cat-${cat.slug}` }}
                         className="media-zoom h-full w-full object-cover group-hover:scale-[1.06]"
                       />
                     ) : (

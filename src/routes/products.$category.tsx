@@ -7,7 +7,7 @@ import { ProductItemCard } from "@/components/site/ProductItemCard";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 import { CreativePoster } from "@/components/ui/CreativePoster";
 import { motion } from "framer-motion";
-import { Reveal, WordReveal, SPRING_SOFT, EASE_OUT } from "@/lib/motion";
+import { Reveal, WordReveal, SPRING_SOFT, EASE_OUT, morphCategoryPhoto, CATEGORY_MORPH } from "@/lib/motion";
 import { PartIllustration } from "@/components/illustrations/PartIllustration";
 import { getSeoPageForCategory } from "@/data/seoPages";
 
@@ -138,9 +138,11 @@ function CategoryPage() {
             <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-hairline bg-surface shadow-lift">
               {c.image ? (
                 <img
+                  key={c.slug}
                   src={c.image}
                   alt={c.name}
-                  style={{ viewTransitionName: `cat-${c.slug}` }}
+                  data-morph-target=""
+                  style={{ viewTransitionName: CATEGORY_MORPH }}
                   className="h-full w-full object-cover"
                   width={1200}
                   height={900}
@@ -232,11 +234,12 @@ function CategoryPage() {
                 key={o.slug}
                 to="/products/$category"
                 params={{ category: o.slug }}
+                onClick={morphCategoryPhoto}
                 className="press group overflow-hidden rounded-2xl border border-hairline bg-surface transition-shadow duration-500 hover:-translate-y-1 hover:shadow-lift"
               >
                 <div className="relative aspect-[5/3] overflow-hidden">
                   {o.image ? (
-                    <img src={o.image} alt={o.name} loading="lazy" decoding="async" style={{ viewTransitionName: `cat-${o.slug}` }} className="media-zoom h-full w-full object-cover group-hover:scale-[1.06]" />
+                    <img src={o.image} alt={o.name} loading="lazy" decoding="async" className="media-zoom h-full w-full object-cover group-hover:scale-[1.06]" />
                   ) : (
                     <CreativePoster title={o.name} slug={o.slug} />
                   )}
