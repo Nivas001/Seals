@@ -489,9 +489,11 @@ export function ProcessTimeline() {
 /* ───────────────────────── CLIENT MARQUEE (companies we supply) ───────────────────────── */
 // Two rows of client companies drifting in opposite directions. Each row's list is rendered twice
 // so the -50% CSS loop is seamless; hovering pauses it, and reduced motion stops it (styles.css).
+// Only clients with a logo file scroll here; text-only entries stay out until a logo is added.
 export function ClientMarquee() {
-  const half = Math.ceil(CLIENTS.length / 2);
-  const rows = [CLIENTS.slice(0, half), CLIENTS.slice(half)];
+  const withLogo = CLIENTS.filter((c) => c.logo);
+  const half = Math.ceil(withLogo.length / 2);
+  const rows = [withLogo.slice(0, half), withLogo.slice(half)];
 
   return (
     <section aria-labelledby="clients-heading" className="mt-24 sm:mt-32">
@@ -517,7 +519,7 @@ export function ClientMarquee() {
                   aria-hidden={i >= row.length || undefined}
                   className="flex h-16 shrink-0 items-center rounded-2xl border border-hairline bg-surface px-6 shadow-[0_1px_0_rgba(0,0,0,0.02)] sm:h-20 sm:px-8"
                 >
-                  <ClientLogo client={c} />
+                  <ClientLogo client={c} withName />
                 </li>
               ))}
             </ul>

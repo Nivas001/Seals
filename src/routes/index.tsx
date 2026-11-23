@@ -34,8 +34,8 @@ export const Route = createFileRoute("/")({
   }
 });
 
-// Client logos shown in the hero trust row (only clients with a real logo file).
-const HERO_CLIENTS = CLIENTS.filter((c): c is { name: string; logo: string } => Boolean(c.logo));
+// Client logos shown in the hero trust row (only clients with a real logo file, capped so the row stays one line).
+const HERO_CLIENTS = CLIENTS.filter((c): c is { name: string; logo: string } => Boolean(c.logo)).slice(0, 4);
 
 const BENTO_SLOT_CLASSES: string[] = [
   "sm:col-span-4 sm:row-span-2", // Slot 0: Top Left Large

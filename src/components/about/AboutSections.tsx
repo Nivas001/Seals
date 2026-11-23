@@ -130,10 +130,14 @@ export function BrandsAndClients() {
           <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             Some of the {CLIENTS.length} companies we supply
           </div>
-          <ul className="mt-5 flex flex-wrap gap-2">
-            {CLIENTS.map((c) => (
-              <li key={c.name} className="rounded-full border border-hairline bg-background px-3.5 py-2 text-[13px] font-semibold text-ink/80">
-                {c.name}
+          {/* Only clients with a logo file are shown; text-only entries stay out until a logo is added. */}
+          <ul className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            {CLIENTS.filter((c) => c.logo).map((c) => (
+              <li key={c.name} className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-hairline bg-background px-3 py-3.5 text-center">
+                <span className="grid h-10 place-items-center">
+                  <ClientLogo client={c} />
+                </span>
+                <span className="text-[11.5px] font-semibold leading-snug text-ink/75">{c.name}</span>
               </li>
             ))}
           </ul>
