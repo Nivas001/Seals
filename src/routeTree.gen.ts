@@ -46,6 +46,7 @@ import { Route as AdminLayoutIndustriesRouteImport } from './routes/admin._layou
 import { Route as AdminLayoutInquiriesRouteImport } from './routes/admin._layout.inquiries'
 import { Route as AdminLayoutProductsRouteImport } from './routes/admin._layout.products'
 import { Route as AdminLayoutSubscribersRouteImport } from './routes/admin._layout.subscribers'
+import { Route as MediaKindIdRouteImport } from './routes/media.$kind.$id'
 import { Route as ProductsCategoryItemRouteImport } from './routes/products.$category_.$item'
 
 const IndexRoute = IndexRouteImport.update({
@@ -232,6 +233,11 @@ const AdminLayoutSubscribersRoute = AdminLayoutSubscribersRouteImport.update({
   path: '/subscribers',
   getParentRoute: () => AdminLayoutRoute,
 } as any)
+const MediaKindIdRoute = MediaKindIdRouteImport.update({
+  id: '/media/$kind/$id',
+  path: '/media/$kind/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsCategoryItemRoute = ProductsCategoryItemRouteImport.update({
   id: '/products/$category_/$item',
   path: '/products/$category/$item',
@@ -275,6 +281,7 @@ export interface FileRoutesByFullPath {
   '/admin/inquiries': typeof AdminLayoutInquiriesRoute
   '/admin/products': typeof AdminLayoutProductsRoute
   '/admin/subscribers': typeof AdminLayoutSubscribersRoute
+  '/media/$kind/$id': typeof MediaKindIdRoute
   '/products/$category/$item': typeof ProductsCategoryItemRoute
 }
 export interface FileRoutesByTo {
@@ -313,6 +320,7 @@ export interface FileRoutesByTo {
   '/admin/inquiries': typeof AdminLayoutInquiriesRoute
   '/admin/products': typeof AdminLayoutProductsRoute
   '/admin/subscribers': typeof AdminLayoutSubscribersRoute
+  '/media/$kind/$id': typeof MediaKindIdRoute
   '/products/$category/$item': typeof ProductsCategoryItemRoute
 }
 export interface FileRoutesById {
@@ -354,6 +362,7 @@ export interface FileRoutesById {
   '/admin/_layout/inquiries': typeof AdminLayoutInquiriesRoute
   '/admin/_layout/products': typeof AdminLayoutProductsRoute
   '/admin/_layout/subscribers': typeof AdminLayoutSubscribersRoute
+  '/media/$kind/$id': typeof MediaKindIdRoute
   '/products/$category_/$item': typeof ProductsCategoryItemRoute
 }
 export interface FileRouteTypes {
@@ -395,6 +404,7 @@ export interface FileRouteTypes {
     | '/admin/inquiries'
     | '/admin/products'
     | '/admin/subscribers'
+    | '/media/$kind/$id'
     | '/products/$category/$item'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -433,6 +443,7 @@ export interface FileRouteTypes {
     | '/admin/inquiries'
     | '/admin/products'
     | '/admin/subscribers'
+    | '/media/$kind/$id'
     | '/products/$category/$item'
   id:
     | '__root__'
@@ -473,6 +484,7 @@ export interface FileRouteTypes {
     | '/admin/_layout/inquiries'
     | '/admin/_layout/products'
     | '/admin/_layout/subscribers'
+    | '/media/$kind/$id'
     | '/products/$category_/$item'
   fileRoutesById: FileRoutesById
 }
@@ -503,6 +515,7 @@ export interface RootRouteChildren {
   BuySlugRoute: typeof BuySlugRoute
   ProductsCategoryRoute: typeof ProductsCategoryRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
+  MediaKindIdRoute: typeof MediaKindIdRoute
   ProductsCategoryItemRoute: typeof ProductsCategoryItemRoute
 }
 
@@ -767,6 +780,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutSubscribersRouteImport
       parentRoute: typeof AdminLayoutRoute
     }
+    '/media/$kind/$id': {
+      id: '/media/$kind/$id'
+      path: '/media/$kind/$id'
+      fullPath: '/media/$kind/$id'
+      preLoaderRoute: typeof MediaKindIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/$category_/$item': {
       id: '/products/$category_/$item'
       path: '/products/$category/$item'
@@ -844,6 +864,7 @@ const rootRouteChildren: RootRouteChildren = {
   BuySlugRoute: BuySlugRoute,
   ProductsCategoryRoute: ProductsCategoryRoute,
   ProductsIndexRoute: ProductsIndexRoute,
+  MediaKindIdRoute: MediaKindIdRoute,
   ProductsCategoryItemRoute: ProductsCategoryItemRoute,
 }
 export const routeTree = rootRouteImport

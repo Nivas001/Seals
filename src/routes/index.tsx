@@ -267,7 +267,7 @@ function Hero({ images }: { images: { id: string, url: string }[] }) {
               transition={{ duration: 0.6, delay: 0.5, ease: EASE_OUT }}
               className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
             >
-              Genuine pumps, mechanical seals, bearings, elastomers and stainless steel for process plants. Send us a part number, drawing or photo, and we match it accurately and ship it on time, anywhere.
+              AARRKKAA International is a mechanical seal and pump spares supplier in Hosur, Tamil Nadu. Genuine mechanical seals, pumps, bearings, elastomers and stainless steel for process plants. Send us a part number, drawing or photo, and we match it accurately and ship it on time, anywhere.
             </motion.p>
 
             <motion.div

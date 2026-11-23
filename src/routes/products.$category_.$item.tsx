@@ -4,6 +4,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { TrustPoints } from "@/components/site/TrustPoints";
 import { getProductPageData, getCategories, getContactInfo } from "@/lib/catalog";
+import { absoluteImage } from "@/lib/media";
 import { CreativeNotFound } from "@/components/site/CreativeNotFound";
 import { CreativePoster } from "@/components/ui/CreativePoster";
 
@@ -65,12 +66,14 @@ export const Route = createFileRoute("/products/$category_/$item")({
     const title = `Buy ${d.name} in Hosur — ${d.category.name} | AARRKKAA International`;
     const description = `${d.description ? d.description.replace(/\.?\s*$/, ". ") : ""}Buy from AARRKKAA International, Hosur, Tamil Nadu. Supplied across India and worldwide.`;
     const url = `https://www.aarrkkaa.com/products/${d.category.slug}/${d.slug}`;
+    const image = absoluteImage(d.image || d.category.image);
     return {
       meta: [
         { title },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+        ...(image ? [{ property: "og:image", content: image }, { name: "twitter:image", content: image }] : []),
       ],
       scripts: [
         {
@@ -93,7 +96,9 @@ export const Route = createFileRoute("/products/$category_/$item")({
             "@type": "Product",
             name: d.name,
             description: d.description,
-            image: `https://www.aarrkkaa.com${d.image || d.category.image}`,
+            ...(image ? { image } : {}),
+            url,
+            category: d.category.name,
             brand: {
               "@type": "Brand",
               name: "AARRKKAA International"

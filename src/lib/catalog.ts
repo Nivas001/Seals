@@ -1,6 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { db } from "./db";
+import { mediaSrc, withMedia } from "./media";
+
+// Product row with its category, with inline (base64) images swapped for /media links.
+function productWithMedia<T extends { id: string; image?: string | null; category?: { id: string; image: string } | null }>(p: T): T {
+  const out = withMedia("product", p);
+  return p.category ? { ...out, category: withMedia("category", p.category) } : out;
+}
 
 // High-Speed In-Memory Catalog Cache (5-minute TTL + instant Admin invalidation)
 const catalogCache = new Map<string, { data: any; expiresAt: number }>();
@@ -44,7 +51,7 @@ async function getOrLoadAllProductsMap(): Promise<Map<string, any>> {
   });
   const map = new Map<string, any>();
   for (const p of products) {
-    map.set(p.slug, p);
+    map.set(p.slug, productWithMedia(p));
   }
   allProductsMap = map;
   allProductsCacheExpiresAt = now + CACHE_TTL_MS;
@@ -53,15 +60,16 @@ async function getOrLoadAllProductsMap(): Promise<Map<string, any>> {
 
 export const getCategories = createServerFn({ method: "GET" })
   .handler(async () => {
-    return await getCached("categories", () =>
-      db.category.findMany({
-        where: { 
+    return await getCached("categories", async () => {
+      const rows = await db.category.findMany({
+        where: {
           isDeleted: false,
-          isHidden: false 
+          isHidden: false
         },
         orderBy: { priority: "asc" },
-      })
-    );
+      });
+      return rows.map((c) => withMedia("category", c));
+    });
   });
 
 const categorySlugSchema = z.object({
@@ -70,27 +78,29 @@ const categorySlugSchema = z.object({
 
 export const getHeroImages = createServerFn({ method: "GET" })
   .handler(async () => {
-    return await getCached("heroImages", () =>
-      db.heroCarouselImage.findMany({
+    return await getCached("heroImages", async () => {
+      const rows = await db.heroCarouselImage.findMany({
         orderBy: { order: "asc" }
-      })
-    );
+      });
+      return rows.map((h) => ({ ...h, url: mediaSrc("hero", h.id, h.url) }));
+    });
   });
 
 export const getIndustries = createServerFn({ method: "GET" })
   .handler(async () => {
     return await getCached("industries", async () => {
-      return await db.industry.findMany({
+      const rows = await db.industry.findMany({
         orderBy: { priority: "asc" },
       });
+      return rows.map((i) => withMedia("industry", i));
     });
   });
 
 export const getCategoryWithProducts = createServerFn({ method: "GET" })
   .validator(categorySlugSchema.parse)
   .handler(async ({ data }) => {
-    return await getCached(`category_${data.slug}`, () =>
-      db.category.findUnique({
+    return await getCached(`category_${data.slug}`, async () => {
+      const cat = await db.category.findUnique({
         where: { 
           slug: data.slug,
           isDeleted: false, 
@@ -103,8 +113,10 @@ export const getCategoryWithProducts = createServerFn({ method: "GET" })
             include: { specs: true },
           },
         },
-      })
-    );
+      });
+      if (!cat) return cat;
+      return { ...withMedia("category", cat), products: cat.products.map((p) => withMedia("product", p)) };
+    });
   });
 
 const productSlugSchema = z.object({
@@ -131,6 +143,7 @@ export const getProductDetails = createServerFn({ method: "GET" })
         },
       });
       if (product) {
+        product = productWithMedia(product);
         productsMap.set(data.slug, product);
       }
     }
@@ -157,6 +170,7 @@ export const getProductPageData = createServerFn({ method: "GET" })
         },
       });
       if (product) {
+        product = productWithMedia(product);
         productsMap.set(data.slug, product);
       }
     }
@@ -182,11 +196,12 @@ export const getContactInfo = createServerFn({ method: "GET" })
 // Lean list for the home page: no product rows, just the count per category.
 export const getHomeCategories = createServerFn({ method: "GET" })
   .handler(async () => {
-    return await getCached("homeCategories", () =>
-      db.category.findMany({
+    return await getCached("homeCategories", async () => {
+      const rows = await db.category.findMany({
         where: { isDeleted: false, isHidden: false },
         orderBy: { priority: "asc" },
         select: {
+          id: true,
           slug: true,
           name: true,
           short: true,
@@ -194,14 +209,15 @@ export const getHomeCategories = createServerFn({ method: "GET" })
           image: true,
           _count: { select: { products: { where: { isDeleted: false, isHidden: false } } } },
         },
-      })
-    );
+      });
+      return rows.map((c) => withMedia("category", c));
+    });
   });
 
 export const getAllCategoriesWithProducts = createServerFn({ method: "GET" })
   .handler(async () => {
-    return await getCached("allCategoriesWithProducts", () =>
-      db.category.findMany({
+    return await getCached("allCategoriesWithProducts", async () => {
+      const rows = await db.category.findMany({
         where: { isDeleted: false, isHidden: false },
         orderBy: { priority: "asc" },
         include: {
@@ -218,8 +234,9 @@ export const getAllCategoriesWithProducts = createServerFn({ method: "GET" })
             }
           },
         },
-      })
-    );
+      });
+      return rows.map((c) => ({ ...withMedia("category", c), products: c.products.map((p) => withMedia("product", p)) }));
+    });
   });
 
 const finderSlugsSchema = z.object({
