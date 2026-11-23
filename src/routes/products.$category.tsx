@@ -11,6 +11,27 @@ import { Reveal, WordReveal, SPRING_SOFT, EASE_OUT, morphCategoryPhoto, CATEGORY
 import { PartIllustration } from "@/components/illustrations/PartIllustration";
 import { getSeoPageForCategory } from "@/data/seoPages";
 
+const SITE_URL = "https://www.aarrkkaa.com";
+
+const MECHANICAL_SEAL_FAQS = [
+  {
+    q: "Are you a mechanical seal manufacturer?",
+    a: "AARRKKAA International is an independent mechanical seal supplier and sourcing partner, not a manufacturer. We compare suitable seals from established manufacturers and sellers so buyers are not limited to one make or design.",
+  },
+  {
+    q: "Do you supply mechanical seals across India and internationally?",
+    a: "Yes. We supply from Hosur to customers across Tamil Nadu, South India and the rest of India, and arrange export dispatch by air or sea for international orders.",
+  },
+  {
+    q: "What details are needed to identify a replacement mechanical seal?",
+    a: "Send the shaft diameter, equipment or pump make and model, operating liquid, temperature and pressure, plus a clear photo, drawing or sample of the old seal. These details help us match the correct design and materials.",
+  },
+  {
+    q: "Which mechanical seal types can you source?",
+    a: "Our range includes single spring, conical spring, wave spring, multi spring, rubber bellow, PTFE bellow, metal bellow, single and double cartridge, agitator and reactor seals, rotary unions and rotary joints.",
+  },
+];
+
 export const Route = createFileRoute("/products/$category")({
   loader: async ({ params }) => {
     const [cat, categories, contactInfo] = await Promise.all([
@@ -26,29 +47,76 @@ export const Route = createFileRoute("/products/$category")({
       return { meta: [{ title: "Category not found — AARRKKAA International" }, { name: "robots", content: "noindex" }] };
     }
     const c = loaderData.category;
-    // Location in the title and description targets searches like "mechanical seals supplier in Hosur / Tamil Nadu / India".
-    const title = `${c.name} Supplier in Hosur, Tamil Nadu, India | AARRKKAA International`;
-    const description = `${c.description ? c.description.replace(/\.?\s*$/, ". ") : ""}${c.name} supplied by AARRKKAA International, Hosur, Tamil Nadu, to plants across India and worldwide.`;
-    const url = `https://www.aarrkkaa.com/products/${c.slug}`;
+    const isMechanicalSeals = c.slug === "mechanical-seals";
+    const title = isMechanicalSeals
+      ? "Mechanical Seal Supplier in India | Hosur, Tamil Nadu | AARRKKAA"
+      : `${c.name} Supplier in Hosur, Tamil Nadu, India | AARRKKAA International`;
+    const description = isMechanicalSeals
+      ? "Mechanical seal supplier in Hosur, Tamil Nadu. Pump, cartridge, agitator, rubber, PTFE and metal-bellow seals supplied across India and worldwide."
+      : `${c.description ? c.description.replace(/\.?\s*$/, ". ") : ""}${c.name} supplied by AARRKKAA International, Hosur, Tamil Nadu, to plants across India and worldwide.`;
+    const url = `${SITE_URL}/products/${c.slug}`;
+    const breadcrumb = {
+      "@type": "BreadcrumbList",
+      "@id": `${url}#breadcrumb`,
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Products", item: `${SITE_URL}/products` },
+        { "@type": "ListItem", position: 3, name: c.name, item: url },
+      ],
+    };
+    const structuredData = isMechanicalSeals
+      ? {
+          "@context": "https://schema.org",
+          "@graph": [
+            breadcrumb,
+            {
+              "@type": "CollectionPage",
+              "@id": `${url}#webpage`,
+              url,
+              name: title,
+              description,
+              inLanguage: "en-IN",
+              isPartOf: { "@id": `${SITE_URL}/#website` },
+              about: { "@id": `${SITE_URL}/#localbusiness` },
+              breadcrumb: { "@id": `${url}#breadcrumb` },
+              mainEntity: { "@id": `${url}#seal-range` },
+            },
+            {
+              "@type": "ItemList",
+              "@id": `${url}#seal-range`,
+              name: "Mechanical seal range supplied by AARRKKAA International",
+              itemListElement: (c.products ?? []).map((product: any, index: number) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                name: product.name,
+                url: `${url}/${product.slug}`,
+              })),
+            },
+            {
+              "@type": "FAQPage",
+              mainEntity: MECHANICAL_SEAL_FAQS.map((faq) => ({
+                "@type": "Question",
+                name: faq.q,
+                acceptedAnswer: { "@type": "Answer", text: faq.a },
+              })),
+            },
+          ],
+        }
+      : { "@context": "https://schema.org", ...breadcrumb };
     return {
       meta: [
         { title },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
       ],
       scripts: [
         {
           type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.aarrkkaa.com/" },
-              { "@type": "ListItem", position: 2, name: "Products", item: "https://www.aarrkkaa.com/products" },
-              { "@type": "ListItem", position: 3, name: c.name, item: url },
-            ],
-          }),
+          children: JSON.stringify(structuredData),
         },
       ],
     };
@@ -157,6 +225,8 @@ function CategoryPage() {
           </div>
         </section>
 
+        {c.slug === "mechanical-seals" && <MechanicalSealSeoSection />}
+
         {/* Bento list of items */}
         <section className="mx-auto mt-16 max-w-7xl px-5 sm:mt-24 sm:px-8">
           <Reveal className="flex items-end justify-between gap-4">
@@ -257,5 +327,85 @@ function CategoryPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+function MechanicalSealSeoSection() {
+  return (
+    <section aria-labelledby="mechanical-seal-supply" className="mx-auto mt-16 max-w-7xl px-5 sm:mt-24 sm:px-8">
+      <div className="rounded-[1.75rem] border border-hairline bg-surface p-6 shadow-soft sm:p-10 lg:p-12">
+        <div className="grid gap-10 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brass">India and international supply</p>
+            <h2 id="mechanical-seal-supply" className="mt-3 font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
+              Mechanical seal sourcing from Hosur for plants across India
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+              If your procurement team is searching for a mechanical seal manufacturer in India, AARRKKAA can help compare and source the right seal without limiting the recommendation to one make. We are an independent mechanical seal supplier based in Hosur, Tamil Nadu, serving the Hosur–Bengaluru industrial belt, South India, customers throughout India and international buyers.
+            </p>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+              We supply replacement and new-duty seals for pumps, agitators, reactors and rotating equipment. Available designs include single and multi spring seals, rubber, PTFE and metal bellows, cartridge seals, agitator seals, rotary unions and rotary joints. Share the old seal, a drawing, dimensions or the equipment model and our team will identify suitable options from established manufacturers and sellers.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-hairline bg-background p-5 sm:p-6">
+            <h3 className="font-display text-xl font-black tracking-tight text-ink">Send these details for an accurate match</h3>
+            <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
+              {[
+                "Shaft diameter and available installation dimensions",
+                "Pump, agitator or equipment make and model",
+                "Liquid, temperature, pressure and running speed",
+                "Seal-face and elastomer material requirements",
+                "A clear photo, drawing or sample of the old seal",
+              ].map((detail) => (
+                <li key={detail} className="flex gap-3">
+                  <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brass" />
+                  <span>{detail}</span>
+                </li>
+              ))}
+            </ul>
+            <Link
+              to="/contact"
+              search={{ category: "Mechanical Seals" }}
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-background transition hover:bg-ink/85"
+            >
+              Request a seal quote <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ["Hosur & Tamil Nadu", "Local support for factories in Hosur, Krishnagiri, Chennai and Coimbatore."],
+            ["South India", "Supply to industrial buyers across Tamil Nadu, Karnataka and neighbouring states."],
+            ["Pan-India", "Road and air dispatch for maintenance, project and OEM procurement requirements."],
+            ["International", "Export order support with air or sea dispatch for buyers outside India."],
+          ].map(([region, copy]) => (
+            <div key={region} className="rounded-2xl border border-hairline bg-background p-5">
+              <h3 className="font-display text-base font-black tracking-tight text-ink">{region}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{copy}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 border-t border-hairline pt-10">
+          <h2 className="font-display text-2xl font-black tracking-tight text-ink sm:text-3xl">Mechanical seal supplier questions</h2>
+          <div className="mt-6 grid gap-3 lg:grid-cols-2">
+            {MECHANICAL_SEAL_FAQS.map((faq) => (
+              <details key={faq.q} className="group rounded-2xl border border-hairline bg-background p-5 open:shadow-soft">
+                <summary className="cursor-pointer list-none pr-6 font-semibold text-ink marker:content-none">{faq.q}</summary>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+            For nearby purchasing and directions, see our{" "}
+            <Link to="/buy/$slug" params={{ slug: "mechanical-seals-in-hosur" }} className="font-semibold text-brass underline-offset-4 hover:underline">
+              mechanical seals in Hosur page
+            </Link>.
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }
